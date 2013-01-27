@@ -12,12 +12,21 @@ gem 'pg'
 # The Server
 gem 'puma'
 
+# The Worker & Friends
+gem 'sidekiq'
+gem 'sinatra', require: false
+gem 'slim'
+gem 'sidekiq-failures'
+
 # Authentications & Permissions
 gem 'devise'
-# gem 'devise-async'
+gem 'devise-async'
 # gem 'omniauth-facebook', '1.4.0' # TODO: remove explicit version when CSRF bug is fixed http://stackoverflow.com/questions/11597130/omniauth-facebook-keeps-reporting-invalid-credentials
 # gem 'omniauth-openid'
 gem 'cancan'
+
+# Administration
+gem 'rails_admin'
 
 # Slugging
 gem 'friendly_id', '~> 4.0.9'
@@ -53,11 +62,10 @@ gem 'possessive'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  # gem 'bootstrap-sass', '~> 2.1.0.0'
+  gem 'bootstrap-sass', '~> 2.2.2.0'
   gem 'coffee-rails', '~> 3.2.1'
-  # gem 'compass-rails'
-  # gem 'compass-h5bp'
-  # gem 'haml_coffee_assets'
+  gem 'compass-rails'
+  gem 'compass-h5bp'
   gem 'sass-rails',   '~> 3.2.3'
   gem 'therubyracer'
   gem 'uglifier', '>= 1.0.3'

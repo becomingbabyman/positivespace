@@ -1,0 +1,14 @@
+# Sample configuration file for Sidekiq.
+# Options here can still be overridden by cmd line args.
+#   sidekiq -C config.yml
+---
+# :verbose: false
+# :pidfile: ./tmp/pids/sidekiq.pid
+# :namespace: sidekiq_namespace
+# TODO: should concurrency be uped to 25 or something?
+:concurrency:  3
+:queues:
+  - [critical, 9]
+  - [mailer, 7]
+  - [default, 5]
+  - [slow, 3]

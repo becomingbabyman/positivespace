@@ -20,6 +20,9 @@ Positivespace::Application.configure do
   # Generate digests for assets URLs
   config.assets.digest = true
 
+  # Set Mailer Host
+  config.action_mailer.default_url_options = { :host => 'www.positivespace.io' }
+
   # Defaults to nil and saved in location specified by config.assets.prefix
   # config.assets.manifest = YOUR_PATH
 
@@ -64,4 +67,9 @@ Positivespace::Application.configure do
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
+
+  config.middleware.use ExceptionNotifier,
+    sender_address: 'noreply@positivespace.com',
+    exception_recipients: 'dev@positivespace.com'
+
 end
