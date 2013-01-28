@@ -1,0 +1,12 @@
+-# Options
+-# (default) = yellow, error = red, notice (and) success = green, info = blue
+-flash.each do |name, msg|
+	-if msg.kind_of?(Array)
+		-msg.each do |msg|
+			%div{ title: name.to_s.humanize, class: "alert alert-#{tb_alert_name name}" }
+				%span.close{ 'data-dismiss' => 'alert' } &times;
+				= raw msg
+	-else
+		%div{ title: name.to_s.humanize, class: "alert alert-#{tb_alert_name name}" }
+			%span.close{ 'data-dismiss' => 'alert' } &times;
+			= raw msg

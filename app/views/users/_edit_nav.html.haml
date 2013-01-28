@@ -1,0 +1,17 @@
+.boxed-group
+	%h3
+		%img.circle{:alt => "#{user.username}", :height => "20", :src => "#{user.profile.avatar.image.small.url}", :width => "20"}
+		= user.username
+	%ul.nav
+		%li
+			= link_to edit_profile_path(user.profile), :class => (active == 'profile' ? 'active' : '') do
+				%i.icon-user
+				Profile
+		%li
+			= link_to edit_location_profile_path(user.profile), :class => (active == 'location' ? 'active' : '') do
+				%i.icon-map-marker
+				Location
+		%li
+			= link_to "/users/edit", :class => (active == 'account settings' ? 'active' : '') do
+				%i.icon-key
+				Account Settings

@@ -21,8 +21,8 @@ gem 'sidekiq-failures'
 # Authentications & Permissions
 gem 'devise'
 gem 'devise-async'
-# gem 'omniauth-facebook', '1.4.0' # TODO: remove explicit version when CSRF bug is fixed http://stackoverflow.com/questions/11597130/omniauth-facebook-keeps-reporting-invalid-credentials
-# gem 'omniauth-openid'
+gem 'omniauth-facebook', '1.4.1' # TODO: remove explicit version when CSRF bug is fixed http://stackoverflow.com/questions/11597130/omniauth-facebook-keeps-reporting-invalid-credentials
+gem 'omniauth-openid'
 gem 'cancan'
 
 # Administration
@@ -55,7 +55,14 @@ gem 'coffee-filter'
 # Form Helpers
 gem 'simple_form'
 
+# Analytics
+gem 'newrelic_rpm'
+gem 'airbrake'
+# Google Cookie Parser
+gem 'ga_cookie_parser'
+
 # Misc
+gem 'html5-rails' # TODO: is this needed?
 gem 'possessive' 
 
 

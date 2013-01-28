@@ -1,0 +1,25 @@
+-content_for :title do "Edit #{resource.username.possessive} account" end
+
+.container-fluid
+	.content
+		#edit_account.user-edit
+			.row-fluid
+				.span3
+					= render 'users/edit_nav', user: resource, active: 'account settings'
+				.span9
+					.boxed-group
+						%h3
+							Account Settings
+						.inner
+							= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :class => "form-horizontal" }) do |f|
+								= f.input :email
+								= f.input :username, :wrapper => :prepend, hint: raw("<p>WARNING </br> If you change your username all links to you and your projects will change. </br> All existing links on other websites to you and your projects will break.</p>") do
+									= content_tag :span, "#{root_url.split('//').last}", :class => "add-on"
+									= f.input_field :username
+								= f.input :password, label: 'New password', hint: "Leave blank if you don't want to change it."
+								= f.input :password_confirmation
+								%hr
+								= f.input :current_password, hint: "We need your current password to confirm your changes."
+								.form-actions
+									= f.button :submit, :class => 'btn-primary'
+									= link_to I18n.t('cancel'), root_url, :class => "btn btn-danger"

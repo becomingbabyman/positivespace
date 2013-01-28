@@ -1,0 +1,81 @@
+#fb-root
+
+:coffeescript
+	fb_root = null #variable use to transfer the state of the fb-root div tag between page requests
+	$ ->
+		load_facebook_sdk()
+		$(document)
+			.on('page:fetch', fetching_page)
+			.on('page:change', page_changed)
+
+	fetching_page = ->
+		$("body").addClass("wait")
+		fb_root = $('#fb-root').detach()
+
+	page_changed = ->
+		if $('#fb-root').length > 0
+			$('#fb-root').replaceWith fb_root
+		else
+			$('body').append fb_root
+		$("body").removeClass("wait")
+		facebook_sdk_loaded()
+
+	load_facebook_sdk = ->
+		window.fbAsyncInit = ->
+			FB.init
+				appId: "#{Facebook::APP_ID}"
+				status: true
+				cookie: true
+				oauth: true
+				frictionlessRequests: true
+				xfbml: true
+			facebook_sdk_loaded()
+		$.getScript(document.location.protocol + "//connect.facebook.net/en_US/all.js")
+
+	facebook_sdk_loaded = ->
+		$(document).trigger("fb:initialized")
+
+	((d) ->
+		js = undefined
+		id = "facebook-jssdk"
+		return  if d.getElementById(id)
+		js = d.createElement("script")
+		js.id = id
+		js.async = true
+		js.src = "//connect.facebook.net/en_US/all.js"
+		d.getElementsByTagName("head")[0].appendChild js
+	) document
+
+	window.fbLogin = (callback) ->
+		login = (response) ->
+			if callback
+				callback response
+			else
+				window.location.href = "#{user_omniauth_authorize_path(:facebook)}"
+							
+		FB.login ((response) ->
+			if response.authResponse then login response 
+		),
+			scope: "#{Facebook::SCOPE}"
+
+		# Analytical.event("Click Facebook Connect Button", { location: window.location.href } )
+
+	window.fbPostToFeed = ->
+		
+		obj =
+			method: "feed"
+			link: "http://www.positivespace.com"
+			picture: ""
+			name: "Positivespace"
+			caption: "Simple cold contact"
+			description: "Pitch to strangers"
+
+		callback = (response) ->
+			if response
+				# Analytical.event("Successful Facebook Post To Feed", { location: window.location.href, response: JSON.stringify(response) } )
+			else
+				# Analytical.event("Failed Facebook Post To Feed", { location: window.location.href, response: JSON.stringify(response) } )
+
+		FB.ui obj, callback
+
+		# Analytical.event("Click Facebook Post To Feed Button", { location: window.location.href, obj: JSON.stringify(obj) } )

@@ -1,0 +1,62 @@
+- title = yield :title
+- if title.blank?
+	- title = "#{controller.controller_name.titleize} | #{controller.action_name.titleize} - + (_____) - Let people reach out to you."
+- elsif title.include? "+ (_____)"
+- else
+	- title = "#{title} - + (_____)"
+
+- description = yield :description
+- description ||= "Positivespace is a new way to let people reach out to you. We believe that it's too hard to start a conversation with a stranger. A lot of good ideas and relationships are missed because the right people never talk. We provide simple and direct ways for potential partners to contact you."
+
+- image_url = yield :image_url
+- image_url ||= "TODO:"
+
+%head
+	-#= raw analytical.head_prepend_javascript
+
+	-# Optimizely
+		%script{src:"//cdn.optimizely.com/js/TODO.js"}
+
+	%meta{ :charset => "utf-8" }/
+
+	-# Use the .htaccess and remove these lines to avoid edge case issues.
+	-# More info: h5bp.com/b/378
+	%meta{ 'http-equiv' => 'X-UA-Compatible', :content => 'IE=edge,chrome=1' }/
+
+	-# Mobile viewport optimized: h5bp.com/viewport
+	%meta{ :name => "viewport", :content => "width=device-width" }/
+	
+	%meta{property: "og:image", content: image_url}
+	%meta{property: "og:title", content: raw(title)}
+	%meta{property: "og:name", content: "+ (_____)"}
+	%meta{property: "og:description", content: description}
+	
+	%meta{ :name => "description", :content => description }
+
+	%title
+		= raw(title)
+
+	-# Place favicon.ico and apple-touch-icon.png in the root directory: mathiasbynens.be/notes/touch-icons
+
+	= render "stylesheets"
+	
+	-# More ideas for your <head> here: h5bp.com/d/head-Tips
+
+	-# All JavaScript at the bottom, except polyfills and typekit
+	= javascript_include_tag "polyfills"
+
+	-#INCLUDES TYPEKIT
+		%script{ async: "", src: "//use.typekit.net/TODO:.js" }
+		:coffeescript
+			try
+				Typekit.load()
+
+
+	= csrf_meta_tag
+	= yield :head
+
+	-#
+		- analytical.identify( current_user.id, { name: current_user.username } ) if current_user
+		- analytical.set( { user_id: current_user.id, user_created_at: current_user.created_at, user_sign_in_count: current_user.sign_in_count, user_last_sign_in_at: current_user.last_sign_in_at, username: current_user.username } ) if current_user
+		- analytical.event 'View Page', { url: request.url, controller: params[:controller], action: params[:action], id: params[:id], 'controller#action' => "#{params[:controller]}##{params[:action]}", 'controller#action#id' => "#{params[:controller]}##{params[:action]}##{params[:id]}" }
+		= raw analytical.head_append_javascript

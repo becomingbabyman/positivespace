@@ -1,0 +1,16 @@
+%footer#footer
+	.container
+		.row12.center
+			-#
+				=link_to 'Contact', contact_path
+				&middot;
+				=link_to 'About Us', about_path
+				&middot;
+				=link_to 'Terms of Service', terms_path
+				&middot;
+			positivespace
+			&copy;
+			#{ Date.today.year }
+			
+			- if Rails.env == 'staging'
+				<a href="http://mixpanel.com/f/partner"><img src="https://mixpanel.com/site_media/images/partner/badge_blue.png" alt="Real Time Web Analytics" /></a>
