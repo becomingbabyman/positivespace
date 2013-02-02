@@ -9,6 +9,6 @@
           = f.input :password, label: "New password"
           = f.input :password_confirmation, label: "Confirm new password"
           .form-actions
-            = f.button :submit, :value => I18n.t('helpers.submit.user.password.update'), :class => 'btn-inverse'
+            = f.button :submit, :value => I18n.t('helpers.submit.user.password.update'), :class => 'btn btn-inverse'
       .span4
         = render :partial => "devise/shared/links"

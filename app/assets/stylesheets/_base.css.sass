@@ -5,16 +5,11 @@ $base-line-height   : 21px
 
 // Colors -------------------------------------------------------------
 
-$color-base:            	#333
-$color-background:      	#FFF
-$color-background-hover:	#EEE
-$color-highlight:       	#0CD //#08C
-$color-highlight2:      	#F27
-$color-border:          	#EEE
-$color-link:            	#08C
-$color-yes:					#5bb65b
-$color-no:					#da4e49
-$color-dont-care:			#999999
+$color-background:          darken(#4F2958, 5%)
+$color-font:                #FFFBB7
+$color-darklight:           #5B7C8D
+$color-highlight:           #66B6AB
+$color-win:                 #A6F6AF
 
 
 // Reset --------------------------------------------------------------
@@ -42,20 +37,19 @@ $color-dont-care:			#999999
 
 // Mixins --------------------------------------------------------------
 
-@mixin sans-family
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
-	font-style: normal
-	font-weight: 300
+@mixin sans
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
+    font-style: normal
+    font-weight: 300
 
-@mixin serif-family
-	font-family: Georgia, Times, "Times New Roman", serif
-	font-style: normal
-	font-weight: 300
+@mixin serif
+    font-family: Georgia, Times, "Times New Roman", serif
+    font-style: normal
+    font-weight: 300
 
 @mixin inset-text
-	-webkit-text-stroke: 0
-	color: transparent
-	background-color: rgba(82,96,117,0.5)
-	@include background-clip(text)
-	text-shadow: rgba(255,255,255,0.5) 0 5px 6px
-	
+    -webkit-text-stroke: 0
+    color: transparent
+    background-color: rgba(82,96,117,0.5)
+    @include background-clip(text)
+    text-shadow: rgba(255,255,255,0.5) 0 5px 6px

@@ -56,8 +56,8 @@ gem 'coffee-filter'
 gem 'simple_form'
 
 # Analytics
-gem 'newrelic_rpm'
-gem 'airbrake'
+# gem 'newrelic_rpm'
+# gem 'airbrake'
 # Google Cookie Parser
 gem 'ga_cookie_parser'
 
@@ -105,6 +105,9 @@ group :development do
   gem 'guard-rspec'
   gem 'brakeman'
   gem 'foreman'
+  gem 'better_errors'
+  gem 'binding_of_caller'
+  gem 'meta_request'
   # gem 'growl'
   # gem 'ruby-debug19', :require => 'ruby-debug'  # NOTE: only use when needed
 end

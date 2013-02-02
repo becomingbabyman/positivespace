@@ -1,5 +1,5 @@
 class PagesController < ApplicationController
-
+	
 	def robots
 		if Rails.env.production?
 			render :layout => false, :content_type => "text/plain"

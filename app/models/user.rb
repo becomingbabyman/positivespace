@@ -38,25 +38,33 @@ class User < ActiveRecord::Base
 	end
 
 	# Given facebook authentication data, find the user record
-	def self.find_for_facebook(fb_user, current_user=nil)
-		if current_user
-			current_user.update_attribute(:facebook_id, fb_user.id) if current_user.facebook_id != fb_user.id
-			current_user
-		elsif user = User.find_by_facebook_id(fb_user.id)
-			user
-		elsif user = User.find_by_email(fb_user.email.downcase)
-			user.update_attribute(:facebook_id, fb_user.id)
-			if user.profile.avatars.count == 0
-				# TODO: UNHACK: This is a hack. I don't know how to store the model's attributes before processing the image in the uploader. This proccesses twice, the first time with no image. 
-				image = user.profile.images.new({ image_type: 'avatar' })
-				image.update_attributes({ remote_image_url: "https://graph.facebook.com/#{fb_user.id}/picture?type=large", image_type: 'avatar' })
-			end
-			user
-		else # Create a user. This should never get persisted. The user should confirm the info and fb data should be synced on registration.
-			user = User.new({ email: fb_user.email.downcase, facebook_id: fb_user.id, username: fb_user.username })
-			user
-		end
-	end
+	# TODO: UNHACK: This is a whackasshack method
+	# def self.find_for_facebook(fb_user, current_user=nil, invitation_id=nil, invitation_code=nil)
+	#	if current_user
+	#		current_user.update_attribute(:facebook_id, fb_user.id) if current_user.facebook_id != fb_user.id
+	#		current_user.update_attribute(:username, fb_user.username) unless current_user.username
+	#		current_user
+	#	elsif user = User.find_by_facebook_id(fb_user.id)
+	#		user
+	#	elsif user = User.find_by_email(fb_user.try(:email).try(:downcase))
+	#		user.update_attribute(:facebook_id, fb_user.id)
+	#		user.update_attribute(:username, fb_user.username) unless user.username
+	#		unless user.avatar
+	#			# TODO: UNHACK: This is a whackasshack. I don't know how to store the model's attributes before processing the image in the uploader. This proccesses twice, the first time with no image.
+	#			image = user.avatars.new
+	#			image.update_attribute :remote_image_url, "https://graph.facebook.com/#{fb_user.id}/picture?type=large"
+	#		end
+	#		user
+	#	else # Create a user.
+	#		password = SecureRandom.hex(20)
+	#		user = User.create({ email: fb_user.email.downcase, username: fb_user.username, first_name: fb_user.first_name, last_name: fb_user.last_name, password: password, password_confirmation: password, invitation_id: invitation_id, invitation_code: invitation_code })
+	#		user.update_attribute(:facebook_id, fb_user.id)
+	#		# TODO: UNHACK: This is a whackasshack. I don't know how to store the model's attributes before processing the image in the uploader. This proccesses twice, the first time with no image.
+	#		image = user.avatars.new
+	#		image.update_attribute :remote_image_url, "https://graph.facebook.com/#{fb_user.id}/picture?type=large"
+	#		user
+	#	end
+	# end
 
 
 	# Override destroy
@@ -75,6 +83,14 @@ class User < ActiveRecord::Base
 
 	def editor? model
 		model.editors.include? self
+	end
+
+	def avatar
+		# self.avatars.first
+	end
+
+	def avatar= image
+		# self.avatars.new(image: image)
 	end
 
 private

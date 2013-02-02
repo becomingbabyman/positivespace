@@ -1,16 +1,17 @@
 class Users::RegistrationsController < Devise::RegistrationsController
 	
 	respond_to :js, :html
+	
 	# GET /resource/sign_up
-	def new
-		# @invitation = Invitation.find_by_id(session[:invitation_id])
-		resource = build_resource({})
-		# resource.email ||= @invitation.try(:invitation_request).try(:email)
-		# flash[:notice] = "Create an account to redeem your invitation." if @invitation
-		respond_with resource do |format|
-			format.html { render layout: 'landing' }
-		end
-	end
+	# def new
+	#	# @invitation = Invitation.find_by_id(session[:invitation_id])
+	#	resource = build_resource({})
+	#	# resource.email ||= @invitation.try(:invitation_request).try(:email)
+	#	# flash[:notice] = "Create an account to redeem your invitation." if @invitation
+	#	respond_with resource do |format|
+	#		format.html { render layout: 'landing' }
+	#	end
+	# end
 
 	# POST /resource
 	def create
