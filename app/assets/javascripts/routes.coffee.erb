@@ -1,15 +1,15 @@
 root = global ? window
 angular = root.angular
 
-thisApp = angular.module("PositivespaceClient", ['ngCookies']).config(['$routeProvider', '$locationProvider' , 
-($routeProvider, $locationProvider) ->
-  #$locationProvider.hashPrefix('');
-  $locationProvider.html5Mode true
-  $routeProvider.when("/",
-    controller: "PagesCtrl"
-    templateUrl: "<%= asset_path('pages/home.html') %>"
-  ).otherwise redirectTo: "/"
+ps = angular.module("ps", ['ngCookies'])
+ps.config(['$routeProvider', '$locationProvider', ($routeProvider, $locationProvider) ->
+	#$locationProvider.hashPrefix('');
+	$locationProvider.html5Mode true
+	$routeProvider.when("/",
+		controller: "PagesCtrl"
+		templateUrl: "<%= asset_path('pages/home.html') %>"
+	).otherwise redirectTo: "/"
 ])
 
-root.thisApp = thisApp
+root.ps = ps
 

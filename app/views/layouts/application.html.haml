@@ -1,19 +1,22 @@
 !!! 5
-- html_tag "ng-app" => "PositivespaceClient", :class => "no-js", :lang => "en", :"xmlns:fb" => "http://ogp.me/ns/fb#" do
+- html_tag :class => "no-js", :lang => "en", :"xmlns:fb" => "http://ogp.me/ns/fb#" do
 	= render "head"
 
-	%body{ class: "#{controller.controller_name} #{controller.action_name}" }
-		
+	%body
 		#wrapper
-			-#= render "chromeframe"
-			-#= render "header"
+			= render "chromeframe"
+			= render "header"
 			#main{ :role => "main" }
 				#flash
 					= render "flashes"
-				#yielded{"ng-view"=>true}
+				#yielded
+					= debug params
 					= yield
 
 			#layout_footer
 		= render "footer"
+		= javascript_include_tag "jquery"
+		= javascript_include_tag "jquery_ujs"
+		= javascript_include_tag "bootstrap"
 		= render "javascripts"
 		-#= render "facebook"

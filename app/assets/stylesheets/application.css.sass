@@ -36,15 +36,15 @@ body
 	-moz-box-sizing: border-box
 	-webkit-box-sizing: border-box
 	// color: $color-font
-	// background-color: $color-background //#36124E //#2A044A
-	background-image: image_url("noisy-texture-200x200-o7-d26-c-4F2958-t1.png")
-	// background: -webkit-radial-gradient(top,darken(#4F2958, 5%),darken(#4F2958, 5%))
+	background-color: #fff //$color-background //#36124E //#2A044A
+	background-image: image_url("noisy-texture-200x200-o12-d48-c-4F2958-t1.png")
+	// background: -webkit-radial-gradient(top,darken(#eee, 5%),darken(#eee, 0%))
 	@include sans
 	font-size: $base-font-size
 	line-height: $base-line-height
-	padding-top: 41px
-	@media (max-width: 979px)
-		padding-top: 0
+	// padding-top: 41px
+	// @media (max-width: 979px)
+	//	padding-top: 0
 
 a
 	&:hover
@@ -74,10 +74,13 @@ input
 
 
 .navbar-inner
-	@include background(image_url("noisy-texture-200x200-o7-d26-c-4F2958-t1.png"), linear-gradient(top, lighten($color-background, 5%), $color-background))
+	@include background(none)
+	@include box-shadow(none)
+	border: none
 	@include border-radius(0)
-	border-bottom: 1px solid darken($color-background, 10%)
-	@include box-shadow(rgba(0, 0, 0, 0.075) 0 2px 0)
+	// @include background(image_url("noisy-texture-200x200-o7-d26-c-4F2958-t1.png"), linear-gradient(top, lighten($color-background, 5%), $color-background))
+	// border-bottom: 1px solid darken($color-background, 10%)
+	// @include box-shadow(rgba(0, 0, 0, 0.075) 0 2px 0)
 
 
 

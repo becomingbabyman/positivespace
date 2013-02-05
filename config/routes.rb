@@ -4,9 +4,6 @@ Positivespace::Application.routes.draw do
 
 	mount RailsAdmin::Engine => '/nameless', :as => 'rails_admin'
 	devise_for :administrators
-	# devise_scope :administrator do
-	#	get '/nameless_wat' => 'devise/sessions#new'
-	# end
 	constraint = lambda { |request| request.env['warden'].authenticate? and request.env['warden'].user.admin? }
 	constraints constraint do
 		mount Sidekiq::Web, at: '/emptiness'
@@ -21,12 +18,17 @@ Positivespace::Application.routes.draw do
 		# get '/edit' => 'users#edit'
 		get '/forgot' => 'users/passwords#new'
 	end
+	resources :users, only: :none do
+		collection do
+			get :current
+		end
+	end
 
+	match "*path", to: "pages#home"
 	root :to => 'pages#home'
 	
 	resources :pages, path: '', only: :none do
 		collection do
-			get :me
 			get :robots
 			get :home
 		end

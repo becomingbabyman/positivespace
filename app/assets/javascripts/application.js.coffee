@@ -10,8 +10,7 @@
 # WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 # GO AFTER THE REQUIRES BELOW.
 #
-# require jquery
-# require jquery_ujs
 #= require_tree ./angularjs/
 #= require_tree ./underscore/
-#= require_tree .
+#= require routes
+#= require_tree ./ps_angular/

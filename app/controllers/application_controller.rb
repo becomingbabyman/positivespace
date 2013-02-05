@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
 	protect_from_forgery
 
+	before_filter :intercept_html_requests
+
 	# Default cancan redirect url
 	rescue_from CanCan::AccessDenied do |exception|
 		redirect_to root_url, :alert => "You do not have permission to view that page."
@@ -17,6 +19,12 @@ class ApplicationController < ActionController::Base
 
 
 private
+
+	def intercept_html_requests
+		if request.format == Mime::HTML and (params[:controller] =~ /devise\/sessions|rails_admin\/main/).nil?
+			render('pages/home', layout: 'angular') 
+		end
+	end
 
 	# AngularJS automatically sends CSRF token as a header called X-XSRF
 	# this makes sure rails gets it
