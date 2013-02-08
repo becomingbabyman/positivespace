@@ -1,6 +1,6 @@
 class UsersController < InheritedResources::Base
 	respond_to :json
-	actions :index
+	actions :index, :show
 
 	has_scope :email, :only => :index do |controller, scope, value|
 		scope.where("email = ?", value.downcase)
@@ -22,18 +22,14 @@ class UsersController < InheritedResources::Base
 		controller.session[:users_per] ? scope.per(controller.session[:users_per]) : scope.per(10)
 	end
 
-	before_filter :authenticate_user!, :only => [:current]
+	before_filter :authenticate_user!, only: [:show], :if => lambda { params[:id] == 'me' }
 
-	def current
-		@user = current_user 
+	def show
+		@user = (params[:id] == 'me' ? current_user : User.find(params[:id]))
+		show!
 	end
 
-	def random
-		@user = User.order("RANDOM()").first
-		redirect_to @user.profile
-	end
-
-	protected
+protected
 
 	def collection
 		@users ||= apply_scopes(end_of_association_chain)

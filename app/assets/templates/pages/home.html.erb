@@ -1,1 +1,16 @@
-<h1>home page stuff {{hello}}</h1>
+<div class="container">
+	<div class="row">
+		<div class="span12">
+			<h1>home page stuff {{hello}}</h1>
+			{{app.currentUser}}
+
+
+			</br>
+			<input type='text' ng-model='login' placeholder='username or email'>
+			<input type='password' ng-model='password' placeholder='password'>
+			<button class='btn' ng-click='app.login(login, password)'>login</button>
+			</br>
+			<button class='btn' ng-click='app.logout()'>logout</button>
+		</div>
+	</div>
+</div>

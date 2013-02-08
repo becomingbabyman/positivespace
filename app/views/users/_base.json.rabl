@@ -2,14 +2,10 @@ object @user
 
 attributes :id, :username
 
+if @user == current_user
+	attributes :email
+end
+
 node(:url) do |user|
-	"#{root_url}#{user.username}" rescue nil
-end
-
-node(:avatar) do |user|
-	user.profile.avatar.image.small rescue nil
-end
-
-node(:name) do |user|
-	user.profile.name rescue nil
+	"#{root_url}#{user.username}.json" rescue nil
 end

@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
 	protect_from_forgery
 
-	before_filter :intercept_html_requests
+	# before_filter :intercept_html_requests
 
 	# Default cancan redirect url
 	rescue_from CanCan::AccessDenied do |exception|
@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
 		@current_ability ||= Ability.new(current_user, params, positivespace_session_id, session)
 	end
 
-	def consignd_session_id
+	def positivespace_session_id
 		@positivespace_session_id ||= SecureRandom.random_number(2_147_483_646)
 	end
 
@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
 private
 
 	def intercept_html_requests
-		if request.format == Mime::HTML and (params[:controller] =~ /devise\/sessions|rails_admin\/main/).nil?
+		if request.format == Mime::HTML and (params[:controller] =~ /devise\/sessions|rails_admin\/main|users\/sessions|users\/registrations|users\/passwords/).nil?
 			render('pages/home', layout: 'angular') 
 		end
 	end
@@ -31,6 +31,6 @@ private
 	def verified_request?
 		!protect_against_forgery? || request.get? ||
 			form_authenticity_token == params[request_forgery_protection_token] ||
-			form_authenticity_token == request.headers['X-XSRF-Token']
+			form_authenticity_token == request.headers['X-XSRF-Token'].gsub!(/\A"|"\Z/, '')
 	end
 end

@@ -25,12 +25,12 @@ FriendlyId.defaults do |config|
 		connect
 		contact
 		create
+		current
 		data
 		delete
 		dev
 		direct_messages
 		downloads
-		edit
 		edit 
 		email
 		emptiness
@@ -58,6 +58,7 @@ FriendlyId.defaults do |config|
 		logs
 		map
 		maps
+		me
 		mine
 		nameless
 		negentropy

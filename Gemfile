@@ -31,6 +31,9 @@ gem 'rails_admin'
 # Slugging
 gem 'friendly_id', '~> 4.0.9'
 
+# Versioning
+gem 'paper_trail'
+
 # Clean RESTful Controllers 
 gem 'inherited_resources'
 # and Controller Scopes

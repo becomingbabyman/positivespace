@@ -1,6 +1,6 @@
 class Users::RegistrationsController < Devise::RegistrationsController
 	
-	respond_to :js, :html
+	respond_to :json, :js, :html
 	
 	# GET /resource/sign_up
 	# def new

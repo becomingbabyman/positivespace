@@ -5,18 +5,12 @@
 	%body{ "ng-controller" => "AppCtrl" }
 		
 		#wrapper
-			-#= render "chromeframe"
-			-#= render "header"
 			%header#header{"ng-class" => "app.templates.header.classes", "ng-include" => "app.templates.header.url"} tmp
 			#main{ :role => "main" }
-				-##flash
-				-#	= render "flashes"
 				#flash{"ng-include" => "app.templates.flash.url"} tmp
 				#yielded{"ng-view"=>true}
 					tmp
 
 			#layout_footer
 		%footer#footer{"ng-include" => "app.templates.footer.url"} tmp
-		-#= render "footer"
 		= render "javascripts"
-		-#= render "facebook"

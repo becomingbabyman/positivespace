@@ -12,5 +12,6 @@
 #
 #= require_tree ./angularjs/
 #= require_tree ./underscore/
+#= require services
 #= require routes
-#= require_tree ./ps_angular/
+#= require_tree ./controllers/
