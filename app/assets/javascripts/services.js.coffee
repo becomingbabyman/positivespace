@@ -29,7 +29,7 @@ psServices.factory 'User', ['$resource', ($resource) ->
 			params:
 				listCtrl: 'sign_out'
 
-		# TODO: this should also accept password
+		# TODO: this should alternatively accept a username and respond with the @domain.com of the the email address it sent the reset code to
 		# email: String
 		resetPassword:
 			method: 'POST'
