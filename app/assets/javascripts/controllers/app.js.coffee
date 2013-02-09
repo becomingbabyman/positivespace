@@ -10,7 +10,18 @@ ps.controller "AppCtrl", ["$scope", "$http", "User", ($scope, $http, User) ->
 			url: "/assets/app/footer.html"
 	$scope.app.currentUser = User.current()
 
+	$scope.app.register = (email, username, password, remember_me = 0) ->
+		# TODO: why doesn't this return email?
+		# TODO: handle errors
+		$scope.app.currentUser = User.register
+			user:
+				email: email
+				username: username
+				password: password
+				remember_me: remember_me
+
 	$scope.app.login = (login, password, remember_me = 0) ->
+		# TODO: handle errors
 		$scope.app.currentUser = User.login
 			user:
 				login: login
@@ -18,6 +29,5 @@ ps.controller "AppCtrl", ["$scope", "$http", "User", ($scope, $http, User) ->
 				remember_me: remember_me
 
 	$scope.app.logout = ->
-		User.logout()
-		$scope.app.currentUser = {}
+		$scope.app.currentUser = User.logout()
 ]

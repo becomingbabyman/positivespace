@@ -21,11 +21,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
 		# resource.invitation_id = session[:invitation_id]
 		# resource.invitation_code = session[:invitation_code]
 		
+		# TODO: get this to work with angular
 		# to track referral source
-		utmz = cookies["__utmz"]
-		data = GaCookieParser::GaCookieParser.new(:utmz => utmz)
-		resource.acq_source = data.utmz_hash[:utmcsr]
-		resource.acq_medium = data.utmz_hash[:utmcmd]
+		# utmz = cookies["__utmz"]
+		# data = GaCookieParser::GaCookieParser.new(:utmz => utmz)
+		# resource.acq_source = data.utmz_hash[:utmcsr]
+		# resource.acq_medium = data.utmz_hash[:utmcmd]
 
 		if resource.save
 			# session.delete(:invitation_id)

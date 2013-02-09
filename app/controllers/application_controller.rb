@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
 	protect_from_forgery
 
-	# before_filter :intercept_html_requests
+	before_filter :intercept_html_requests
 
 	# Default cancan redirect url
 	rescue_from CanCan::AccessDenied do |exception|
