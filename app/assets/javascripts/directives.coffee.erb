@@ -1,0 +1,63 @@
+psDirectives = angular.module 'psDirectives', []
+
+
+# type: String
+# label: String
+# model: String ng-model
+# options: TODO
+psDirectives.directive 'psFormInput', () ->
+	# TODO: get a placeholder plugin to patch old browsers and behave like https://github.com/wduffy/jLabel
+	# TODO: handle non text inputs gracefully
+
+	directiveDefinitionObject =
+		restrict: 'E'
+		scope: {}
+		# templateUrl: "<%= asset_path('directives/form_input.html') %>"
+		isolate: false
+		link: (scope, tElement, tAttrs) ->
+			window.c = scope
+
+			scope.hasLabel = tAttrs.label?
+			scope.hasHelpInline = tAttrs.helpInline?
+			scope.hasHelpBlock = tAttrs.helpBlock?
+			scope.hasError = true
+
+			# control-group
+			ctrlGrpClasses = []
+			if scope.hasError then ctrlGrpClasses.push 'error'
+			scope.ctrlGrpClasses = ctrlGrpClasses.join(' ')
+
+			scope.label or= tAttrs.label or= ''
+
+			scope.placeholder or= tAttrs.placeholder or= 'I NeeD A PlacHOLdEr'
+			scope.type or= tAttrs.type or= 'text'
+			scope.class or= tAttrs.class or= ''
+			scope.name or= tAttrs.name or= scope.placeholder
+			scope.title or= tAttrs.title or= scope.placeholder
+			scope.model or= tAttrs.model or= scope.name
+			scope.required = (if tAttrs.required == undefined then '' else 'required')
+			
+			scope.helpInline or= tAttrs.helpInline or= ''
+			scope.helpBlock or= tAttrs.helpBlock or= ''
+
+
+			labelText = "<label class='control-label' for='#{scope.name}'>#{scope.label}</label>"
+			inputText = "<input type='#{scope.type}' class='#{scope.class}' name='#{scope.name}' title='#{scope.title}' placeholder='#{scope.placeholder}' ng-model='#{scope.model}' #{scope.required}>"
+			helpInlineText = "<span class='help-inline'>#{scope.helpInline}</span>"
+			helpBlockText = "<p class='help-block'>#{scope.helpBlock}</p>"
+			errorText = "<div class='error-message'>" +
+							"<div class='inner'>this is the error of the thing with the erros and stuff so don't fuck it up doh</div>" +
+						"</div>"
+
+			htmlText =  "<div class='control-group #{ctrlGrpClasses}'>" +
+							(if scope.hasLabel then labelText else '') +
+							"<div class='controls'>" +
+								inputText +
+								(if scope.hasHelpInline then helpInlineText else '') +
+								(if scope.hasHelpBlock then helpBlockText else '') +
+								(if scope.hasError then errorText else '') +
+							"</div>" +
+						"</div>"
+
+			tElement.replaceWith(htmlText)
+	return directiveDefinitionObject

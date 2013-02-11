@@ -11,6 +11,13 @@ $color-darklight:           #5B7C8D
 $color-highlight:           #66B6AB
 $color-win:                 #A6F6AF
 
+$color-positive:            #74b92b
+$color-negative:            #b91e2a
+$color-neutral:             #d2d3d3
+$color-positive-dark:       darken($color-positive, 10%)
+$color-negative-dark:       darken($color-negative, 10%)
+$color-neutral-dark:        darken($color-neutral, 10%)
+
 
 // Reset --------------------------------------------------------------
 
@@ -38,18 +45,18 @@ $color-win:                 #A6F6AF
 // Mixins --------------------------------------------------------------
 
 @mixin sans
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
-	font-style: normal
-	font-weight: 300
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
+    font-style: normal
+    font-weight: 300
 
 @mixin serif
-	font-family: Georgia, Times, "Times New Roman", serif
-	font-style: normal
-	font-weight: 300
+    font-family: Georgia, Times, "Times New Roman", serif
+    font-style: normal
+    font-weight: 300
 
 @mixin inset-text
-	-webkit-text-stroke: 0
-	color: transparent
-	background-color: rgba(82,96,117,0.5)
-	@include background-clip(text)
-	text-shadow: rgba(255,255,255,0.5) 0 5px 6px
+    -webkit-text-stroke: 0
+    color: transparent
+    background-color: rgba(82,96,117,0.5)
+    @include background-clip(text)
+    text-shadow: rgba(255,255,255,0.5) 0 5px 6px

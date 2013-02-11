@@ -7,19 +7,28 @@
 
 			</br>
 			</br>
-			<form name='psRegister'>
-				<input type='email' name='email' ng-model='app.preLogin.email' placeholder='email' required>
-				<input type='text' name='username' ng-model='app.preLogin.username' placeholder='username' required>
-				<input type='password' name='password' ng-model='app.preLogin.password' placeholder='password' required>
-				<button class='btn' ng-click='app.register()'>register</button>
+
+			<form name='userRegister' class='form-inline' ng-submit='app.register()'>
+				<ps-form-input type='email' placeholder='email' model='app.preLogin.email' required></ps-form-input>
+				<ps-form-input type='text' placeholder='username' model='app.preLogin.username' required></ps-form-input>
+				<ps-form-input type='password' placeholder='password' model='app.preLogin.password' required></ps-form-input>
+				<button type='submit' class='btn'>register</button>
 			</form>
 			</br>
 			</br>
-			<form name='psLogin'>
-				<input type='text' name='login' ng-model='app.preLogin.login' placeholder='username or email' required>
-				<input type='password' name='password' ng-model='app.preLogin.password' placeholder='password' required>
-				<input type='checkbox' name='rememberMe' ng-model='app.preLogin.rememberMe' placeholder='remember me'>
-				<button class='btn' ng-click='app.login()'>login</button>
+
+			<form name='userLogin' class='form-inline' ng-submit='app.login()'>
+				<ps-form-input type='text' name='login' placeholder='username or email' model='app.preLogin.login' required></ps-form-input>
+				<ps-form-input type='password' placeholder='password' model='app.preLogin.password' required></ps-form-input>
+				<ps-form-input type='checkbox' placeholder='rememberMe' model='app.preLogin.rememberMe'></ps-form-input>
+				<button type='submit' class='btn'>login</button>
+			</form>
+			</br>
+			</br>
+
+			<form name='userResetPassword' class='form-inline' ng-submit='app.resetPassword()'>
+				<ps-form-input type='text' name='login' placeholder='username or email' model='app.preLogin.login' required></ps-form-input>
+				<button type='submit' class='btn'>send reset password email</button>
 			</form>
 			</br>
 			</br>

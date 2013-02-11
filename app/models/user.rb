@@ -14,8 +14,8 @@ class User < ActiveRecord::Base
 	# :confirmable
 	devise  :database_authenticatable, :registerable,
 			:recoverable, :rememberable, :trackable, :validatable,
-			:omniauthable, :lockable, :timeoutable, :token_authenticatable
-
+			:omniauthable, :lockable, :timeoutable, :token_authenticatable,
+			:authentication_keys => [:login]
 
 	attr_accessor :login
 	attr_accessible :username, :login, :email, :password, :password_confirmation, :remember_me
@@ -31,11 +31,14 @@ class User < ActiveRecord::Base
 
 
 	# Authenticate with email or username
-	def self.find_for_database_authentication(warden_conditions)
+	def self.find_first_by_auth_conditions(warden_conditions)
 		conditions = warden_conditions.dup
-		login = conditions.delete(:login)
-		where(conditions).where(["lower(username) = :value OR lower(email) = :value", { :value => login.strip.downcase }]).first
-	end
+		if login = conditions.delete(:login)
+			where(conditions).where(["lower(username) = :value OR lower(email) = :value", { :value => login.downcase }]).first
+		else
+			where(conditions).first
+		end
+    end
 
 	# Given facebook authentication data, find the user record
 	# TODO: UNHACK: This is a whackasshack method

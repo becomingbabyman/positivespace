@@ -1,7 +1,7 @@
 root = global ? window
 angular = root.angular
 
-ps = angular.module("ps", ['ngCookies', 'psServices'])
+ps = angular.module("ps", ['ui', 'ngCookies', 'psDirectives', 'psServices'])
 ps.config(['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvider, $locationProvider, $httpProvider) ->
 	# $httpProvider.defaults.headers.common['X-CSRF-Token'] = angular.element(document.getElementById("csrf")).attr("data-csrf")
 	#$locationProvider.hashPrefix('');

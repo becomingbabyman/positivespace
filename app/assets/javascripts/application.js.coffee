@@ -12,6 +12,7 @@
 #
 #= require_tree ./angularjs/
 #= require_tree ./underscore/
+#= require directives
 #= require services
 #= require routes
 #= require_tree ./controllers/

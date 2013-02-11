@@ -5,7 +5,7 @@
 		.row-fluid
 			.span8
 			= simple_form_for(resource, :as => resource_name, :url => unlock_path(resource_name), :html => { :method => :post, :class => "form-horizontal" }) do |f|
-				= f.input :email
+				= f.input :login, label: 'username or email'
 				.form-actions
 					= f.button :submit, :value => I18n.t('helpers.submit.user.unlock.create'), :class => 'btn'
 			.span4

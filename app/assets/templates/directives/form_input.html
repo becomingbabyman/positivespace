@@ -1,0 +1,26 @@
+<div class="control-group" ng-class='ctrlGrpClasses'>
+
+    <label ui-if='hasLabel' class="control-label" for="nameInput">
+        Label
+    </label>
+
+    <div class="controls">
+        <input type="{{input.type}}" class="{{class}}" name="{{input.name}}" title="{{input.title}}" ng-model="input.model" placeholder="{{input.placeholder}}" {{input.extraAttrs}}>
+
+        <span ui-if='hasHelpInline' class="help-inline">
+            Supporting inline help
+        </span>
+
+        <p ui-if='hasHelpBlock' class="help-block">
+            {{hasError}} Supporting help text
+        </p>
+
+        <div ui-if='hasError' class="error-message">
+            <div class="inner">
+                this is the error of the thing with the erros and stuff so don't fuck
+                it up doh
+            </div>
+        </div>
+
+    </div>
+</div>

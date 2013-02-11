@@ -11,10 +11,11 @@ ps.controller "AppCtrl", ["$scope", "$http", "User", ($scope, $http, User) ->
 		footer:
 			url: "/assets/app/footer.html"
 	$scope.app.currentUser = User.current()
-	
+
 
 	$scope.app.register = (email = $scope.app.preLogin.email, username = $scope.app.preLogin.username, password = $scope.app.preLogin.password, rememberMe = $scope.app.preLogin.rememberMe) ->
-		# TODO: handle errors
+		# TODO: display success notification
+		# TODO: display error notifications
 		User.register
 			user:
 				email: email
@@ -26,7 +27,8 @@ ps.controller "AppCtrl", ["$scope", "$http", "User", ($scope, $http, User) ->
 				$scope.app.preLogin = {}
 
 	$scope.app.login = (login = $scope.app.preLogin.login, password = $scope.app.preLogin.password, rememberMe = $scope.app.preLogin.rememberMe) ->
-		# TODO: handle errors
+		# TODO: display success notification
+		# TODO: display error notifications
 		User.login
 			user:
 				login: login
@@ -37,5 +39,17 @@ ps.controller "AppCtrl", ["$scope", "$http", "User", ($scope, $http, User) ->
 				$scope.app.preLogin = {}
 
 	$scope.app.logout = ->
+		# TODO: display success notification
+		# TODO: display error notifications
 		$scope.app.currentUser = User.logout()
+
+	$scope.app.resetPassword = (login = $scope.app.preLogin.login) ->
+		# TODO: display success notification
+		# TODO: display error notifications
+		# TODO: handle the reset password link page in angular
+		User.resetPassword
+			user:
+				login: login
+			(data) ->
+				$scope.app.preLogin = {}
 ]
