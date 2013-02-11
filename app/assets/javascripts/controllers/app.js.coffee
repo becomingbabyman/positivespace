@@ -1,4 +1,4 @@
-ps.controller "AppCtrl", ["$scope", "$http", "User", ($scope, $http, User) ->
+ps.controller "AppCtrl", ["$scope", "User", ($scope, User) ->
 	$scope.app = {}
 	$scope.app.currentUser = {}
 	$scope.app.preLogin = {rememberMe: true}

@@ -1,63 +1,99 @@
 psDirectives = angular.module 'psDirectives', []
 
-
-# type: String
-# label: String
-# model: String ng-model
-# options: TODO
-psDirectives.directive 'psFormInput', () ->
-	# TODO: get a placeholder plugin to patch old browsers and behave like https://github.com/wduffy/jLabel
+# placeholder:	String - REQUIRED
+# model:      	String - REQUIRED
+# type:       	String - default 'text'
+# class:      	String - default ''
+# name:       	String - default placeholder
+# title:      	String - default placeholder
+# required:   	tAttr  - default undefined
+# label:      	String - default null
+# helpInline: 	String - default null
+# helpBlock:  	String - default null
+psDirectives.directive 'psInput', () ->
+	# TODO: get a placeholder plugin to patch old browsers and behave like https://github.com/wduffy/jLabel -- probably just write a directive for the 'placeholder' attribute
 	# TODO: handle non text inputs gracefully
 
 	directiveDefinitionObject =
 		restrict: 'E'
-		scope: {}
-		# templateUrl: "<%= asset_path('directives/form_input.html') %>"
-		isolate: false
+		scope:
+			placeholder: '@'
+			model: '='
+		templateUrl: "<%= asset_path('directives/ps_input.html') %>"
+		# isolate: false
+		# transclude: true
+
+		# TODO: should this be a compile function http://stackoverflow.com/questions/10629238/angularjs-customizing-the-template-within-a-directive
+		# compile: (tElement, tAttrs) ->
+		#	# Configure the input variables
+		#	scope = {}
+		#	console.log 'wat'
+		#	# window.s = scope
+
+		#	scope.hasLabel = tAttrs.label?
+		#	scope.hasHelpInline = tAttrs.helpInline?
+		#	scope.hasHelpBlock = tAttrs.helpBlock?
+		#	# TODO: handle errors - get access to the correct parent scope - this may have to be done in the link function
+		#	scope.hasError = true
+
+		#	scope.placeholder or= tAttrs.placeholder or= 'I NeeD A PlacHOLdEr'
+		#	scope.type or= tAttrs.type or= 'text'
+		#	scope.class or= tAttrs.class or= ''
+		#	scope.name or= tAttrs.name or= scope.placeholder
+		#	scope.title or= tAttrs.title or= scope.placeholder
+		#	scope.model or= tAttrs.model or= scope.name
+		#	scope.required = (if tAttrs.required == undefined then '' else 'required')
+		#	scope.label or= tAttrs.label or= null
+		#	scope.helpInline or= tAttrs.helpInline or= null
+		#	scope.helpBlock or= tAttrs.helpBlock or= null
+		 	
+		#	ctrlGrpClasses = []
+		#	if scope.hasError then ctrlGrpClasses.push 'error'
+		#	# TODO: push the 'focused' class when the input gains focus and remove it when the input loses focus
+		#	scope.ctrlGrpClasses = ctrlGrpClasses.join(' ')
+
+		#	# Assemble the HTML
+		#	labelText = "<label class='control-label' for='#{scope.name}'>#{scope.label}</label>"
+		#	inputText = "<input type='#{scope.type}' class='#{scope.class}' name='#{scope.name}' title='#{scope.title}' placeholder='#{scope.placeholder}' ng-model='#{scope.model}' #{scope.required}>"
+		#	helpInlineText = "<span class='help-inline'>#{scope.helpInline}</span>"
+		#	helpBlockText = "<p class='help-block'>#{scope.helpBlock}</p>"
+		#	errorText = "<div class='error-message'>" +
+		#					"<div class='inner'>TODO: replace me with real errors</div>" +
+		#				"</div>"
+		#	htmlText =  "<div class='control-group #{ctrlGrpClasses}'>" +
+		#					(if scope.hasLabel then labelText else '') +
+		#					"<div class='controls'>" +
+		#						inputText +
+		#						(if scope.hasHelpInline then helpInlineText else '') +
+		#						(if scope.hasHelpBlock then helpBlockText else '') +
+		#						(if scope.hasError then errorText else '') +
+		#					"</div>" +
+		#				"</div>"
+
+		#	# Render the HTML
+		#	# TODO: should this be .html() or .replaceWith() ?
+		#	tElement.html(htmlText)
+
 		link: (scope, tElement, tAttrs) ->
-			window.c = scope
+			console.log 'wat'
+			window.s = scope
+			# TODO: link that shit - like the errors
 
 			scope.hasLabel = tAttrs.label?
 			scope.hasHelpInline = tAttrs.helpInline?
 			scope.hasHelpBlock = tAttrs.helpBlock?
+			# TODO: handle errors - get access to the correct parent scope - this may have to be done in the link function
 			scope.hasError = true
 
-			# control-group
-			ctrlGrpClasses = []
-			if scope.hasError then ctrlGrpClasses.push 'error'
-			scope.ctrlGrpClasses = ctrlGrpClasses.join(' ')
-
-			scope.label or= tAttrs.label or= ''
-
-			scope.placeholder or= tAttrs.placeholder or= 'I NeeD A PlacHOLdEr'
 			scope.type or= tAttrs.type or= 'text'
 			scope.class or= tAttrs.class or= ''
 			scope.name or= tAttrs.name or= scope.placeholder
 			scope.title or= tAttrs.title or= scope.placeholder
-			scope.model or= tAttrs.model or= scope.name
 			scope.required = (if tAttrs.required == undefined then '' else 'required')
-			
-			scope.helpInline or= tAttrs.helpInline or= ''
-			scope.helpBlock or= tAttrs.helpBlock or= ''
+			scope.label or= tAttrs.label or= null
+			scope.helpInline or= tAttrs.helpInline or= null
+			scope.helpBlock or= tAttrs.helpBlock or= null
 
-
-			labelText = "<label class='control-label' for='#{scope.name}'>#{scope.label}</label>"
-			inputText = "<input type='#{scope.type}' class='#{scope.class}' name='#{scope.name}' title='#{scope.title}' placeholder='#{scope.placeholder}' ng-model='#{scope.model}' #{scope.required}>"
-			helpInlineText = "<span class='help-inline'>#{scope.helpInline}</span>"
-			helpBlockText = "<p class='help-block'>#{scope.helpBlock}</p>"
-			errorText = "<div class='error-message'>" +
-							"<div class='inner'>this is the error of the thing with the erros and stuff so don't fuck it up doh</div>" +
-						"</div>"
-
-			htmlText =  "<div class='control-group #{ctrlGrpClasses}'>" +
-							(if scope.hasLabel then labelText else '') +
-							"<div class='controls'>" +
-								inputText +
-								(if scope.hasHelpInline then helpInlineText else '') +
-								(if scope.hasHelpBlock then helpBlockText else '') +
-								(if scope.hasError then errorText else '') +
-							"</div>" +
-						"</div>"
-
-			tElement.replaceWith(htmlText)
 	return directiveDefinitionObject
+
+
