@@ -12,7 +12,7 @@
 			<form name='userRegister' class='form-horizontal' ng-submit='app.register()' novalidate>
 				<input bs-input type='email' placeholder='email' label='email' model='app.preLogin.email' form='userRegister' required></input>
 				<input bs-input placeholder='username' label='username' model='app.preLogin.username' form='userRegister' required></input>
-				<input bs-input type='password' placeholder='password' label='password' help-inline='must be 8 - 100 characters long' model='app.preLogin.password' form='userRegister' required></input>
+				<input bs-input type='password' placeholder='password' label='password' help-inline='must be 8 - 100 characters long' help-block='longer is better' model='app.preLogin.password' form='userRegister' required></input>
 				<div class="control-group">
 					<div class="controls">
 						<button type='submit' class='btn btn-success'>register</button>

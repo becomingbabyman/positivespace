@@ -21,31 +21,25 @@ psDirectives.directive 'bsInput', () ->
 			placeholder: '@'
 			model: '='
 			form:  '='
+			label: '@'
+			helpInline: '@'
+			helpBlock: '@'
 		templateUrl: "<%= asset_path('directives/ps_input.html') %>"
-		replace: true
+		# replace: true
 
 		link: (scope, element, attrs) ->
 			window.s or= []
 			window.s.push scope
-
-			scope.hasLabel = attrs.label?
-			scope.hasHelpInline = attrs.helpInline?
-			scope.hasHelpBlock = attrs.helpBlock?
 
 			scope.type or= attrs.type or= 'text'
 			scope.name or= attrs.name or= scope.placeholder
 			scope.title or= attrs.title or= attrs.placeholder
 			scope.class or= attrs.class or= null
 			scope.formInput or= {$invalid: true, $error: 'TODO:'} # scope.form[scope.name]
-			# scope.required = (if attrs.required == undefined then '' else 'required')
-			scope.label or= attrs.label or= null
-			scope.helpInline or= attrs.helpInline or= null
-			scope.helpBlock or= attrs.helpBlock or= null
 
 			scope.focused = false
 			scope.focusin = ->
 				scope.focused = true
-
 			scope.focusout = ->
 				scope.focused = false
 

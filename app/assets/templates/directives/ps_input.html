@@ -1,17 +1,17 @@
-<div class="control-group {{type}}" ng-class='{error: formInput.$invalid, focused: focused}'>
+<div class="control-group" ng-class='{error: formInput.$invalid, focused: focused}[type]'>
 
-    <label ui-if='hasLabel' class="control-label" for="{{name}}">
+    <label ui-if='label' class="control-label" for="{{name}}">
         {{label}}
     </label>
 
     <div class="controls">
-        <input type="{{type}}" class="{{class}}" name="{{name}}" title="{{title}}" placeholder="{{placeholder}}" ng-model="model" required='none' ui-event="{focusin: 'focusin()', focusout: 'focusout()'}">
+        <input type="{{type}}" class="{{class}}" name="{{name}}" title="{{title}}" placeholder="{{placeholder}}" ng-model="model" ui-event="{focusin: 'focusin()', focusout: 'focusout()'}">
 
-        <span ui-if='hasHelpInline' class="help-inline">
+        <span ui-if='helpInline' class="help-inline">
             {{helpInline}}
         </span>
 
-        <p ui-if='hasHelpBlock' class="help-block">
+        <p ui-if='helpBlock' class="help-block">
             {{helpBlock}}
         </p>
 
