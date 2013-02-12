@@ -6,7 +6,7 @@ psDirectives = angular.module 'psDirectives', []
 # type:       	String - default 'text'
 # name:       	String - default placeholder
 # title:      	String - default placeholder
-# class:      	String - default null
+# class:      	String - default ''
 # label:      	String - default null
 # helpInline: 	String - default null
 # helpBlock:  	String - default null
@@ -16,7 +16,7 @@ psDirectives.directive 'bsInput', () ->
 	# TODO: handle non text inputs gracefully
 
 	directiveDefinitionObject =
-		restrict: 'A'
+		restrict: 'E'
 		scope:
 			placeholder: '@'
 			model: '='
@@ -25,24 +25,35 @@ psDirectives.directive 'bsInput', () ->
 			helpInline: '@'
 			helpBlock: '@'
 		templateUrl: "<%= asset_path('directives/ps_input.html') %>"
+		# NOTE: 'replace' puts all the attrs of the orig element on the root of the template. Including classes. Think before using this.
 		# replace: true
+		# NOTE: 'transclude' is worth a second look. If 'restrict' is set to 'A' and this directive is used on input elements. The primary benefit is not having to rebuild the input object. The problem is binding to the input and adding attrs like 'name' after the input has already been linked.
+		# transclude: true
 
-		link: (scope, element, attrs) ->
-			window.s or= []
-			window.s.push scope
+		compile: (element, attrs, transclude) ->
+			type = attrs.type or= 'text'
+			placeholder = attrs.placeholder or= 'I NeeD A plAceHoldEr'
+			title = attrs.title or= placeholder
+			name = attrs.name or= placeholder.replace(///^\s+|\s+$///g, '').split(' ').join('-')
+			classes = attrs.class or= ''
 
-			scope.type or= attrs.type or= 'text'
-			scope.name or= attrs.name or= scope.placeholder
-			scope.title or= attrs.title or= attrs.placeholder
-			scope.class or= attrs.class or= null
-			scope.formInput or= {$invalid: true, $error: 'TODO:'} # scope.form[scope.name]
+			element.find('input').attr('type', type)
+			element.find('.control-group').addClass(type)
+			element.find('input').attr('placeholder', placeholder)
+			element.find('input').attr('name', name)
+			element.find('input').attr('title', title)
+			element.find('input').addClass(classes)
+			unless attrs.required == undefined then element.find('input').attr('required', '')
 
-			scope.focused = false
-			scope.focusin = ->
-				scope.focused = true
-			scope.focusout = ->
-				scope.focused = false
-
+			return {
+				pre: (scope, element, attrs, controller) ->
+					# Don't need this yet
+				post: (scope, element, attrs, controller) ->
+					scope.type or= attrs.type or= 'text'
+					scope.name or= attrs.name or= scope.placeholder
+					scope.formInput = scope.form[scope.name]
+					scope.focused = false
+			}
 
 	return directiveDefinitionObject
 

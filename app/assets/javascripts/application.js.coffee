@@ -10,6 +10,8 @@
 # WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 # GO AFTER THE REQUIRES BELOW.
 #
+# TODO: deprecate jquery - for now Angular UI depends on it
+#= require jquery
 #= require_tree ./angularjs/
 #= require_tree ./underscore/
 #= require directives

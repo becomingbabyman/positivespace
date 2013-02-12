@@ -10,9 +10,9 @@
 			</br>
 
 			<form name='userRegister' class='form-horizontal' ng-submit='app.register()' novalidate>
-				<input bs-input type='email' placeholder='email' label='email' model='app.preLogin.email' form='userRegister' required></input>
-				<input bs-input placeholder='username' label='username' model='app.preLogin.username' form='userRegister' required></input>
-				<input bs-input type='password' placeholder='password' label='password' help-inline='must be 8 - 100 characters long' help-block='longer is better' model='app.preLogin.password' form='userRegister' required></input>
+				<bs-input type='email' class='input-xxlarge' placeholder='email is the shit' label='email' model='app.preLogin.email' form='userRegister' required></bs-input>
+				<bs-input placeholder='username' label='username' model='app.preLogin.username' form='userRegister' required></bs-input>
+				<bs-input type='password' placeholder='password' label='password' help-inline='must be 8 - 100 characters long' help-block='longer is better' model='app.preLogin.password' form='userRegister' required></bs-input>
 				<div class="control-group">
 					<div class="controls">
 						<button type='submit' class='btn btn-success'>register</button>
@@ -22,9 +22,9 @@
 			</br>
 
 			<form name='userLogin' class='form-inline' ng-submit='app.login()'>
-				<input bs-input name='login' placeholder='username or email' model='app.preLogin.login' form='userLogin' required></input>
-				<input bs-input type='password' placeholder='password' model='app.preLogin.password' form='userLogin' required></input>
-				<input bs-input type='checkbox' placeholder='rememberMe' model='app.preLogin.rememberMe' form='userLogin'></input>
+				<bs-input name='login' placeholder='username or email' model='app.preLogin.login' form='userLogin' required></bs-input>
+				<bs-input type='password' placeholder='password' model='app.preLogin.password' form='userLogin' required></bs-input>
+				<bs-input type='checkbox' placeholder='rememberMe' model='app.preLogin.rememberMe' form='userLogin'></bs-input>
 				<div class="control-group">
 					<div class="controls">
 						<button type='submit' class='btn btn-primary'>login</button>
@@ -34,7 +34,7 @@
 			</br>
 
 			<form name='userResetPassword' class='form-vertical' ng-submit='app.resetPassword()' novalidate>
-				<input bs-input type='text' name='login' placeholder='username or email' model='app.preLogin.login' form='userResetPassword' required></input>
+				<bs-input type='text' name='login' placeholder='username or email' model='app.preLogin.login' form='userResetPassword' required></bs-input>
 				<button type='submit' class='btn btn-inverse'>reset password</button>
 			</form>
 			</br>
