@@ -85,24 +85,30 @@ input
     // border-bottom: 1px solid darken($color-background, 10%)
     // @include box-shadow(rgba(0, 0, 0, 0.075) 0 2px 0)
 
-ps-form-input
-    margin: 0
-    padding: 0
-    display: inline-block
-    position: relative
+// ps-form-input
+//     margin: 0
+//     padding: 0
+//     display: inline-block
+//     position: relative
+
+.form-inline
+    .control-group
+        display: inline-block
 
 .control-group
+    // margin: 0
+    // padding: 0
+    // display: inline-block
+    // position: relative
     &.error
-        margin: 0
-        padding: 0
-        display: inline-block
-        position: relative
         // input
         //     border-color: #e9322d
         //     @include box-shadow(0 0 6px #f8b9b7)
         //     color: #b94a48
     .controls
         position: relative
+        input
+            margin: 0
         .error-message
             pointer-events: none
             position: absolute
@@ -141,14 +147,17 @@ ps-form-input
                     border-color: rgba(240, 78, 60, 0)
                     border-top-color: $color-negative
                     border-width: 7px
-                    left: 6%
+                    left: 13px
                     margin-left: -7px       
                 &:before 
                     border-color: rgba(237, 46, 56, 0)
                     border-top-color: darken($color-negative, 3%)
                     border-width: 8px
-                    left: 6%
+                    left: 13px
                     margin-left: -8px
+    &.checkbox, &.radio
+        .error-message
+            left: -8px
     &:hover, &.focused
         @include transition-delay(0.4s)
         .controls

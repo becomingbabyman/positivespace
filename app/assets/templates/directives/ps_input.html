@@ -1,24 +1,23 @@
-<div class="control-group" ng-class='ctrlGrpClasses'>
+<div class="control-group {{type}}" ng-class='{error: formInput.$invalid, focused: focused}'>
 
-    <label ui-if='hasLabel' class="control-label" for="nameInput">
-        Label
+    <label ui-if='hasLabel' class="control-label" for="{{name}}">
+        {{label}}
     </label>
 
     <div class="controls">
-        <input type="{{type}}" class="{{class}}" name="{{name}}" title="{{title}}" ng-model="model" placeholder="{{placeholder}}">
+        <input type="{{type}}" class="{{class}}" name="{{name}}" title="{{title}}" placeholder="{{placeholder}}" ng-model="model" required='none' ui-event="{focusin: 'focusin()', focusout: 'focusout()'}">
 
         <span ui-if='hasHelpInline' class="help-inline">
-            Supporting inline help
+            {{helpInline}}
         </span>
 
         <p ui-if='hasHelpBlock' class="help-block">
-            {{hasError}} Supporting help text
+            {{helpBlock}}
         </p>
 
-        <div ui-if='hasError' class="error-message">
+        <div ui-if='formInput.$invalid' class="error-message">
             <div class="inner">
-                this is the error of the thing with the erros and stuff so don't fuck
-                it up doh
+                {{formInput.$error}}
             </div>
         </div>
 
