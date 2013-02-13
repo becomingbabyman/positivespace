@@ -10,7 +10,11 @@
 			</br>
 
 			<form name='userRegister' class='form-horizontal' ng-submit='app.register()' novalidate>
-				<bs-input type='email' class='input-xxlarge' placeholder='email is the shit' label='email' model='app.preLogin.email' form='userRegister' required></bs-input>
+
+				<input-wrap label='email' form='userRegister'>
+					<input input type='email' class='input-xxlarge' placeholder='email is the shit' model='app.preLogin.email' required></input>
+				</input-wrap>
+
 				<bs-input placeholder='username' label='username' model='app.preLogin.username' form='userRegister' required></bs-input>
 				<bs-input type='password' placeholder='password' label='password' help-inline='must be 8 - 100 characters long' help-block='longer is better' model='app.preLogin.password' form='userRegister' required></bs-input>
 				<div class="control-group">
@@ -21,7 +25,7 @@
 			</form>
 			</br>
 
-			<form name='userLogin' class='form-inline' ng-submit='app.login()'>
+			<form name='userLogin' class='form-inline' ng-submit='app.login()' novalidate>
 				<bs-input name='login' placeholder='username or email' model='app.preLogin.login' form='userLogin' required></bs-input>
 				<bs-input type='password' placeholder='password' model='app.preLogin.password' form='userLogin' required></bs-input>
 				<bs-input type='checkbox' placeholder='rememberMe' model='app.preLogin.rememberMe' form='userLogin'></bs-input>

@@ -1,60 +1,59 @@
 psDirectives = angular.module 'psDirectives', []
 
-# placeholder:	String - REQUIRED
-# model:      	String - REQUIRED
-# form:       	String - REQUIRED
-# type:       	String - default 'text'
-# name:       	String - default placeholder
-# title:      	String - default placeholder
-# class:      	String - default ''
-# label:      	String - default null
-# helpInline: 	String - default null
-# helpBlock:  	String - default null
-# TODO: should required be an attribute?
-psDirectives.directive 'bsInput', () ->
-	# TODO: get a placeholder plugin to patch old browsers and behave like https://github.com/wduffy/jLabel -- probably just write a directive for the 'placeholder' attribute
+# form:      	String - REQUIRED
+# label:     	String - default null
+# helpInline:	String - default null
+# helpBlock: 	String - default null
+psDirectives.directive 'inputWrap', () ->
 	# TODO: handle non text inputs gracefully
 
 	directiveDefinitionObject =
 		restrict: 'E'
 		scope:
-			placeholder: '@'
-			model: '='
 			form:  '='
 			label: '@'
 			helpInline: '@'
 			helpBlock: '@'
 		templateUrl: "<%= asset_path('directives/ps_input.html') %>"
-		# NOTE: 'replace' puts all the attrs of the orig element on the root of the template. Including classes. Think before using this.
-		# replace: true
-		# NOTE: 'transclude' is worth a second look. If 'restrict' is set to 'A' and this directive is used on input elements. The primary benefit is not having to rebuild the input object. The problem is binding to the input and adding attrs like 'name' after the input has already been linked.
-		# transclude: true
+		transclude: true
 
-		compile: (element, attrs, transclude) ->
-			type = attrs.type or= 'text'
-			placeholder = attrs.placeholder or= 'I NeeD A plAceHoldEr'
-			title = attrs.title or= placeholder
-			name = attrs.name or= placeholder.replace(///^\s+|\s+$///g, '').split(' ').join('-')
-			classes = attrs.class or= ''
-
-			element.find('input').attr('type', type)
+		compile: (element, attrs) ->
+			type = element.find('input').attr('type')
 			element.find('.control-group').addClass(type)
-			element.find('input').attr('placeholder', placeholder)
-			element.find('input').attr('name', name)
-			element.find('input').attr('title', title)
-			element.find('input').addClass(classes)
-			unless attrs.required == undefined then element.find('input').attr('required', '')
 
 			return {
 				pre: (scope, element, attrs, controller) ->
 					# Don't need this yet
 				post: (scope, element, attrs, controller) ->
-					scope.type or= attrs.type or= 'text'
-					scope.name or= attrs.name or= scope.placeholder
+					scope.name or= element.find('input').attr('name')
 					scope.formInput = scope.form[scope.name]
 					scope.focused = false
+					element.find('input').bind 'focusin', ->
+						scope.focused = true
+						scope.$apply()
+					element.find('input').bind 'focusout', ->
+						scope.focused = false
+						scope.$apply()
 			}
 
 	return directiveDefinitionObject
 
 
+# Pure HTML manipulation directive to autofill input attributes with logical defaults
+psDirectives.directive 'input', () ->
+	# TODO: get a placeholder plugin to patch old browsers and behave like https://github.com/wduffy/jLabel -- probably just write a directive for the 'placeholder' attribute
+	# TODO: handle non text inputs gracefully
+
+	directiveDefinitionObject =
+		restrict: 'A'
+		priority: 999999999
+
+		compile: (element, attrs) ->
+			attrs.$set 'type', (attrs.type or 'text')
+			attrs.$set 'placeholder', (attrs.placeholder or 'I NeeD A plAceHoldEr')
+			attrs.$set 'title', (attrs.title or attrs.placeholder)
+			attrs.$set 'name', (attrs.name or attrs.placeholder.replace(///^\s+|\s+$///g, '').split(' ').join('-'))
+			# attrs.classes or= attrs.class or= ''
+
+
+	return directiveDefinitionObject
