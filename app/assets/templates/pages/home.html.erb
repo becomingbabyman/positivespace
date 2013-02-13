@@ -11,12 +11,19 @@
 
 			<form name='userRegister' class='form-horizontal' ng-submit='app.register()' novalidate>
 
+				
 				<input-wrap label='email' form='userRegister'>
-					<input input type='email' class='input-xxlarge' placeholder='email is the shit' model='app.preLogin.email' required></input>
+					<input type='email' class='input-xxlarge' placeholder='email is the shit' ng-model='app.preLogin.email' required></input>
 				</input-wrap>
 
-				<bs-input placeholder='username' label='username' model='app.preLogin.username' form='userRegister' required></bs-input>
-				<bs-input type='password' placeholder='password' label='password' help-inline='must be 8 - 100 characters long' help-block='longer is better' model='app.preLogin.password' form='userRegister' required></bs-input>
+				<input-wrap label='username' form='userRegister'>
+					<input placeholder='username' ng-model='app.preLogin.username' required></input>
+				</input-wrap>
+
+				<input-wrap label='password' form='userRegister' help-inline='must be 8 - 100 characters long' help-block='longer is better'>
+					<input type='password' placeholder='password' ng-model='app.preLogin.password' required></input>
+				</input-wrap>
+
 				<div class="control-group">
 					<div class="controls">
 						<button type='submit' class='btn btn-success'>register</button>
@@ -26,9 +33,18 @@
 			</br>
 
 			<form name='userLogin' class='form-inline' ng-submit='app.login()' novalidate>
-				<bs-input name='login' placeholder='username or email' model='app.preLogin.login' form='userLogin' required></bs-input>
-				<bs-input type='password' placeholder='password' model='app.preLogin.password' form='userLogin' required></bs-input>
-				<bs-input type='checkbox' placeholder='rememberMe' model='app.preLogin.rememberMe' form='userLogin'></bs-input>
+				<input-wrap form='userLogin'>
+					<input name='login' placeholder='username or email' ng-model='app.preLogin.login' required></input>
+				</input-wrap>
+
+				<input-wrap form='userLogin'>
+					<input type='password' placeholder='password' ng-model='app.preLogin.password' required></input>
+				</input-wrap>
+
+				<input-wrap form='userLogin'>
+					<input type='checkbox' placeholder='rememberMe' ng-model='app.preLogin.rememberMe'></input>
+				</input-wrap>
+
 				<div class="control-group">
 					<div class="controls">
 						<button type='submit' class='btn btn-primary'>login</button>
@@ -38,7 +54,10 @@
 			</br>
 
 			<form name='userResetPassword' class='form-vertical' ng-submit='app.resetPassword()' novalidate>
-				<bs-input type='text' name='login' placeholder='username or email' model='app.preLogin.login' form='userResetPassword' required></bs-input>
+				<input-wrap form='userResetPassword'>
+					<input type='text' name='login' placeholder='username or email' ng-model='app.preLogin.login' required></input>
+				</input-wrap>
+
 				<button type='submit' class='btn btn-inverse'>reset password</button>
 			</form>
 			</br>

@@ -45,8 +45,9 @@ psDirectives.directive 'input', () ->
 	# TODO: handle non text inputs gracefully
 
 	directiveDefinitionObject =
-		restrict: 'A'
+		restrict: 'E'
 		priority: 999999999
+		scope: {}
 
 		compile: (element, attrs) ->
 			attrs.$set 'type', (attrs.type or 'text')
@@ -54,6 +55,7 @@ psDirectives.directive 'input', () ->
 			attrs.$set 'title', (attrs.title or attrs.placeholder)
 			attrs.$set 'name', (attrs.name or attrs.placeholder.replace(///^\s+|\s+$///g, '').split(' ').join('-'))
 			# attrs.classes or= attrs.class or= ''
+			console.log element
 
 
 	return directiveDefinitionObject
