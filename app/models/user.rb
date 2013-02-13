@@ -109,8 +109,8 @@ private
 	end
 
 	def validate_username_format
-		unless username =~ /^[a-zA-Z][a-zA-Z0-9_]*$/ or username == id.to_s
-			errors.add(:username, "may only contain letters, numbers and underscores")
+		unless username =~ /^[a-zA-Z][a-zA-Z0-9_-]*$/ or username == id.to_s
+			errors.add(:username, "may only contain letters, numbers, underscores, and dashes")
 		end
 	end
 

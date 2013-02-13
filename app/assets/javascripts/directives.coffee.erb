@@ -1,11 +1,42 @@
 psDirectives = angular.module 'psDirectives', []
 
-# form:      	String - REQUIRED
+################################################################
+# Form Directives
+# Notes:
+# - All inputs should be within a form element
+# - Form elements should have a unique name attribute
+
+#########
+# <input>
+# Pure HTML manipulation directive to autofill input attributes with logical defaults
+# name:       	String - REQUIRED      #TODO: see if you can programatically find it by searching up the dom tree for the 'form' elm
+# type:       	String - default 'text'
+# placeholder:	String - default name
+# title:      	String - default name
+psDirectives.directive 'input', () ->
+	# TODO: get a placeholder plugin to patch old browsers and behave like https://github.com/wduffy/jLabel -- probably just write a directive for the 'placeholder' attribute
+	# TODO: handle non text inputs gracefully
+
+	directiveDefinitionObject =
+		restrict: 'E'
+
+		link: (scope, element, attrs) ->
+			attrs.$set 'type', (attrs.type or 'text')
+			attrs.$set 'placeholder', (attrs.placeholder or attrs.name)
+			attrs.$set 'title', (attrs.title or attrs.placeholder)
+			# attrs.$set 'name', (attrs.name or attrs.placeholder.replace(///^\s+|\s+$///g, '').split(' ').join('-'))
+			# attrs.classes or= attrs.class or= ''
+
+	return directiveDefinitionObject
+
+#########
+# <input-wrap>
+# form:      	String - REQUIRED      #TODO: see if you can programatically find it by searching up the dom tree for the 'form' elm
 # label:     	String - default null
 # helpInline:	String - default null
 # helpBlock: 	String - default null
-psDirectives.directive 'inputWrap', () ->
-	# TODO: handle non text inputs gracefully
+psDirectives.directive 'controlGroup', () ->
+	# TODO: wrap non text inputs gracefully
 
 	directiveDefinitionObject =
 		restrict: 'E'
@@ -25,6 +56,8 @@ psDirectives.directive 'inputWrap', () ->
 				pre: (scope, element, attrs, controller) ->
 					# Don't need this yet
 				post: (scope, element, attrs, controller) ->
+					window.s or= []
+					window.s.push scope
 					scope.name or= element.find('input').attr('name')
 					scope.formInput = scope.form[scope.name]
 					scope.focused = false
@@ -38,24 +71,3 @@ psDirectives.directive 'inputWrap', () ->
 
 	return directiveDefinitionObject
 
-
-# Pure HTML manipulation directive to autofill input attributes with logical defaults
-psDirectives.directive 'input', () ->
-	# TODO: get a placeholder plugin to patch old browsers and behave like https://github.com/wduffy/jLabel -- probably just write a directive for the 'placeholder' attribute
-	# TODO: handle non text inputs gracefully
-
-	directiveDefinitionObject =
-		restrict: 'E'
-		priority: 999999999
-		scope: {}
-
-		compile: (element, attrs) ->
-			attrs.$set 'type', (attrs.type or 'text')
-			attrs.$set 'placeholder', (attrs.placeholder or 'I NeeD A plAceHoldEr')
-			attrs.$set 'title', (attrs.title or attrs.placeholder)
-			attrs.$set 'name', (attrs.name or attrs.placeholder.replace(///^\s+|\s+$///g, '').split(' ').join('-'))
-			# attrs.classes or= attrs.class or= ''
-			console.log element
-
-
-	return directiveDefinitionObject

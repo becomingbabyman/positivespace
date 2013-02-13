@@ -12,11 +12,12 @@ ps.controller "AppCtrl", ["$scope", "User", ($scope, User) ->
 			url: "/assets/app/footer.html"
 	$scope.app.currentUser = User.current()
 
+	window.ss = $scope
 
-	$scope.app.register = (form = null, email = $scope.app.preLogin.email, username = $scope.app.preLogin.username, password = $scope.app.preLogin.password, rememberMe = $scope.app.preLogin.rememberMe) ->
+
+	$scope.app.register = (email = $scope.app.preLogin.email, username = $scope.app.preLogin.username, password = $scope.app.preLogin.password, rememberMe = $scope.app.preLogin.rememberMe) ->
 		# TODO: display success notification
 		# TODO: display error notifications
-		console.log form
 		User.register
 			user:
 				email: email
