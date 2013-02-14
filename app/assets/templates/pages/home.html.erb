@@ -9,39 +9,51 @@
 			</br>
 			</br>
 
-			<form name='userRegister' class='form-horizontal' ng-submit='app.register()' novalidate>
+			<form name='testNonInput' class='form-horizontal' ng-submit=''>
+				<control-group label='test textarea'>
+					<textarea name='testtextarea' ng-model="textTest" required></textarea>
+				</control-group>
 
+				<control-group label='test select'>
+					<select name='testselect' ng-model="selectTest" ng-options="c for c in [1, 2, 3, 4]" required></select>
+				</control-group>
+			</form>
+
+			</br>
+			</br>
+
+			<form name='userRegister' class='form-horizontal' ng-submit='app.register()'>
 				
-				<control-group label='email' form='userRegister'>
+				<control-group label='email'>
 					<input type='email' name='email' class='input-xlarge' ng-model='app.preLogin.email' required></input>
 				</control-group>
 
-				<control-group label='username' form='userRegister'>
+				<control-group label='username'>
 					<input type='text' name='username' ng-model='app.preLogin.username' ng-minlength='3' ng-maxlength='30' ng-pattern='/^[a-zA-Z][a-zA-Z0-9_-]*$/' required></input>
 				</control-group>
 
-				<control-group label='password' form='userRegister' help-inline='must be 8 - 100 characters long' help-block='longer is better'>
+				<control-group label='password' help-inline='must be 8 - 100 characters long' help-block='longer is better'>
 					<input type='password' name='password' ng-model='app.preLogin.password' ng-minlength='8' ng-maxlength='100' required></input>
 				</control-group>
 
 				<div class="control-group">
 					<div class="controls">
-						<button type='submit' class='btn btn-primary'>register</button>
+						<button type='submit' class='btn btn-success'>register</button>
 					</div>
 				</div>
 			</form>
 			</br>
 
 			<form name='userLogin' class='form-inline' ng-submit='app.login()' novalidate>
-				<control-group form='userLogin'>
+				<control-group>
 					<input type='text' name='login' placeholder='username or email' ng-model='app.preLogin.login' required></input>
 				</control-group>
 
-				<control-group form='userLogin'>
+				<control-group>
 					<input type='password' name='password' ng-model='app.preLogin.password' ng-minlength='8' ng-maxlength='100' required></input>
 				</control-group>
 
-				<control-group form='userLogin'>
+				<control-group>
 					<input type='checkbox' name='rememberMe' ng-model='app.preLogin.rememberMe'></input>
 				</control-group>
 
@@ -54,7 +66,7 @@
 			</br>
 
 			<form name='userResetPassword' class='form-vertical' ng-submit='app.resetPassword()' novalidate>
-				<control-group form='userResetPassword'>
+				<control-group>
 					<input type='text' name='login' placeholder='username or email' ng-model='app.preLogin.login' required></input>
 				</control-group>
 

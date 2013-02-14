@@ -10,9 +10,9 @@ ps.controller "AppCtrl", ["$scope", "User", ($scope, User) ->
 			url: "/assets/app/flash.html"
 		footer:
 			url: "/assets/app/footer.html"
-	$scope.app.currentUser = User.current()
 
-	window.ss = $scope
+	# TODO: bootstrap this data on the angular.html.haml template and only request it if no bootstrap is found
+	$scope.app.currentUser = User.current()
 
 
 	$scope.app.register = (email = $scope.app.preLogin.email, username = $scope.app.preLogin.username, password = $scope.app.preLogin.password, rememberMe = $scope.app.preLogin.rememberMe) ->
@@ -54,4 +54,7 @@ ps.controller "AppCtrl", ["$scope", "User", ($scope, User) ->
 				login: login
 			(data) ->
 				$scope.app.preLogin = {}
+
+
 ]
+

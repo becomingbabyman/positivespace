@@ -1,6 +1,6 @@
-<div class="control-group" ng-class="{error: formInput.$invalid, focused: focused}">
+<div class="control-group" ng-class="{error: field.$invalid && field.$dirty, 'success' : field.$valid && field.$dirty, focused: hasFocus}">
 
-    <label ui-if='label' class="control-label" for="{{name}}">
+    <label ui-if='label' class="control-label" for="{{input.id}}">
         {{label}}
     </label>
 
@@ -15,9 +15,9 @@
             {{helpBlock}}
         </p>
 
-        <div ui-if='formInput.$invalid' class="error-message">
+        <div ui-if='field.$invalid' class="error-message">
             <div class="inner">
-                {{formInput.$error}}
+                {{field.errorMessage}}
             </div>
         </div>
 
