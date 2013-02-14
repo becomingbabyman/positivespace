@@ -1,7 +1,7 @@
-<div class="container">
+<div ui-if='app.alerts.length > 0' class="container">
 	<div class="row">
 		<div class="span12">
-			<h1>flash</h1>
+			<alert ng-repeat="alert in app.alerts" type="alert.type" close="app.closeAlert($index)">{{alert.msg}}</alert>
 		</div>
 	</div>
 </div>

@@ -3,7 +3,8 @@
 		<div class="span12">
 			<h1>home page stuff</h1>
 			</br>
-
+			
+			<button class='btn btn-danger' name='psLogout' ng-click='app.logout()'>logout</button>
 			Current User -- {{app.currentUser}}
 
 			</br>
@@ -11,15 +12,16 @@
 
 			<form name='testNonInput' class='form-horizontal' ng-submit=''>
 				<control-group label='test textarea'>
-					<textarea name='testtextarea' ng-model="textTest" required></textarea>
+					<textarea name='testtextarea' placeholder='username, but not really' ng-model="textTest" ng-minlength='3' ng-maxlength='30' ng-pattern='/^[a-zA-Z][a-zA-Z0-9_-]*$/'required></textarea>
 				</control-group>
 
 				<control-group label='test select'>
-					<select name='testselect' ng-model="selectTest" ng-options="c for c in [1, 2, 3, 4]" required></select>
+					<select name='testselect' placeholder='whatever' ng-model="selectTest" ng-options="c for c in [1, 2, 3, 4]" required></select>
 				</control-group>
 			</form>
 
 			</br>
+			<hr/>
 			</br>
 
 			<form name='userRegister' class='form-horizontal' ng-submit='app.register()'>
@@ -42,6 +44,9 @@
 					</div>
 				</div>
 			</form>
+			
+			</br>
+			<hr/>
 			</br>
 
 			<form name='userLogin' class='form-inline' ng-submit='app.login()' novalidate>
@@ -63,6 +68,9 @@
 					</div>
 				</div>
 			</form>
+			
+			</br>
+			<hr/>
 			</br>
 
 			<form name='userResetPassword' class='form-vertical' ng-submit='app.resetPassword()' novalidate>
@@ -72,9 +80,15 @@
 
 				<button type='submit' class='btn btn-inverse'>reset password</button>
 			</form>
+			
+			</br>
 			</br>
 			
-			<button class='btn btn-danger' name='psLogout' ng-click='app.logout()'>logout</button>
+
+			</br>
+			</br>
+			</br>
+
 		</div>
 	</div>
 </div>
