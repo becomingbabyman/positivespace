@@ -1,4 +1,8 @@
 ps.controller "AppCtrl", ["$scope", "User", ($scope, User) ->
+    
+    ######################
+    # App Initialization #
+    ######################
     $scope.app = {}
     $scope.app.currentUser = {}
     $scope.app.preLogin = {rememberMe: true}
@@ -16,6 +20,9 @@ ps.controller "AppCtrl", ["$scope", "User", ($scope, User) ->
     $scope.app.currentUser = User.current()
 
 
+    #########
+    # Flash #
+    #########
     $scope.app.flash = (type, msg, key=null) ->
         if _.isString(msg)
             message = [key, msg].join(" ")
@@ -26,9 +33,15 @@ ps.controller "AppCtrl", ["$scope", "User", ($scope, User) ->
         else if _.isObject(msg)
             _.each msg, (v, k) ->
                 $scope.app.flash(type, v, k)
+    $scope.app.clearFlash = ->
+        $scope.app.alerts = []
     $scope.app.closeAlert = (index) ->
         $scope.app.alerts.splice(index, 1)
 
+
+    #############
+    # User Auth #
+    #############
     $scope.app.register = (email = $scope.app.preLogin.email, username = $scope.app.preLogin.username, password = $scope.app.preLogin.password, rememberMe = $scope.app.preLogin.rememberMe) ->
         # TODO: display success notification
         # TODO: display error notifications

@@ -1,7 +1,8 @@
 psDirectives = angular.module 'psDirectives', []
 
 
-##########################
+####################################################
+####################################################
 # Form Directives
 # Notes:
 # - All inputs should be within a form element
@@ -9,7 +10,7 @@ psDirectives = angular.module 'psDirectives', []
 # - This may become an alternative - https://github.com/angular-ui/angular-ui/pull/191
 
 
-####
+##########################
 # <input> or <select> or <textarea>
 # Pure HTML manipulation directive to autofill input attributes with logical defaults
 # name:         String - REQUIRED      #TODO: see if you can programatically find it by searching up the dom tree for the 'form' elm
@@ -38,7 +39,7 @@ psDirectives.directive 'textarea', () ->
     return fieldDirectiveDefinitionObject  
 
 
-####
+##########################
 # <control-group>
 # label:        String - default null
 # helpInline:   String - default null
