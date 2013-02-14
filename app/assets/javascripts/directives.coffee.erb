@@ -10,29 +10,32 @@ psDirectives = angular.module 'psDirectives', []
 
 
 ####
-# <input>
+# <input> or <select> or <textarea>
 # Pure HTML manipulation directive to autofill input attributes with logical defaults
 # name:         String - REQUIRED      #TODO: see if you can programatically find it by searching up the dom tree for the 'form' elm
-# type:         String - default 'text'
+# type:         String - default 'text' - only on <input>
 # placeholder:  String - default name
 # title:        String - default name
 # id:           String - default name + random number
+fieldDirectiveDefinitionObject =
+    restrict: 'E'
+    link: (scope, element, attrs) ->
+        if element.prop("tagName") == 'INPUT'
+            attrs.$set 'type', (attrs.type or 'text')
+        attrs.$set 'placeholder', (attrs.placeholder or attrs.name)
+        attrs.$set 'title', (attrs.title or attrs.placeholder or attrs.name)
+        attrs.$set 'id', (attrs.id or "#{attrs.name}#{Math.floor(Math.random()*999999)}")
+        # attrs.$set 'name', (attrs.name or attrs.placeholder.replace(///^\s+|\s+$///g, '').split(' ').join('-'))
+
 psDirectives.directive 'input', () ->
     # TODO: get a placeholder plugin to patch old browsers and behave like https://github.com/wduffy/jLabel -- probably just write a directive for the 'placeholder' attribute
-    # TODO: handle non text inputs gracefully
+    return fieldDirectiveDefinitionObject
 
-    directiveDefinitionObject =
-        restrict: 'E'
+psDirectives.directive 'select', () ->
+    return fieldDirectiveDefinitionObject
 
-        link: (scope, element, attrs) ->
-            attrs.$set 'type', (attrs.type or 'text')
-            attrs.$set 'placeholder', (attrs.placeholder or attrs.name)
-            attrs.$set 'title', (attrs.title or attrs.placeholder)
-            attrs.$set 'id', (attrs.id or "#{attrs.name}#{Math.floor(Math.random()*999999)}")
-            # attrs.$set 'name', (attrs.name or attrs.placeholder.replace(///^\s+|\s+$///g, '').split(' ').join('-'))
-            # attrs.classes or= attrs.class or= ''
-
-    return directiveDefinitionObject
+psDirectives.directive 'textarea', () ->
+    return fieldDirectiveDefinitionObject  
 
 
 ####
@@ -72,22 +75,23 @@ psDirectives.directive 'controlGroup', () ->
                     scope.input or= {}
                     scope.input.id = inputEl.attr('id')
                     scope.input.name = inputEl.attr('name')
+                    scope.input.title = inputEl.attr('title')
 
                     scope.field = formController[scope.input.name]
                     
                     buildErrorMsg = ->
                         errors = []
-                        if scope.field.$error.required  then errors.push "can't be blank"
-                        if scope.field.$error.email     then errors.push "must be an email"
-                        if scope.field.$error.url       then errors.push "must be a url"
-                        if scope.field.$error.minlength then errors.push "too short"
-                        if scope.field.$error.maxlength then errors.push "too long"
-                        if scope.field.$error.pattern   then errors.push "wrong format"
+                        if scope.field.$error.required  then errors.push "Oops, #{scope.input.title} can't be blank"
+                        if scope.field.$error.email     then errors.push "This must be an email address"
+                        if scope.field.$error.url       then errors.push "This must be a url, kind of like \"http://example.com\""
+                        if scope.field.$error.minlength then errors.push "Keep typing, #{scope.input.title} is too short"
+                        if scope.field.$error.maxlength then errors.push "Whoa, #{scope.input.title} is too long"
+                        if scope.field.$error.pattern   then errors.push "Whoops, #{scope.input.title} is in the wrong format"
                         scope.field.errorMessage = errors.join(', ')
                     buildErrorMsg() 
                     scope.$watch 'field.$error', (() -> buildErrorMsg()), true
 
-                    # set hasFocus class on control-group
+                    # set 'focused' class on control-group
                     scope.hasFocus = false
                     inputEl.bind 'focusin', ->
                         scope.hasFocus = true
