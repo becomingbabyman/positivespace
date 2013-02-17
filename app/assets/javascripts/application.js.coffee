@@ -10,10 +10,14 @@
 # WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 # GO AFTER THE REQUIRES BELOW.
 #
+# Vendor JS
 # TODO: deprecate jquery - for now Angular UI depends on it
 #= require jquery
-#= require_tree ./angularjs/
-#= require_tree ./underscore/
+#= require_tree ../../../vendor/assets/javascripts/angularjs/
+#= require_tree ../../../vendor/assets/javascripts/underscore/
+# require jquery.jlabel
+#
+# App JS
 #= require directives
 #= require services
 #= require routes

@@ -9,25 +9,7 @@
 
 			</br>
 			</br>
-
-			<form name='testNonInput' class='form-horizontal' ng-submit='' novalidate>
-				<control-group label='test textarea'>
-					<textarea name='testtextarea' placeholder='username, but not really' ng-model="textTest" ng-minlength='3' ng-maxlength='30' ng-pattern='/^[a-zA-Z][a-zA-Z0-9-]*$/'required></textarea>
-				</control-group>
-
-				<control-group label='test select'>
-					<select name='testselect' placeholder='whatever' ng-model="selectTest" ng-options="c for c in [1, 2, 3, 4]" required></select>
-				</control-group>
-
-				<control-group label='test url'>
-					<input type='url' name='url' ng-model='urlTest'>
-				</control-group>
-			</form>
-
-			</br>
-			<hr/>
-			</br>
-
+			
 			<form name='userRegister' class='form-horizontal' ng-submit='app.register()' novalidate>
 				
 				<control-group label='email'>

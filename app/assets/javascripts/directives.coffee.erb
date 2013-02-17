@@ -23,13 +23,21 @@ fieldDirectiveDefinitionObject =
     link: (scope, element, attrs) ->
         if element.prop("tagName") == 'INPUT' and !attrs.type?
             attrs.$set 'type', (attrs.type or 'text')
-        unless attrs.placeholder? then attrs.$set 'placeholder', attrs.name
         unless attrs.title? then attrs.$set 'title', (attrs.placeholder or attrs.name)
         unless attrs.id? then attrs.$set 'id', "#{attrs.name}#{Math.floor(Math.random()*999999)}"
         # attrs.$set 'name', (attrs.name or attrs.placeholder.replace(///^\s+|\s+$///g, '').split(' ').join('-'))
+        
+        unless attrs.placeholder? then attrs.$set 'placeholder', attrs.name
+        # TODO: jLabel does not work with response inputs that can update other inputs. Decide if we want cross browser compatibility enough to use jLabel. Or roll your own directive.
+        # set placeholder - if jLabel is availible use it instead
+        # if element.prop("tagName") == 'INPUT'
+        #     if _.isFunction element.jLabel
+        #         element.jLabel({ speed : 200, opacity : 0.4 })
+        #         attrs.$set 'placeholder', ''
+        #     else if !attrs.placeholder? 
+        #         attrs.$set 'placeholder', attrs.name
 
 psDirectives.directive 'input', () ->
-    # TODO: get a placeholder plugin to patch old browsers and behave like https://github.com/wduffy/jLabel -- probably just write a directive for the 'placeholder' attribute
     return fieldDirectiveDefinitionObject
 
 psDirectives.directive 'select', () ->
@@ -67,40 +75,37 @@ psDirectives.directive 'controlGroup', () ->
             type = inputEl.attr('type')
             element.find('.control-group').addClass(type)
 
-            return {
-                pre: (scope, element, attrs, formController) ->
-                    # Don't need this yet
-                post: (scope, element, attrs, formController) ->
-                    inputEl = findInputEl(element)
+            # link
+            return (scope, element, attrs, formController) ->
+                inputEl = findInputEl(element)
 
-                    scope.input or= {}
-                    scope.input.id = inputEl.attr('id')
-                    scope.input.name = inputEl.attr('name')
-                    scope.input.title = inputEl.attr('title')
+                scope.input or= {}
+                scope.input.id = inputEl.attr('id')
+                scope.input.name = inputEl.attr('name')
+                scope.input.title = inputEl.attr('title')
 
-                    scope.field = formController[scope.input.name]
-                    
-                    buildErrorMsg = ->
-                        errors = []
-                        if scope.field.$error.required  then errors.push "Oops, #{scope.input.title} can't be blank"
-                        if scope.field.$error.email     then errors.push "Please enter a valid email address"
-                        if scope.field.$error.url       then errors.push "Please enter a valid url, kind of like \"http://example.com\""
-                        if scope.field.$error.minlength then errors.push "Keep typing, #{scope.input.title} is too short"
-                        if scope.field.$error.maxlength then errors.push "Whoa, #{scope.input.title} is too long"
-                        if scope.field.$error.pattern   then errors.push "Whoops, #{scope.input.title} is in the wrong format"
-                        scope.field.errorMessage = errors.join(', ')
-                    buildErrorMsg() 
-                    scope.$watch 'field.$error', (() -> buildErrorMsg()), true
+                scope.field = formController[scope.input.name]
+                
+                buildErrorMsg = ->
+                    errors = []
+                    if scope.field.$error.required  then errors.push "Oops, #{scope.input.title} can't be blank"
+                    if scope.field.$error.email     then errors.push "Please enter a valid email address"
+                    if scope.field.$error.url       then errors.push "Please enter a valid url, kind of like \"http://example.com\""
+                    if scope.field.$error.minlength then errors.push "Keep typing, #{scope.input.title} is too short"
+                    if scope.field.$error.maxlength then errors.push "Whoa, #{scope.input.title} is too long"
+                    if scope.field.$error.pattern   then errors.push "Whoops, #{scope.input.title} is in the wrong format"
+                    scope.field.errorMessage = errors.join(', ')
+                buildErrorMsg() 
+                scope.$watch 'field.$error', (() -> buildErrorMsg()), true
 
-                    # set 'focused' class on control-group
-                    scope.hasFocus = false
-                    inputEl.bind 'focusin', ->
+                # set 'focused' class on control-group
+                scope.hasFocus = false
+                inputEl.bind 'focusin', ->
+                    scope.$apply () ->
                         scope.hasFocus = true
-                        scope.$apply()
-                    inputEl.bind 'focusout', ->
+                inputEl.bind 'focusout', ->
+                    scope.$apply () ->
                         scope.hasFocus = false
-                        scope.$apply()
-            }
 
     return directiveDefinitionObject
 

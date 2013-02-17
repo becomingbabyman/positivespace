@@ -1,16 +1,27 @@
 root = global ? window
 angular = root.angular
 
-ps = angular.module("ps", ['ui', 'ui.bootstrap', 'ngCookies', 'psDirectives', 'psServices'])
+ps = angular.module "ps", ['ui', 'ui.bootstrap', 'ngCookies', 'psDirectives', 'psServices']
 
-ps.config(['$routeProvider', '$locationProvider', ($routeProvider, $locationProvider) ->
+ps.config ['$routeProvider', '$locationProvider', ($routeProvider, $locationProvider) ->
 	#$locationProvider.hashPrefix('');
 	$locationProvider.html5Mode true
-	$routeProvider.when("/",
+	
+	$routeProvider
+	.when "/",
 		controller: "PagesCtrl"
 		templateUrl: "<%= asset_path('pages/home.html') %>"
-	).otherwise redirectTo: "/"
-])
+	.when "/about",
+		controller: "PagesCtrl"
+		templateUrl: "<%= asset_path('pages/about.html') %>"
+	.when "/tos",
+		controller: "PagesCtrl"
+		templateUrl: "<%= asset_path('pages/tos.html') %>"
+	.when "/privacy",
+		controller: "PagesCtrl"
+		templateUrl: "<%= asset_path('pages/privacy.html') %>"
+	.otherwise redirectTo: "/"
+]
 
 root.ps = ps
 

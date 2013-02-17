@@ -1,9 +1,34 @@
-In Progress:
- ☐ flash messages should fade out after 15 seconds
- ☐ flash messages should be fix to the top right of the screen like apple notifications
- ☐ fix the google apps email MX records - http://support.launchrock.com/knowledgebase/articles/137598-a-record-general-instructions-for-editing-your-a-
+Ideas:
+ ☐ a user should be able to send as well as recieve +_ messages - to an email address or a +_ username - all autocomplete
+ ☐ cleanup head - update title and description and og meta tags
+ ☐ add option to control-group directive to display errors as 'tooltip', 'inline', or 'block'
+ ☐ add option to control-group directive to display 'info' and 'warning' colors. make the colors work on the tooltips as well
+ ☐ add option to display server errors in control-group directive
 
+Backlog:
+ ☐ to sign up you need to request an invite through a +_ pitch form
+ ☐ angularize the change password page
+ ☐ display error and success messages for "send reset password"
+ ☐ put up staging server
+
+Design:
+ ☐ landing page mockup
+ ☐ new user flow drawing / mockup
+ ☐ javascript placeholder directive - try to just roll your own rather than using an existing plugin
+ 
+--- ✄ -----------------------
+--- ✄ -----------------------
+In Progress:
+ ☐ fix the google apps email MX records   ---   http://support.launchrock.com/knowledgebase/articles/137598-a-record-general-instructions-for-editing-your-a-    ---     https://toolbox.googleapps.com/apps/checkmx/check?domain=positivespace.io
+
+ ☐ get angular router to route away from "/" if it's currently on "/" and a link is clicked
+
+--- ✄ -----------------------
+--- ✄ -----------------------
 Refactoring:
+ ☐ add footer w tos and pp
+ ☐ flash messages should be fixed to the top right of the screen like apple notifications
+ ☐ flash messages should fade out after 15 seconds
  ☐ input, select and textarea directive to auto add attributes like title and id
  ☐ control-group directive with auto rendered error messages
 
@@ -13,15 +38,4 @@ Master:
 Live:
 
 
---- ✄ -----------------------
-Design:
- ☐ landing page mockup
- ☐ new user flow drawing / mockup
- ☐ javascript placeholder directive - try to just roll your own rather than using an existing plugin
-
-
-Backlog:
-
-
-Ideas:
- ☐ cleanup head - update title and description and og meta tags
+Archive:

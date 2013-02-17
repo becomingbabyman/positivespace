@@ -6,6 +6,7 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "User", ($scope, $timeout, User)
     $scope.app = {}
     $scope.app.currentUser = {}
     $scope.app.preLogin = {rememberMe: true}
+    $scope.app.year = (new Date).getFullYear()
     $scope.app.templates =
         header:
             url: "/assets/app/header.html"
@@ -34,7 +35,7 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "User", ($scope, $timeout, User)
                 $scope.app.alerts[id].type = $scope.app.alerts[id].type.split(" ")[0]
             ,1000
             # auto close the alert after a bit of time
-            time = 12000 + (2000 * _.keys($scope.app.alerts).length)
+            time = (111 * msg.length) + (2000 * _.keys($scope.app.alerts).length)
             $timeout () ->
                 $scope.app.closeAlert(id)
             ,time
@@ -94,6 +95,8 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "User", ($scope, $timeout, User)
         $scope.app.flash 'info', "Bye, hope to see you again soon."
 
     $scope.app.resetPassword = (login = $scope.app.preLogin.login) ->
+        # TODO: display success notification
+        # TODO: display error notifications
         # TODO: handle the reset password link page in angular
         User.resetPassword
             user:
