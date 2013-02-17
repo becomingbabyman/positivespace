@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
 		else
 			where(conditions).first
 		end
-    end
+	end
 
 	# Given facebook authentication data, find the user record
 	# TODO: UNHACK: This is a whackasshack method
@@ -109,8 +109,8 @@ private
 	end
 
 	def validate_username_format
-		unless username =~ /^[a-zA-Z][a-zA-Z0-9_-]*$/ or username == id.to_s
-			errors.add(:username, "may only contain letters, numbers, underscores, and dashes")
+		unless username =~ /^[a-zA-Z][a-zA-Z0-9-]*$/ or username == id.to_s
+			errors.add(:username, "may only contain letters, numbers, and dashes")
 		end
 	end
 

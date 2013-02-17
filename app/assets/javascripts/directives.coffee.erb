@@ -21,11 +21,11 @@ psDirectives = angular.module 'psDirectives', []
 fieldDirectiveDefinitionObject =
     restrict: 'E'
     link: (scope, element, attrs) ->
-        if element.prop("tagName") == 'INPUT'
+        if element.prop("tagName") == 'INPUT' and !attrs.type?
             attrs.$set 'type', (attrs.type or 'text')
-        attrs.$set 'placeholder', (attrs.placeholder or attrs.name)
-        attrs.$set 'title', (attrs.title or attrs.placeholder or attrs.name)
-        attrs.$set 'id', (attrs.id or "#{attrs.name}#{Math.floor(Math.random()*999999)}")
+        unless attrs.placeholder? then attrs.$set 'placeholder', attrs.name
+        unless attrs.title? then attrs.$set 'title', (attrs.placeholder or attrs.name)
+        unless attrs.id? then attrs.$set 'id', "#{attrs.name}#{Math.floor(Math.random()*999999)}"
         # attrs.$set 'name', (attrs.name or attrs.placeholder.replace(///^\s+|\s+$///g, '').split(' ').join('-'))
 
 psDirectives.directive 'input', () ->
@@ -83,8 +83,8 @@ psDirectives.directive 'controlGroup', () ->
                     buildErrorMsg = ->
                         errors = []
                         if scope.field.$error.required  then errors.push "Oops, #{scope.input.title} can't be blank"
-                        if scope.field.$error.email     then errors.push "This must be an email address"
-                        if scope.field.$error.url       then errors.push "This must be a url, kind of like \"http://example.com\""
+                        if scope.field.$error.email     then errors.push "Please enter a valid email address"
+                        if scope.field.$error.url       then errors.push "Please enter a valid url, kind of like \"http://example.com\""
                         if scope.field.$error.minlength then errors.push "Keep typing, #{scope.input.title} is too short"
                         if scope.field.$error.maxlength then errors.push "Whoa, #{scope.input.title} is too long"
                         if scope.field.$error.pattern   then errors.push "Whoops, #{scope.input.title} is in the wrong format"

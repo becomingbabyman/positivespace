@@ -24,6 +24,8 @@ class UsersController < InheritedResources::Base
 
 	before_filter :authenticate_user!, only: [:show], :if => lambda { params[:id] == 'me' }
 
+	load_and_authorize_resource :only => [:edit, :update]
+	
 	def show
 		@user = (params[:id] == 'me' ? current_user : User.find(params[:id]))
 		show!

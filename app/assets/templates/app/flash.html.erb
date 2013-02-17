@@ -1,7 +1,7 @@
-<div ui-if='app.alerts.length > 0' class="container">
+<div ui-if='!_.isEmpty(app.alerts.length)' class="container">
 	<div class="row">
-		<div class="span12">
-			<alert ng-repeat="alert in app.alerts" type="alert.type" close="app.closeAlert($index)">{{alert.msg}}</alert>
+		<div class="offset6 span6">
+			<alert ng-repeat="(id, alert) in app.alerts" type="alert.type" close="app.closeAlert(id)">{{alert.msg}}</alert>
 		</div>
 	</div>
 </div>

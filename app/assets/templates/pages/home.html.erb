@@ -12,7 +12,7 @@
 
 			<form name='testNonInput' class='form-horizontal' ng-submit='' novalidate>
 				<control-group label='test textarea'>
-					<textarea name='testtextarea' placeholder='username, but not really' ng-model="textTest" ng-minlength='3' ng-maxlength='30' ng-pattern='/^[a-zA-Z][a-zA-Z0-9_-]*$/'required></textarea>
+					<textarea name='testtextarea' placeholder='username, but not really' ng-model="textTest" ng-minlength='3' ng-maxlength='30' ng-pattern='/^[a-zA-Z][a-zA-Z0-9-]*$/'required></textarea>
 				</control-group>
 
 				<control-group label='test select'>
@@ -35,7 +35,7 @@
 				</control-group>
 
 				<control-group label='username'>
-					<input name='username' ng-model='app.preLogin.username' ng-minlength='3' ng-maxlength='30' ng-pattern='/^[a-zA-Z][a-zA-Z0-9_-]*$/' required></input>
+					<input name='username' ng-model='app.preLogin.username' ng-minlength='3' ng-maxlength='30' ng-pattern='/^[a-zA-Z][a-zA-Z0-9-]*$/' required></input>
 				</control-group>
 
 				<control-group label='password' help-inline='must be 8 - 100 characters long' help-block='longer is better'>

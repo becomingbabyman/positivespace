@@ -1,0 +1,27 @@
+In Progress:
+ ☐ flash messages should fade out after 15 seconds
+ ☐ flash messages should be fix to the top right of the screen like apple notifications
+ ☐ fix the google apps email MX records - http://support.launchrock.com/knowledgebase/articles/137598-a-record-general-instructions-for-editing-your-a-
+
+Refactoring:
+ ☐ input, select and textarea directive to auto add attributes like title and id
+ ☐ control-group directive with auto rendered error messages
+
+Master:
+
+
+Live:
+
+
+--- ✄ -----------------------
+Design:
+ ☐ landing page mockup
+ ☐ new user flow drawing / mockup
+ ☐ javascript placeholder directive - try to just roll your own rather than using an existing plugin
+
+
+Backlog:
+
+
+Ideas:
+ ☐ cleanup head - update title and description and og meta tags
