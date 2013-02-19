@@ -1,4 +1,5 @@
 Ideas:
+ ☐ javascript placeholder directive - try to just roll your own rather than using an existing plugin
  ☐ a user should be able to send as well as recieve +_ messages - to an email address or a +_ username - all autocomplete
  ☐ cleanup head - update title and description and og meta tags
  ☐ add option to control-group directive to display errors as 'tooltip', 'inline', or 'block'
@@ -14,23 +15,17 @@ Backlog:
 Design:
  ☐ landing page mockup
  ☐ new user flow drawing / mockup
- ☐ javascript placeholder directive - try to just roll your own rather than using an existing plugin
  
 --- ✄ -----------------------
 --- ✄ -----------------------
 In Progress:
- ☐ fix the google apps email MX records   ---   http://support.launchrock.com/knowledgebase/articles/137598-a-record-general-instructions-for-editing-your-a-    ---     https://toolbox.googleapps.com/apps/checkmx/check?domain=positivespace.io
 
  ☐ get angular router to route away from "/" if it's currently on "/" and a link is clicked
 
 --- ✄ -----------------------
 --- ✄ -----------------------
 Refactoring:
- ☐ add footer w tos and pp
- ☐ flash messages should be fixed to the top right of the screen like apple notifications
- ☐ flash messages should fade out after 15 seconds
- ☐ input, select and textarea directive to auto add attributes like title and id
- ☐ control-group directive with auto rendered error messages
+
 
 Master:
 
@@ -39,3 +34,9 @@ Live:
 
 
 Archive:
+ ✔ fix the google apps email MX records   ---   http://support.launchrock.com/knowledgebase/articles/137598-a-record-general-instructions-for-editing-your-a-    ---     https://toolbox.googleapps.com/apps/checkmx/check?domain=positivespace.io @done (13-02-17 22:04)
+ ✔ add footer w tos and pp @done (13-02-17 18:10)
+ ✔ flash messages should be fixed to the top right of the screen like apple notifications @done (13-02-17 18:10)
+ ✔ flash messages should fade out after 15 seconds @done (13-02-17 18:10)
+ ✔ input, select and textarea directive to auto add attributes like title and id @done (13-02-17 18:10)
+ ✔ control-group directive with auto rendered error messages @done (13-02-17 18:10)

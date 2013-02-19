@@ -2,6 +2,9 @@ class UsersController < InheritedResources::Base
 	respond_to :json
 	actions :index, :show
 
+	has_scope :login, :only => :index do |controller, scope, value|
+		scope.where("email = ? OR username = ?", value.downcase, value.downcase)
+	end
 	has_scope :email, :only => :index do |controller, scope, value|
 		scope.where("email = ?", value.downcase)
 	end

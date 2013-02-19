@@ -15,6 +15,7 @@
 #= require jquery
 #= require_tree ../../../vendor/assets/javascripts/angularjs/
 #= require_tree ../../../vendor/assets/javascripts/underscore/
+#= require bootstrap-button
 # require jquery.jlabel
 #
 # App JS

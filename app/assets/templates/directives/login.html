@@ -1,0 +1,55 @@
+<div id="login" style='width: 300px;'>
+    <h4>Sign up, or Sign in</h4>
+
+    <div ng-show='app.loggedIn()'>
+        <h1>Oh wait. You are already signed in!</h1>
+        <button class='btn btn-danger btn-small pull-right' name='lngLogout' ng-click='logout()'>logout?</button>
+    </div>
+
+    <form name='login' class='form-vertical uncenter' ng-submit='login()' ng-hide='app.loggedIn()' novalidate style='width: 100%;'> 
+
+        <control-group help-block="Don't remember? Enter your email.">
+            <div class="btn-group" ng-model="credentials.loginType" ps-buttons-radio style='width: 100%'>
+                <button type="button" class="btn btn-small" value="register" style='width: 50%'>I'm new here</button>
+                <button type="button" class="btn btn-small" value="login" style='width: 50%'>I have an account</button>
+            </div>
+        </control-group>
+
+        <div ng-show='credentials.loginType == "register"'>
+            <control-group>
+                <input type='email' name='email' placeholder='email' class='input-block-level' ng-model='credentials.email' ui-event='{blur: "checkLogin()"}' required></input>
+            </control-group>
+
+            <control-group>
+                <input type='text' name='username' class='input-block-level' ng-model='credentials.username' ng-minlength='3' ng-maxlength='30' ng-pattern='/^[a-zA-Z][a-zA-Z0-9-]*$/' ui-event='{keyup: "checkUsername()"}' required></input>
+            </control-group>
+
+            <control-group>
+                <input type='password' name='password' class='input-block-level' ng-model='credentials.password' ng-minlength='8' ng-maxlength='100' required></input>
+            </control-group>
+
+            <div class='control-group'>
+                <div class='controls'>
+                    <button type='submit' class='btn btn-success'>Sign up</button>
+                </div>
+            </div>
+        </div>
+
+        <div ng-show='credentials.loginType == "login"'>
+            <control-group>
+                <input type='text' name='login' placeholder='email or username' class='input-block-level' ng-model='credentials.login' ui-event='{blur: "checkLogin()"}' required ng-minlength='3'></input>
+            </control-group>
+
+            <control-group>
+                <input type='password' name='lgnPassword' placeholder='password' class='input-block-level' ng-model='credentials.password' ng-minlength='8' ng-maxlength='100' required></input>
+            </control-group>
+
+            <div class='control-group'>
+                <div class='controls'>
+                    <button type='submit' class='btn btn-success'>Sign in</button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>

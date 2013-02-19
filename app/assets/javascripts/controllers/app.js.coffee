@@ -20,6 +20,9 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "User", ($scope, $timeout, User)
     $scope.app.currentUser = User.current()
 
 
+    $scope.app.loggedIn = ->
+        !_.isEmpty($scope.app.currentUser)
+
     #########
     # Flash #
     #########
@@ -37,7 +40,7 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "User", ($scope, $timeout, User)
             # auto close the alert after a bit of time
             time = (111 * msg.length) + (2000 * _.keys($scope.app.alerts).length)
             $timeout () ->
-                $scope.app.closeAlert(id)
+                $scope.app.closeAlert(id, true)
             ,time
         else if _.isArray(msg)
             _.each msg, (m, i) ->
@@ -49,13 +52,17 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "User", ($scope, $timeout, User)
                     $scope.app.flash(type, v, k, false)
                 , 300*i
                 i += 1
-    $scope.app.closeAlert = (id) ->
+    $scope.app.closeAlert = (id, fade=false) ->
         if $scope.app.alerts[id]?
             type = $scope.app.alerts[id].type.split(" ")[0]
             $scope.app.alerts[id].type = "#{type} animated fadeOut"
-            $timeout () ->
+            if fade
+                $timeout () ->
+                    delete $scope.app.alerts[id]
+                ,444
+            else
                 delete $scope.app.alerts[id]
-            ,444
+            
 
 
     #############

@@ -19,32 +19,32 @@ psDirectives = angular.module 'psDirectives', []
 # title:        String - default name
 # id:           String - default name + random number
 fieldDirectiveDefinitionObject =
-    restrict: 'E'
-    link: (scope, element, attrs) ->
-        if element.prop("tagName") == 'INPUT' and !attrs.type?
-            attrs.$set 'type', (attrs.type or 'text')
-        unless attrs.title? then attrs.$set 'title', (attrs.placeholder or attrs.name)
-        unless attrs.id? then attrs.$set 'id', "#{attrs.name}#{Math.floor(Math.random()*999999)}"
-        # attrs.$set 'name', (attrs.name or attrs.placeholder.replace(///^\s+|\s+$///g, '').split(' ').join('-'))
-        
-        unless attrs.placeholder? then attrs.$set 'placeholder', attrs.name
-        # TODO: jLabel does not work with response inputs that can update other inputs. Decide if we want cross browser compatibility enough to use jLabel. Or roll your own directive.
-        # set placeholder - if jLabel is availible use it instead
-        # if element.prop("tagName") == 'INPUT'
-        #     if _.isFunction element.jLabel
-        #         element.jLabel({ speed : 200, opacity : 0.4 })
-        #         attrs.$set 'placeholder', ''
-        #     else if !attrs.placeholder? 
-        #         attrs.$set 'placeholder', attrs.name
+	restrict: 'E'
+	link: (scope, element, attrs) ->
+		if element.prop("tagName") == 'INPUT' and !attrs.type?
+			attrs.$set 'type', (attrs.type or 'text')
+		unless attrs.title? then attrs.$set 'title', (attrs.placeholder or attrs.name)
+		unless attrs.id? then attrs.$set 'id', _.uniqueId("#{attrs.name}_")
+		# attrs.$set 'name', (attrs.name or attrs.placeholder.replace(///^\s+|\s+$///g, '').split(' ').join('-'))
+		
+		unless attrs.placeholder? then attrs.$set 'placeholder', attrs.name
+		# TODO: jLabel does not work with response inputs that can update other inputs. Decide if we want cross browser compatibility enough to use jLabel. Or roll your own directive.
+		# set placeholder - if jLabel is availible use it instead
+		# if element.prop("tagName") == 'INPUT'
+		#     if _.isFunction element.jLabel
+		#         element.jLabel({ speed : 200, opacity : 0.4 })
+		#         attrs.$set 'placeholder', ''
+		#     else if !attrs.placeholder? 
+		#         attrs.$set 'placeholder', attrs.name
 
 psDirectives.directive 'input', () ->
-    return fieldDirectiveDefinitionObject
+	return fieldDirectiveDefinitionObject
 
 psDirectives.directive 'select', () ->
-    return fieldDirectiveDefinitionObject
+	return fieldDirectiveDefinitionObject
 
 psDirectives.directive 'textarea', () ->
-    return fieldDirectiveDefinitionObject  
+	return fieldDirectiveDefinitionObject  
 
 
 ##########################
@@ -54,58 +54,243 @@ psDirectives.directive 'textarea', () ->
 # helpBlock:    String - default null
 psDirectives.directive 'controlGroup', () ->
 
-    findInputEl = (element) ->
-        e = element.find('input')
-        if e.length < 1 then e = element.find('select')
-        if e.length < 1 then e = element.find('textarea')
-        e
+	findInputEl = (element) ->
+		e = element.find('input')
+		if e.length < 1 then e = element.find('select')
+		if e.length < 1 then e = element.find('textarea')
+		e
 
-    directiveDefinitionObject =
-        restrict: 'E'
-        scope:
-            label: '@'
-            helpInline: '@'
-            helpBlock: '@'
-        templateUrl: "<%= asset_path('directives/control_group.html') %>"
-        transclude: true
-        require: '?^form'
+	directiveDefinitionObject =
+		restrict: 'E'
+		scope:
+			label: '@'
+			helpInline: '@'
+			helpBlock: '@'
+		templateUrl: "<%= asset_path('directives/control_group.html') %>"
+		transclude: true
+		require: '?^form'
 
-        compile: (element, attrs) ->
-            inputEl = findInputEl(element)
-            type = inputEl.attr('type')
-            element.find('.control-group').addClass(type)
+		compile: (element, attrs) ->
+			inputEl = findInputEl(element)
+			type = inputEl.attr('type')
+			element.find('.control-group').addClass(type)
 
-            # link
-            return (scope, element, attrs, formController) ->
-                inputEl = findInputEl(element)
+			# link
+			return (scope, element, attrs, formController) ->
+				inputEl = findInputEl(element)
 
-                scope.input or= {}
-                scope.input.id = inputEl.attr('id')
-                scope.input.name = inputEl.attr('name')
-                scope.input.title = inputEl.attr('title')
+				scope.input or= {}
+				scope.input.id = inputEl.attr('id')
+				scope.input.name = inputEl.attr('name')
+				scope.input.title = inputEl.attr('title')
 
-                scope.field = formController[scope.input.name]
-                
-                buildErrorMsg = ->
-                    errors = []
-                    if scope.field.$error.required  then errors.push "Oops, #{scope.input.title} can't be blank"
-                    if scope.field.$error.email     then errors.push "Please enter a valid email address"
-                    if scope.field.$error.url       then errors.push "Please enter a valid url, kind of like \"http://example.com\""
-                    if scope.field.$error.minlength then errors.push "Keep typing, #{scope.input.title} is too short"
-                    if scope.field.$error.maxlength then errors.push "Whoa, #{scope.input.title} is too long"
-                    if scope.field.$error.pattern   then errors.push "Whoops, #{scope.input.title} is in the wrong format"
-                    scope.field.errorMessage = errors.join(', ')
-                buildErrorMsg() 
-                scope.$watch 'field.$error', (() -> buildErrorMsg()), true
+				scope.field = formController[scope.input.name]	
+				
+				buildErrorMsg = ->
+					errors = []
+					if scope.field.$error.required  then errors.push "Oops, #{scope.input.title} can't be blank"
+					if scope.field.$error.email     then errors.push "Please enter a valid email address"
+					if scope.field.$error.url       then errors.push "Please enter a valid url, kind of like \"http://example.com\""
+					if scope.field.$error.minlength then errors.push "Keep typing, #{scope.input.title} is too short"
+					if scope.field.$error.maxlength then errors.push "Whoa, #{scope.input.title} is too long"
+					if scope.field.$error.pattern   then errors.push "Whoops, #{scope.input.title} is in the wrong format"
+					scope.field.errorMessage = errors.join(', ')
+				
+				if scope.field?
+					buildErrorMsg() 
+					scope.$watch 'field.$error', (() -> buildErrorMsg()), true
 
-                # set 'focused' class on control-group
-                scope.hasFocus = false
-                inputEl.bind 'focusin', ->
-                    scope.$apply () ->
-                        scope.hasFocus = true
-                inputEl.bind 'focusout', ->
-                    scope.$apply () ->
-                        scope.hasFocus = false
+				# set 'focused' class on control-group
+				scope.hasFocus = false
+				inputEl.bind 'focusin', ->
+					scope.$apply () ->
+						scope.hasFocus = true
+				inputEl.bind 'focusout', ->
+					scope.$apply () ->
+						scope.hasFocus = false
 
-    return directiveDefinitionObject
+	return directiveDefinitionObject
 
+
+####################################################
+####################################################
+# <login>
+psDirectives.directive 'psLogin', ["User", (User) ->
+	directiveDefinitionObject =
+		restrict: 'E'
+		scope:
+			app: '='
+		templateUrl: "<%= asset_path('directives/login.html') %>"
+
+		link: (scope, element, attrs) ->
+			scope.credentials = {}
+			scope.credentials.loginType = 'login'
+
+			scope.$watch 'credentials.login', (value) ->
+				if value.match(///^[a-zA-Z][a-zA-Z0-9-]*$///)?
+					scope.credentials.username = value
+					scope.credentials.email = ''
+				else
+					scope.credentials.email = value
+					scope.credentials.username = ''
+				
+
+			scope.checkLogin = () ->
+				if registering = scope.credentials.loginType == 'register'
+					login = scope.credentials.email
+				else
+					login = scope.credentials.login
+				User.query
+					login: login
+					(data) ->
+						if data.length > 0 and registering
+							scope.credentials.loginType = 'login'
+							scope.app.flash 'info', "Looks like you already have an account. Go ahead and sign in."
+							scope.credentials.login = login
+						else if data.length == 0 and !registering
+							scope.credentials.loginType = 'register'
+							scope.app.flash 'info', "Looks like you need an account. Go ahead and sign up for one."
+
+			
+			scope.checkUsername = () ->
+				if scope.credentials.loginType = 'register'
+					username = scope.credentials.username
+					User.query
+						username: username
+						(data) ->
+							# TODO: put error on input field in addition to OR rather than in the flash
+							if data.length > 0 and scope.credentials.loginType = 'register' then scope.app.flash 'error', "\"#{username}\" has been taken"
+
+			scope.login = () ->
+				# TODO: why does ngModel only update when the field is valid?
+				# TODO: auto switch to login if the email address belongs to an existing user
+				# TODO: check that the username is not taken and show error if it is
+				if scope.credentials.loginType == 'register'
+					User.register
+						user:
+							email: scope.credentials.email
+							username: scope.credentials.username
+							password: scope.credentials.password
+						(data) ->
+							scope.app.currentUser = data
+							scope.app.flash 'success', "Welcome. Please follow the instructions to set up your positive space."
+						(error) ->   
+							scope.app.flash 'error', error.data.errors
+				else
+					User.login
+						user:
+							login: scope.credentials.login
+							password: scope.credentials.password
+							# remember_me: rememberMe
+						(data) ->
+							scope.app.currentUser = data
+							scope.app.preLogin = {}
+							scope.app.flash 'success', "Welcome back!"
+						(error) ->
+							# TODO: put error on input field
+							scope.app.flash 'error', "Oops, that's the wrong password."
+
+			scope.logout = () ->
+			    scope.app.currentUser = User.logout()
+			    scope.app.flash 'info', "Bye, hope to see you again soon."
+
+	return directiveDefinitionObject
+]
+
+
+####################################################
+####################################################
+# Bootstrap Buttons
+#
+# Stolen from AngularStrap
+# http://mgcrea.github.com/angular-strap/#/buttons
+# requires bootstrap-button js and jQuery
+# TODO: rewrite to remove dependency on bootstrap js and jQuery
+#
+# Radio Buttons
+# <div class="btn-group" ng-model="radioValue" ps-buttons-radio>
+#	<button type="button" class="btn" value="left">...</button>
+#	<button type="button" class="btn" value="middle">...</button>
+#	<button type="button" class="btn" value="right">...</button>
+# </div>
+# or
+# <div class="btn-group" ps-buttons-radio>
+#	<button type="button" class="btn" ng-model="radio.left">...</button>
+#	<button type="button" class="btn" ng-model="radio.middle">...</button>
+#	<button type="button" class="btn" ng-model="radio.right">...</button>
+# </div>
+psDirectives.directive("psButton", ["$parse", "$timeout", ($parse, $timeout) ->
+	"use strict"
+	restrict: "A"
+	require: "?ngModel"
+	link: postLink = (scope, element, attrs, controller) ->
+		if controller
+			element.attr "data-toggle", "button"  unless element.parent("[data-toggle=\"buttons-checkbox\"], [data-toggle=\"buttons-radio\"]").length
+			startValue = !!scope.$eval(attrs.ngModel)
+			element.addClass "active"  if startValue
+			scope.$watch attrs.ngModel, (newValue, oldValue) ->
+				bNew = !!newValue
+				bOld = !!oldValue
+				if bNew isnt bOld
+					$.fn.button.Constructor::toggle.call button
+				else element.addClass "active"  if bNew and not startValue
+
+		unless element.hasClass("btn")
+			element.on "click.button.data-api", (e) ->
+				element.button "toggle"
+
+		element.button()
+		button = element.data("button")
+		button.toggle = ->
+			return $.fn.button.Constructor::toggle.call(this)  unless controller
+			$parent = element.parent("[data-toggle=\"buttons-radio\"]")
+			if $parent.length
+				element.siblings("[ng-model]").each (k, v) ->
+					$parse($(v).attr("ng-model")).assign scope, false
+
+				scope.$digest()
+				unless controller.$modelValue
+					controller.$setViewValue not controller.$modelValue
+					scope.$digest()
+			else
+				scope.$apply ->
+					controller.$setViewValue not controller.$modelValue
+
+]).directive("psButtonsCheckbox", ["$parse", ($parse) ->
+	"use strict"
+	restrict: "A"
+	require: "?ngModel"
+	compile: compile = (tElement, tAttrs, transclude) ->
+		tElement.attr("data-toggle", "buttons-checkbox").find("a, button").each (k, v) ->
+			$(v).attr "ps-button", ""
+
+]).directive "psButtonsRadio", ["$parse", ($parse) ->
+	"use strict"
+	restrict: "A"
+	require: "?ngModel"
+	compile: compile = (tElement, tAttrs, transclude) ->
+		tElement.attr "data-toggle", "buttons-radio"
+		
+		# Delegate to children ngModel
+		unless tAttrs.ngModel
+			tElement.find("a, button").each (k, v) ->
+				$(v).attr "ps-button", ""
+
+		postLink = (scope, iElement, iAttrs, controller) ->
+			
+			# If we have a controller (i.e. ngModelController) then wire it up
+			if controller
+				iElement.find("[value]").button().filter("[value=\"" + scope.$eval(iAttrs.ngModel) + "\"]").addClass "active"
+				iElement.on "click.button.data-api", (ev) ->
+					scope.$apply ->
+						controller.$setViewValue $(ev.target).closest("button").attr("value")
+
+
+				
+				# Watch model for changes
+				scope.$watch iAttrs.ngModel, (newValue, oldValue) ->
+					if newValue isnt oldValue
+						$btn = iElement.find("[value=\"" + scope.$eval(iAttrs.ngModel) + "\"]")
+						$.fn.button.Constructor::toggle.call $btn.data("button")  if $btn.length
+
+]
