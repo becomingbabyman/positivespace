@@ -1,14 +1,15 @@
-<div id="login" style='width: 300px;'>
-    <h4>Sign up, or Sign in</h4>
+<div id="login" style='width: 280px;'>
+    <p class='lead' ng-show='credentials.loginType == "register"'>Sign up</p>
+    <p class='lead' ng-show='credentials.loginType == "login"'>Sign in</p>
 
     <div ng-show='app.loggedIn()'>
         <h1>Oh wait. You are already signed in!</h1>
-        <button class='btn btn-danger btn-small pull-right' name='lngLogout' ng-click='logout()'>logout?</button>
+        <button class='btn btn-danger btn-small' name='lngLogout' ng-click='app.logout()'>logout?</button>
     </div>
 
     <form name='login' class='form-vertical uncenter' ng-submit='login()' ng-hide='app.loggedIn()' novalidate style='width: 100%;'> 
 
-        <control-group help-block="Don't remember? Enter your email.">
+        <control-group>
             <div class="btn-group" ng-model="credentials.loginType" ps-buttons-radio style='width: 100%'>
                 <button type="button" class="btn btn-small" value="register" style='width: 50%'>I'm new here</button>
                 <button type="button" class="btn btn-small" value="login" style='width: 50%'>I have an account</button>
@@ -47,6 +48,7 @@
             <div class='control-group'>
                 <div class='controls'>
                     <button type='submit' class='btn btn-success'>Sign in</button>
+                    <a href='#' class='pull-right' ng-click='app.resetPassword(credentials.login)'>forgot?</a>
                 </div>
             </div>
         </div>

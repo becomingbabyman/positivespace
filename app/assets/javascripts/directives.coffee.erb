@@ -123,8 +123,7 @@ psDirectives.directive 'psLogin', ["User", (User) ->
 		templateUrl: "<%= asset_path('directives/login.html') %>"
 
 		link: (scope, element, attrs) ->
-			scope.credentials = {}
-			scope.credentials.loginType = 'login'
+			scope.credentials = {loginType: 'login'}
 
 			scope.$watch 'credentials.login', (value) ->
 				if value.match(///^[a-zA-Z][a-zA-Z0-9-]*$///)?
@@ -143,10 +142,11 @@ psDirectives.directive 'psLogin', ["User", (User) ->
 				User.query
 					login: login
 					(data) ->
+						# TODO: set focus on the next logical field after form swtich
 						if data.length > 0 and registering
 							scope.credentials.loginType = 'login'
-							scope.app.flash 'info', "Looks like you already have an account. Go ahead and sign in."
 							scope.credentials.login = login
+							scope.app.flash 'info', "Looks like you already have an account. Go ahead and sign in."
 						else if data.length == 0 and !registering
 							scope.credentials.loginType = 'register'
 							scope.app.flash 'info', "Looks like you need an account. Go ahead and sign up for one."
@@ -159,12 +159,10 @@ psDirectives.directive 'psLogin', ["User", (User) ->
 						username: username
 						(data) ->
 							# TODO: put error on input field in addition to OR rather than in the flash
-							if data.length > 0 and scope.credentials.loginType = 'register' then scope.app.flash 'error', "\"#{username}\" has been taken"
+							if data.length > 0 and scope.credentials.loginType == 'register' then scope.app.flash 'error', "The username \"#{username}\" has already been taken."
 
 			scope.login = () ->
 				# TODO: why does ngModel only update when the field is valid?
-				# TODO: auto switch to login if the email address belongs to an existing user
-				# TODO: check that the username is not taken and show error if it is
 				if scope.credentials.loginType == 'register'
 					User.register
 						user:
@@ -173,6 +171,7 @@ psDirectives.directive 'psLogin', ["User", (User) ->
 							password: scope.credentials.password
 						(data) ->
 							scope.app.currentUser = data
+							scope.credentials = {loginType: 'login'}
 							scope.app.flash 'success', "Welcome. Please follow the instructions to set up your positive space."
 						(error) ->   
 							scope.app.flash 'error', error.data.errors
@@ -184,15 +183,11 @@ psDirectives.directive 'psLogin', ["User", (User) ->
 							# remember_me: rememberMe
 						(data) ->
 							scope.app.currentUser = data
-							scope.app.preLogin = {}
+							scope.credentials = {loginType: 'login'}
 							scope.app.flash 'success', "Welcome back!"
 						(error) ->
 							# TODO: put error on input field
 							scope.app.flash 'error', "Oops, that's the wrong password."
-
-			scope.logout = () ->
-			    scope.app.currentUser = User.logout()
-			    scope.app.flash 'info', "Bye, hope to see you again soon."
 
 	return directiveDefinitionObject
 ]

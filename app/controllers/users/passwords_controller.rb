@@ -1,15 +1,9 @@
 class Users::PasswordsController < Devise::PasswordsController
+	respond_to :json, :html
+	
 	prepend_before_filter :require_no_authentication
 	# Render the #edit only if coming from a reset password email link
 	append_before_filter :assert_reset_token_passed, :only => :edit
-	
-	# GET /resource/password/new
-	def new
-		build_resource({})
-		respond_to do |format|
-			format.html { render layout: false if @no_layout = params[:layout] == 'false' }
-		end
-	end
 
 	# POST /resource/password
 	def create

@@ -1,84 +1,16 @@
 <div class="container">
 	<div class="row">
 		<div class="span12">
-			<h1>home page stuff</h1>
+			</br>
+			</br>
+			</br>
 			</br>
 			
-			<button class='btn btn-danger' name='psLogout' ng-click='app.logout()'>logout</button>
-			Current User -- {{app.currentUser}}
-
-			</br>
-			</br>
-
 			<div class="row-fluid">
 				<div class="span12 center">
 					<ps-login app='app' class="display-inline-block"></ps-login>
 				</div>
 			</div>
-
-			</br>
-			</br>
-			
-			<form name='userRegister' class='form-horizontal' ng-submit='app.register()' novalidate>
-				
-				<control-group label='email'>
-					<input type='email' name='email' class='input-xlarge' ng-model='app.preLogin.email' required></input>
-				</control-group>
-
-				<control-group label='username'>
-					<input name='username' ng-model='app.preLogin.username' ng-minlength='3' ng-maxlength='30' ng-pattern='/^[a-zA-Z][a-zA-Z0-9-]*$/' required></input>
-				</control-group>
-
-				<control-group label='password' help-inline='must be 8 - 100 characters long' help-block='longer is better'>
-					<input type='password' name='password' ng-model='app.preLogin.password' ng-minlength='8' ng-maxlength='100' required></input>
-				</control-group>
-
-				<div class="control-group">
-					<div class="controls">
-						<button type='submit' class='btn btn-success'>register</button>
-					</div>
-				</div>
-			</form>
-			
-			</br>
-			<hr/>
-			</br>
-
-			<form name='userLogin' class='form-inline' ng-submit='app.login()' novalidate>
-				<control-group>
-					<input type='text' name='login' placeholder='username or email' ng-model='app.preLogin.login' required></input>
-				</control-group>
-
-				<control-group>
-					<input type='password' name='password' ng-model='app.preLogin.password' ng-minlength='8' ng-maxlength='100' required></input>
-				</control-group>
-
-				<control-group>
-					<input type='checkbox' name='rememberMe' ng-model='app.preLogin.rememberMe'></input>
-				</control-group>
-
-				<div class="control-group">
-					<div class="controls">
-						<button type='submit' class='btn btn-primary'>login</button>
-					</div>
-				</div>
-			</form>
-			
-			</br>
-			<hr/>
-			</br>
-
-			<form name='userResetPassword' class='form-vertical' ng-submit='app.resetPassword()' novalidate>
-				<control-group>
-					<input type='text' name='login' placeholder='username or email' ng-model='app.preLogin.login' required></input>
-				</control-group>
-
-				<button type='submit' class='btn btn-inverse'>reset password</button>
-			</form>
-			
-			</br>
-			</br>
-			
 
 			</br>
 			</br>

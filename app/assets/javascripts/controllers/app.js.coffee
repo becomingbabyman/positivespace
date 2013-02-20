@@ -68,35 +68,6 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "User", ($scope, $timeout, User)
     #############
     # User Auth #
     #############
-    $scope.app.register = (email = $scope.app.preLogin.email, username = $scope.app.preLogin.username, password = $scope.app.preLogin.password, rememberMe = $scope.app.preLogin.rememberMe) ->
-        # TODO: auto switch to login if the email address belongs to an existing user
-        # TODO: check that the username is not taken and show error if it is
-        User.register
-            user:
-                email: email
-                username: username
-                password: password
-                remember_me: rememberMe
-            (data) ->
-                $scope.app.currentUser = data
-                $scope.app.preLogin = {}
-                $scope.app.flash 'success', "Welcome. Please follow the instructions to set up your positive space."
-            (error) ->   
-                $scope.app.flash 'error', error.data.errors
-
-    $scope.app.login = (login = $scope.app.preLogin.login, password = $scope.app.preLogin.password, rememberMe = $scope.app.preLogin.rememberMe) ->
-        User.login
-            user:
-                login: login
-                password: password
-                remember_me: rememberMe
-            (data) ->
-                $scope.app.currentUser = data
-                $scope.app.preLogin = {}
-                $scope.app.flash 'success', "Welcome back!"
-            (error) ->
-                $scope.app.flash 'error', "Oops, that's the wrong username or password."
-
     $scope.app.logout = ->
         $scope.app.currentUser = User.logout()
         $scope.app.flash 'info', "Bye, hope to see you again soon."
