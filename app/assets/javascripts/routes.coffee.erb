@@ -8,7 +8,7 @@ ps.config ['$routeProvider', '$locationProvider', ($routeProvider, $locationProv
 	$locationProvider.html5Mode true
 	
 	$routeProvider
-	.when "/",
+	.when "/home",
 		controller: "PagesCtrl"
 		templateUrl: "<%= asset_path('pages/home.html') %>"
 	.when "/about",
@@ -20,7 +20,7 @@ ps.config ['$routeProvider', '$locationProvider', ($routeProvider, $locationProv
 	.when "/privacy",
 		controller: "PagesCtrl"
 		templateUrl: "<%= asset_path('pages/privacy.html') %>"
-	.otherwise redirectTo: "/"
+	.otherwise redirectTo: "/home"
 ]
 
 root.ps = ps

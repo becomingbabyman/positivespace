@@ -88,13 +88,14 @@ psDirectives.directive 'controlGroup', () ->
 				
 				buildErrorMsg = ->
 					errors = []
-					if scope.field.$error.required  then errors.push "Oops, #{scope.input.title} can't be blank"
+					if scope.field.$error.required	then errors.push "Oops, #{scope.input.title} can't be blank"
 					if scope.field.$error.email     then errors.push "Please enter a valid email address"
 					if scope.field.$error.url       then errors.push "Please enter a valid url, kind of like \"http://example.com\""
 					if scope.field.$error.minlength then errors.push "Keep typing, #{scope.input.title} is too short"
 					if scope.field.$error.maxlength then errors.push "Whoa, #{scope.input.title} is too long"
-					if scope.field.$error.pattern   then errors.push "Whoops, #{scope.input.title} is in the wrong format"
-					scope.field.errorMessage = errors.join(', ')
+					if scope.field.$error.pattern	then errors.push "Whoops, #{scope.input.title} is in the wrong format"
+					if scope.field.$error.usernameTaken   then errors.push "Sorry, this #{scope.input.title} is taken"
+					scope.field.errorMessage = errors.join('. ')
 				
 				if scope.field?
 					buildErrorMsg() 
@@ -115,7 +116,7 @@ psDirectives.directive 'controlGroup', () ->
 ####################################################
 ####################################################
 # <login>
-psDirectives.directive 'psLogin', ["User", (User) ->
+psDirectives.directive 'psLogin', ["$timeout", "User", ($timeout, User) ->
 	directiveDefinitionObject =
 		restrict: 'E'
 		scope:
@@ -124,6 +125,8 @@ psDirectives.directive 'psLogin', ["User", (User) ->
 
 		link: (scope, element, attrs) ->
 			scope.credentials = {loginType: 'login'}
+			scope.usernameTaken = true
+
 
 			scope.$watch 'credentials.login', (value) ->
 				if value.match(///^[a-zA-Z][a-zA-Z0-9-]*$///)?
@@ -142,27 +145,38 @@ psDirectives.directive 'psLogin', ["User", (User) ->
 				User.query
 					login: login
 					(data) ->
-						# TODO: set focus on the next logical field after form swtich
 						if data.length > 0 and registering
 							scope.credentials.loginType = 'login'
 							scope.credentials.login = login
 							scope.app.flash 'info', "Looks like you already have an account. Go ahead and sign in."
+							$timeout () ->
+								element.find('#lgn_password').focus()
+							, 300
 						else if data.length == 0 and !registering
 							scope.credentials.loginType = 'register'
 							scope.app.flash 'info', "Looks like you need an account. Go ahead and sign up for one."
+							$timeout () ->
+								if _.isEmpty(scope.credentials.email)
+									element.find('#reg_email').focus()
+								else
+									element.find('#reg_username').focus()
+							, 300
 
 			
-			scope.checkUsername = () ->
-				if scope.credentials.loginType = 'register'
-					username = scope.credentials.username
+			scope.checkUsername = (username = scope.credentials.username) ->
+				if scope.credentials.loginType == 'register'
 					User.query
 						username: username
 						(data) ->
-							# TODO: put error on input field in addition to OR rather than in the flash
-							if data.length > 0 and scope.credentials.loginType == 'register' then scope.app.flash 'error', "The username \"#{username}\" has already been taken."
+							if data.length > 0 and scope.credentials.loginType == 'register'
+								scope.usernameTaken = false
+							else
+								scope.usernameTaken = true
+				else
+					scope.usernameTaken = true
 
 			scope.login = () ->
-				# TODO: why does ngModel only update when the field is valid?
+				# TODO: why does ngModel only update on the scope when the field is valid?
 				if scope.credentials.loginType == 'register'
 					User.register
 						user:
@@ -172,7 +186,7 @@ psDirectives.directive 'psLogin', ["User", (User) ->
 						(data) ->
 							scope.app.currentUser = data
 							scope.credentials = {loginType: 'login'}
-							scope.app.flash 'success', "Welcome. Please follow the instructions to set up your positive space."
+							scope.app.flash 'success', "Welcome. Please follow the instructions to complete and launch your PositiveSpace."
 						(error) ->   
 							scope.app.flash 'error', error.data.errors
 				else

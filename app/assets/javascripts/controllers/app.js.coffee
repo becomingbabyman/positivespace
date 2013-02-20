@@ -5,7 +5,6 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "User", ($scope, $timeout, User)
     ######################
     $scope.app = {}
     $scope.app.currentUser = {}
-    $scope.app.preLogin = {rememberMe: true}
     $scope.app.year = (new Date).getFullYear()
     $scope.app.templates =
         header:
@@ -72,18 +71,15 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "User", ($scope, $timeout, User)
         $scope.app.currentUser = User.logout()
         $scope.app.flash 'info', "Bye, hope to see you again soon."
 
-    $scope.app.resetPassword = (login = $scope.app.preLogin.login) ->
-        # TODO: display success notification
-        # TODO: display error notifications
+    $scope.app.resetPassword = (login) ->
         # TODO: handle the reset password link page in angular
         User.resetPassword
             user:
                 login: login
             (data) ->
-                $scope.app.preLogin = {}
-                $scope.app.flash 'info', "Check your inbox (and spam folder) for password reset instructions. They should arrive in less than a minute." 
+                $scope.app.flash 'info', "Check your inbox (including your spam folder) for password reset instructions. They should arrive in less than a minute." 
             (error) ->
-                $scope.app.flash 'error', error.data.errors
+                $scope.app.flash 'error', "We're sorry, your <em>email or username</em> is not registered. Try signing up first."
 
 
 ]

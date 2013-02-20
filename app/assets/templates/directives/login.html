@@ -3,7 +3,7 @@
     <p class='lead' ng-show='credentials.loginType == "login"'>Sign in</p>
 
     <div ng-show='app.loggedIn()'>
-        <h1>Oh wait. You are already signed in!</h1>
+        <h1>Oh wait. You're already in!</h1>
         <button class='btn btn-danger btn-small' name='lngLogout' ng-click='app.logout()'>logout?</button>
     </div>
 
@@ -18,11 +18,11 @@
 
         <div ng-show='credentials.loginType == "register"'>
             <control-group>
-                <input type='email' name='email' placeholder='email' class='input-block-level' ng-model='credentials.email' ui-event='{blur: "checkLogin()"}' required></input>
+                <input type='email' name='email' id='reg_email' placeholder='email' class='input-block-level' ng-model='credentials.email' ui-event='{blur: "checkLogin()"}' required></input>
             </control-group>
 
             <control-group>
-                <input type='text' name='username' class='input-block-level' ng-model='credentials.username' ng-minlength='3' ng-maxlength='30' ng-pattern='/^[a-zA-Z][a-zA-Z0-9-]*$/' ui-event='{keyup: "checkUsername()"}' required></input>
+                <input type='text' name='username' id='reg_username' class='input-block-level' ng-model='credentials.username' ng-minlength='3' ng-maxlength='30' ng-pattern='/^[a-zA-Z][a-zA-Z0-9-]*$/' ui-event='{keyup: "checkUsername($value)"}' ui-validate='{usernameTaken: "usernameTaken"}' ui-validate-watch='"usernameTaken"' required></input>
             </control-group>
 
             <control-group>
@@ -42,7 +42,7 @@
             </control-group>
 
             <control-group>
-                <input type='password' name='lgnPassword' placeholder='password' class='input-block-level' ng-model='credentials.password' ng-minlength='8' ng-maxlength='100' required></input>
+                <input type='password' name='lgn_password' id='lgn_password' placeholder='password' class='input-block-level' ng-model='credentials.password' ng-minlength='8' ng-maxlength='100' required></input>
             </control-group>
 
             <div class='control-group'>
