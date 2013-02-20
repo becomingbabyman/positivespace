@@ -77,9 +77,9 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "User", ($scope, $timeout, User)
             user:
                 login: login
             (data) ->
-                $scope.app.flash 'info', "Check your inbox (including your spam folder) for password reset instructions. They should arrive in less than a minute." 
+                $scope.app.flash 'info', "Check your inbox (including your spam folder) for password reset instructions. The email should arrive in less than a minute." 
             (error) ->
-                $scope.app.flash 'error', "We're sorry, your <em>email or username</em> is not registered. Try signing up first."
+                $scope.app.flash 'error', "We're sorry, your <em>email or username</em> is not registered. You should request an invite!"
 
 
 ]

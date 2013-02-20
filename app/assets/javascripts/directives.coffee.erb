@@ -138,6 +138,9 @@ psDirectives.directive 'psLogin', ["$timeout", "User", ($timeout, User) ->
 				
 
 			scope.checkLogin = () ->
+				# TODO: don't change the loginType when "forgot?" is clicked
+				# TODO: change forgot to "forgot your password?"
+				# TODO: prompt user to input email or username on forgot? failure to find account
 				if registering = scope.credentials.loginType == 'register'
 					login = scope.credentials.email
 				else

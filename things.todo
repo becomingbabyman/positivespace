@@ -19,8 +19,7 @@ Design:
 --- ✄ -----------------------
 --- ✄ -----------------------
 In Progress:
-
- ☐ get angular router to route away from "/" if it's currently on "/" and a link is clicked
+ ☐ Make contact with a bunch of potential mentors in: email, marketing, and collaboration
 
 --- ✄ -----------------------
 --- ✄ -----------------------
@@ -34,6 +33,7 @@ Live:
 
 
 Archive:
+ ✔ get angular router to route away from "/" if it's currently on "/" and a link is clicked @done (13-02-20 08:16)
  ✔ fix the google apps email MX records   ---   http://support.launchrock.com/knowledgebase/articles/137598-a-record-general-instructions-for-editing-your-a-    ---     https://toolbox.googleapps.com/apps/checkmx/check?domain=positivespace.io @done (13-02-17 22:04)
  ✔ add footer w tos and pp @done (13-02-17 18:10)
  ✔ flash messages should be fixed to the top right of the screen like apple notifications @done (13-02-17 18:10)
