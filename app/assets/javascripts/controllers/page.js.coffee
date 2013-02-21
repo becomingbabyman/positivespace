@@ -1,2 +1,2 @@
-ps.controller "PagesCtrl", ($scope) ->
+ps.controller "PagesCtrl", () ->
 	# TODO
