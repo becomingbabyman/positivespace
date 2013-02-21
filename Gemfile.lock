@@ -104,7 +104,6 @@ GEM
     exception_notification (3.0.0)
       actionmailer (>= 3.0.4)
       tinder (~> 1.8)
-    excon (0.16.10)
     execjs (1.4.0)
       multi_json (~> 1.0)
     facter (1.6.17)
@@ -152,14 +151,6 @@ GEM
       railties (>= 3.1, < 4.1)
     has_scope (0.5.1)
     hashie (1.2.0)
-    heroku (2.34.0)
-      heroku-api (~> 0.3.7)
-      launchy (>= 0.3.2)
-      netrc (~> 0.7.7)
-      rest-client (~> 1.6.1)
-      rubyzip
-    heroku-api (0.3.7)
-      excon (~> 0.16.10)
     highline (1.6.15)
     hike (1.2.1)
     html5-rails (0.0.6)
@@ -207,7 +198,6 @@ GEM
     multi_json (1.5.0)
     multipart-post (1.1.5)
     nested_form (0.3.1)
-    netrc (0.7.7)
     nokogiri (1.5.6)
     oauth2 (0.8.0)
       faraday (~> 0.8)
@@ -305,8 +295,6 @@ GEM
     remotipart (1.0.2)
     responders (0.9.3)
       railties (~> 3.1)
-    rest-client (1.6.7)
-      mime-types (>= 1.16)
     rspec (2.12.0)
       rspec-core (~> 2.12.0)
       rspec-expectations (~> 2.12.0)
@@ -439,7 +427,6 @@ DEPENDENCIES
   guard-spork
   haml-rails
   has_scope
-  heroku
   html5-rails
   inherited_resources
   jquery-rails

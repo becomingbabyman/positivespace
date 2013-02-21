@@ -101,7 +101,6 @@ end
 
 group :development do
   gem 'pry'
-  gem 'heroku'
   gem 'letter_opener'
   gem 'guard'
   gem 'guard-spork'
