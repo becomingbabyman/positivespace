@@ -1,7 +1,7 @@
-class Users::RegistrationsController < Devise::RegistrationsController
-	
-	respond_to :json, :html
-	
+class Api::V1::Users::RegistrationsController < Devise::RegistrationsController
+
+	respond_to :json
+
 	# GET /resource/sign_up
 	# def new
 	#	# @invitation = Invitation.find_by_id(session[:invitation_id])
@@ -20,7 +20,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
 		# resource.invitation_id = session[:invitation_id]
 		# resource.invitation_code = session[:invitation_code]
-		
+
 		# TODO: get this to work with angular
 		# to track referral source
 		# utmz = cookies["__utmz"]
@@ -51,3 +51,4 @@ class Users::RegistrationsController < Devise::RegistrationsController
 	end
 
 end
+

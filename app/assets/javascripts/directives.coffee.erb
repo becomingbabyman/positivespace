@@ -2,6 +2,24 @@ psDirectives = angular.module 'psDirectives', []
 
 
 ####################################################
+# <div center>
+psDirectives.directive 'center', () ->
+	directiveDefinitionObject =
+		restrict: 'A'
+		template: "<div ng-transclude></div>"
+		transclude: true
+
+		link: (scope, element, attrs) ->
+			parent = attrs.parent or 'body'
+			element.position
+				my: "center"
+				at: "center"
+				of: $(parent)
+
+	return directiveDefinitionObject
+
+
+####################################################
 ####################################################
 # Form Directives
 # Notes:
@@ -26,7 +44,7 @@ fieldDirectiveDefinitionObject =
 		unless attrs.title? then attrs.$set 'title', (attrs.placeholder or attrs.name)
 		unless attrs.id? then attrs.$set 'id', _.uniqueId("#{attrs.name}_")
 		# attrs.$set 'name', (attrs.name or attrs.placeholder.replace(///^\s+|\s+$///g, '').split(' ').join('-'))
-		
+
 		unless attrs.placeholder? then attrs.$set 'placeholder', attrs.name
 		# TODO: jLabel does not work with response inputs that can update other inputs. Decide if we want cross browser compatibility enough to use jLabel. Or roll your own directive.
 		# set placeholder - if jLabel is availible use it instead
@@ -34,7 +52,7 @@ fieldDirectiveDefinitionObject =
 		#     if _.isFunction element.jLabel
 		#         element.jLabel({ speed : 200, opacity : 0.4 })
 		#         attrs.$set 'placeholder', ''
-		#     else if !attrs.placeholder? 
+		#     else if !attrs.placeholder?
 		#         attrs.$set 'placeholder', attrs.name
 
 psDirectives.directive 'input', () ->
@@ -44,7 +62,7 @@ psDirectives.directive 'select', () ->
 	return fieldDirectiveDefinitionObject
 
 psDirectives.directive 'textarea', () ->
-	return fieldDirectiveDefinitionObject  
+	return fieldDirectiveDefinitionObject
 
 
 ##########################
@@ -84,8 +102,8 @@ psDirectives.directive 'controlGroup', () ->
 				scope.input.name = inputEl.attr('name')
 				scope.input.title = inputEl.attr('title')
 
-				scope.field = formController[scope.input.name]	
-				
+				scope.field = formController[scope.input.name]
+
 				buildErrorMsg = ->
 					errors = []
 					if scope.field.$error.required	then errors.push "Oops, #{scope.input.title} can't be blank"
@@ -96,9 +114,9 @@ psDirectives.directive 'controlGroup', () ->
 					if scope.field.$error.pattern	then errors.push "Whoops, #{scope.input.title} is in the wrong format"
 					if scope.field.$error.usernameTaken   then errors.push "Sorry, this #{scope.input.title} is taken"
 					scope.field.errorMessage = errors.join('. ')
-				
+
 				if scope.field?
-					buildErrorMsg() 
+					buildErrorMsg()
 					scope.$watch 'field.$error', (() -> buildErrorMsg()), true
 
 				# set 'focused' class on control-group
@@ -124,7 +142,7 @@ psDirectives.directive 'psLogin', ["$timeout", "User", ($timeout, User) ->
 		templateUrl: "<%= asset_path('directives/login.html') %>"
 
 		link: (scope, element, attrs) ->
-			scope.credentials = {loginType: 'login'}
+			scope.credentials = {loginType: attrs.loginType}
 			scope.usernameTaken = true
 
 
@@ -135,7 +153,6 @@ psDirectives.directive 'psLogin', ["$timeout", "User", ($timeout, User) ->
 				else
 					scope.credentials.email = value
 					scope.credentials.username = ''
-				
 
 			scope.checkLogin = () ->
 				# TODO: don't change the loginType when "forgot?" is clicked
@@ -165,7 +182,6 @@ psDirectives.directive 'psLogin', ["$timeout", "User", ($timeout, User) ->
 									element.find('#reg_username').focus()
 							, 300
 
-			
 			scope.checkUsername = (username = scope.credentials.username) ->
 				if scope.credentials.loginType == 'register'
 					User.query
@@ -184,13 +200,13 @@ psDirectives.directive 'psLogin', ["$timeout", "User", ($timeout, User) ->
 					User.register
 						user:
 							email: scope.credentials.email
-							username: scope.credentials.username
 							password: scope.credentials.password
+							username: scope.credentials.username
 						(data) ->
 							scope.app.currentUser = data
 							scope.credentials = {loginType: 'login'}
-							scope.app.flash 'success', "Welcome. Please follow the instructions to complete and launch your PositiveSpace."
-						(error) ->   
+							scope.app.flash 'success', "Welcome. Let's create your PositiveSpace!"
+						(error) ->
 							scope.app.flash 'error', error.data.errors
 				else
 					User.login
@@ -282,14 +298,14 @@ psDirectives.directive("psButton", ["$parse", "$timeout", ($parse, $timeout) ->
 	require: "?ngModel"
 	compile: compile = (tElement, tAttrs, transclude) ->
 		tElement.attr "data-toggle", "buttons-radio"
-		
+
 		# Delegate to children ngModel
 		unless tAttrs.ngModel
 			tElement.find("a, button").each (k, v) ->
 				$(v).attr "ps-button", ""
 
 		postLink = (scope, iElement, iAttrs, controller) ->
-			
+
 			# If we have a controller (i.e. ngModelController) then wire it up
 			if controller
 				iElement.find("[value]").button().filter("[value=\"" + scope.$eval(iAttrs.ngModel) + "\"]").addClass "active"
@@ -298,7 +314,7 @@ psDirectives.directive("psButton", ["$parse", "$timeout", ($parse, $timeout) ->
 						controller.$setViewValue $(ev.target).closest("button").attr("value")
 
 
-				
+
 				# Watch model for changes
 				scope.$watch iAttrs.ngModel, (newValue, oldValue) ->
 					if newValue isnt oldValue

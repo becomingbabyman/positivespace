@@ -1,7 +1,7 @@
 <div ui-if='!_.isEmpty(app.alerts.length)' class="container">
 	<div class="row">
 		<div class="offset6 span6">
-			<alert ng-repeat="(id, alert) in app.alerts" type="alert.type" close="app.closeAlert(id)"><span ng-bind-html-unsafe='alert.msg'></span></alert>
+			<alert ng-repeat="(id, alert) in app.alerts" type="alert.type" close="app.closeAlert(id)"><span ng-bind-html-unsafe='alert.msg'>{{alert.msg}}</span></alert>
 		</div>
 	</div>
 </div>

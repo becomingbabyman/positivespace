@@ -1,4 +1,5 @@
-class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
+class Api::V1::Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
+	respond_to :json
 
 	def facebook
 		@user = User.find_for_facebook(env["omniauth.auth"].extra.raw_info, current_user, session[:invitation_id], session[:invitation_code])
@@ -8,7 +9,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 		if @user.persisted?
 			# session.delete(:invitation_id)
 			# session.delete(:invitation_code)
-			
+
 			sign_in @user, :event => :authentication
 			# analytical.identify(@user.id, { name: @user.username } )
 

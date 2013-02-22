@@ -1,5 +1,5 @@
 class PagesController < ApplicationController
-	
+
 	def home
 		render :layout => 'angular'
 	end

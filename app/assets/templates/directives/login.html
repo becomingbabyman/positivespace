@@ -1,18 +1,21 @@
 <div id="login" style='width: 280px;'>
-    <p class='lead' ng-show='credentials.loginType == "register"'>Sign up</p>
-    <p class='lead' ng-show='credentials.loginType == "login"'>Sign in</p>
+
+    <a href="/" class='unfancy-link'>
+        <h1>Positive Space</h1>
+    </a>
+    <br/>
 
     <div ng-show='app.loggedIn()'>
         <h1>Oh wait. You're already in!</h1>
         <button class='btn btn-danger btn-small' name='lngLogout' ng-click='app.logout()'>logout?</button>
     </div>
 
-    <form name='login' class='form-vertical uncenter' ng-submit='login()' ng-hide='app.loggedIn()' novalidate style='width: 100%;'> 
+    <form name='login' class='form-vertical uncenter' ng-submit='login()' ng-hide='app.loggedIn()' novalidate style='width: 100%;'>
 
         <control-group>
             <div class="btn-group" ng-model="credentials.loginType" ps-buttons-radio style='width: 100%'>
                 <button type="button" class="btn btn-small" value="register" style='width: 50%'>I'm new here</button>
-                <button type="button" class="btn btn-small" value="login" style='width: 50%'>I have an account</button>
+                <button type="button" class="btn btn-small" value="login" style='width: 50%'>You know me</button>
             </div>
         </control-group>
 
@@ -22,34 +25,37 @@
             </control-group>
 
             <control-group>
-                <input type='text' name='username' id='reg_username' class='input-block-level' ng-model='credentials.username' ng-minlength='3' ng-maxlength='30' ng-pattern='/^[a-zA-Z][a-zA-Z0-9-]*$/' ui-event='{keyup: "checkUsername($value)"}' ui-validate='{usernameTaken: "usernameTaken"}' ui-validate-watch='"usernameTaken"' required></input>
+                <input type='password' name='password' placeholder='new password' class='input-block-level' ng-model='credentials.password' ng-minlength='8' ng-maxlength='100' required></input>
             </control-group>
 
             <control-group>
-                <input type='password' name='password' class='input-block-level' ng-model='credentials.password' ng-minlength='8' ng-maxlength='100' required></input>
+                <input type='text' name='username' id='reg_username' class='input-block-level' ng-model='credentials.username' ng-minlength='3' ng-maxlength='30' ng-pattern='/^[a-zA-Z][a-zA-Z0-9-]*$/' ui-event='{keyup: "checkUsername($value)"}' ui-validate='{usernameTaken: "usernameTaken"}' ui-validate-watch='"usernameTaken"' required></input>
             </control-group>
 
             <div class='control-group'>
                 <div class='controls'>
-                    <button type='submit' class='btn btn-success'>Sign up</button>
+                    <button type='submit' class='btn btn-success btn-block btn-large'>Start</button>
                 </div>
             </div>
         </div>
 
         <div ng-show='credentials.loginType == "login"'>
             <control-group>
-                <input type='text' name='login' placeholder='email or username' class='input-block-level' ng-model='credentials.login' ui-event='{blur: "checkLogin()"}' required ng-minlength='3'></input>
+                <input type='text' name='login' placeholder='email or username' class='input-block-level' ng-model='credentials.login' required ng-minlength='3'></input>
             </control-group>
 
             <control-group>
-                <input type='password' name='lgn_password' id='lgn_password' placeholder='password' class='input-block-level' ng-model='credentials.password' ng-minlength='8' ng-maxlength='100' required></input>
+                <input type='password' name='lgn_password' id='lgn_password' placeholder='password' class='input-block-level' ng-model='credentials.password' ui-event='{focus: "checkLogin()"}' ng-minlength='8' ng-maxlength='100' required></input>
             </control-group>
 
             <div class='control-group'>
                 <div class='controls'>
-                    <button type='submit' class='btn btn-success'>Sign in</button>
-                    <a href='#' class='pull-right' ng-click='app.resetPassword(credentials.login)'>forgot?</a>
+                    <button type='submit' class='btn btn-success btn-block btn-large'>Log in</button>
                 </div>
+            </div>
+
+            <div class='control-group center'>
+                <a href='#' class='unfancy-link' ng-click='app.resetPassword(credentials.login)'>Password help?</a>
             </div>
         </div>
 

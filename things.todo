@@ -5,17 +5,16 @@ Ideas:
  ☐ add option to control-group directive to display errors as 'tooltip', 'inline', or 'block'
  ☐ add option to control-group directive to display 'info' and 'warning' colors. make the colors work on the tooltips as well
  ☐ add option to display server errors in control-group directive
+ ☐ add option to display error tooltips in control-group on focus or blur of the input
 
 Backlog:
  ☐ to sign up you need to request an invite through a +_ pitch form
  ☐ angularize the change password page
- ☐ display error and success messages for "send reset password"
- ☐ put up staging server
 
 Design:
  ☐ landing page mockup
  ☐ new user flow drawing / mockup
- 
+
 --- ✄ -----------------------
 --- ✄ -----------------------
 In Progress:
@@ -33,6 +32,8 @@ Live:
 
 
 Archive:
+ ✔ display error and success messages for "send reset password" @done (13-02-20 22:10)
+ ✔ put up staging server @done (13-02-20 22:10)
  ✔ get angular router to route away from "/" if it's currently on "/" and a link is clicked @done (13-02-20 08:16)
  ✔ fix the google apps email MX records   ---   http://support.launchrock.com/knowledgebase/articles/137598-a-record-general-instructions-for-editing-your-a-    ---     https://toolbox.googleapps.com/apps/checkmx/check?domain=positivespace.io @done (13-02-17 22:04)
  ✔ add footer w tos and pp @done (13-02-17 18:10)

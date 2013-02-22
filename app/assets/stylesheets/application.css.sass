@@ -63,18 +63,20 @@ form
         position: relative
 
 input
-    &::-webkit-input-placeholder 
+    &::-webkit-input-placeholder
         color: #bbb
 
-    &:-moz-placeholder 
+    &:-moz-placeholder
         color: #bbb
 
-    &:focus::-webkit-input-placeholder 
+    &:focus::-webkit-input-placeholder
         color: #ddd
 
-    &:focus:-moz-placeholder 
+    &:focus:-moz-placeholder
         color: #ddd
 
+.navbar
+    margin: 0
 
 .navbar-inner
     @include background(none)
@@ -84,7 +86,6 @@ input
     // @include background(image_url("noisy-texture-200x200-o7-d26-c-4F2958-t1.png"), linear-gradient(top, lighten($color-background, 5%), $color-background))
     // border-bottom: 1px solid darken($color-background, 10%)
     // @include box-shadow(rgba(0, 0, 0, 0.075) 0 2px 0)
-
 
 
 //////////////////////////////////////////////////////
@@ -142,21 +143,21 @@ input
                 @include box-shadow(rgba(#fff, 0.3) 0 1px 0 0 inset)
                 border: 1px solid $color-negative
                 @include text-shadow(rgba(#000, 0.3) 1px 1px 0)
-                &:after, &:before 
+                &:after, &:before
                     top: 100%
                     border: solid transparent
                     content: " "
                     height: 0
                     width: 0
                     position: absolute
-                    pointer-events: none        
-                &:after 
+                    pointer-events: none
+                &:after
                     border-color: rgba(240, 78, 60, 0)
                     border-top-color: $color-negative
                     border-width: 7px
                     left: 13px
-                    margin-left: -7px       
-                &:before 
+                    margin-left: -7px
+                &:before
                     border-color: rgba(237, 46, 56, 0)
                     border-top-color: darken($color-negative, 3%)
                     border-width: 8px

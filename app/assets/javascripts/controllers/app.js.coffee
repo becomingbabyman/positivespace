@@ -1,5 +1,5 @@
 ps.controller "AppCtrl", ["$scope", "$timeout", "User", ($scope, $timeout, User) ->
-    
+
     ######################
     # App Initialization #
     ######################
@@ -14,43 +14,65 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "User", ($scope, $timeout, User)
             url: "/assets/app/flash.html"
         footer:
             url: "/assets/app/footer.html"
+    $scope.app.show =
+        header: true
+        footer: true
 
     # TODO: bootstrap this data on the angular.html.haml template and only request it if no bootstrap is found
     $scope.app.currentUser = User.current()
 
-
     $scope.app.loggedIn = ->
         !_.isEmpty($scope.app.currentUser)
+
+    #############
+    # Hide/Show #
+    #############
+    $scope.app.show.allChrome = ->
+        $scope.app.show.header = true
+        $scope.app.show.footer = true
+
+    $scope.app.show.noChrome = ->
+        $scope.app.show.header = false
+        $scope.app.show.footer = false
+
 
     #########
     # Flash #
     #########
     $scope.app.alerts = {}
-    $scope.app.flash = (type, msg, key=null, clear=true) ->
-        if clear then $scope.app.alerts = {}
+    $scope.app.flash = (type, msg, options={}) ->
+        key = options.key or null
+        sticky = if options.sticky == false then false else true
+        clearAll = if options.clearAll == false then false else true
+
+        if clearAll then $scope.app.alerts = {}
+
         if _.isString(msg)
             if key? then msg = [key, msg].join(" ")
             id = _.uniqueId('flash_')
             $scope.app.alerts[id] = {type: "#{type} animated fadeInRightBig", msg: msg}
-            # rm animated styles once it's loaded - they cause it to reanimate when another alert is deleted 
+            # rm animated styles once it's loaded - they cause it to reanimate when another alert is deleted
             $timeout () ->
-                $scope.app.alerts[id].type = $scope.app.alerts[id].type.split(" ")[0]
+                if $scope.app.alerts[id]?
+                    $scope.app.alerts[id].type = $scope.app.alerts[id].type.split(" ")[0]
             ,1000
             # auto close the alert after a bit of time
-            time = (111 * msg.length) + (2000 * _.keys($scope.app.alerts).length)
-            $timeout () ->
-                $scope.app.closeAlert(id, true)
-            ,time
+            unless sticky
+                time = 2222 + (111 * msg.length) + (2000 * _.keys($scope.app.alerts).length)
+                $timeout () ->
+                    $scope.app.closeAlert(id, true)
+                ,time
         else if _.isArray(msg)
             _.each msg, (m, i) ->
-                $scope.app.flash(type, m, key, false)
+                $scope.app.flash(type, m, {key: key, clearAll: false})
         else if _.isObject(msg)
             i = 0
             _.each msg, (v, k) ->
                 $timeout () ->
-                    $scope.app.flash(type, v, k, false)
+                    $scope.app.flash(type, v, {key: k, clearAll: false})
                 , 300*i
                 i += 1
+
     $scope.app.closeAlert = (id, fade=false) ->
         if $scope.app.alerts[id]?
             type = $scope.app.alerts[id].type.split(" ")[0]
@@ -61,7 +83,6 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "User", ($scope, $timeout, User)
                 ,444
             else
                 delete $scope.app.alerts[id]
-            
 
 
     #############
@@ -77,9 +98,9 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "User", ($scope, $timeout, User)
             user:
                 login: login
             (data) ->
-                $scope.app.flash 'info', "Check your inbox (including your spam folder) for password reset instructions. The email should arrive in less than a minute." 
+                $scope.app.flash 'info', "Check your inbox (including your spam folder) for password reset instructions. The email should arrive in less than a minute.", {sticky: true}
             (error) ->
-                $scope.app.flash 'error', "We're sorry, your <em>email or username</em> is not registered. You should request an invite!"
+                $scope.app.flash 'error', "Sorry, that <em>email address or username</em> is not registered with us. Please try again or <a href='/register' class='unfancy-link'>request a new account</a>."
 
 
 ]

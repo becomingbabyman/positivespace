@@ -1,2 +1,3 @@
-ps.controller "PagesCtrl", () ->
-	# TODO
+ps.controller "PagesCtrl", ["$scope", ($scope) ->
+	$scope.app.show.allChrome()
+]

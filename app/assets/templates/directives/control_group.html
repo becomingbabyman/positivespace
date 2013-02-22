@@ -15,7 +15,7 @@
             {{helpBlock}}
         </p>
 
-        <div ui-if='field.$invalid' class="error-message">
+        <div ui-if='field.$invalid && field.$dirty' class="error-message">
             <div class="inner">
                 {{field.errorMessage}}
             </div>

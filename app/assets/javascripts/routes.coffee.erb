@@ -6,17 +6,23 @@ ps = angular.module "ps", ['ui', 'ui.bootstrap', 'ngCookies', 'psDirectives', 'p
 ps.config ['$routeProvider', '$locationProvider', ($routeProvider, $locationProvider) ->
 	#$locationProvider.hashPrefix('');
 	$locationProvider.html5Mode true
-	
+
 	$routeProvider
 	.when "/",
 		controller: "PagesCtrl"
 		templateUrl: "<%= asset_path('pages/home.html') %>"
+	.when "/login",
+		controller: "UsersCtrl"
+		templateUrl: "<%= asset_path('users/login.html') %>"
+	.when "/register",
+		controller: "UsersCtrl"
+		templateUrl: "<%= asset_path('users/register.html') %>"
 	.when "/about",
 		controller: "PagesCtrl"
 		templateUrl: "<%= asset_path('pages/about.html') %>"
-	.when "/tos",
+	.when "/terms",
 		controller: "PagesCtrl"
-		templateUrl: "<%= asset_path('pages/tos.html') %>"
+		templateUrl: "<%= asset_path('pages/terms.html') %>"
 	.when "/privacy",
 		controller: "PagesCtrl"
 		templateUrl: "<%= asset_path('pages/privacy.html') %>"

@@ -21,7 +21,7 @@ Positivespace::Application.configure do
   config.assets.digest = true
 
   # Set Mailer Host
-  config.action_mailer.default_url_options = { :host => 'www.positivespace.io' }
+  config.action_mailer.default_url_options = { :host => 'positivespace.io' }
 
   # Defaults to nil and saved in location specified by config.assets.prefix
   # config.assets.manifest = YOUR_PATH

@@ -1,7 +1,7 @@
 psServices = angular.module 'psServices', ['ngResource']
 
 psServices.factory 'User', ['$resource', ($resource) ->
-	User = $resource "/users/:listCtrl/:id/:docCtrl.json", 
+	User = $resource "api/users/:listCtrl/:id/:docCtrl",
 		id: '@id'
 		listCtrl: '@listCtrl'
 		docCtrl: '@docCtrl'
