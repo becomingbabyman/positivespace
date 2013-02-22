@@ -42,7 +42,7 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "User", ($scope, $timeout, User)
     $scope.app.alerts = {}
     $scope.app.flash = (type, msg, options={}) ->
         key = options.key or null
-        sticky = if options.sticky == false then false else true
+        sticky = if options.sticky == true then true else false
         clearAll = if options.clearAll == false then false else true
 
         if clearAll then $scope.app.alerts = {}

@@ -2,10 +2,10 @@ object @user
 
 attributes :id, :username
 
-if @user == current_user
+if !@users and @user == current_user
 	attributes :email
 end
 
 node(:url) do |user|
-	"#{root_url}#{user.username}.json" rescue nil
+	"#{root_url}api/#{user.username}.json" rescue nil
 end

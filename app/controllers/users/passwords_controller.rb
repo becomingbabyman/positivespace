@@ -1,4 +1,4 @@
-class Api::V1::Users::PasswordsController < Devise::PasswordsController
+class Users::PasswordsController < Devise::PasswordsController
 	respond_to :json
 
 	prepend_before_filter :require_no_authentication

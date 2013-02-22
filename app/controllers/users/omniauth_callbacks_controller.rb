@@ -1,4 +1,4 @@
-class Api::V1::Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
+class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 	respond_to :json
 
 	def facebook
