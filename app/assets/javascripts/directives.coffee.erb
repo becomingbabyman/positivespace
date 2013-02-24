@@ -2,24 +2,6 @@ psDirectives = angular.module 'psDirectives', []
 
 
 ####################################################
-# <div center>
-psDirectives.directive 'center', () ->
-	directiveDefinitionObject =
-		restrict: 'A'
-		template: "<div ng-transclude></div>"
-		transclude: true
-
-		link: (scope, element, attrs) ->
-			parent = attrs.parent or 'body'
-			element.position
-				my: "center"
-				at: "center"
-				of: $(parent)
-
-	return directiveDefinitionObject
-
-
-####################################################
 ####################################################
 # Form Directives
 # Notes:
@@ -86,6 +68,7 @@ psDirectives.directive 'controlGroup', () ->
 			helpBlock: '@'
 		templateUrl: "<%= asset_path('directives/control_group.html') %>"
 		transclude: true
+		replace: true
 		require: '?^form'
 
 		compile: (element, attrs) ->
@@ -146,6 +129,9 @@ psDirectives.directive 'psLogin', ["$timeout", "User", ($timeout, User) ->
 			scope.usernameTaken = true
 
 
+			scope.$watch 'credentials.loginType', (value) ->
+				element.find(".#{value} input")[0].focus()
+
 			scope.$watch 'credentials.login', (value) ->
 				if value.match(///^[a-zA-Z][a-zA-Z0-9-]*$///)?
 					scope.credentials.username = value
@@ -155,8 +141,6 @@ psDirectives.directive 'psLogin', ["$timeout", "User", ($timeout, User) ->
 					scope.credentials.username = ''
 
 			scope.checkLogin = () ->
-				# TODO: don't change the loginType when "forgot?" is clicked
-				# TODO: change forgot to "forgot your password?"
 				# TODO: prompt user to input email or username on forgot? failure to find account
 				if registering = scope.credentials.loginType == 'register'
 					login = scope.credentials.email
@@ -168,18 +152,18 @@ psDirectives.directive 'psLogin', ["$timeout", "User", ($timeout, User) ->
 						if data.length > 0 and registering
 							scope.credentials.loginType = 'login'
 							scope.credentials.login = login
-							scope.app.flash 'info', "Looks like you already have an account. Go ahead and sign in."
+							scope.app.flash 'info', "Looks like you already have an account. Go ahead and log in."
 							$timeout () ->
 								element.find('#lgn_password').focus()
 							, 300
 						else if data.length == 0 and !registering
 							scope.credentials.loginType = 'register'
-							scope.app.flash 'info', "Looks like you need an account. Go ahead and sign up for one."
+							scope.app.flash 'info', "Looks like you need an account. Go ahead and start one."
 							$timeout () ->
 								if _.isEmpty(scope.credentials.email)
 									element.find('#reg_email').focus()
 								else
-									element.find('#reg_username').focus()
+									element.find('#reg_password').focus()
 							, 300
 
 			scope.checkUsername = (username = scope.credentials.username) ->

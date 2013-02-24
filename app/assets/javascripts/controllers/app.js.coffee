@@ -101,7 +101,7 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "User", ($scope, $timeout, User)
                 $scope.app.flash 'info', "Check your inbox (including your spam folder) for password reset instructions. The email should arrive in less than a minute.", {sticky: true}
             (error) ->
                 $scope.app.flash 'error', "Sorry, that <em>email address or username</em> is not registered with us. Please try again or <a href='/register' class='unfancy-link'>request a new account</a>."
-
+                $('input[name="login"]:visible').focus()
 
 ]
 

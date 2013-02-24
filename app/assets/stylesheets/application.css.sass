@@ -100,9 +100,11 @@ input
         right: 30px
         margin-left: 30px
         z-index: 999
+        pointer-events: none
         .alert
             margin-bottom: 5px
             border-radius: 2px
+            pointer-events: all
 
 
 //////////////////////////////////////////////////////
@@ -113,6 +115,24 @@ input
         display: inline-block
 
 .control-group
+    input, textarea, select
+        &:focus:invalid:focus
+            border-color: #ccc
+            color: #555
+    &.error
+        input, textarea, select
+            &:focus
+                border-color: #ccc
+                color: #555
+                @include box-shadow(0 0 6px #f8b9b7)
+    &.success
+        input, textarea, select
+            border-color: #ccc
+            color: #555
+            &:focus
+                border-color: #ccc
+                color: #555
+
     .controls
         position: relative
         input
@@ -173,8 +193,6 @@ input
                 .inner
                     visibility: visible
                     opacity: 1
-
-
 
 
 
