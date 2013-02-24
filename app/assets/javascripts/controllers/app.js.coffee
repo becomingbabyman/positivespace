@@ -7,6 +7,8 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "User", ($scope, $
     $scope.app.currentUser = {}
     $scope.app.year = (new Date).getFullYear()
     $scope.app.templates =
+        loading:
+            url: "/assets/app/loading.html"
         header:
             url: "/assets/app/header.html"
             classes: "navbar"
@@ -15,6 +17,7 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "User", ($scope, $
         footer:
             url: "/assets/app/footer.html"
     $scope.app.show =
+        loading: false
         header: true
         footer: true
 
@@ -97,12 +100,15 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "User", ($scope, $
 
     $scope.app.resetPassword = (login) ->
         # TODO: handle the reset password link page in angular
+        $scope.app.show.loading = true
         User.resetPassword
             user:
                 login: login
             (data) ->
+                $scope.app.show.loading = false
                 $scope.app.flash 'info', "Check your inbox (including your spam folder) for password reset instructions. The email should arrive in less than a minute.", {sticky: true}
             (error) ->
+                $scope.app.show.loading = false
                 $scope.app.flash 'error', "Sorry, that <em>email address or username</em> is not registered with us. Please try again or <a href='/register' class='unfancy-link'>request a new account</a>."
                 $('input[name="login"]:visible').focus()
 

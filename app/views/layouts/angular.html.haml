@@ -3,8 +3,9 @@
 	= render "head"
 
 	%body{ "ng-controller" => "AppCtrl" }
-		
+
 		#wrapper
+			#loading{"ng-include" => "app.templates.loading.url"} tmp
 			%header#header{"ng-class" => "app.templates.header.classes", "ng-include" => "app.templates.header.url"} tmp
 			#main{ :role => "main" }
 				#flash{"ng-include" => "app.templates.flash.url"} tmp

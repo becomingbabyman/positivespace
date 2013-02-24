@@ -90,6 +90,34 @@ input
 
 
 //////////////////////////////////////////////////////
+/**                  loading style                 **/
+//////////////////////////////////////////////////////
+#loading
+    &>div
+        @include transition-property(visibility, opacity)
+        @include transition-duration(0.2s)
+        @include transition-delay(0s)
+        visibility: hidden
+        opacity: 0
+        position: fixed
+        z-index: 1000
+        pointer-events: none
+        width: 100px
+        padding: 5px
+        margin: 0 auto
+        text-align: center
+        left: 0
+        right: 0
+        top: 5px
+        &.visible
+            @include transition-property(visibility, opacity)
+            @include transition-duration(0.4s)
+            @include transition-delay(0.1s)
+            visibility: visible
+            opacity: 1
+
+
+//////////////////////////////////////////////////////
 /**                   flash style                  **/
 //////////////////////////////////////////////////////
 #flash

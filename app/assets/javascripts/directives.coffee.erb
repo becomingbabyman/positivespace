@@ -182,30 +182,36 @@ psDirectives.directive 'psLogin', ["$timeout", "$location", "User", ($timeout, $
 			scope.login = () ->
 				# TODO: why does ngModel only update on the scope when the field is valid?
 				if scope.credentials.loginType == 'register'
+					scope.app.show.loading = true
 					User.register
 						user:
 							email: scope.credentials.email
 							password: scope.credentials.password
 							username: scope.credentials.username
 						(data) ->
+							scope.app.show.loading = false
 							scope.app.currentUser = data
 							scope.credentials = {loginType: 'login'}
 							scope.app.flash 'success', "Welcome. Let's create your PositiveSpace!"
 							$location.path('/')
 						(error) ->
+							scope.app.show.loading = false
 							scope.app.flash 'error', error.data.errors
 				else
+					scope.app.show.loading = true
 					User.login
 						user:
 							login: scope.credentials.login
 							password: scope.credentials.password
 							# remember_me: rememberMe
 						(data) ->
+							scope.app.show.loading = false
 							scope.app.currentUser = data
 							scope.credentials = {loginType: 'login'}
 							scope.app.flash 'success', "Welcome back!"
 							$location.path('/')
 						(error) ->
+							scope.app.show.loading = false
 							# TODO: put error on input field
 							scope.app.flash 'error', "Oops, that's the wrong password."
 
