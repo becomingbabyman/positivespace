@@ -1,10 +1,38 @@
 <div class="navbar-inner" ng-show='app.show.header'>
 	<div class="container">
-		<ul class="nav user-nav pull-right">
+
+		<ul class="nav user-nav pull-right" ng-hide='app.loggedIn()'>
 			<li>
 				<a href="/login">Log in</a>
 			</li>
 		</ul>
+
+		<ul class="nav user-nav pull-right" ng-show='app.loggedIn()'>
+			<li>
+				<a href="/{{app.currentUser.username}}">
+					{{app.currentUser.username}}
+				</a>
+			</li>
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle">
+					<i class="icon-cog"></i>
+				</a>
+				<ul class="dropdown-menu">
+					<li>
+						<a href="/settings">
+							settings
+						</a>
+					</li>
+					<li class="divider"></li>
+					<li>
+						<a href="#" ng-click='app.logout()'>
+							logout
+						</a>
+					</li>
+				</ul>
+			</li>
+		</ul>
+
 		<a href="/home" class="brand">+ _____</a>
 	</div>
 </div>

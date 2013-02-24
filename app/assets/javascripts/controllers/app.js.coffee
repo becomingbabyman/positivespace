@@ -1,4 +1,4 @@
-ps.controller "AppCtrl", ["$scope", "$timeout", "User", ($scope, $timeout, User) ->
+ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "User", ($scope, $timeout, $rootScope, User) ->
 
     ######################
     # App Initialization #
@@ -34,6 +34,9 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "User", ($scope, $timeout, User)
     $scope.app.show.noChrome = ->
         $scope.app.show.header = false
         $scope.app.show.footer = false
+
+    $rootScope.$on "$routeChangeStart", (event, next, current) ->
+        $scope.app.show.allChrome()
 
 
     #########

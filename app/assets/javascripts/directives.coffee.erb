@@ -117,7 +117,7 @@ psDirectives.directive 'controlGroup', () ->
 ####################################################
 ####################################################
 # <login>
-psDirectives.directive 'psLogin', ["$timeout", "User", ($timeout, User) ->
+psDirectives.directive 'psLogin', ["$timeout", "$location", "User", ($timeout, $location, User) ->
 	directiveDefinitionObject =
 		restrict: 'E'
 		scope:
@@ -141,6 +141,7 @@ psDirectives.directive 'psLogin', ["$timeout", "User", ($timeout, User) ->
 					scope.credentials.username = ''
 
 			scope.checkLogin = () ->
+				# TODO: make the loginType change less eratic, maybe don't auto change the form at all. See tumblr
 				# TODO: prompt user to input email or username on forgot? failure to find account
 				if registering = scope.credentials.loginType == 'register'
 					login = scope.credentials.email
@@ -155,7 +156,7 @@ psDirectives.directive 'psLogin', ["$timeout", "User", ($timeout, User) ->
 							scope.app.flash 'info', "Looks like you already have an account. Go ahead and log in."
 							$timeout () ->
 								element.find('#lgn_password').focus()
-							, 300
+							, 100
 						else if data.length == 0 and !registering
 							scope.credentials.loginType = 'register'
 							scope.app.flash 'info', "Looks like you need an account. Go ahead and start one."
@@ -164,7 +165,7 @@ psDirectives.directive 'psLogin', ["$timeout", "User", ($timeout, User) ->
 									element.find('#reg_email').focus()
 								else
 									element.find('#reg_password').focus()
-							, 300
+							, 100
 
 			scope.checkUsername = (username = scope.credentials.username) ->
 				if scope.credentials.loginType == 'register'
@@ -190,6 +191,7 @@ psDirectives.directive 'psLogin', ["$timeout", "User", ($timeout, User) ->
 							scope.app.currentUser = data
 							scope.credentials = {loginType: 'login'}
 							scope.app.flash 'success', "Welcome. Let's create your PositiveSpace!"
+							$location.path('/')
 						(error) ->
 							scope.app.flash 'error', error.data.errors
 				else
@@ -202,6 +204,7 @@ psDirectives.directive 'psLogin', ["$timeout", "User", ($timeout, User) ->
 							scope.app.currentUser = data
 							scope.credentials = {loginType: 'login'}
 							scope.app.flash 'success', "Welcome back!"
+							$location.path('/')
 						(error) ->
 							# TODO: put error on input field
 							scope.app.flash 'error', "Oops, that's the wrong password."
