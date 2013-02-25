@@ -3,9 +3,9 @@ class User < ActiveRecord::Base
 	after_validation    :validate_username_reserved
 	before_create do
 		# initialize_profile
-		initialize_permissions      
+		initialize_permissions
 	end
-	after_save do   
+	after_save do
 		# sync_slug if username != profile.slug
 		generate_username unless username?
 	end
@@ -21,12 +21,17 @@ class User < ActiveRecord::Base
 	attr_accessible :username, :login, :email, :password, :password_confirmation, :remember_me
 	attr_protected :none, as: :admin
 
-	
+	serialize :achievements
+
+
+	has_many :sent_messages, :foreign_key => :from_id, :class_name => 'Message', :order => 'created_at desc'
+	has_many :recieved_messages, :foreign_key => :to_id, :class_name => 'Message', :order => 'created_at desc'
+
+
 	extend FriendlyId
-	friendly_id     :username
+	friendly_id :username
 
-
-	validates :username, :uniqueness => {:case_sensitive => false}, :length => 1..20, :allow_blank => true, :if => Proc.new { |user| user.username != user.id.to_s }
+	validates :username, :uniqueness => {:case_sensitive => false}, :length => 3..30, :allow_blank => true, :if => Proc.new { |user| user.username != user.id.to_s }
 	validate  :validate_username_format
 
 
@@ -105,7 +110,7 @@ private
 	end
 
 	def generate_username
-		self.update_attribute(:username, self.id.to_s)  
+		self.update_attribute(:username, self.id.to_s)
 	end
 
 	def validate_username_format
@@ -115,7 +120,7 @@ private
 	end
 
 	def initialize_permissions
-		self.permissions = 2 
+		self.permissions = 2
 	end
 
 end

@@ -3,9 +3,9 @@ object @user
 attributes :id, :username
 
 if !@users and @user == current_user
-	attributes :email
+	attributes :email, :achievements
 end
 
-node(:url) do |user|
-	"#{root_url}api/#{user.username}.json" rescue nil
+node(:uri) do |user|
+	"#{root_url}api/#{user.username}" rescue nil
 end

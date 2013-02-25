@@ -8,6 +8,8 @@ Ideas:
  ☐ add option to display error tooltips in control-group on focus or blur of the input
 
 Backlog:
+ ☐ angularize email confirmation
+ ☐ make login work on mobile
  ☐ to sign up you need to request an invite through a +_ pitch form
  ☐ angularize the change password page
 

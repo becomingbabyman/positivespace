@@ -1,11 +1,11 @@
 # Define a module that can be referenced with FB data
-module Facebook 
+module Facebook
   APP_ID = (["development","test"].include?(Rails.env)) ? "TODO:" : ENV['FACEBOOK_ID']
   SECRET = (["development","test"].include?(Rails.env)) ? "TODO:" : ENV['FACEBOOK_SECRET']
 
   CALLBACK_URL = (["development","test"].include?(Rails.env))? "http://localhost:3000" : ENV['ROOT_URL']
-  
-  SCOPE = "email" 
+
+  SCOPE = "email"
 end
 
 # Use this hook to configure devise mailer, warden hooks and so forth.
@@ -137,7 +137,7 @@ Devise.setup do |config|
   # Email regex used to validate email formats. It simply asserts that
   # an one (and only one) @ exists in the given string. This is mainly
   # to give user feedback and not to assert the e-mail validity.
-  # config.email_regexp = /\A[^@]+@[^@]+\z/
+  config.email_regexp = /\A[^@]+@[^@]+\z/
 
   # ==> Configuration for :timeoutable
   # The time you want to timeout the user session without activity. After this

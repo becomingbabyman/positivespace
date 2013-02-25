@@ -1,5 +1,6 @@
 psServices = angular.module 'psServices', ['ngResource']
 
+
 psServices.factory 'User', ['$resource', ($resource) ->
 	User = $resource "api/users/:listCtrl/:id/:docCtrl",
 		id: '@id'
@@ -16,6 +17,8 @@ psServices.factory 'User', ['$resource', ($resource) ->
 		# password: String
 		register:
 			method: 'POST'
+			params:
+				remember_me: true
 
 		# login: String - email or username
 		# password: String
@@ -23,6 +26,7 @@ psServices.factory 'User', ['$resource', ($resource) ->
 			method: 'POST'
 			params:
 				listCtrl: 'sign_in'
+				remember_me: true
 
 		logout:
 			method: 'DELETE'
@@ -35,4 +39,16 @@ psServices.factory 'User', ['$resource', ($resource) ->
 			params:
 				listCtrl: 'password'
 	User
+]
+
+
+psServices.factory 'Message', ['$resource', ($resource) ->
+	Message = $resource "api/users/:userId/messages/:listCtrl/:id/:docCtrl",
+		userId: '@userId'
+		id: '@id'
+		listCtrl: '@listCtrl'
+		docCtrl: '@docCtrl'
+	, {}
+
+	Message
 ]

@@ -34,7 +34,7 @@ gem 'friendly_id', '~> 4.0.9'
 # Versioning
 gem 'paper_trail'
 
-# Clean RESTful Controllers 
+# Clean RESTful Controllers
 gem 'inherited_resources'
 # and Controller Scopes
 gem 'has_scope'
@@ -45,6 +45,9 @@ gem 'chronic'
 # API - JSON Serialization
 gem 'rabl'
 gem 'oj'
+
+# Embedly API
+gem 'embedly'
 
 # UJS - JQuery
 gem 'jquery-rails'
@@ -66,7 +69,7 @@ gem 'ga_cookie_parser'
 
 # Misc
 gem 'html5-rails' # TODO: is this needed?
-gem 'possessive' 
+gem 'possessive'
 
 
 # Gems used only for assets and not required

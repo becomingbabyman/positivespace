@@ -35,6 +35,7 @@
 @include sticky-footer(80px, "#wrapper", "#layout_footer", "#footer")
 
 body
+    padding: 0
     box-sizing: border-box
     -moz-box-sizing: border-box
     -webkit-box-sizing: border-box
@@ -88,6 +89,8 @@ input
     // border-bottom: 1px solid darken($color-background, 10%)
     // @include box-shadow(rgba(0, 0, 0, 0.075) 0 2px 0)
 
+.navbar .nav li.dropdown.open > .dropdown-toggle
+    background-color: white
 
 //////////////////////////////////////////////////////
 /**                  loading style                 **/

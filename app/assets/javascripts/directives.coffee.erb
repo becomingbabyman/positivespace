@@ -130,7 +130,8 @@ psDirectives.directive 'psLogin', ["$timeout", "$location", "User", ($timeout, $
 
 
 			scope.$watch 'credentials.loginType', (value) ->
-				element.find(".#{value} input")[0].focus()
+				el = element.find(".#{value} input")[0]
+				if el? then el.focus()
 
 			scope.$watch 'credentials.login', (value) ->
 				if value.match(///^[a-zA-Z][a-zA-Z0-9-]*$///)?
@@ -155,7 +156,10 @@ psDirectives.directive 'psLogin', ["$timeout", "$location", "User", ($timeout, $
 							scope.credentials.login = login
 							scope.app.flash 'info', "Looks like you already have an account. Go ahead and log in."
 							$timeout () ->
-								element.find('#lgn_password').focus()
+								if _.isEmpty(scope.credentials.login)
+									element.find('#login').focus()
+								else
+									element.find('#lgn_password').focus()
 							, 100
 						else if data.length == 0 and !registering
 							scope.credentials.loginType = 'register'
@@ -185,6 +189,9 @@ psDirectives.directive 'psLogin', ["$timeout", "$location", "User", ($timeout, $
 					scope.app.show.loading = true
 					User.register
 						user:
+							# email: element.find('#reg_email').val()
+							# password: element.find('#reg_password').val()
+							# username: element.find('#reg_username').val()
 							email: scope.credentials.email
 							password: scope.credentials.password
 							username: scope.credentials.username

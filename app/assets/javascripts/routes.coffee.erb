@@ -26,6 +26,9 @@ ps.config ['$routeProvider', '$locationProvider', ($routeProvider, $locationProv
 	.when "/privacy",
 		controller: "PagesCtrl"
 		templateUrl: "<%= asset_path('pages/privacy.html') %>"
+	.when "/:userId",
+		controller: "UsersCtrl"
+		templateUrl: "<%= asset_path('users/show.html') %>"
 	.otherwise redirectTo: "/"
 ]
 
