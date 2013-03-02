@@ -6,7 +6,8 @@
 # :pidfile: ./tmp/pids/sidekiq.pid
 # :namespace: sidekiq_namespace
 # TODO: should concurrency be uped to 25 or something?
-:concurrency:  3
+:concurrency: 25
+:namespace: positivespace
 :queues:
   - [critical, 9]
   - [mailer, 7]

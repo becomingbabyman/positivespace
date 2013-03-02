@@ -12,10 +12,10 @@ ps.config ['$routeProvider', '$locationProvider', ($routeProvider, $locationProv
 		controller: "PagesCtrl"
 		templateUrl: "<%= asset_path('pages/home.html') %>"
 	.when "/login",
-		controller: "UsersCtrl"
+		controller: "UsersLoginCtrl"
 		templateUrl: "<%= asset_path('users/login.html') %>"
 	.when "/register",
-		controller: "UsersCtrl"
+		controller: "UsersRegisterCtrl"
 		templateUrl: "<%= asset_path('users/register.html') %>"
 	.when "/about",
 		controller: "PagesCtrl"
@@ -26,8 +26,8 @@ ps.config ['$routeProvider', '$locationProvider', ($routeProvider, $locationProv
 	.when "/privacy",
 		controller: "PagesCtrl"
 		templateUrl: "<%= asset_path('pages/privacy.html') %>"
-	.when "/:userId",
-		controller: "UsersCtrl"
+	.when "/:user_id",
+		controller: "UsersShowCtrl"
 		templateUrl: "<%= asset_path('users/show.html') %>"
 	.otherwise redirectTo: "/"
 ]

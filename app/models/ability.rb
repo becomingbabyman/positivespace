@@ -10,14 +10,22 @@ class Ability
 		# Registered Users
 		######################################################
 		if user.persisted?
-			can [:edit, :update], User do |u|
-				u == user
+			can [:show], Message do |m|
+				m.from == user or m.to == user
+			end
+			can [:modify], Message do |m|
+				(m.created_at + 15.minutes > DateTime.now.utc) and user.editor?(m)
+			end
+
+
+			can [:update], User do |u|
+				user.editor?(u)
 			end
 		end
 		######################################################
 		# Guest users / Everybody
 		######################################################
-
+		can [:create], Message
 
 
 		######################################################

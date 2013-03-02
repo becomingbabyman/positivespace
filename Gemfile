@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '1.9.3'
+ruby '2.0.0'
 
 # The Framework
 gem 'rails', '3.2.11'
@@ -110,7 +110,7 @@ group :development do
   gem 'guard-rspec'
   gem 'brakeman'
   gem 'foreman'
-  gem 'better_errors'
+  # gem 'better_errors'
   gem 'binding_of_caller'
   gem 'meta_request'
   # gem 'growl'

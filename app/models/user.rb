@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
 	after_save do
 		# sync_slug if username != profile.slug
 		generate_username unless username?
+		update_achievements
 	end
 
 	# Include default devise modules. Others available are:
@@ -15,7 +16,7 @@ class User < ActiveRecord::Base
 	devise  :database_authenticatable, :registerable,
 			:recoverable, :rememberable, :trackable, :validatable,
 			:omniauthable, :lockable, :timeoutable, :token_authenticatable,
-			:authentication_keys => [:login]
+			:async, :authentication_keys => [:login]
 
 	attr_accessor :login
 	attr_accessible :username, :login, :email, :password, :password_confirmation, :remember_me
@@ -26,7 +27,6 @@ class User < ActiveRecord::Base
 
 	has_many :sent_messages, :foreign_key => :from_id, :class_name => 'Message', :order => 'created_at desc'
 	has_many :recieved_messages, :foreign_key => :to_id, :class_name => 'Message', :order => 'created_at desc'
-
 
 	extend FriendlyId
 	friendly_id :username
@@ -43,6 +43,13 @@ class User < ActiveRecord::Base
 		else
 			where(conditions).first
 		end
+	end
+
+	# Inherited resource needs this in the messages controller to find a user's messages
+	# TODO: think about a cleaner solution
+	# TODO: think about merging this with sent messages
+	def messages
+		self.recieved_messages
 	end
 
 	# Given facebook authentication data, find the user record
@@ -123,4 +130,7 @@ private
 		self.permissions = 2
 	end
 
+	def update_achievements
+		# TODO: search for newly completed achievements and check them off
+	end
 end

@@ -7,5 +7,5 @@ if !@users and @user == current_user
 end
 
 node(:uri) do |user|
-	"#{root_url}api/#{user.username}" rescue nil
+	"#{root_url}api/users/#{user.username}" rescue nil
 end

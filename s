@@ -1,11 +1,11 @@
-# only start redis if it is not already running
-pong=$(redis-cli ping)
-if [[ $pong == 'PONG' ]] ; then
-	echo "redis-server is already running"
-else
-	echo "starting redis-server"
-	redis-server &
-fi
+# # only start redis if it is not already running
+# pong=$(redis-cli ping)
+# if [[ $pong == 'PONG' ]] ; then
+#	echo "redis-server is already running"
+# else
+#	echo "starting redis-server"
+#	redis-server &
+# fi
 
 echo "starting foreman"
 foreman start -p 3000 -f Procfile_Dev

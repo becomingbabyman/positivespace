@@ -1,11 +1,19 @@
-ps.controller "UsersCtrl", ["$scope", "$location", "$routeParams", "User", ($scope, $location, $routeParams, User) ->
-	$scope.user = {}
+ps.controller "UsersLoginCtrl", ["$scope", "User", ($scope, User) ->
+	$scope.app.show.noChrome()
+]
 
-	# Remove the header and footer from the login and register pages
-	if $location.path() == '/login' or $location.path() == '/register'
-		$scope.app.show.noChrome()
+ps.controller "UsersRegisterCtrl", ["$scope", "User", ($scope, User) ->
+	$scope.app.show.noChrome()
+]
 
-	# Get the user from the params
-	if (id = $routeParams.userId) and id?
-		$scope.user = User.get({id: id})
+ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "User", "Message", ($scope, $routeParams, User, Message) ->
+	$scope.user = User.get({id: $routeParams.user_id})
+	$scope.myMessage = new Message {user_id: $routeParams.user_id}
+
+	$scope.submitMyMessage = ->
+		success = (data) ->
+			$scope.app.flash 'success', 'Great, your message has been sent.'
+		error = (error) ->
+			$scope.app.flash 'error', error.data.errors
+		$scope.myMessage.save success, error
 ]

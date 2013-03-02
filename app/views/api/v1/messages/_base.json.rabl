@@ -2,6 +2,10 @@ object @message
 
 attributes :id, :body, :embed_url, :embed_data
 
+node :user_id do |msg|
+	msg.to.id
+end
+
 child :from do
 	extends 'api/v1/users/base'
 end

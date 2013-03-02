@@ -1,16 +1,26 @@
 psServices = angular.module 'psServices', ['ngResource']
 
 
+#####################################################
+#                                                   #
+#  NOTE:                                            #
+#  Be sure to under_score rather than caemelCase    #
+#  a resource's params. This allows us to keep the  #
+#  params pefectly in sync with what is returned    #
+#  and expected by the API.                         #
+#                                                   #
+#####################################################
+
 psServices.factory 'User', ['$resource', ($resource) ->
-	User = $resource "api/users/:listCtrl/:id/:docCtrl",
+	User = $resource "api/users/:list_ctrl/:id/:doc_ctrl",
 		id: '@id'
-		listCtrl: '@listCtrl'
-		docCtrl: '@docCtrl'
+		list_ctrl: '@list_ctrl'
+		doc_ctrl: '@doc_ctrl'
 	,
 		current:
 			method: 'GET'
 			params:
-				listCtrl: 'me'
+				list_ctrl: 'me'
 
 		# email: String
 		# username: String
@@ -25,30 +35,38 @@ psServices.factory 'User', ['$resource', ($resource) ->
 		login:
 			method: 'POST'
 			params:
-				listCtrl: 'sign_in'
+				list_ctrl: 'sign_in'
 				remember_me: true
 
 		logout:
 			method: 'DELETE'
 			params:
-				listCtrl: 'sign_out'
+				list_ctrl: 'sign_out'
 
 		# login: String - email or username
 		resetPassword:
 			method: 'POST'
 			params:
-				listCtrl: 'password'
+				list_ctrl: 'password'
 	User
 ]
 
 
 psServices.factory 'Message', ['$resource', ($resource) ->
-	Message = $resource "api/users/:userId/messages/:listCtrl/:id/:docCtrl",
-		userId: '@userId'
+	Message = $resource "api/users/:user_id/messages/:list_ctrl/:id/:doc_ctrl",
+		user_id: '@user_id'
 		id: '@id'
-		listCtrl: '@listCtrl'
-		docCtrl: '@docCtrl'
-	, {}
+		list_ctrl: '@list_ctrl'
+		doc_ctrl: '@doc_ctrl'
+	,
+		update:
+			method: 'PUT'
+
+	Message::save = (success=null, error=null) ->
+		if @id?
+			@$update(success, error)
+		else
+			@$save(success, error)
 
 	Message
 ]

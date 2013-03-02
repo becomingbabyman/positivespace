@@ -10,13 +10,17 @@ class Message < ActiveRecord::Base
 
 	default_scope :order => 'created_at asc'
 
-	def embed_url= url
-		# TODO: move the key out of the model
-		unless url.blank?
-			embedly_api = Embedly::API.new :key => 'TODO: Add a key', :user_agent => 'Mozilla/5.0 (compatible; mytestapp/1.0; my@email.com)'
-			obj = embedly_api.oembed :url => url
-			self.embed_data = obj[0].marshal_dump
-		end
-		super url
+	# def embed_url= url
+	#	# TODO: move the key out of the model
+	#	unless url.blank?
+	#		embedly_api = Embedly::API.new :key => 'TODO: Add a key', :user_agent => 'Mozilla/5.0 (compatible; mytestapp/1.0; my@email.com)'
+	#		obj = embedly_api.oembed :url => url
+	#		self.embed_data = obj[0].marshal_dump
+	#	end
+	#	super url
+	# end
+
+	def editors
+		[self.from]
 	end
 end

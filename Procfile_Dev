@@ -1,2 +1,3 @@
 web: bundle exec rails s puma -p $PORT
-worker: bundle exec sidekiq
+redis: redis-server config/redis.development.conf
+worker: bundle exec sidekiq -C config/sidekiq.yml

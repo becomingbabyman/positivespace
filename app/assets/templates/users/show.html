@@ -1,4 +1,5 @@
 <div class="container">
+
 	<div class="row">
 		<div class="span12">
 			name: {{user.name}} <br/>
@@ -9,4 +10,27 @@
 			achievements: {{user.achievements}} <br/>
 		</div>
 	</div>
+
+	<div class="row">
+		<div class="offset4 span4">
+			<form name='message' class='form-vertical uncenter' ng-submit='submitMyMessage()' novalidate style='width: 100%;'>
+
+				<control-group>
+					<input type='email' name='email' id='msg_email' placeholder='From: email' class='input-block-level' ng-model='myMessage.from_email'></input>
+				</control-group>
+
+				<control-group>
+					<textarea name='body' id='msg_body' title='message body' placeholder='message to {{user.username}}...' class='input-block-level' ng-model='myMessage.body' required></textarea>
+				</control-group>
+
+				<div class='control-group'>
+					<div class='controls'>
+						<button type='submit' class='btn btn-success btn-block btn-large'>Send</button>
+					</div>
+				</div>
+
+			</form>
+		</div>
+	</div>
+
 </div>

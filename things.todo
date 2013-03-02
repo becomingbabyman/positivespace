@@ -6,6 +6,7 @@ Ideas:
  ☐ add option to control-group directive to display 'info' and 'warning' colors. make the colors work on the tooltips as well
  ☐ add option to display server errors in control-group directive
  ☐ add option to display error tooltips in control-group on focus or blur of the input
+ ☐ feature flags -- http://samsworldofno.com/continuous-deployment-with-gradual-feature-rollout/ -- AND -- https://github.com/jamesgolick/rollout -- AND -- https://github.com/jrallison/rollout_ui
 
 Backlog:
  ☐ angularize email confirmation

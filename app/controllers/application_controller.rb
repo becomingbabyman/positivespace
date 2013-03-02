@@ -3,9 +3,12 @@ class ApplicationController < ActionController::Base
 
 	before_filter :intercept_html_requests
 
-	# Default cancan redirect url
 	rescue_from CanCan::AccessDenied do |exception|
-		redirect_to root_url, :alert => "You do not have permission to view that page."
+		if request.format == Mime::HTML
+			redirect_to root_url, :alert => "You do not have permission to view that page."
+		else
+			render json: {errors: ["Sorry, you cannot perform that action."]}, status: 401
+		end
 	end
 
 	# Initialize cancan
@@ -17,6 +20,15 @@ class ApplicationController < ActionController::Base
 		@positivespace_session_id ||= SecureRandom.random_number(2_147_483_646)
 	end
 
+	# Helper method for picking allowed keys from a hash of params
+	# http://www.quora.com/Backbone-js-1/How-well-does-backbone-js-work-with-rails
+	def pick(hash, *keys)
+		filtered = {}
+		hash.each do |key, value|
+			filtered[key.to_sym] = value if keys.include?(key.to_sym)
+		end
+		filtered
+	end
 
 private
 
