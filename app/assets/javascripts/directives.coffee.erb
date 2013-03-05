@@ -116,18 +116,22 @@ psDirectives.directive 'controlGroup', () ->
 
 ####################################################
 ####################################################
-# <edit-dialog>
-psDirectives.directive 'editDialog', ->
+# <edit-resource>
+psDirectives.directive 'editResource', ->
 	directiveDefinitionObject =
 		restrict: 'E'
 		scope:
 			app: '='
 			resource: '='
-			attributes: '='
-		templateUrl: "<%= asset_path('directives/edit_dialog.html') %>"
+		templateUrl: "<%= asset_path('directives/edit_resource.html') %>"
 
 		link: (scope, element, attrs) ->
-			# TODO: itterate through all the attributes and add the correct form field
+			scope.submitForm = ->
+				success = (data) ->
+					scope.app.flash 'success', 'Bam, saved!'
+				error = (error) ->
+					scope.app.flash 'error', error.data.errors
+				scope.resource.save(success, error)
 
 
 ####################################################

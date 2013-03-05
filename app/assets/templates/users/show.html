@@ -2,6 +2,24 @@
 
 	<br/>
 	<br/>
+	<div ui-if='user.permissions.can_edit' class="row">
+		<div class="offset4 span4">
+			<a ng-click='openUserEdit = true'>edit</a>
+			<div modal="openUserEdit" close="openUserEdit = false" options="opts">
+				<div class="modal-header">
+					<h4>Edit Profile</h4>
+				</div>
+				<div class="modal-body">
+					<edit-resource app='app', resource='user'></edit-resource>
+				</div>
+				<div class="modal-footer">
+					<button class="btn cancel pull-left" ng-click="openUserEdit = false">Cancel</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<br/>
 	<br/>
 	<div class="row">
 		<div class="offset4 span4">
@@ -14,6 +32,8 @@
 		</div>
 	</div>
 	<br/>
+	<br/>
+
 	<div class="row">
 		<div class="offset4 span4">
 			<form name='message' class='form-vertical uncenter' ng-submit='submitMyMessage()' novalidate style='width: 100%;'>

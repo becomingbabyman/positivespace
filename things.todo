@@ -28,7 +28,6 @@ In Progress:
 --- ✄ -----------------------
 --- ✄ -----------------------
 Refactoring:
- ✔ Build out API for creating and updating resources @done (13-03-03 12:56)
 
 
 Master:
@@ -38,6 +37,7 @@ Live:
 
 
 Archive:
+ ✔ Build out API for creating and updating resources @done (13-03-03 12:56)
  ✔ display error and success messages for "send reset password" @done (13-02-20 22:10)
  ✔ put up staging server @done (13-02-20 22:10)
  ✔ get angular router to route away from "/" if it's currently on "/" and a link is clicked @done (13-02-20 08:16)
