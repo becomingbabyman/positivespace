@@ -13,10 +13,6 @@ class Ability
 			can [:show], Message do |m|
 				m.from == user or m.to == user
 			end
-			can [:modify], Message do |m|
-				(m.created_at + 15.minutes > DateTime.now.utc) and user.editor?(m)
-			end
-
 
 			can [:update], User do |u|
 				user.editor?(u)
@@ -26,7 +22,9 @@ class Ability
 		# Guest users / Everybody
 		######################################################
 		can [:create], Message
-
+		can [:modify], Message do |m|
+			m.seconds_left_to_edit > 0 and (user.editor?(m) or session_id == m.session_id)
+		end
 
 		######################################################
 		# Aliases

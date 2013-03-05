@@ -10,6 +10,14 @@ class Message < ActiveRecord::Base
 
 	default_scope :order => 'created_at asc'
 
+	def self.total_seconds_to_edit
+		91
+	end
+
+	def seconds_left_to_edit
+		self.created_at + Message.total_seconds_to_edit - DateTime.now.utc
+	end
+
 	# def embed_url= url
 	#	# TODO: move the key out of the model
 	#	unless url.blank?

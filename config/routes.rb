@@ -32,7 +32,7 @@ Positivespace::Application.routes.draw do
 	namespace :api, defaults: {format: 'json'} do
 		scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
 			# Users
-			resources :users, only: [:index, :show] do
+			resources :users, only: [:index, :show, :update] do
 				resources :messages, only: [:index, :show, :create, :update, :destroy]
 			end
 

@@ -48,6 +48,15 @@ psServices.factory 'User', ['$resource', ($resource) ->
 			method: 'POST'
 			params:
 				list_ctrl: 'password'
+
+		update:
+			method: 'PUT'
+
+	User::save = (success=null, error=null) ->
+		if @id?
+			@$update(success, error)
+
+
 	User
 ]
 

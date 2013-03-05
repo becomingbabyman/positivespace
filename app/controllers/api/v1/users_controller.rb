@@ -1,6 +1,6 @@
 class Api::V1::UsersController < InheritedResources::Base
 	respond_to :json
-	actions :index, :show
+	actions :index, :show, :update
 
 	has_scope :login, :only => :index do |controller, scope, value|
 		scope.where("email = ? OR username = ?", value.downcase, value.downcase)
@@ -28,8 +28,9 @@ class Api::V1::UsersController < InheritedResources::Base
 	end
 
 	before_filter :authenticate_user!, only: [:show], :if => lambda { params[:id] == 'me' }
+	load_and_authorize_resource :only => [:update]
 
-	load_and_authorize_resource :only => [:edit, :update]
+	before_filter :pick_params, :only => [:update]
 
 	def show
 		@user = (params[:id] == 'me' ? current_user : User.find(params[:id]))
@@ -40,5 +41,11 @@ protected
 
 	def collection
 		@users ||= apply_scopes(end_of_association_chain)
+	end
+
+	def pick_params
+		if user = params[:user]
+			params[:user] = pick(user, User.accessible_attributes.to_a)
+		end
 	end
 end

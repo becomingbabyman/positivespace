@@ -9,6 +9,8 @@ Ideas:
  ☐ feature flags -- http://samsworldofno.com/continuous-deployment-with-gradual-feature-rollout/ -- AND -- https://github.com/jamesgolick/rollout -- AND -- https://github.com/jrallison/rollout_ui
 
 Backlog:
+ ☐ validate message params - i.e. require body and either a from_email or a from user
+ ☐ validate that a user adds all required info before publishing profile
  ☐ angularize email confirmation
  ☐ make login work on mobile
  ☐ to sign up you need to request an invite through a +_ pitch form
@@ -26,6 +28,7 @@ In Progress:
 --- ✄ -----------------------
 --- ✄ -----------------------
 Refactoring:
+ ✔ Build out API for creating and updating resources @done (13-03-03 12:56)
 
 
 Master:

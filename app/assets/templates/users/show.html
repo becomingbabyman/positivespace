@@ -1,7 +1,10 @@
 <div class="container">
 
+	<br/>
+	<br/>
+	<br/>
 	<div class="row">
-		<div class="span12">
+		<div class="offset4 span4">
 			name: {{user.name}} <br/>
 			username: {{user.username}} <br/>
 			location: {{user.location}} <br/>
@@ -10,22 +13,32 @@
 			achievements: {{user.achievements}} <br/>
 		</div>
 	</div>
-
+	<br/>
 	<div class="row">
 		<div class="offset4 span4">
 			<form name='message' class='form-vertical uncenter' ng-submit='submitMyMessage()' novalidate style='width: 100%;'>
 
 				<control-group>
-					<input type='email' name='email' id='msg_email' placeholder='From: email' class='input-block-level' ng-model='myMessage.from_email'></input>
+					<input type='email' name='email' id='msg_email' placeholder='your email address' class='input-block-level' ng-model='myMessage.from_email'></input>
 				</control-group>
 
 				<control-group>
 					<textarea name='body' id='msg_body' title='message body' placeholder='message to {{user.username}}...' class='input-block-level' ng-model='myMessage.body' required></textarea>
 				</control-group>
 
+				<div ng-show='myMessage.id' class='control-group'>
+					<div class='controls'>
+						<div class="progress progress-striped active">
+							<div class="bar bar-success" style="width: {{percentBeforeSend}}%;">{{roundedSecondsLeftToEdit}} seconds to review</div>
+						</div>
+					</div>
+				</div>
+
 				<div class='control-group'>
 					<div class='controls'>
-						<button type='submit' class='btn btn-success btn-block btn-large'>Send</button>
+						<button ng-hide='myMessage.id' type='submit' class='btn btn-success pull-right'>Send</button>
+						<button ng-show='myMessage.id && myMessage.seconds_left_to_edit > 0' type='submit' class='btn btn-success pull-right'>Save Edits</button>
+						<button ng-show='myMessage.id && myMessage.seconds_left_to_edit <= 0' type='submit' class='btn btn-success pull-right' disabled>Message Sent</button>
 					</div>
 				</div>
 

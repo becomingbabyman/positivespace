@@ -11,7 +11,7 @@ class Api::V1::MessagesController < InheritedResources::Base
 	has_scope :per, :only => :index, :default => 10
 
 
-	before_filter :authenticate_user!, :except => [:create]
+	before_filter :authenticate_user!, :except => [:create, :update]
 	load_and_authorize_resource
 
 
@@ -23,6 +23,7 @@ class Api::V1::MessagesController < InheritedResources::Base
 		@message = Message.new(params[:message])
 		@message.to = @user
 		@message.from = current_user
+		@message.session_id = positivespace_session_id
 		@message.save!
 	end
 
@@ -33,8 +34,8 @@ protected
 	end
 
 	def pick_params
-		if m = params[:message]
-			params[:message] = pick m, :body, :embed_url, :from_email
+		if message = params[:message]
+			params[:message] = pick(message, Message.accessible_attributes.to_a)
 		end
 	end
 end
