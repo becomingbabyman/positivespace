@@ -2,8 +2,9 @@
 
 	<br/>
 	<br/>
-	<div ui-if='user.permissions.can_edit' class="row">
+	<div ui-if='user.can_edit' class="row">
 		<div class="offset4 span4">
+			<h4> TODO: style profile and message </h4>
 			<a ng-click='openUserEdit = true'>edit</a>
 			<div modal="openUserEdit" close="openUserEdit = false" options="opts">
 				<div class="modal-header">
@@ -18,9 +19,6 @@
 			</div>
 		</div>
 	</div>
-
-	<br/>
-	<br/>
 	<div class="row">
 		<div class="offset4 span4">
 			name: {{user.name}} <br/>
