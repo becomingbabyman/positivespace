@@ -11,7 +11,7 @@ class Message < ActiveRecord::Base
 	default_scope :order => 'created_at asc'
 
 	def self.total_seconds_to_edit
-		91
+		0 # TODO: think about removing all of this out
 	end
 
 	def seconds_left_to_edit

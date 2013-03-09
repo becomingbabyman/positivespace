@@ -18,7 +18,7 @@
 				<p>
 					<span ng-show='user.location.length > 0'><i class='icon-map-marker'></i> {{user.location}}</span>
 					<span ng-show='user.location.length > 0 && user.personal_url.length > 0'>&nbsp;&middot;&nbsp;</span>
-					<span ng-show='user.personal_url.length > 0'>{{user.personal_url}} <i class='icon-external-link'></i></span>
+					<span ng-show='user.personal_url.length > 0'>{{user.personal_url}} <!-- <i class='icon-external-link'></i> --></span>
 				</p>
 			</div>
 		</div>
@@ -38,19 +38,10 @@
 					<textarea name='body' id='msg_body' title='message body' placeholder='message to {{user.username}}...' class='input-block-level' ng-model='myMessage.body' required></textarea>
 				</control-group>
 
-				<div ng-show='myMessage.id' class='control-group'>
-					<div class='controls'>
-						<div class="progress progress-striped active">
-							<div class="bar bar-success" style="width: {{percentBeforeSend}}%;">{{roundedSecondsLeftToEdit}} seconds to review</div>
-						</div>
-					</div>
-				</div>
-
 				<div class='control-group'>
 					<div class='controls'>
 						<button ng-hide='myMessage.id' type='submit' class='btn btn-success'>Send</button>
-						<button ng-show='myMessage.id && myMessage.seconds_left_to_edit > 0' type='submit' class='btn btn-success'>Save Edits</button>
-						<button ng-show='myMessage.id && myMessage.seconds_left_to_edit <= 0' type='submit' class='btn btn-success' disabled>Message Sent</button>
+						<button ng-show='myMessage.id' type='submit' class='btn btn-disabled' disabled>Message Sent</button>
 					</div>
 				</div>
 

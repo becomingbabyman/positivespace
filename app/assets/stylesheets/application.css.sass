@@ -1,12 +1,12 @@
 /*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * This is a manifest file that"ll be compiled into application.css, which will include all the files
  * listed below.
  *
  * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
  * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
  *
- * You're free to add application-wide styles to this file and they'll appear at the top of the
- * compiled file, but it's generally better to create a new file per style scope.
+ * You"re free to add application-wide styles to this file and they"ll appear at the top of the
+ * compiled file, but it"s generally better to create a new file per style scope.
  *
  *= require_self
  */
@@ -26,6 +26,44 @@
 
 // Angular UI
 @import "angular-ui"
+
+
+////////////////////
+// Flat UI (custom)
+// Loading custom fonts
+@import url("http://fonts.googleapis.com/css?family=Lato:400,700,900,400italic")
+@import url("http://fonts.googleapis.com/css?family=Vollkorn:200italic")
+@import "flat-ui/icon-font"
+// @import "flat-ui/icon-font-24"
+
+// Loading config with variables (changing them leads to changing a color scheme)
+@import "flat-ui/config"
+
+// Utility mixins for greater good
+@import "flat-ui/mixins"
+
+// Modules
+@import "flat-ui/modules/type"
+@import "flat-ui/modules/btn"
+// @import "flat-ui/modules/demo"
+// @import "flat-ui/modules/navbar"
+// @import "flat-ui/modules/select"
+@import "flat-ui/modules/input"
+// @import "flat-ui/modules/checkbox-and-radio"
+// @import "flat-ui/modules/toggle"
+// @import "flat-ui/modules/tagsinput"
+// @import "flat-ui/modules/progress"
+// @import "flat-ui/modules/ui-slider"
+// @import "flat-ui/modules/pager"
+// @import "flat-ui/modules/pagination"
+// @import "flat-ui/modules/share"
+// @import "flat-ui/modules/tooltip"
+// @import "flat-ui/modules/palette"
+// @import "flat-ui/modules/tile"
+// @import "flat-ui/modules/todo"
+// @import "flat-ui/modules/footer"
+// @import "flat-ui/modules/video"
+// @import "flat-ui/modules/login"
 
 
 ////////////////////////////
@@ -59,6 +97,11 @@ a
         position: relative
         top: 1px
         left: 1px
+
+p
+    font-family: Vollkorn
+    font-style: italic
+    font-weight: 200
 
 form
     &>div
@@ -231,6 +274,7 @@ input, textarea
 
 
 // Import these mixins last to overide everything else
+@import "flat-ui/spaces"
 @import "html_mixins"
 
 
