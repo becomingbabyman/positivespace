@@ -1,16 +1,22 @@
-<form ng-show='resource.accessible_attributes' name='message' class='form-vertical uncenter' ng-submit='submitForm()' novalidate style='width: 100%;'>
-
-	<div ng-repeat='attribute in resource.accessible_attributes'>
-		<control-group label='{{attribute.name | inflector}}'>
-			<input ui-if='attribute.type == "string"' type='text' name='{{attribute.name}}' placeholder='{{attribute.name | inflector}}' id='{{attribute.name}}' class='input-block-level' ng-model='resource[attribute.name]'></input>
-			<textarea ui-if='attribute.type == "text"' name='{{attribute.name}}' placeholder='{{attribute.name | inflector}}' id='{{attribute.name}}' class='input-block-level' ng-model='resource[attribute.name]'></textarea>
-		</control-group>
-	</div>
-
-	<div class='control-group'>
-		<div class='controls'>
-			<button type='submit' class='btn btn-success pull-right'>Save</button>
+<div modal="toggle" close="toggle = false" options='{backdrop: false}'>
+	<form name='editResourceForm' class='form-vertical uncenter' ng-submit='submitForm()' novalidate style='width: 100%;'>
+		<div class="modal-header">
+			<button type="button" class="close" ng-click="toggle = false" aria-hidden="true">&times;</button>
+			<h3><i class='icon-edit'></i></h3>
 		</div>
-	</div>
-
-</form>
+		<div class="modal-body">
+			<div ng-repeat='attribute in resource.accessible_attributes'>
+				<control-group label='{{attribute.name | inflector}}'>
+					<input ui-if='attribute.type == "string"' type='text' name='{{attribute.name}}' placeholder='{{attribute.name | inflector}}' id='{{attribute.name}}' class='input-block-level' ng-model='resource[attribute.name]'></input>
+					<textarea ui-if='attribute.type == "text"' name='{{attribute.name}}' placeholder='{{attribute.name | inflector}}' id='{{attribute.name}}' class='input-block-level' ng-model='resource[attribute.name]'></textarea>
+				</control-group>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<div call='pull-right'>
+				<a href='#' class="btn cancel" ng-click="toggle = false">Cancel</a>
+				<button type='submit' class='btn btn-primary'>Save</button>
+			</div>
+		</div>
+	</form>
+</div>

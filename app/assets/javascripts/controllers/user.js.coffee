@@ -30,3 +30,6 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "User", "M
 				$scope.percentBeforeSend = ($scope.myMessage.seconds_left_to_edit / $scope.myMessage.total_seconds_to_edit) * 100
 			, (interval*1000)
 ]
+
+ps.controller "UsersSettingsCtrl", ["$scope", "User", ($scope, User) ->
+]

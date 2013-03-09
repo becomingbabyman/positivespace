@@ -2,31 +2,25 @@
 
 	<br/>
 	<br/>
+
 	<div ui-if='user.can_edit' class="row">
 		<div class="offset4 span4">
-			<h4> TODO: style profile and message </h4>
-			<a ng-click='openUserEdit = true'>edit</a>
-			<div modal="openUserEdit" close="openUserEdit = false" options="opts">
-				<div class="modal-header">
-					<h4>Edit Profile</h4>
-				</div>
-				<div class="modal-body">
-					<edit-resource app='app', resource='user'></edit-resource>
-				</div>
-				<div class="modal-footer">
-					<button class="btn cancel pull-left" ng-click="openUserEdit = false">Cancel</button>
-				</div>
-			</div>
+			<a ng-click='openUserEdit = true' class='pull-right btn'>edit</a>
+			<edit-resource app='app', toggle='openUserEdit', resource='user'></edit-resource>
 		</div>
 	</div>
+
 	<div class="row">
 		<div class="offset4 span4">
-			name: {{user.name}} <br/>
-			username: {{user.username}} <br/>
-			location: {{user.location}} <br/>
-			personal url: {{user.personal_url}} <br/>
-			body: {{user.body}} <br/>
-			achievements: {{user.achievements}} <br/>
+			<div class="center">
+				<h2>{{user.name}}</h2>
+				<p>{{user.body}}</p>
+				<p>
+					<span ng-show='user.location.length > 0'><i class='icon-map-marker'></i> {{user.location}}</span>
+					<span ng-show='user.location.length > 0 && user.personal_url.length > 0'>&nbsp;&middot;&nbsp;</span>
+					<span ng-show='user.personal_url.length > 0'>{{user.personal_url}} <i class='icon-external-link'></i></span>
+				</p>
+			</div>
 		</div>
 	</div>
 	<br/>
@@ -54,9 +48,9 @@
 
 				<div class='control-group'>
 					<div class='controls'>
-						<button ng-hide='myMessage.id' type='submit' class='btn btn-success pull-right'>Send</button>
-						<button ng-show='myMessage.id && myMessage.seconds_left_to_edit > 0' type='submit' class='btn btn-success pull-right'>Save Edits</button>
-						<button ng-show='myMessage.id && myMessage.seconds_left_to_edit <= 0' type='submit' class='btn btn-success pull-right' disabled>Message Sent</button>
+						<button ng-hide='myMessage.id' type='submit' class='btn btn-success'>Send</button>
+						<button ng-show='myMessage.id && myMessage.seconds_left_to_edit > 0' type='submit' class='btn btn-success'>Save Edits</button>
+						<button ng-show='myMessage.id && myMessage.seconds_left_to_edit <= 0' type='submit' class='btn btn-success' disabled>Message Sent</button>
 					</div>
 				</div>
 
