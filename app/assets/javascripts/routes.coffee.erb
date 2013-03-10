@@ -8,15 +8,10 @@ ps.config ['$routeProvider', '$locationProvider', ($routeProvider, $locationProv
 	$locationProvider.html5Mode true
 
 	$routeProvider
+	# Pages
 	.when "/",
 		controller: "PagesCtrl"
 		templateUrl: "<%= asset_path('pages/home.html') %>"
-	.when "/login",
-		controller: "UsersLoginCtrl"
-		templateUrl: "<%= asset_path('users/login.html') %>"
-	.when "/register",
-		controller: "UsersRegisterCtrl"
-		templateUrl: "<%= asset_path('users/register.html') %>"
 	.when "/about",
 		controller: "PagesCtrl"
 		templateUrl: "<%= asset_path('pages/about.html') %>"
@@ -27,9 +22,19 @@ ps.config ['$routeProvider', '$locationProvider', ($routeProvider, $locationProv
 		controller: "PagesCtrl"
 		templateUrl: "<%= asset_path('pages/privacy.html') %>"
 
+	# Users
+	.when "/login",
+		controller: "UsersLoginCtrl"
+		templateUrl: "<%= asset_path('users/login.html') %>"
+	.when "/register",
+		controller: "UsersRegisterCtrl"
+		templateUrl: "<%= asset_path('users/register.html') %>"
 	.when "/settings",
 		controller: "UsersSettingsCtrl"
 		templateUrl: "<%= asset_path('users/settings.html') %>"
+	.when "/users/password/edit",
+		controller: "UserPasswordEditCtrl"
+		templateUrl: '/assets/users/password_edit.html'
 	.when "/:user_id",
 		controller: "UsersShowCtrl"
 		templateUrl: "<%= asset_path('users/show.html') %>"

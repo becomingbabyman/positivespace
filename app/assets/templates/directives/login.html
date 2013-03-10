@@ -10,6 +10,13 @@
         <button class='btn btn-danger btn-small' name='lngLogout' ng-click='app.logout()'>logout?</button>
     </div>
 
+    <div ng-hide='app.loggedIn()'>
+        <a class='btn btn-block btn-large' ng-click='fbLogin()'>Connect with facebook</a>
+        <br/>
+        <p class='center'>- or -</p>
+        <br/>
+    </div>
+
     <form name='login' class='form-vertical uncenter' ng-submit='login()' ng-hide='app.loggedIn()' novalidate style='width: 100%;'>
 
         <control-group>
@@ -29,7 +36,7 @@
             </control-group>
 
             <control-group>
-                <input type='text' name='username' id='reg_username' class='input-block-level' ng-model='credentials.username' ng-minlength='3' ng-maxlength='30' ng-pattern='/^[a-zA-Z][a-zA-Z0-9-]*$/' ui-event='{keyup: "checkUsername($value)"}' ui-validate='{usernameTaken: "usernameTaken"}' ui-validate-watch='"usernameTaken"' required></input>
+                <input type='text' name='username' id='reg_username' class='input-block-level' ng-model='credentials.username' ng-minlength='3' ng-maxlength='18' ng-pattern='/^[a-zA-Z][a-zA-Z0-9-]*$/' ui-event='{keyup: "checkUsername($value)"}' ui-validate='{usernameTaken: "usernameTaken"}' ui-validate-watch='"usernameTaken"' required></input>
             </control-group>
 
             <div class='control-group'>

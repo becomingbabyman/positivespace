@@ -12,7 +12,7 @@ psServices = angular.module 'psServices', ['ngResource']
 #####################################################
 
 psServices.factory 'User', ['$resource', ($resource) ->
-	User = $resource "api/users/:list_ctrl/:id/:doc_ctrl",
+	User = $resource "/api/users/:list_ctrl/:id/:doc_ctrl",
 		id: '@id'
 		list_ctrl: '@list_ctrl'
 		doc_ctrl: '@doc_ctrl'
@@ -49,6 +49,14 @@ psServices.factory 'User', ['$resource', ($resource) ->
 			params:
 				list_ctrl: 'password'
 
+		# password: String - password
+		# password_confirmation: String - password
+		# reset_password_token: String - token from the email
+		updatePassword:
+			method: 'PUT'
+			params:
+				list_ctrl: 'password'
+
 		update:
 			method: 'PUT'
 
@@ -62,7 +70,7 @@ psServices.factory 'User', ['$resource', ($resource) ->
 
 
 psServices.factory 'Message', ['$resource', ($resource) ->
-	Message = $resource "api/users/:user_id/messages/:list_ctrl/:id/:doc_ctrl",
+	Message = $resource "/api/users/:user_id/messages/:list_ctrl/:id/:doc_ctrl",
 		user_id: '@user_id'
 		id: '@id'
 		list_ctrl: '@list_ctrl'

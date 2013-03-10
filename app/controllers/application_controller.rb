@@ -34,7 +34,7 @@ class ApplicationController < ActionController::Base
 private
 
 	def intercept_html_requests
-		if request.format == Mime::HTML and (params[:controller] =~ /devise\/sessions|rails_admin\/main|users\/passwords/).nil?
+		if request.format == Mime::HTML and (params[:controller] =~ /devise\/sessions|rails_admin\/main/).nil?
 			render('pages/home', layout: 'angular')
 		end
 	end

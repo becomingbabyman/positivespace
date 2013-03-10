@@ -4,21 +4,6 @@
 	fb_root = null #variable use to transfer the state of the fb-root div tag between page requests
 	$ ->
 		load_facebook_sdk()
-		$(document)
-			.on('page:fetch', fetching_page)
-			.on('page:change', page_changed)
-
-	fetching_page = ->
-		$("body").addClass("wait")
-		fb_root = $('#fb-root').detach()
-
-	page_changed = ->
-		if $('#fb-root').length > 0
-			$('#fb-root').replaceWith fb_root
-		else
-			$('body').append fb_root
-		$("body").removeClass("wait")
-		facebook_sdk_loaded()
 
 	load_facebook_sdk = ->
 		window.fbAsyncInit = ->
@@ -46,36 +31,36 @@
 		d.getElementsByTagName("head")[0].appendChild js
 	) document
 
-	window.fbLogin = (callback) ->
-		login = (response) ->
-			if callback
-				callback response
-			else
-				window.location.href = "#{user_omniauth_authorize_path(:facebook)}"
-							
-		FB.login ((response) ->
-			if response.authResponse then login response 
-		),
-			scope: "#{Facebook::SCOPE}"
+	# window.fbLogin = (callback) ->
+	#	login = (response) ->
+	#		if callback
+	#			callback response
+	#		else
+	#			window.location.href = "#{user_omniauth_authorize_path(:facebook)}"
 
-		# Analytical.event("Click Facebook Connect Button", { location: window.location.href } )
+	#	FB.login ((response) ->
+	#		if response.authResponse then login response
+	#	),
+	#		scope: "#{Facebook::SCOPE}"
 
-	window.fbPostToFeed = ->
-		
-		obj =
-			method: "feed"
-			link: "http://www.positivespace.com"
-			picture: ""
-			name: "Positivespace"
-			caption: "Simple cold contact"
-			description: "Pitch to strangers"
+	#	# Analytical.event("Click Facebook Connect Button", { location: window.location.href } )
 
-		callback = (response) ->
-			if response
-				# Analytical.event("Successful Facebook Post To Feed", { location: window.location.href, response: JSON.stringify(response) } )
-			else
-				# Analytical.event("Failed Facebook Post To Feed", { location: window.location.href, response: JSON.stringify(response) } )
+	# window.fbPostToFeed = ->
 
-		FB.ui obj, callback
+	#	obj =
+	#		method: "feed"
+	#		link: "http://www.positivespace.com"
+	#		picture: ""
+	#		name: "Positivespace"
+	#		caption: "Simple cold contact"
+	#		description: "Pitch to strangers"
+
+	#	callback = (response) ->
+	#		if response
+	#			# Analytical.event("Successful Facebook Post To Feed", { location: window.location.href, response: JSON.stringify(response) } )
+	#		else
+	#			# Analytical.event("Failed Facebook Post To Feed", { location: window.location.href, response: JSON.stringify(response) } )
+
+	#	FB.ui obj, callback
 
 		# Analytical.event("Click Facebook Post To Feed Button", { location: window.location.href, obj: JSON.stringify(obj) } )

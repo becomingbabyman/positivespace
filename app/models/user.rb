@@ -18,21 +18,21 @@ class User < ActiveRecord::Base
 			:omniauthable, :lockable, :timeoutable, :token_authenticatable,
 			:async, :authentication_keys => [:login]
 
-	attr_accessor :login
+	attr_accessor :login, :invitation_code
 	attr_accessible :username, :login, :email, :password, :password_confirmation, :remember_me
 	attr_accessible :body, :location, :name, :personal_url, :positive_response, :negative_response
 	attr_protected :none, as: :admin
 
 	serialize :achievements
 
-
+	extend FriendlyId
+	friendly_id :username
+	has_many :images, :as => :attachable
+	has_many :avatars, :as => :attachable, :source => :images, :class_name => "Image", :conditions => {image_type: "avatar"}, :order => 'created_at desc'
 	has_many :sent_messages, :foreign_key => :from_id, :class_name => 'Message', :order => 'created_at desc'
 	has_many :recieved_messages, :foreign_key => :to_id, :class_name => 'Message', :order => 'created_at desc'
 
-	extend FriendlyId
-	friendly_id :username
-
-	validates :username, :uniqueness => {:case_sensitive => false}, :length => 3..30, :allow_blank => true, :if => Proc.new { |user| user.username != user.id.to_s }
+	validates :username, :uniqueness => {:case_sensitive => false}, :length => 3..18, :allow_blank => true, :if => Proc.new { |user| user.username != user.id.to_s }
 	validate  :validate_username_format
 
 
@@ -46,46 +46,41 @@ class User < ActiveRecord::Base
 		end
 	end
 
-	# Inherited resource needs this in the messages controller to find a user's messages
-	# TODO: think about a cleaner solution
-	# TODO: think about merging this with sent messages
-	def messages
-		self.recieved_messages
-	end
-
 	# Given facebook authentication data, find the user record
 	# TODO: UNHACK: This is a whackasshack method
-	# def self.find_for_facebook(fb_user, current_user=nil, invitation_id=nil, invitation_code=nil)
-	#	if current_user
-	#		current_user.update_attribute(:facebook_id, fb_user.id) if current_user.facebook_id != fb_user.id
-	#		current_user.update_attribute(:username, fb_user.username) unless current_user.username
-	#		current_user
-	#	elsif user = User.find_by_facebook_id(fb_user.id)
-	#		user
-	#	elsif user = User.find_by_email(fb_user.try(:email).try(:downcase))
-	#		user.update_attribute(:facebook_id, fb_user.id)
-	#		user.update_attribute(:username, fb_user.username) unless user.username
-	#		unless user.avatar
-	#			# TODO: UNHACK: This is a whackasshack. I don't know how to store the model's attributes before processing the image in the uploader. This proccesses twice, the first time with no image.
-	#			image = user.avatars.new
-	#			image.update_attribute :remote_image_url, "https://graph.facebook.com/#{fb_user.id}/picture?type=large"
-	#		end
-	#		user
-	#	else # Create a user.
-	#		password = SecureRandom.hex(20)
-	#		user = User.create({ email: fb_user.email.downcase, username: fb_user.username, first_name: fb_user.first_name, last_name: fb_user.last_name, password: password, password_confirmation: password, invitation_id: invitation_id, invitation_code: invitation_code })
-	#		user.update_attribute(:facebook_id, fb_user.id)
-	#		# TODO: UNHACK: This is a whackasshack. I don't know how to store the model's attributes before processing the image in the uploader. This proccesses twice, the first time with no image.
-	#		image = user.avatars.new
-	#		image.update_attribute :remote_image_url, "https://graph.facebook.com/#{fb_user.id}/picture?type=large"
-	#		user
-	#	end
-	# end
+	def self.find_for_facebook(fb_user, current_user=nil, invitation_id=nil, invitation_code=nil)
+		if current_user
+			current_user.update_attribute(:facebook_id, fb_user.id) if current_user.facebook_id != fb_user.id
+			current_user
+		elsif user = User.find_by_facebook_id(fb_user.id)
+			user
+		elsif user = User.find_by_email(fb_user.try(:email).try(:downcase))
+			user.update_attribute(:facebook_id, fb_user.id)
+			unless user.avatar
+				# TODO: UNHACK: This is a whackasshack. I don't know how to store the model's attributes before processing the image in the uploader. This proccesses twice, the first time with no image.
+				image = user.avatars.new
+				image.update_attribute :remote_image_url, "https://graph.facebook.com/#{fb_user.id}/picture?type=large"
+			end
+			user
+		else # Create a user.
+			password = SecureRandom.hex(20)
+			user = User.create({ email: fb_user.email.downcase, name: "#{fb_user.first_name} #{fb_user.last_name}", gender: fb_user.gender, birthday: fb_user.try(:birthday), locale: fb_user.locale, timezone: fb_user.timezone.to_i, password: password, password_confirmation: password })#, invitation_id: invitation_id, invitation_code: invitation_code })
+			user.update_attribute(:facebook_id, fb_user.id)
+			# TODO: UNHACK: This is a whackasshack. I don't know how to store the model's attributes before processing the image in the uploader. This proccesses twice, the first time with no image.
+			image = user.avatars.new
+			image.update_attribute :remote_image_url, "https://graph.facebook.com/#{fb_user.id}/picture?type=large"
+			user
+		end
+	end
 
 
 	# Override destroy
 	def destroy
 		# Do nothing
+	end
+
+	def name
+		super || self.username
 	end
 
 	def email_to_name
@@ -101,12 +96,19 @@ class User < ActiveRecord::Base
 		model.editors.include? self
 	end
 
+	# Inherited resource needs this in the messages controller to find a user's messages
+	# TODO: think about a cleaner solution
+	# TODO: think about merging this with sent messages
+	def messages
+		self.recieved_messages
+	end
+
 	def avatar
-		# self.avatars.first
+		self.avatars.first
 	end
 
 	def avatar= image
-		# self.avatars.new(image: image)
+		self.avatars.new(image: image)
 	end
 
 private

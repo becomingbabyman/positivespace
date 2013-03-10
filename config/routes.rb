@@ -19,7 +19,7 @@ Positivespace::Application.routes.draw do
 	scope "/api", defaults: {format: 'json'} do
 		devise_for :users, :controllers => { :omniauth_callbacks => 'users/omniauth_callbacks', :registrations => 'users/registrations', :sessions => 'users/sessions', :passwords => 'users/passwords' }
 		devise_scope :user do
-			# # get '/users/auth/:provider' => 'users/omniauth_callbacks#passthru'
+			get '/users/auth/:provider' => 'users/omniauth_callbacks#passthru'
 			# get '/login' => 'users/sessions#new'
 			# get '/logout' => 'devise/sessions#destroy'
 			# get '/register' => 'users/registrations#new'
@@ -35,6 +35,9 @@ Positivespace::Application.routes.draw do
 			resources :users, only: [:index, :show, :update] do
 				resources :messages, only: [:index, :show, :create, :update, :destroy]
 			end
+
+			# Images
+			resources :images, only: [:create, :destroy, :show]
 
 			# # Simplified user routes
 			# resources :users, path: '', only: [:show] do

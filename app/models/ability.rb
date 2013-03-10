@@ -10,6 +10,10 @@ class Ability
 		# Registered Users
 		######################################################
 		if user.persisted?
+			can [:create, :update], Image do |image|
+				user.editor? image.attachable
+			end
+
 			can [:show], Message do |m|
 				m.from == user or m.to == user
 			end

@@ -13,6 +13,7 @@
 	<div class="row">
 		<div class="offset4 span4">
 			<div class="center">
+				<ps-img src="{{user.avatar.big_thumb_url}}" alt="{{user.name}}" img-class="img-circle img-polaroid" attachable-type='User' attachable-id='{{user.id}}' image-type='avatar' image-url='big_thumb_url' can-edit='{{user.id == app.currentUser.id}}'></ps-img>
 				<h2>{{user.name}}</h2>
 				<p>{{user.body}}</p>
 				<p>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130305025305) do
+ActiveRecord::Schema.define(:version => 20130310163058) do
 
   create_table "administrators", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -30,6 +30,24 @@ ActiveRecord::Schema.define(:version => 20130305025305) do
 
   add_index "administrators", ["email"], :name => "index_administrators_on_email", :unique => true
   add_index "administrators", ["reset_password_token"], :name => "index_administrators_on_reset_password_token", :unique => true
+
+  create_table "images", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "attachable_id"
+    t.string   "attachable_type"
+    t.string   "image"
+    t.string   "image_type"
+    t.string   "name"
+    t.float    "lat"
+    t.float    "lng"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  add_index "images", ["attachable_id", "attachable_type"], :name => "index_images_on_attachable_id_and_attachable_type"
+  add_index "images", ["attachable_id"], :name => "index_images_on_attachable_id"
+  add_index "images", ["attachable_type"], :name => "index_images_on_attachable_type"
+  add_index "images", ["user_id"], :name => "index_images_on_user_id"
 
   create_table "messages", :force => true do |t|
     t.integer  "from_id"
@@ -107,6 +125,10 @@ ActiveRecord::Schema.define(:version => 20130305025305) do
     t.string   "personal_url"
     t.text     "positive_response"
     t.text     "negative_response"
+    t.string   "gender"
+    t.datetime "birthday"
+    t.string   "locale"
+    t.integer  "timezone"
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true

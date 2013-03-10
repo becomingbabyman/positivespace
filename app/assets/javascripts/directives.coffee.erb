@@ -136,6 +136,70 @@ psDirectives.directive 'editResource', ->
 
 
 ####################################################
+# <ps-img>
+psDirectives.directive "psImg", ["$timeout", ($timeout) ->
+	restrict: "E"
+	scope:
+		src: '@'
+		alt: '@'
+		imgClass: '@'
+		canEdit: '@'
+		attachableType: '@'
+		attachableId: '@'
+		imageType: '@'
+		imageUrl: '@'
+	templateUrl: "/assets/directives/ps_img.html"
+
+	link: (scope, element, attrs) ->
+
+		initDropzone = ->
+			prompt = "Click to change #{scope.imageType} (or drag one in)"
+			tooltip = new Opentip element.find('img'), prompt
+			element.find('img').addClass 'ps-img-dropzone'
+
+			imgDropzone = new Dropzone element.find('img', {escapeContent: true}),
+				url: '/api/images'
+				maxFilesize: 5
+				maxThumbnailFilesize: 0.5
+				paramName: 'image'
+				# previewsContainer: element.find('.dropzone-preview')
+
+			imgDropzone.on "sending", (file, xhr, formData) ->
+				tooltip.setContent """
+					<div class="progress progress-striped active" style="width:140px;">
+						<div class="bar" style="width: 20%;"></div>
+					</div>
+					"""
+				tooltip.show()
+
+				formData.append 'image_type', scope.imageType
+				formData.append 'attachable_type', scope.attachableType
+				formData.append 'attachable_id', scope.attachableId
+				$.rails.CSRFProtection(xhr)
+
+			imgDropzone.on "uploadprogress", (file, progress) ->
+				tooltip.setContent """
+					<div class="progress progress-striped active" style="width:140px;">
+						<div class="bar" style="width: #{progress}%;"></div>
+					</div>
+					"""
+				tooltip.show()
+
+			imgDropzone.on "success", (file, data) ->
+				element.find('img').attr 'src', data["#{scope.imageUrl}"]
+				tooltip.setContent("Nice, #{scope.imageType} successfully changed.")
+				$timeout ->
+					tooltip.hide()
+					tooltip.setContent prompt
+				, 3000
+
+		# TODO: refactor all can methods. Maybe return a models editors in its json.
+		scope.$watch 'canEdit', (value) ->
+			if value == 'true' then initDropzone()
+]
+
+
+####################################################
 ####################################################
 # <login>
 psDirectives.directive 'psLogin', ["$timeout", "$location", "User", ($timeout, $location, User) ->
@@ -155,7 +219,7 @@ psDirectives.directive 'psLogin', ["$timeout", "$location", "User", ($timeout, $
 				if el? then el.focus()
 
 			scope.$watch 'credentials.login', (value) ->
-				if value.match(///^[a-zA-Z][a-zA-Z0-9-]*$///)?
+				if value? and value.match(///^[a-zA-Z][a-zA-Z0-9-]*$///)?
 					scope.credentials.username = value
 					scope.credentials.email = ''
 				else
@@ -242,6 +306,18 @@ psDirectives.directive 'psLogin', ["$timeout", "$location", "User", ($timeout, $
 							scope.app.show.loading = false
 							# TODO: put error on input field
 							scope.app.flash 'error', "Oops, that's the wrong password."
+
+			scope.fbLogin = () ->
+				FB.login ((response) ->
+					if response.authResponse
+						scope.app.show.loading = true
+						$.get '/users/auth/facebook/callback', { signed_request: response.authResponse.signedRequest }, (data) ->
+							scope.app.show.loading = false
+							scope.app.currentUser = data
+							scope.app.flash 'success', "Welcome!"
+							$location.path('/')
+				),
+					scope: "<%= Facebook::SCOPE %>"
 
 	return directiveDefinitionObject
 ]

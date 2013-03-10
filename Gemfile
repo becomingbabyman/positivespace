@@ -21,7 +21,8 @@ gem 'sidekiq-failures'
 # Authentications & Permissions
 gem 'devise'
 gem 'devise-async'
-gem 'omniauth-facebook', '1.4.1' # TODO: remove explicit version when CSRF bug is fixed http://stackoverflow.com/questions/11597130/omniauth-facebook-keeps-reporting-invalid-credentials
+gem 'omniauth', '~> 1.1.1'
+gem 'omniauth-facebook', '1.4.0' # TODO: remove explicit version when CSRF bug is fixed http://stackoverflow.com/questions/11597130/omniauth-facebook-keeps-reporting-invalid-credentials
 gem 'omniauth-openid'
 gem 'cancan'
 
@@ -46,17 +47,28 @@ gem 'chronic'
 gem 'rabl'
 gem 'oj'
 
+# Sync Assets to CDN
+gem 'asset_sync'
+
+# Uploads and Images
+gem 'carrierwave'
+gem 'rmagick'
+gem 'fog'
+
 # Embedly API
 gem 'embedly'
+
+# Pagination
+gem 'kaminari'
 
 # UJS - JQuery
 gem 'jquery-rails'
 
-# HAML View Templating
-gem 'haml-rails'
+# Better Select Boxes
+gem 'select2-rails'
 
-# Inline Coffeescript Compiler
-gem 'coffee-filter'
+# HAML View Templating
+gem 'haml'
 
 # Form Helpers
 gem 'simple_form'
@@ -99,17 +111,22 @@ group :development, :test do
   gem 'capybara-screenshot'
   gem 'poltergeist'
   gem 'shoulda-matchers'
+  gem 'vcr'
+  gem 'faraday'
 end
 
 
 group :development do
-  gem 'pry'
+  gem 'pry-rails'
+  gem 'pry-doc'
+  gem 'pry-remote'
   gem 'letter_opener'
   gem 'guard'
   gem 'guard-spork'
   gem 'guard-rspec'
   gem 'brakeman'
   gem 'foreman'
+  # gem 'bullet'
   # gem 'better_errors'
   gem 'binding_of_caller'
   gem 'meta_request'
@@ -120,4 +137,6 @@ end
 
 group :production, :staging do
   gem 'exception_notification'
+  gem 'heroku-deflater'
 end
+
