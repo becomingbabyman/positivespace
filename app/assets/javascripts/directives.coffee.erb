@@ -136,6 +136,38 @@ psDirectives.directive 'editResource', ->
 
 
 ####################################################
+# <div centerish>
+psDirectives.directive "centerish", ["$timeout", ($timeout) ->
+	restrict: "A"
+	template: "<div ng-transclude></div>"
+	transclude: true
+
+	link: (scope, element, attrs) ->
+		center = ->
+			height = $(document).height()
+			height -= element.height()
+			height -= $('#header').height()
+			height -= $('#footer').height()
+			if height > 0
+				element.css 'margin-top', (height/3)
+
+		element.resize ->
+			center()
+
+		$(window).resize ->
+			center()
+
+		$timeout ->
+			center()
+		, 500
+
+		$timeout ->
+			center()
+		, 2000
+]
+
+
+####################################################
 # <ps-img>
 psDirectives.directive "psImg", ["$timeout", ($timeout) ->
 	restrict: "E"
