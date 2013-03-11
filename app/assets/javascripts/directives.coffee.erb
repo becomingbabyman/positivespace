@@ -349,7 +349,9 @@ psDirectives.directive 'psLogin', ["$timeout", "$location", "User", ($timeout, $
 							scope.app.flash 'success', "Welcome!"
 							$location.path('/')
 				),
-					scope: "<%= Facebook::SCOPE %>"
+					scope: "email"
+					# TODO: find a way to do this durring asset_sync
+					# scope: "<%= Facebook::SCOPE %>"
 
 	return directiveDefinitionObject
 ]
