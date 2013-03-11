@@ -66,7 +66,7 @@ psDirectives.directive 'controlGroup', () ->
 			label: '@'
 			helpInline: '@'
 			helpBlock: '@'
-		templateUrl: "<%= asset_path('directives/control_group.html') %>"
+		templateUrl: "/assets/directives/control_group.html"
 		transclude: true
 		replace: true
 		require: '?^form'
@@ -124,7 +124,7 @@ psDirectives.directive 'editResource', ->
 			app: '='
 			toggle: '='
 			resource: '='
-		templateUrl: "<%= asset_path('directives/edit_resource.html') %>"
+		templateUrl: "/assets/directives/edit_resource.html"
 
 		link: (scope, element, attrs) ->
 			scope.submitForm = ->
@@ -239,7 +239,7 @@ psDirectives.directive 'psLogin', ["$timeout", "$location", "User", ($timeout, $
 		restrict: 'E'
 		scope:
 			app: '='
-		templateUrl: "<%= asset_path('directives/login.html') %>"
+		templateUrl: "/assets/directives/login.html"
 
 		link: (scope, element, attrs) ->
 			scope.credentials = {loginType: attrs.loginType}
