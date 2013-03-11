@@ -11,33 +11,33 @@ ps.config ['$routeProvider', '$locationProvider', ($routeProvider, $locationProv
 	# Pages
 	.when "/",
 		controller: "PagesCtrl"
-		templateUrl: "<%= asset_path('pages/home.html') %>"
+		templateUrl: "/assets/pages/home.html"
 	.when "/about",
 		controller: "PagesCtrl"
-		templateUrl: "<%= asset_path('pages/about.html') %>"
+		templateUrl: "/assets/pages/about.html"
 	.when "/terms",
 		controller: "PagesCtrl"
-		templateUrl: "<%= asset_path('pages/terms.html') %>"
+		templateUrl: "/assets/pages/terms.html"
 	.when "/privacy",
 		controller: "PagesCtrl"
-		templateUrl: "<%= asset_path('pages/privacy.html') %>"
+		templateUrl: "/assets/pages/privacy.html"
 
 	# Users
 	.when "/login",
 		controller: "UsersLoginCtrl"
-		templateUrl: "<%= asset_path('users/login.html') %>"
+		templateUrl: "/assets/users/login.html"
 	.when "/register",
 		controller: "UsersRegisterCtrl"
-		templateUrl: "<%= asset_path('users/register.html') %>"
+		templateUrl: "/assets/users/register.html"
 	.when "/settings",
 		controller: "UsersSettingsCtrl"
-		templateUrl: "<%= asset_path('users/settings.html') %>"
+		templateUrl: "/assets/users/settings.html"
 	.when "/users/password/edit",
 		controller: "UserPasswordEditCtrl"
 		templateUrl: '/assets/users/password_edit.html'
 	.when "/:user_id",
 		controller: "UsersShowCtrl"
-		templateUrl: "<%= asset_path('users/show.html') %>"
+		templateUrl: "/assets/users/show.html"
 	.otherwise redirectTo: "/"
 ]
 
