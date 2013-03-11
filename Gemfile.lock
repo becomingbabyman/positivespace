@@ -92,6 +92,7 @@ GEM
     compass-rails (1.0.3)
       compass (>= 0.12.2, < 0.14)
     connection_pool (1.0.0)
+    dalli (2.6.2)
     database_cleaner (0.9.1)
     debug_inspector (0.0.2)
     devise (2.2.3)
@@ -202,6 +203,7 @@ GEM
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    memcachier (0.0.2)
     meta_request (0.2.2)
       rack-contrib
       railties
@@ -436,6 +438,7 @@ DEPENDENCIES
   coffee-rails (~> 3.2.1)
   compass-h5bp
   compass-rails
+  dalli
   database_cleaner
   devise
   devise-async
@@ -459,6 +462,7 @@ DEPENDENCIES
   jquery-rails
   kaminari
   letter_opener
+  memcachier
   meta_request
   oj
   omniauth (~> 1.1.1)

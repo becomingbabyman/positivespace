@@ -18,6 +18,10 @@ gem 'sinatra', require: false
 gem 'slim'
 gem 'sidekiq-failures'
 
+# Memcached
+gem 'memcachier'
+gem 'dalli'
+
 # Authentications & Permissions
 gem 'devise'
 gem 'devise-async'
