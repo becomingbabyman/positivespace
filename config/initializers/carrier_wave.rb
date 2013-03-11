@@ -8,7 +8,7 @@ CarrierWave.configure do |config|
     :aws_secret_access_key => ENV['AWS_SECRET_ACCESS_KEY'],
     :region => 'us-east-1'
   }
-  config.fog_directory = "consignd-#{Rails.env}"
+  config.fog_directory = "positivespace-#{Rails.env}"
   config.asset_host = ENV['FOG_HOST_SSL']
   # config.asset_host = Proc.new do |source, request=nil|
   #   if request and request.ssl?
