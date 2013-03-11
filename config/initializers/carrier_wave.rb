@@ -1,5 +1,5 @@
 CarrierWave.configure do |config|
-  ## Comment to test heroku s3 image persistences
+  ## Comment to test heroku s3 image persistence
   config.storage = :fog
 
   config.fog_credentials = {
