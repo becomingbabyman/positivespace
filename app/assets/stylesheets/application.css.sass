@@ -77,7 +77,7 @@
 //        +_ SCSS         //
 ////////////////////////////
 
-@include sticky-footer(60px, "#wrapper", "#layout_footer", "#footer")
+@include sticky-footer(80px, "#wrapper", "#layout_footer", "#footer")
 
 body
     padding: 0
@@ -91,7 +91,7 @@ body
     @include sans
     font-size: $base-font-size
     line-height: $base-line-height
-    font-family: Lato
+    font-family: Lato, "Helvetica Neue", Helvetica, Arial, sans-serif
     // letter-spacing: 0.1em
     // padding-top: 41px
     // @media (max-width: 979px)
@@ -111,6 +111,9 @@ p
     font-family: Vollkorn
     font-style: italic
     font-weight: 400
+
+input, button, select, textarea
+    font-family: Lato, "Helvetica Neue", Helvetica, Arial, sans-serif
 
 form
     &>div
