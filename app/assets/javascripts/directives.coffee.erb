@@ -143,13 +143,16 @@ psDirectives.directive "centerish", ["$timeout", ($timeout) ->
 	transclude: true
 
 	link: (scope, element, attrs) ->
-		center = ->
+		center = (animate = false) ->
 			height = $(document).height()
 			height -= element.height()
 			height -= $('#header').height()
 			height -= $('#footer').height()
 			if height > 0
-				element.css 'margin-top', (height/3)
+				if animate
+					element.transition { 'margin-top': (height/3) }
+				else
+					element.css { 'margin-top': (height/3) }
 
 		element.resize ->
 			center()
@@ -158,11 +161,11 @@ psDirectives.directive "centerish", ["$timeout", ($timeout) ->
 			center()
 
 		$timeout ->
-			center()
+			center(true)
 		, 500
 
 		$timeout ->
-			center()
+			center(true)
 		, 2000
 ]
 

@@ -30,6 +30,7 @@
 #= require jquery.scrollTo-min
 #= require jquery.autosize
 #= require opentip-jquery
+#= require jquery.transit.min
 #
 # Not Currentyl Required
 # require jquery.jlabel
