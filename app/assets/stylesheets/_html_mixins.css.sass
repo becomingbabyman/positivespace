@@ -4,11 +4,24 @@
 	font-style: italic
 	font-weight: normal
 
+.big-thumb
+	width: 128px
+	height: 128px
+
 .box-pop
 	@include box-shadow(inset 0 1px rgba(255, 255, 255, 0.5))
 
 .btn
 	@include box-shadow(inset 0 1px rgba(255, 255, 255, 0.5))
+
+.btn-facebook
+	@include background-image(none)
+	@include text-shadow(none)
+	background-color: #3B5998
+	color: white
+	&:hover
+		background-color: lighten(#3B5998, 10%)
+		color: white
 
 .center
 	float: none
@@ -17,6 +30,7 @@
 
 .clearfix
 	@include clearfix
+
 
 .display-block
 	display: block
@@ -40,6 +54,9 @@
 .font-skinny
 	font-weight: 100
 
+.hidden
+	visibility: hidden
+
 .m0
 	margin: 0
 
@@ -47,6 +64,9 @@
 	position: absolute
 	left: -999px
 
+.opacity0
+	opacity: 0.0
+	pointer-events: none
 .opacity1
 	opacity: 0.1
 .opacity2

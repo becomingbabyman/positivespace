@@ -10,7 +10,7 @@
 	<div class="row">
 		<div class="offset4 span4">
 			<div class="center">
-				<ps-img src="{{user.avatar.big_thumb_url}}" alt="{{user.name}}" img-class="img-circle img-polaroid" attachable-type='User' attachable-id='{{user.id}}' image-type='avatar' image-url='big_thumb_url' can-edit='{{user.id && user.id == app.currentUser.id}}'></ps-img>
+				<ps-img src="{{user.avatar.big_thumb_url}}" alt="{{user.name}}" img-class="img-circle img-polaroid big-thumb" attachable-type='User' attachable-id='{{user.id}}' image-type='avatar' image-url='big_thumb_url' can-edit='{{user.id && user.id == app.currentUser.id}}'></ps-img>
 				<h2>{{user.name}}</h2>
 				<p>{{user.body}}</p>
 				<p>
@@ -21,18 +21,17 @@
 			</div>
 		</div>
 	</div>
-	<br/>
 
 	<div class="row">
 		<div class="offset4 span4">
 			<form name='message' class='form-vertical uncenter' ng-submit='submitMyMessage()' novalidate style='width: 100%;'>
 
 				<control-group>
-					<input type='email' name='email' id='msg_email' placeholder='your email address' class='input-block-level' ng-model='myMessage.from_email'></input>
+					<input type='email' name='email' id='msg_email' placeholder='your email address' class='input-block-level' ng-model='myMessage.from_email' required></input>
 				</control-group>
 
 				<control-group>
-					<textarea name='body' id='msg_body' title='message body' placeholder='message to {{user.username}}...' class='input-block-level' ng-model='myMessage.body' required></textarea>
+					<textarea name='body' id='msg_body' title='message body' placeholder='compose a message to {{user.username}}...' class='input-block-level' ng-model='myMessage.body' required></textarea>
 				</control-group>
 
 				<div class='control-group'>

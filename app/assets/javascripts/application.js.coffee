@@ -14,8 +14,9 @@
 # TODO: deprecate jquery - for now Angular UI depends on it
 #= require jquery
 #= require jquery_ujs
-#= require underscore
 #= require_tree ../../../vendor/assets/javascripts/angularjs/
+#= require underscore
+#= require bootstrap-button
 #
 # App JS
 #= require services

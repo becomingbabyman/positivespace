@@ -40,22 +40,22 @@
 // Loading custom fonts
 @import url("http://fonts.googleapis.com/css?family=Lato:400,700,900,400italic")
 @import url("http://fonts.googleapis.com/css?family=Vollkorn:400italic")
-@import "flat-ui/icon-font"
+// @import "flat-ui/icon-font"
 // @import "flat-ui/icon-font-24"
 
 // Loading config with variables (changing them leads to changing a color scheme)
 @import "flat-ui/config"
 
 // Utility mixins for greater good
-@import "flat-ui/mixins"
+// @import "flat-ui/mixins"
 
 // Modules
-@import "flat-ui/modules/type"
-@import "flat-ui/modules/btn"
+// @import "flat-ui/modules/type"
+// @import "flat-ui/modules/btn"
 // @import "flat-ui/modules/demo"
 // @import "flat-ui/modules/navbar"
 // @import "flat-ui/modules/select"
-@import "flat-ui/modules/input"
+// @import "flat-ui/modules/input"
 // @import "flat-ui/modules/checkbox-and-radio"
 // @import "flat-ui/modules/toggle"
 // @import "flat-ui/modules/tagsinput"
@@ -77,7 +77,7 @@
 //        +_ SCSS         //
 ////////////////////////////
 
-@include sticky-footer(80px, "#wrapper", "#layout_footer", "#footer")
+@include sticky-footer(60px, "#wrapper", "#layout_footer", "#footer")
 
 body
     padding: 0
@@ -91,6 +91,8 @@ body
     @include sans
     font-size: $base-font-size
     line-height: $base-line-height
+    font-family: Lato
+    // letter-spacing: 0.1em
     // padding-top: 41px
     // @media (max-width: 979px)
     //  padding-top: 0

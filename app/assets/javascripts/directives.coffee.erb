@@ -340,14 +340,17 @@ psDirectives.directive 'psLogin', ["$timeout", "$location", "User", ($timeout, $
 							scope.app.flash 'error', "Oops, that's the wrong password."
 
 			scope.fbLogin = () ->
+				scope.app.show.loading = true
 				FB.login ((response) ->
 					if response.authResponse
-						scope.app.show.loading = true
 						$.get '/users/auth/facebook/callback', { signed_request: response.authResponse.signedRequest }, (data) ->
 							scope.app.show.loading = false
 							scope.app.currentUser = data
 							scope.app.flash 'success', "Welcome!"
 							$location.path('/')
+					else
+						scope.app.show.loading = false
+						scope.app.flash 'error', "Sorry, we had trouble contacting facebook. Please try again."
 				),
 					scope: "email"
 
@@ -451,3 +454,4 @@ psDirectives.directive("psButton", ["$parse", "$timeout", ($parse, $timeout) ->
 						$.fn.button.Constructor::toggle.call $btn.data("button")  if $btn.length
 
 ]
+
