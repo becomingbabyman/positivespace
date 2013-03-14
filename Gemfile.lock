@@ -148,6 +148,7 @@ GEM
     friendly_id (4.0.9)
     fssm (0.2.10)
     ga_cookie_parser (0.1.0)
+    gravtastic (3.2.6)
     guard (1.6.2)
       listen (>= 0.6.0)
       lumberjack (>= 1.0.2)
@@ -451,6 +452,7 @@ DEPENDENCIES
   foreman
   friendly_id (~> 4.0.9)
   ga_cookie_parser
+  gravtastic
   guard
   guard-rspec
   guard-spork

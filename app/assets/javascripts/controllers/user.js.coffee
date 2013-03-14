@@ -32,6 +32,9 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "User", "M
 	$scope.user = User.get({id: $routeParams.user_id})
 	$scope.myMessage = new Message {user_id: $routeParams.user_id}
 
+	$scope.$watch 'myMessage.body', (value) ->
+		$scope.remainingChars = 250 - (if value? then value.length else 0)
+
 	$scope.submitMyMessage = ->
 		success = (data) ->
 			$scope.app.flash 'success', 'Great, your message has been sent.'

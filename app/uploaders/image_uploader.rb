@@ -132,7 +132,7 @@ class ImageUploader < CarrierWave::Uploader::Base
     else
       resize_to_fill 128, 128 # fixed width
     end
-    quality 70
+    quality 100
   end
 
   def thumb_process
@@ -150,7 +150,7 @@ class ImageUploader < CarrierWave::Uploader::Base
     else
       resize_to_fill 64, 64 # 1x1
     end
-    quality 70
+    quality 100
   end
 
 

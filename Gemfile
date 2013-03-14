@@ -58,6 +58,7 @@ gem 'asset_sync'
 gem 'carrierwave'
 gem 'rmagick'
 gem 'fog'
+gem 'gravtastic'
 
 # Embedly API
 gem 'embedly'

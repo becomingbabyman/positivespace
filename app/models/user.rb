@@ -1,10 +1,12 @@
 class User < ActiveRecord::Base
+	include Gravtastic
 
-	after_validation    :validate_username_reserved
+	after_validation :validate_username_reserved
 	before_create do
 		# initialize_profile
 		initialize_permissions
 	end
+	after_create :add_gravatar
 	after_save do
 		# sync_slug if username != profile.slug
 		generate_username unless username?
@@ -17,6 +19,11 @@ class User < ActiveRecord::Base
 			:recoverable, :rememberable, :trackable, :validatable,
 			:omniauthable, :lockable, :timeoutable, :token_authenticatable,
 			:async, :authentication_keys => [:login]
+
+	gravtastic :secure => false,
+	            :filetype => :jpg,
+	            :default => :identicon,
+	            :size => 1024
 
 	attr_accessor :login, :invitation_code
 	attr_accessible :username, :login, :email, :password, :password_confirmation, :remember_me
@@ -31,6 +38,8 @@ class User < ActiveRecord::Base
 	has_many :avatars, :as => :attachable, :source => :images, :class_name => "Image", :conditions => {image_type: "avatar"}, :order => 'created_at desc'
 	has_many :sent_messages, :foreign_key => :from_id, :class_name => 'Message', :order => 'created_at desc'
 	has_many :recieved_messages, :foreign_key => :to_id, :class_name => 'Message', :order => 'created_at desc'
+
+	accepts_nested_attributes_for :images, :avatars
 
 	validates :username, :uniqueness => {:case_sensitive => false}, :length => 3..18, :allow_blank => true, :if => Proc.new { |user| user.username != user.id.to_s }
 	validate  :validate_username_format
@@ -64,11 +73,19 @@ class User < ActiveRecord::Base
 			user
 		else # Create a user.
 			password = SecureRandom.hex(20)
-			user = User.create({ email: fb_user.email.downcase, name: "#{fb_user.first_name} #{fb_user.last_name}", gender: fb_user.gender, birthday: fb_user.try(:birthday), locale: fb_user.locale, timezone: fb_user.timezone.to_i, password: password, password_confirmation: password })#, invitation_id: invitation_id, invitation_code: invitation_code })
+			user = User.create({ email: fb_user.email.downcase,
+				name: "#{fb_user.first_name} #{fb_user.last_name}",
+				gender: fb_user.gender,
+				birthday: fb_user.try(:birthday),
+				locale: fb_user.locale,
+				timezone: fb_user.timezone.to_i,
+				password: password,
+				password_confirmation: password,
+				avatars_attributes: [
+					{ remote_image_url: "https://graph.facebook.com/#{fb_user.id}/picture?type=large" }
+				]
+			})#, invitation_id: invitation_id, invitation_code: invitation_code })
 			user.update_attribute(:facebook_id, fb_user.id)
-			# TODO: UNHACK: This is a whackasshack. I don't know how to store the model's attributes before processing the image in the uploader. This proccesses twice, the first time with no image.
-			image = user.avatars.new
-			image.update_attribute :remote_image_url, "https://graph.facebook.com/#{fb_user.id}/picture?type=large"
 			user
 		end
 	end
@@ -135,5 +152,12 @@ private
 
 	def update_achievements
 		# TODO: search for newly completed achievements and check them off
+	end
+
+	 # Adds a gravatar if no avatar exists
+	def add_gravatar
+		unless avatar
+			avatars.create({ remote_image_url: gravatar_url, user_id: id })
+		end
 	end
 end

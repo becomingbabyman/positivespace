@@ -24,7 +24,7 @@ class Api::V1::MessagesController < InheritedResources::Base
 		@message.to = @user
 		@message.from = current_user
 		@message.session_id = positivespace_session_id
-		@message.save!
+		create!
 	end
 
 protected
