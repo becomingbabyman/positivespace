@@ -22,6 +22,11 @@ ps.config ['$routeProvider', '$locationProvider', ($routeProvider, $locationProv
 		controller: "PagesCtrl"
 		templateUrl: "/assets/pages/privacy.html"
 
+	# Messages
+	.when "/inbox",
+		controller: "MessagesInboxCtrl"
+		templateUrl: "/assets/messages/inbox.html"
+
 	# Users
 	.when "/login",
 		controller: "UsersLoginCtrl"

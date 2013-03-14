@@ -160,7 +160,7 @@ psDirectives.directive "centerish", ["$timeout", ($timeout) ->
 		$(window).resize ->
 			center()
 
-		_.each [80, 500, 1000, 2000], (time) ->
+		_.each [80, 500, 1000, 2000, 4000], (time) ->
 			$timeout ->
 				center(true)
 			, time

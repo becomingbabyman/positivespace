@@ -14,6 +14,9 @@ class Ability
 				user.editor? image.attachable
 			end
 
+			can [:index], Message do
+				params[:user_id] == user.id
+			end
 			can [:show], Message do |m|
 				m.from == user or m.to == user
 			end

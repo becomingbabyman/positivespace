@@ -42,6 +42,9 @@ class User < ActiveRecord::Base
 	accepts_nested_attributes_for :images, :avatars
 
 	validates :username, :uniqueness => {:case_sensitive => false}, :length => 3..18, :allow_blank => true, :if => Proc.new { |user| user.username != user.id.to_s }
+	validates :body, length: 1..250, allow_blank: true
+	validates :positive_response, length: 1..250, allow_blank: true
+	validates :negative_response, length: 1..250, allow_blank: true
 	validate  :validate_username_format
 
 

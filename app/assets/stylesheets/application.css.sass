@@ -38,9 +38,9 @@
 ////////////////////
 // Flat UI (custom)
 // Loading custom fonts
-@import url("http://fonts.googleapis.com/css?family=Lato:400,700,900,400italic")
-@import url("http://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic,700italic")
-@import url("http://fonts.googleapis.com/css?family=Vollkorn:400italic")
+// @import url("http://fonts.googleapis.com/css?family=Lato:400,700,900,400italic")
+// @import url("http://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic,700italic")
+// @import url("http://fonts.googleapis.com/css?family=Vollkorn:400italic")
 // @import "flat-ui/icon-font"
 // @import "flat-ui/icon-font-24"
 
@@ -85,8 +85,8 @@ body
     box-sizing: border-box
     -moz-box-sizing: border-box
     -webkit-box-sizing: border-box
-    // color: $color-font
-    background-color: #fff //$color-background //#36124E //#2A044A
+    color: $color-text
+    background-color: $color-background //#36124E //#2A044A
     // background-image: image_url("noisy-texture-200x200-o12-d48-c-4F2958-t1.png")
     // background: -webkit-radial-gradient(top,darken(#eee, 5%),darken(#eee, 0%))
     @include sans
@@ -283,8 +283,14 @@ input, textarea
                     opacity: 1
 
 
-
-
+//////////////////////////////////////////////////////
+/**                   inbox style                  **/
+//////////////////////////////////////////////////////
+#inbox
+    .message
+        color: lighten($color-text, 50%)
+        &:first-child
+            color: $color-text
 
 // Import these mixins last to overide everything else
 @import "flat-ui/spaces"
