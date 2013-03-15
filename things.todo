@@ -7,6 +7,8 @@ Ideas:
  ☐ add option to display server errors in control-group directive
  ☐ add option to display error tooltips in control-group on focus or blur of the input
  ☐ feature flags -- http://samsworldofno.com/continuous-deployment-with-gradual-feature-rollout/ -- AND -- https://github.com/jamesgolick/rollout -- AND -- https://github.com/jrallison/rollout_ui
+ ☐ a subtle explaination on every space explaining what it is to new users
+ ☐ a user must be invited to create a space, but anyone can send messages and receive replies
 
 Backlog:
  ☐ validate message params - i.e. require body and either a from_email or a from user

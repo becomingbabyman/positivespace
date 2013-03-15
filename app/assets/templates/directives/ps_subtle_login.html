@@ -1,0 +1,13 @@
+<div ng-show="app.currentUser.id">
+	<div class='control-group'>
+		<img ng-src="{{app.currentUser.avatar.thumb_url}}" alt="{{app.currentUser.name}}" class="img-circle img-polaroid img-mini">
+		&nbsp;
+		{{app.currentUser.name}}
+	</div>
+</div>
+
+<div ng-hide="app.currentUser.id">
+	<control-group>
+		<input type='email' name='email' id='msg_email' placeholder="your email address" class='input-block-level' ng-model='myMessage.from_email' required></input>
+	</control-group>
+</div>

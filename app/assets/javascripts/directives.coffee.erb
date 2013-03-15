@@ -234,13 +234,29 @@ psDirectives.directive "psImg", ["$timeout", ($timeout) ->
 
 ####################################################
 ####################################################
-# <login>
+# <ps-subtle-login>
+psDirectives.directive 'psSubtleLogin', ["$timeout", "$location", "User", ($timeout, $location, User) ->
+	directiveDefinitionObject =
+		restrict: 'E'
+		scope:
+			app: '='
+		templateUrl: "/assets/directives/ps_subtle_login.html"
+
+		link: (scope, element, attrs) ->
+			scope.credentials = {}
+			scope.usernameTaken = true
+
+]
+
+
+####################################################
+# <ps-login>
 psDirectives.directive 'psLogin', ["$timeout", "$location", "User", ($timeout, $location, User) ->
 	directiveDefinitionObject =
 		restrict: 'E'
 		scope:
 			app: '='
-		templateUrl: "/assets/directives/login.html"
+		templateUrl: "/assets/directives/ps_login.html"
 
 		link: (scope, element, attrs) ->
 			scope.credentials = {loginType: attrs.loginType}
