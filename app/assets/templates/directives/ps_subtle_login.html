@@ -7,7 +7,58 @@
 </div>
 
 <div ng-hide="app.currentUser.id">
-	<control-group>
-		<input type='email' name='email' id='msg_email' placeholder="your email address" class='input-block-level' ng-model='myMessage.from_email' required></input>
-	</control-group>
+	<form name='login' ng-submit='login()'>
+
+		<control-group>
+			<input type='email' name='email' id='sbtl_lgn_email' placeholder='email' class='input-block-level' ng-model='credentials.email' ui-event='{blur: "checkLogin()"}' required></input>
+		</control-group>
+
+
+		<div class="row-fluid" ng-show='credentials.loginType == "register"'>
+			<div class="span5">
+				<control-group>
+				    <input type='password' id='reg_password' name='password' placeholder='new password' class='input-block-level' ng-model='credentials.password' ng-minlength='8' ng-maxlength='100' required></input>
+				</control-group>
+			</div>
+
+			<div class="span5">
+				<control-group>
+	                <input type='text' name='username' id='reg_username' class='input-block-level' ng-model='credentials.username' ng-minlength='3' ng-maxlength='18' ng-pattern='/^[a-zA-Z][a-zA-Z0-9-]*$/' ui-event='{keyup: "checkUsername($value)", blur: "login()"}' ui-validate='{usernameTaken: "usernameTaken"}' ui-validate-watch='"usernameTaken"' required></input>
+	            </control-group>
+			</div>
+
+			<div class="span1">
+				<div class="center ptx">or</div>
+			</div>
+
+			<div class="span1">
+				<a href="#" ng-click='fbLogin()' class="btn btn-block btn-facebook" tooltip='login with facebook'>
+					<i class="icon-facebook"></i>
+				</a>
+			</div>
+		</div>
+
+
+		<div class="row-fluid" ng-show='credentials.loginType == "login"'>
+			<div class="span8">
+				<control-group>
+				    <input type='password' id='lgn_password' name='password' placeholder='your password' class='input-block-level' ng-model='credentials.password' ui-event='{blur: "login()"}' ng-minlength='8' ng-maxlength='100' required></input>
+				</control-group>
+			</div>
+
+			<div class="span2">
+				<a href="#" class='btn btn-link' ng-click='app.resetPassword(credentials.email)'>forgot?</a>
+			</div>
+
+			<div class="span1">
+				<div class="center ptx">or</div>
+			</div>
+			<div class="span1">
+				<a href="#" ng-click='fbLogin()' class="btn btn-block btn-facebook" tooltip='login with facebook'>
+					<i class="icon-facebook"></i>
+				</a>
+			</div>
+		</div>
+
+	</form>
 </div>

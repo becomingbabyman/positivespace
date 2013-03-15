@@ -235,6 +235,7 @@ psDirectives.directive "psImg", ["$timeout", ($timeout) ->
 ####################################################
 ####################################################
 # <ps-subtle-login>
+# TODO: REFACTOR: there is some overlap between this and ps-login directive. see if it can be refactored.
 psDirectives.directive 'psSubtleLogin', ["$timeout", "$location", "User", ($timeout, $location, User) ->
 	directiveDefinitionObject =
 		restrict: 'E'
@@ -243,8 +244,85 @@ psDirectives.directive 'psSubtleLogin', ["$timeout", "$location", "User", ($time
 		templateUrl: "/assets/directives/ps_subtle_login.html"
 
 		link: (scope, element, attrs) ->
-			scope.credentials = {}
+			scope.credentials = {loginType: ''}
 			scope.usernameTaken = true
+
+			scope.checkLogin = () ->
+				login = scope.credentials.email
+				User.query
+					login: login
+					(data) ->
+						if data.length > 0
+							scope.credentials.loginType = 'login'
+							# scope.app.flash 'info', "Looks like you already have an account. Go ahead and log in."
+							$timeout () ->
+								element.find('#lgn_password').focus()
+							, 100
+						else if data.length == 0
+							scope.credentials.loginType = 'register'
+							# scope.app.flash 'info', "Looks like you need an account. Go ahead and start one."
+							$timeout () ->
+								element.find('#reg_password').focus()
+							, 100
+
+			scope.checkUsername = (username = scope.credentials.username) ->
+				if scope.credentials.loginType == 'register'
+					User.query
+						username: username
+						(data) ->
+							if data.length > 0 and scope.credentials.loginType == 'register'
+								scope.usernameTaken = false
+							else
+								scope.usernameTaken = true
+				else
+					scope.usernameTaken = true
+
+			scope.login = () ->
+				if scope.credentials.loginType == 'register'
+					scope.app.show.loading = true
+					User.register
+						user:
+							email: scope.credentials.email
+							password: scope.credentials.password
+							username: scope.credentials.username
+						(data) ->
+							scope.app.show.loading = false
+							scope.app.currentUser = new User data
+							scope.credentials = {loginType: ''}
+							scope.app.flash 'success', "Welcome! Go ahead and start a conversation."
+						(error) ->
+							scope.app.show.loading = false
+							scope.app.flash 'error', error.data.errors
+				else
+					scope.app.show.loading = true
+					User.login
+						user:
+							login: scope.credentials.email
+							password: scope.credentials.password
+							# remember_me: rememberMe
+						(data) ->
+							scope.app.show.loading = false
+							scope.app.currentUser = new User data
+							scope.credentials = {loginType: ''}
+							scope.app.flash 'success', "Welcome back!"
+						(error) ->
+							scope.app.show.loading = false
+							# TODO: put error on input field
+							scope.app.flash 'error', "Oops, that's the wrong password."
+
+			scope.fbLogin = () ->
+				scope.app.show.loading = true
+				FB.login ((response) ->
+					if response.authResponse
+						$.get '/users/auth/facebook/callback', { signed_request: response.authResponse.signedRequest }, (data) ->
+							scope.app.show.loading = false
+							scope.app.currentUser = new User data
+							scope.app.flash 'success', "Welcome!"
+					else
+						scope.app.show.loading = false
+						scope.app.flash 'error', "Sorry, we had trouble contacting facebook. Please try again."
+				),
+					scope: "email"
 
 ]
 
@@ -323,15 +401,12 @@ psDirectives.directive 'psLogin', ["$timeout", "$location", "User", ($timeout, $
 					scope.app.show.loading = true
 					User.register
 						user:
-							# email: element.find('#reg_email').val()
-							# password: element.find('#reg_password').val()
-							# username: element.find('#reg_username').val()
 							email: scope.credentials.email
 							password: scope.credentials.password
 							username: scope.credentials.username
 						(data) ->
 							scope.app.show.loading = false
-							scope.app.currentUser = data
+							scope.app.currentUser = new User data
 							scope.credentials = {loginType: 'login'}
 							scope.app.flash 'success', "Welcome. Let's create your PositiveSpace!"
 							$location.path('/')
@@ -347,7 +422,8 @@ psDirectives.directive 'psLogin', ["$timeout", "$location", "User", ($timeout, $
 							# remember_me: rememberMe
 						(data) ->
 							scope.app.show.loading = false
-							scope.app.currentUser = data
+							scope.app.currentUser = new User data
+							console.log scope.app.currentUser
 							scope.credentials = {loginType: 'login'}
 							scope.app.flash 'success', "Welcome back!"
 							$location.path('/')
@@ -362,7 +438,7 @@ psDirectives.directive 'psLogin', ["$timeout", "$location", "User", ($timeout, $
 					if response.authResponse
 						$.get '/users/auth/facebook/callback', { signed_request: response.authResponse.signedRequest }, (data) ->
 							scope.app.show.loading = false
-							scope.app.currentUser = data
+							scope.app.currentUser = new User data
 							scope.app.flash 'success', "Welcome!"
 							$location.path('/')
 					else
