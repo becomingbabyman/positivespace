@@ -7,10 +7,10 @@
 </div>
 
 <div ng-hide="app.currentUser.id">
-	<form name='login' ng-submit='login()'>
+	<ng-form name='login' ng-submit='login()'>
 
 		<control-group>
-			<input type='email' name='email' id='sbtl_lgn_email' placeholder='email' class='input-block-level' ng-model='credentials.email' ui-event='{blur: "checkLogin()"}' required></input>
+			<input type='email' name='email' id='sbtl_lgn_email' placeholder='your email address' class='input-block-level' ng-model='credentials.email' ui-event='{blur: "checkLogin()"}' required></input>
 		</control-group>
 
 
@@ -23,7 +23,7 @@
 
 			<div class="span5">
 				<control-group>
-	                <input type='text' name='username' id='reg_username' class='input-block-level' ng-model='credentials.username' ng-minlength='3' ng-maxlength='18' ng-pattern='/^[a-zA-Z][a-zA-Z0-9-]*$/' ui-event='{keyup: "checkUsername($value)", blur: "login()"}' ui-validate='{usernameTaken: "usernameTaken"}' ui-validate-watch='"usernameTaken"' required></input>
+	                <input type='text' name='username' id='reg_username' class='input-block-level' ng-model='credentials.username' ng-minlength='3' ng-maxlength='18' ng-pattern='/^[a-zA-Z][a-zA-Z0-9-]*$/' ui-event='{keyup: "checkUsername($value)", blur: "login()", keypress: "enterLogin($event)"}' ui-validate='{usernameTaken: "usernameTaken"}' ui-validate-watch='"usernameTaken"' required></input>
 	            </control-group>
 			</div>
 
@@ -42,7 +42,7 @@
 		<div class="row-fluid" ng-show='credentials.loginType == "login"'>
 			<div class="span8">
 				<control-group>
-				    <input type='password' id='lgn_password' name='password' placeholder='your password' class='input-block-level' ng-model='credentials.password' ui-event='{blur: "login()"}' ng-minlength='8' ng-maxlength='100' required></input>
+				    <input type='password' id='lgn_password' name='password' placeholder='your password' class='input-block-level' ng-model='credentials.password' ui-event='{blur: "login()", keypress: "enterLogin($event)"}' ng-minlength='8' ng-maxlength='100' required></input>
 				</control-group>
 			</div>
 
@@ -60,5 +60,5 @@
 			</div>
 		</div>
 
-	</form>
+	</ng-form>
 </div>

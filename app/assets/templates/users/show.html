@@ -1,6 +1,6 @@
 <div class="container" centerish>
 
-	<div ui-if='user.can_edit' class="row">
+	<div ng-show='user.can_edit' class="row">
 		<div class="offset4 span4">
 			<a ng-click='openUserEdit = true' class='pull-right btn'>edit</a>
 			<edit-resource app='app', toggle='openUserEdit', resource='user'></edit-resource>
@@ -31,7 +31,7 @@
 				<ps-subtle-login app='app'></ps-subtle-login>
 
 				<control-group>
-					<textarea name='body' id='msg_body' title='message body' placeholder="message{{' to ' + user.username}}" class='input-block-level' ng-model='myMessage.body' rows=5 required></textarea>
+					<textarea name='body' id='msg_body' title='message body' placeholder="message{{' to ' + user.name | lowercase}}" class='input-block-level' ng-model='myMessage.body' rows=5 required></textarea>
 				</control-group>
 
 				<div class='control-group'>

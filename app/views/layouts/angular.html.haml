@@ -5,14 +5,14 @@
 	%body{ "ng-controller" => "AppCtrl" }
 
 		#wrapper
-			#loading{"ng-include" => "app.templates.loading.url"} tmp
-			%header#header{"ng-class" => "app.templates.header.classes", "ng-include" => "app.templates.header.url"} tmp
+			#loading{"ng-include" => "app.templates.loading.url"}
+				= image_tag 'loading.gif'
+			%header#header{"ng-class" => "app.templates.header.classes", "ng-include" => "app.templates.header.url"}
 			#main{ :role => "main" }
-				#flash{"ng-include" => "app.templates.flash.url"} tmp
+				#flash{"ng-include" => "app.templates.flash.url"}
 				#yielded{"ng-view"=>true}
-					tmp
 
 			#layout_footer
-		%footer#footer{"ng-include" => "app.templates.footer.url"} tmp
+		%footer#footer{"ng-include" => "app.templates.footer.url"}
 		= render "javascripts"
 		= render "facebook"

@@ -21,7 +21,7 @@ ps.controller "UserPasswordEditCtrl", ["$scope", "$location", "$routeParams", "U
 				reset_password_token: $routeParams.reset_password_token
 			(data) ->
 				$scope.app.flash 'success', "Cool, your password has been updated and you are now logged in."
-				$scope.app.currentUser = User.current()
+				$scope.app.currentUser = new User data
 				$location.path('/')
 			(error) ->
 				$scope.app.flash 'error', error.data.errors
@@ -29,8 +29,11 @@ ps.controller "UserPasswordEditCtrl", ["$scope", "$location", "$routeParams", "U
 
 
 ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "User", "Message", ($scope, $routeParams, $timeout, User, Message) ->
-	$scope.user = User.get({id: $routeParams.user_id})
-	$scope.myMessage = new Message {user_id: $routeParams.user_id}
+	user_id = $routeParams.user_id or 'space'
+
+	$scope.$watch 'app.currentUser.id', ->
+		$scope.user = User.get({id: user_id})
+	$scope.myMessage = new Message {user_id: user_id}
 
 	$scope.$watch 'myMessage.body', (value) ->
 		$scope.remainingChars = 250 - (if value? then value.length else 0)

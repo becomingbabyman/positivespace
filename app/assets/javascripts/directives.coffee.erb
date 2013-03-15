@@ -160,7 +160,7 @@ psDirectives.directive "centerish", ["$timeout", ($timeout) ->
 		$(window).resize ->
 			center()
 
-		_.each [80, 500, 1000, 2000, 4000], (time) ->
+		_.each [80, 500, 1000, 2000], (time) ->
 			$timeout ->
 				center(true)
 			, time
@@ -309,6 +309,11 @@ psDirectives.directive 'psSubtleLogin', ["$timeout", "$location", "User", ($time
 							scope.app.show.loading = false
 							# TODO: put error on input field
 							scope.app.flash 'error', "Oops, that's the wrong password."
+
+			scope.enterLogin = (e) ->
+				if e.which == 13
+					e.preventDefault()
+					scope.login()
 
 			scope.fbLogin = () ->
 				scope.app.show.loading = true
