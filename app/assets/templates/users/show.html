@@ -1,4 +1,4 @@
-<div class="container" centerish>
+<div id='space' class="container" centerish>
 
 	<div ng-show='user.can_edit' class="row">
 		<div class="offset4 span4">
@@ -8,8 +8,8 @@
 	</div>
 
 	<div class="row">
-		<div class="offset4 span4">
-			<div class='pbs'>To:</div>
+		<div class="offset4 span4 pos-rel">
+			<div class='lbl ptx'>To:</div>
 			<div class="center">
 				<ps-img src="{{user.avatar.big_thumb_url}}" alt="{{user.name}}" img-class="img-circle img-polaroid img-big-thumb" attachable-type='User' attachable-id='{{user.id}}' image-type='avatar' image-url='big_thumb_url' can-edit='{{user.id && user.id == app.currentUser.id}}'></ps-img>
 				<h2>{{user.name}}</h2>
@@ -24,10 +24,10 @@
 	</div>
 
 	<div class="row">
-		<div class="offset4 span4">
+		<div class="offset4 span4 pos-rel">
 			<form name='message' class='form-vertical uncenter' ng-submit='submitMyMessage()' novalidate style='width: 100%;'>
 
-				<div class='pbs'>From:</div>
+				<div class='lbl ptx'>From:</div>
 				<ps-subtle-login app='app'></ps-subtle-login>
 
 				<control-group>
