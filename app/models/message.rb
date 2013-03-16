@@ -11,6 +11,8 @@ class Message < ActiveRecord::Base
 		end
 	end
 
+	after_create :continue_current_conversation
+
 	attr_accessible :body, :embed_url, :from_email
 	attr_protected :none, as: :admin
 
@@ -27,6 +29,7 @@ class Message < ActiveRecord::Base
 	scope :continued, where(state: :continued)
 	scope :discontinued, where(state: :discontinued)
 	scope :between, lambda { |id1, id2| where("(from_id = ? AND to_id = ?) OR (from_id = ? AND to_id = ?)", id1, id2, id2, id1) }
+	scope :is_not, lambda { |id| where("id != ?", id) }
 
 	def self.total_seconds_to_edit
 		0 # TODO: think about removing all of this out
@@ -49,4 +52,11 @@ class Message < ActiveRecord::Base
 	def editors
 		[self.from]
 	end
+
+private
+
+	def continue_current_conversation
+		Message.between(self.from_id, self.to_id).pending.is_not(self.id).each(&:continue)
+	end
+
 end

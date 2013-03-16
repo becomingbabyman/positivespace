@@ -6,7 +6,7 @@ ps.controller "MessagesInboxCtrl", ["$scope", "$location", "$timeout", "Message"
 
 	$scope.$watch 'app.currentUser.id', (id) ->
 		if id?
-			$scope.messages = Message.query {user_id: id}, (data) ->
+			$scope.messages = Message.query {user_id: id, state: 'pending'}, (data) ->
 				if data.length > 0
 					$scope.myMessage = new Message {user_id: data[0].from.id}
 		else
