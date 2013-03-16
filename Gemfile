@@ -47,6 +47,12 @@ gem 'has_scope'
 # Time
 gem 'chronic'
 
+# URL Shortening
+gem 'shortener'
+
+# State Machine
+gem 'state_machine'
+
 # API - JSON Serialization
 gem 'rabl'
 gem 'oj'

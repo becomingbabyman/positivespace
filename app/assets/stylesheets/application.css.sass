@@ -291,6 +291,10 @@ input, textarea
         color: lighten($color-text, 50%)
         &:first-child
             color: $color-text
+        .reply
+            display: none
+        &:first-child .reply
+            display: block
 
 // Import these mixins last to overide everything else
 @import "flat-ui/spaces"

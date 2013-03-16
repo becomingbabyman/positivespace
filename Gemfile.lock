@@ -363,6 +363,8 @@ GEM
       rubyzip
       websocket (~> 1.0.4)
     sexp_processor (4.1.5)
+    shortener (0.2.0)
+      rails (>= 3.0.7)
     shoulda-matchers (1.4.2)
       activesupport (>= 3.0.0)
       bourne (~> 1.1.2)
@@ -397,6 +399,7 @@ GEM
       multi_json (~> 1.0)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
+    state_machine (1.1.2)
     temple (0.5.5)
     terminal-table (1.4.5)
     therubyracer (0.11.4)
@@ -485,6 +488,7 @@ DEPENDENCIES
   rspec-rails
   sass-rails (~> 3.2.3)
   select2-rails
+  shortener
   shoulda-matchers
   sidekiq
   sidekiq-failures
@@ -492,6 +496,7 @@ DEPENDENCIES
   sinatra
   slim
   spork-rails
+  state_machine
   therubyracer
   uglifier (>= 1.0.3)
   vcr

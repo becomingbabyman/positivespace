@@ -20,6 +20,22 @@
 			<div class="message" ng-repeat="message in messages">
 				<hr/>
 				{{message.body}}
+
+				<!-- <a href="#" class="reply pull-right">reply</a> -->
+
+				<form class='reply' ng-submit="reply()">
+					<control-group>
+						<textarea name="" id="" cols="30" rows="4" ng-model='myMessage.body'></textarea>
+					</control-group>
+
+					<div class='control-group'>
+						<div class='controls'>
+							<button type='submit' class='btn btn-success pull-right'>Reply</button>
+							<span class='pull-right pts prm' ng-class='{"muted": remainingChars > 10, "text-error": remainingChars <= 10}'>{{remainingChars}}</span>
+						</div>
+					</div>
+				</form>
+
 			</div>
 		</div>
 	</div>

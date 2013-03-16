@@ -4,7 +4,13 @@ class Api::V1::MessagesController < InheritedResources::Base
 	respond_to :json
 	actions :show, :index, :create, :update, :destroy
 
-
+	# only works with an array of 2 user_ids
+	has_scope :between, :only => :index, type: :array do |controller, scope, value|
+		scope.where(value.first, value.last)
+	end
+	has_scope :state, :only => :index do |controller, scope, value|
+		scope.where(state: value)
+	end
 	has_scope :page, :only => :index, :default => 1 do |controller, scope, value|
 		value.to_i > 0 ? scope.page(value.to_i) : scope.page(1)
 	end

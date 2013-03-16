@@ -1,5 +1,16 @@
 require 'embedly'
 class Message < ActiveRecord::Base
+
+	state_machine :initial => :pending do
+		event :continue do
+			transition :pending => :continued
+		end
+
+		event :discontinue do
+			transition :pending => :discontinued
+		end
+	end
+
 	attr_accessible :body, :embed_url, :from_email
 	attr_protected :none, as: :admin
 
@@ -11,6 +22,11 @@ class Message < ActiveRecord::Base
 	validates :body, presence: true, length: {maximum: 250}
 
 	default_scope :order => 'created_at asc'
+
+	scope :pending, where(state: :pending)
+	scope :continued, where(state: :continued)
+	scope :discontinued, where(state: :discontinued)
+	scope :between, lambda { |id1, id2| where("(from_id = ? AND to_id = ?) OR (from_id = ? AND to_id = ?)", id1, id2, id2, id1) }
 
 	def self.total_seconds_to_edit
 		0 # TODO: think about removing all of this out
