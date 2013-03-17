@@ -30,6 +30,7 @@ class Message < ActiveRecord::Base
 	scope :pending, where(state: :pending)
 	scope :continued, where(state: :continued)
 	scope :discontinued, where(state: :discontinued)
+	scope :with, lambda { |user_id| where("from_id = ? OR to_id = ?", user_id, user_id) }
 	scope :between, lambda { |id1, id2| where("(from_id = ? AND to_id = ?) OR (from_id = ? AND to_id = ?)", id1, id2, id2, id1) }
 	scope :is_not, lambda { |id| where("id != ?", id) }
 

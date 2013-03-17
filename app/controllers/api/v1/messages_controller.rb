@@ -4,9 +4,12 @@ class Api::V1::MessagesController < InheritedResources::Base
 	respond_to :json
 	actions :show, :index, :create, :update, :destroy
 
+	has_scope :with, :only => :index do |controller, scope, value|
+		scope.with(value)
+	end
 	# only works with an array of 2 user_ids
 	has_scope :between, :only => :index, type: :array do |controller, scope, value|
-		scope.where(value.first, value.last)
+		scope.between(value.first, value.last)
 	end
 	has_scope :state, :only => :index do |controller, scope, value|
 		scope.where(state: value)

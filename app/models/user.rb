@@ -120,7 +120,7 @@ class User < ActiveRecord::Base
 	# TODO: think about a cleaner solution
 	# TODO: think about merging this with sent messages
 	def messages
-		self.recieved_messages
+		Message.with(self.id)
 	end
 
 	def avatar

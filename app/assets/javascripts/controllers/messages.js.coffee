@@ -1,5 +1,6 @@
 ps.controller "MessagesInboxCtrl", ["$scope", "$location", "$timeout", "Message", ($scope, $location, $timeout, Message) ->
 	$scope.myMessage = {}
+	$scope.currentThread = []
 
 	$scope.$watch 'myMessage.body', (value) ->
 		$scope.remainingChars = 250 - (if value? then value.length else 0)
@@ -7,7 +8,7 @@ ps.controller "MessagesInboxCtrl", ["$scope", "$location", "$timeout", "Message"
 	$scope.$watch 'app.currentUser.id', (id) ->
 		if id?
 			$scope.messages = Message.query {user_id: id, state: 'pending'}, (data) ->
-				$scope.prepareNextMessage(data)
+				$scope.prepareFirstMessage(data)
 		else
 			# user must log in to view inbox
 			$location.path('/login')
@@ -17,7 +18,7 @@ ps.controller "MessagesInboxCtrl", ["$scope", "$location", "$timeout", "Message"
 		el.addClass 'animated bounceOutLeft'
 		$timeout ->
 			$scope.messages = $scope.messages.splice 1
-			$scope.prepareNextMessage()
+			$scope.prepareFirstMessage()
 		, 500
 
 	$scope.continueConvo = ->
@@ -25,13 +26,14 @@ ps.controller "MessagesInboxCtrl", ["$scope", "$location", "$timeout", "Message"
 		el.addClass 'animated bounceOutRight'
 		$timeout ->
 			$scope.messages = $scope.messages.splice 1
-			$scope.prepareNextMessage()
+			$scope.prepareFirstMessage()
 		, 500
 
-	$scope.prepareNextMessage = (messages = $scope.messages) ->
-		if messages.length > 0 and messages[0].from?
-			$scope.myMessage = new Message {user_id: messages[0].from.id}
+	$scope.prepareFirstMessage = (messages = $scope.messages) ->
+		if messages.length > 0 and message = messages[0]
+			$scope.myMessage = new Message {user_id: message.from.id}
 			angular.element("#response_body").focus()
+			$scope.currentThread = Message.query {user_id: $scope.app.currentUser.id, with: message.from.id}
 
 	$scope.reply = ->
 		success = (data) ->
