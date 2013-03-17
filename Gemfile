@@ -44,6 +44,9 @@ gem 'inherited_resources'
 # and Controller Scopes
 gem 'has_scope'
 
+# CORS
+gem 'rack-cors', :require => 'rack/cors'
+
 # Time
 gem 'chronic'
 
