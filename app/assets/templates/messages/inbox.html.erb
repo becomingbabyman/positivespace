@@ -1,42 +1,31 @@
 <div id='inbox' class="container">
 
 	<br/>
-	<div class="row">
-		<div class="offset4 span4">
-			<h3 class='center'>1. Continue the conversation?</h3>
-		</div>
-	</div>
-	<div class="row">
-		<div class="offset4 span4">
-			<div class="btn-group" style='width: 100%'>
-				<button type="button" class="btn btn-inverse" style='width: 50%' ng-click='endConvo()'>End Conversation</button>
-				<button type="button" class="btn btn-success" style='width: 50%' ng-click='continueConvo()'>Continue Conversation</button>
-			</div>
-		</div>
-	</div>
 
-	<div class="row">
+	<div class="row message" ng-repeat="message in messages" ng-class='{active: $index == 0}'>
 		<div class="offset4 span4">
-			<div class="message" ng-repeat="message in messages">
-				<hr/>
+			<hr/>
+
+			<blockquote>
 				{{message.body}}
+			</blockquote>
 
-				<!-- <a href="#" class="reply pull-right">reply</a> -->
+			<!-- <a href="#" class="reply pull-right">reply</a> -->
 
-				<form class='reply' ng-submit="reply()">
-					<control-group>
-						<textarea name="" id="" cols="30" rows="4" ng-model='myMessage.body'></textarea>
-					</control-group>
+			<form ui-if='$index == 0' class='reply' ng-submit="reply()" novalidate style='width: 100%;'>
+				<control-group>
+					<textarea cols="30" rows="4" ng-model='myMessage.body' id='response_body' placeholder='your response' class='input-block-level'></textarea>
+				</control-group>
 
-					<div class='control-group'>
-						<div class='controls'>
-							<button type='submit' class='btn btn-success pull-right'>Reply</button>
-							<span class='pull-right pts prm' ng-class='{"muted": remainingChars > 10, "text-error": remainingChars <= 10}'>{{remainingChars}}</span>
-						</div>
+				<div class='control-group'>
+					<div class='controls'>
+						<button type='submit' class='btn btn-success pull-right'>Reply</button>
+						<span class='pull-right pts prm' ng-class='{"muted": remainingChars > 10, "text-error": remainingChars <= 10}'>{{remainingChars}}</span>
+						<a href='#' class='btn btn-inverse' ng-click='endConvo()' tooltip="End a conversation if it's going nowhere. You can always start a new one." tooltip-placement='right'>End</a>
 					</div>
-				</form>
+				</div>
+			</form>
 
-			</div>
 		</div>
 	</div>
 

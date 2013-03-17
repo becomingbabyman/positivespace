@@ -7,8 +7,7 @@ ps.controller "MessagesInboxCtrl", ["$scope", "$location", "$timeout", "Message"
 	$scope.$watch 'app.currentUser.id', (id) ->
 		if id?
 			$scope.messages = Message.query {user_id: id, state: 'pending'}, (data) ->
-				if data.length > 0
-					$scope.myMessage = new Message {user_id: data[0].from.id}
+				$scope.prepareNextMessage(data)
 		else
 			# user must log in to view inbox
 			$location.path('/login')
@@ -18,6 +17,7 @@ ps.controller "MessagesInboxCtrl", ["$scope", "$location", "$timeout", "Message"
 		el.addClass 'animated bounceOutLeft'
 		$timeout ->
 			$scope.messages = $scope.messages.splice 1
+			$scope.prepareNextMessage()
 		, 500
 
 	$scope.continueConvo = ->
@@ -25,15 +25,18 @@ ps.controller "MessagesInboxCtrl", ["$scope", "$location", "$timeout", "Message"
 		el.addClass 'animated bounceOutRight'
 		$timeout ->
 			$scope.messages = $scope.messages.splice 1
+			$scope.prepareNextMessage()
 		, 500
 
+	$scope.prepareNextMessage = (messages = $scope.messages) ->
+		if messages.length > 0 and messages[0].from?
+			$scope.myMessage = new Message {user_id: messages[0].from.id}
+			angular.element("#response_body").focus()
 
 	$scope.reply = ->
 		success = (data) ->
 			$scope.app.flash 'success', 'Great, your message has been sent.'
 			$scope.continueConvo()
-			if $scope.messages.length > 0
-				$scope.myMessage = new Message {user_id: $scope.messages[0].from.id}
 		error = (error) ->
 			$scope.app.flash 'error', error.data.errors
 		$scope.myMessage.save success, error

@@ -39,11 +39,14 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "User", "M
 		$scope.remainingChars = 250 - (if value? then value.length else 0)
 
 	$scope.submitMyMessage = ->
-		success = (data) ->
-			$scope.app.flash 'success', 'Great, your message has been sent.'
-		error = (error) ->
-			$scope.app.flash 'error', error.data.errors
-		$scope.myMessage.save success, error
+		if $scope.app.loggedIn()
+			success = (data) ->
+				$scope.app.flash 'success', 'Great, your message has been sent.'
+			error = (error) ->
+				$scope.app.flash 'error', error.data.errors
+			$scope.myMessage.save success, error
+		else
+			$scope.app.flash 'info', 'It looks like somethings missing. Please fill in all fields.'
 ]
 
 

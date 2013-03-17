@@ -22,6 +22,8 @@ class Message < ActiveRecord::Base
 	belongs_to :from, :class_name => 'User', :foreign_key => :from_id
 
 	validates :body, presence: true, length: {maximum: 250}
+	validates :to_id, presence: true
+	validates :from_id, presence: true
 
 	default_scope :order => 'created_at asc'
 

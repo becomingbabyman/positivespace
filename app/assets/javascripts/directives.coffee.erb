@@ -255,15 +255,15 @@ psDirectives.directive 'psSubtleLogin', ["$timeout", "$location", "User", ($time
 						if data.length > 0
 							scope.credentials.loginType = 'login'
 							# scope.app.flash 'info', "Looks like you already have an account. Go ahead and log in."
-							$timeout () ->
-								element.find('#lgn_password').focus()
-							, 100
+							# $timeout () ->
+							#	element.find('#lgn_password').focus()
+							# , 100
 						else if data.length == 0
 							scope.credentials.loginType = 'register'
 							# scope.app.flash 'info', "Looks like you need an account. Go ahead and start one."
-							$timeout () ->
-								element.find('#reg_password').focus()
-							, 100
+							# $timeout () ->
+							#	element.find('#reg_password').focus()
+							# , 100
 
 			scope.checkUsername = (username = scope.credentials.username) ->
 				if scope.credentials.loginType == 'register'

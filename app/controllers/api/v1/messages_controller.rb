@@ -17,7 +17,7 @@ class Api::V1::MessagesController < InheritedResources::Base
 	has_scope :per, :only => :index, :default => 10
 
 
-	before_filter :authenticate_user!, :except => [:create, :update]
+	before_filter :authenticate_user! #, :except => [:create, :update]
 	load_and_authorize_resource
 
 
