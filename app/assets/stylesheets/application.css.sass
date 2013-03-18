@@ -135,6 +135,27 @@ input, textarea
 
 .navbar
     margin: 0
+    .brand
+        position: relative
+        width: 100px
+        height: 64px
+        img
+            @include transition-property(visibility, opacity)
+            @include transition-duration(0.4s)
+            @include transition-delay(0s)
+            position: absolute
+        &:hover
+            .inset
+                opacity: 0
+                visibility: hidden
+            .colored
+                opacity: 1
+                visibility: visible
+        .colored
+            opacity: 0
+            visibility: hidden
+    .nav li.dropdown.open > .dropdown-toggle
+        background-color: white
 
 .navbar-inner
     @include background(none)
@@ -144,9 +165,6 @@ input, textarea
     // @include background(image_url("noisy-texture-200x200-o7-d26-c-4F2958-t1.png"), linear-gradient(top, lighten($color-background, 5%), $color-background))
     // border-bottom: 1px solid darken($color-background, 10%)
     // @include box-shadow(rgba(0, 0, 0, 0.075) 0 2px 0)
-
-.navbar .nav li.dropdown.open > .dropdown-toggle
-    background-color: white
 
 //////////////////////////////////////////////////////
 /**                  loading style                 **/
