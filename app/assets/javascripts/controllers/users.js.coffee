@@ -46,7 +46,7 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "User", "M
 				$scope.app.flash 'error', error.data.errors
 			$scope.myMessage.save success, error
 		else
-			$scope.app.flash 'info', 'It looks like somethings missing. Please fill in all fields.'
+			$scope.app.flash 'info', 'It looks like something is missing. Please fill in all fields.'
 ]
 
 
