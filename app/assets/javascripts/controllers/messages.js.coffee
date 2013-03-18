@@ -34,6 +34,8 @@ ps.controller "MessagesInboxCtrl", ["$scope", "$location", "$timeout", "Message"
 			$scope.myMessage = new Message {user_id: message.from.id}
 			angular.element("#response_body").focus()
 			$scope.currentThread = Message.query {user_id: $scope.app.currentUser.id, with: message.from.id}
+		else
+			$scope.currentThread = []
 
 	$scope.reply = ->
 		success = (data) ->

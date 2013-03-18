@@ -2,9 +2,8 @@
 
 	<br/>
 
-	<div class="row" ng-repeat="message in currentThread">
+	<div class="row" ng-repeat="message in currentThread" ng-hide='messages.length == $index'>
 		<div class="offset4 span4">
-			<hr/>
 
 			<blockquote ng-class='{"pull-right": message.from.id == app.currentUser.id}'>
 				{{message.body}}
@@ -14,7 +13,6 @@
 
 	<div class="row message" ng-repeat="message in messages" ng-class='{active: $index == 0}'>
 		<div class="offset4 span4">
-			<hr/>
 
 			<blockquote>
 				{{message.body}}
@@ -35,6 +33,8 @@
 					</div>
 				</div>
 			</form>
+
+			<hr/>
 
 		</div>
 	</div>
