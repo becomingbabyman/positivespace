@@ -289,7 +289,7 @@ psDirectives.directive 'psSubtleLogin', ["$timeout", "$location", "User", ($time
 							scope.app.show.loading = false
 							scope.app.currentUser = new User data
 							scope.credentials = {loginType: ''}
-							scope.app.flash 'success', "Welcome! Go ahead and start a conversation."
+							# scope.app.flash 'success', "Welcome! Go ahead and start a conversation."
 						(error) ->
 							scope.app.show.loading = false
 							scope.app.flash 'error', error.data.errors
@@ -304,7 +304,7 @@ psDirectives.directive 'psSubtleLogin', ["$timeout", "$location", "User", ($time
 							scope.app.show.loading = false
 							scope.app.currentUser = new User data
 							scope.credentials = {loginType: ''}
-							scope.app.flash 'success', "Welcome back!"
+							# scope.app.flash 'success', "Welcome back!"
 						(error) ->
 							scope.app.show.loading = false
 							# TODO: put error on input field
@@ -428,7 +428,6 @@ psDirectives.directive 'psLogin', ["$timeout", "$location", "User", ($timeout, $
 						(data) ->
 							scope.app.show.loading = false
 							scope.app.currentUser = new User data
-							console.log scope.app.currentUser
 							scope.credentials = {loginType: 'login'}
 							scope.app.flash 'success', "Welcome back!"
 							$location.path('/')

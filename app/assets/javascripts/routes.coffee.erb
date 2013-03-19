@@ -3,7 +3,8 @@ angular = root.angular
 
 ps = angular.module "ps", ['ui', 'ui.bootstrap', 'ngCookies', 'psDirectives', 'psServices']
 
-ps.config ['$routeProvider', '$locationProvider', ($routeProvider, $locationProvider) ->
+ps.config ['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvider, $locationProvider, $httpProvider) ->
+	$httpProvider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content')
 	#$locationProvider.hashPrefix('');
 	$locationProvider.html5Mode true
 
