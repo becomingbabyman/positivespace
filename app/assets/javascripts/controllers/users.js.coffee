@@ -28,15 +28,40 @@ ps.controller "UserPasswordEditCtrl", ["$scope", "$location", "$routeParams", "U
 ]
 
 
-ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "User", "Message", ($scope, $routeParams, $timeout, User, Message) ->
+ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location", "User", "Message", ($scope, $routeParams, $timeout, $location, User, Message) ->
 	user_id = $routeParams.user_id or 'space'
+	$scope.space = {}
 
-	$scope.$watch 'app.currentUser.id', ->
-		$scope.user = User.get({id: user_id})
+	# TODO:
+	# $scope.$watch 'app.currentUser.id', ->
+	$scope.user = User.get {id: user_id}, ->
+		if $scope.user.body.length == 0
+			if $scope.user.id == $scope.app.currentUser.id
+				$scope.space.editing = true
+				$scope.space.cantCloseEdit = true
+			else
+				$location.path('/')
+
 	$scope.myMessage = new Message {user_id: user_id}
+
+	$scope.$watch 'user.body', (value) ->
+		$scope.userBodyRemaining = 250 - (if value? then value.length else 0)
 
 	$scope.$watch 'myMessage.body', (value) ->
 		$scope.remainingChars = 250 - (if value? then value.length else 0)
+
+	# TODO: revert to original profile if close is clicked instead of save
+	$scope.saveSpace = ->
+		if $scope.user.body.length > 0
+			success = (data) ->
+				$scope.space.editing = false
+				$scope.space.cantCloseEdit = false
+			error = (error) ->
+				$scope.app.flash 'error', error.data.errors
+			$scope.user.save success, error
+		else
+			angular.element('textarea#user_body').focus()
+			$scope.app.flash 'info', "Please introduce yourself. And share what you would like to talk about."
 
 	$scope.submitMyMessage = ->
 		if $scope.app.loggedIn()
