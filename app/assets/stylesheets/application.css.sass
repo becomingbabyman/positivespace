@@ -149,11 +149,47 @@ input, textarea
                 opacity: 0
                 visibility: hidden
             .colored
+                // @include transition-duration(1s)
+                opacity: 1
+                visibility: visible
+            &:before
+                @include transition-delay(0.3s)
+                @include transition-duration(1s)
+                opacity: 1
+                visibility: visible
+            &:after
+                @include transition-delay(1.2s)
+                @include transition-duration(1s)
                 opacity: 1
                 visibility: visible
         .colored
             opacity: 0
             visibility: hidden
+        &:before, &:after
+            opacity: 0
+            visibility: hidden
+            pointer-events: none
+            position: absolute
+            width: 200px
+        &:before
+            @include transition-delay(1.2s)
+            @include transition-duration(1s)
+            color: #ccc
+            content: "Posi+ive Sp_ce"
+            height: 40px
+            line-height: 40px
+            bottom: -40px
+        &:after
+            @include transition-delay(0.3s)
+            @include transition-duration(1s)
+            color: #bbb
+            font-family: serif
+            font-size: 16px
+            content: "Serendipitous Conversation"
+            height: 20px
+            line-height: 20px
+            bottom: -60px
+
     .nav li.dropdown.open > .dropdown-toggle
         background-color: white
 
