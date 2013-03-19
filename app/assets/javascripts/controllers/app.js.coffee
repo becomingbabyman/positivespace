@@ -95,9 +95,9 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "User", ($scope, $
     # User Auth #
     #############
     $scope.app.logout = ->
-        $scope.app.currentUser = User.logout()
-        window.location.reload()
-        $scope.app.flash 'info', "Bye, hope to see you again soon."
+        $scope.app.currentUser = User.logout ->
+            window.location.reload()
+            $scope.app.flash 'info', "Bye, hope to see you again soon."
 
     $scope.app.resetPassword = (login) ->
         # TODO: handle the reset password link page in angular

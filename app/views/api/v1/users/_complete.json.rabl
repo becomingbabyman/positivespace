@@ -2,7 +2,7 @@ object @user
 
 extends 'api/v1/users/base'
 
-attributes :name, :body, :location, :personal_url
+attributes :body, :location, :personal_url
 attributes :achievements, :positive_response, :negative_response, :if => lambda { |u| can?(:update, u) }
 
 node :can_edit do |user|
