@@ -22,7 +22,7 @@ ps.controller "UserPasswordEditCtrl", ["$scope", "$location", "$routeParams", "U
 			(data) ->
 				$scope.app.flash 'success', "Cool, your password has been updated and you are now logged in."
 				$scope.app.currentUser = new User data
-				$location.path('/')
+				$location.path("/#{data.username}")
 			(error) ->
 				$scope.app.flash 'error', error.data.errors
 ]
@@ -41,6 +41,8 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 				$scope.space.cantCloseEdit = true
 			else
 				$location.path('/')
+	, (error) ->
+		$location.path('/404')
 
 	$scope.myMessage = new Message {user_id: user_id}
 
