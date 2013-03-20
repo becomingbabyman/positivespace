@@ -35,7 +35,7 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 	# TODO:
 	# $scope.$watch 'app.currentUser.id', ->
 	$scope.user = User.get {id: user_id}, ->
-		if $scope.user.body.length == 0
+		if !$scope.user.body? or $scope.user.body.length == 0
 			if $scope.user.id == $scope.app.currentUser.id
 				$scope.space.editing = true
 				$scope.space.cantCloseEdit = true
@@ -53,10 +53,13 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 	# TODO: revert to original profile if close is clicked instead of save
 	$scope.saveSpace = ->
 		if $scope.user.body.length > 0
+			$scope.app.show.loading = true
 			success = (data) ->
+				$scope.app.show.loading = false
 				$scope.space.editing = false
 				$scope.space.cantCloseEdit = false
 			error = (error) ->
+				$scope.app.show.loading = false
 				$scope.app.flash 'error', error.data.errors
 			$scope.user.save success, error
 		else
@@ -65,9 +68,12 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 
 	$scope.submitMyMessage = ->
 		if $scope.app.loggedIn()
+			$scope.app.show.loading = true
 			success = (data) ->
+				$scope.app.show.loading = false
 				$scope.app.flash 'success', 'Great, your message has been sent.'
 			error = (error) ->
+				$scope.app.show.loading = false
 				$scope.app.flash 'error', error.data.errors
 			$scope.myMessage.save success, error
 		else

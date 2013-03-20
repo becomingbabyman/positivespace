@@ -414,7 +414,7 @@ psDirectives.directive 'psLogin', ["$timeout", "$location", "User", ($timeout, $
 							scope.app.currentUser = new User data
 							scope.credentials = {loginType: 'login'}
 							scope.app.flash 'success', "Welcome. Let's create your PositiveSpace!"
-							$location.path('/')
+							$location.path("/#{data.username}")
 						(error) ->
 							scope.app.show.loading = false
 							scope.app.flash 'error', error.data.errors
@@ -430,7 +430,7 @@ psDirectives.directive 'psLogin', ["$timeout", "$location", "User", ($timeout, $
 							scope.app.currentUser = new User data
 							scope.credentials = {loginType: 'login'}
 							scope.app.flash 'success', "Welcome back!"
-							$location.path('/')
+							$location.path("/#{data.username}")
 						(error) ->
 							scope.app.show.loading = false
 							# TODO: put error on input field
@@ -444,7 +444,7 @@ psDirectives.directive 'psLogin', ["$timeout", "$location", "User", ($timeout, $
 							scope.app.show.loading = false
 							scope.app.currentUser = new User data
 							scope.app.flash 'success', "Welcome!"
-							$location.path('/')
+							$location.path("/#{data.username}")
 					else
 						scope.app.show.loading = false
 						scope.app.flash 'error', "Sorry, we had trouble contacting facebook. Please try again."
