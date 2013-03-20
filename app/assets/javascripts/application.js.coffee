@@ -26,6 +26,7 @@
 #
 # Plugins
 #= require select2
+#= require tinycon
 #= require dropzone.jquery
 #= require jquery.scrollTo-min
 #= require jquery.autosize

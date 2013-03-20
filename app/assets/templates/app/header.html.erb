@@ -15,7 +15,8 @@
 			</li>
 			<li>
 				<a href="/inbox">
-					<i ng-show='app.loggedIn()' class='icon-inbox'></i>
+					<i class='icon-inbox'></i>
+					<div ng-show="app.anyMessages()" class='count'>{{app.currentUser.pending_message_count}}</div>
 				</a>
 			</li>
 			<li class="dropdown">

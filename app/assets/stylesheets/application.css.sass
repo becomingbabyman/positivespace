@@ -190,8 +190,27 @@ input, textarea
             line-height: 20px
             bottom: -60px
 
-    .nav li.dropdown.open > .dropdown-toggle
-        background-color: white
+    .nav
+        li.dropdown.open > .dropdown-toggle
+            background-color: white
+
+        >li a
+            position: relative
+            .count
+                position: absolute
+                right: 3px
+                bottom: 20px
+                background-color: $info
+                color: #fff
+                padding: 1px 2px
+                min-width: 10px
+                max-width: 26px
+                height: 14px
+                text-align: center
+                font-size: 10px
+                line-height: 13px
+                @include border-radius(2px)
+
 
 .navbar-inner
     @include background(none)

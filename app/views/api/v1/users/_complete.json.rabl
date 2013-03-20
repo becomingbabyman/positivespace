@@ -16,3 +16,7 @@ end
 node :accessible_attributes, :if => lambda { |u| can?(:update, u) } do |user|
 	User.map_accessible_attributes
 end
+
+node :pending_message_count, :if => lambda { |u| can?(:update, u) } do |user|
+	user.messages.pending.size
+end

@@ -21,11 +21,32 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "User", ($scope, $
         header: true
         footer: true
 
+    Tinycon.setOptions
+        width: 7
+        height: 9
+        font: '10px arial'
+        colour: '#ffffff'
+        background: '#f00'
+        fallback: true
+    Tinycon.setBubble(0)
+
+
     # TODO: bootstrap this data on the angular.html.haml template and only request it if no bootstrap is found
-    $scope.app.currentUser = User.current()
+    $scope.app.loadCurrentUser = (userData = null) ->
+        success = (data) ->
+            Tinycon.setBubble data.pending_message_count
+        if userData?
+            $scope.app.currentUser = new User userData
+            success(userData)
+        else
+            $scope.app.currentUser = User.current success
+    $scope.app.loadCurrentUser()
 
     $scope.app.loggedIn = ->
         !_.isEmpty($scope.app.currentUser)
+    $scope.app.anyMessages = ->
+        $scope.app.loggedIn() and $scope.app.currentUser.pending_message_count? and $scope.app.currentUser.pending_message_count > 0
+
 
     #############
     # Hide/Show #
