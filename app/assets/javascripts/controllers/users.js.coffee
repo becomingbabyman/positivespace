@@ -54,12 +54,13 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 
 	# TODO: revert to original profile if close is clicked instead of save
 	$scope.saveSpace = ->
-		if $scope.user.body.length > 0
+		if $scope.user.body? and $scope.user.body.length > 0
 			$scope.app.show.loading = true
 			success = (data) ->
 				$scope.app.show.loading = false
 				$scope.space.editing = false
 				$scope.space.cantCloseEdit = false
+				$scope.app.flash 'success', 'Great, your space has been updated.'
 			error = (error) ->
 				$scope.app.show.loading = false
 				$scope.app.flash 'error', error.data.errors

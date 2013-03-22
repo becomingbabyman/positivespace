@@ -30,20 +30,20 @@
 					<input name='name' id='user_name' title='your real name (not your username)' placeholder="your full name" class='input-block-level' ng-model='user.name' required></input>
 				</control-group>
 
-				<control-group label='Personal introduction' help-block='Who are you? What would you like to talk about?'>
-					<textarea name='body' id='user_body' title='personal introduction' placeholder="I'm an artist, listener, engineer, storyteller, adventurer... And I want to talk about just one thing which is... " class='input-block-level' ng-model='user.body' rows=5 required></textarea>
+				<control-group label='Personal introduction' help-block='Who are you? What one thing would you like to talk about?'>
+					<textarea name='body' id='user_body' title='the one topic you want to talk about now' placeholder="I'm an artist, listener, engineer, storyteller, adventurer... And I want to talk about JUST ONE THING, which is... " class='input-block-level' ng-model='user.body' rows=5 required></textarea>
 				</control-group>
 
 				<div class="row-fluid">
 					<div class="span6">
 						<control-group label='Location'>
-						    <input type='text' id='user_location' name='location' title='your current location' placeholder='Portland, OR' class='input-block-level' ng-model='user.location' ng-maxlength='100'></input>
+						    <input type='text' id='user_location' name='location' title='your current location' placeholder='City, State' class='input-block-level' ng-model='user.location' ng-maxlength='140'></input>
 						</control-group>
 					</div>
 
 					<div class="span6">
 						<control-group label='Website'>
-			                <input type='url' id='user_personal_url' name='personal_url' title='link to your website' placeholder='http://positivespace.io' class='input-block-level' ng-model='user.personal_url' ng-maxlength='800'></input>
+			                <input type='url' id='user_personal_url' name='personal_url' title='link to your website' placeholder='http://example.com' class='input-block-level' ng-model='user.personal_url' ng-maxlength='800'></input>
 			            </control-group>
 					</div>
 				</div>
