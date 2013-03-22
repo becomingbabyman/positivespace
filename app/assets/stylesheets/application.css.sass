@@ -98,6 +98,9 @@ body
     // @media (max-width: 979px)
     //  padding-top: 0
     // background: -webkit-linear-gradient(45deg, #020031 0%,#6d3353 100%)
+    @media (max-width: 767px)
+        padding-right: 20px
+        padding-left: 20px
 
 a
     &:hover
@@ -139,6 +142,10 @@ input, textarea
         position: relative
         width: 100px
         height: 64px
+        @media (max-width: 979px)
+            padding-left: 20px
+            padding-right: 20px
+            margin: 0 0 0 -20px
         img
             @include transition-property(visibility, opacity)
             @include transition-duration(0.4s)
@@ -171,11 +178,14 @@ input, textarea
             pointer-events: none
             position: absolute
             width: 200px
+            z-index: 999
+            background: white
         &:before
             @include transition-delay(1.2s)
             @include transition-duration(1s)
             color: #ccc
             content: "Posi+ive Sp_ce"
+            letter-spacing: 0.05em
             height: 40px
             line-height: 40px
             bottom: -40px
@@ -185,7 +195,8 @@ input, textarea
             color: #bbb
             font-family: serif
             font-size: 16px
-            content: "Serendipitous Conversation"
+            content: "Thoughtful Conversation"
+            letter-spacing: 0.1em
             height: 20px
             line-height: 20px
             bottom: -60px
@@ -213,6 +224,7 @@ input, textarea
 
 
 .navbar-inner
+    padding-top: 10px
     @include background(none)
     @include box-shadow(none)
     border: none
@@ -220,6 +232,8 @@ input, textarea
     // @include background(image_url("noisy-texture-200x200-o7-d26-c-4F2958-t1.png"), linear-gradient(top, lighten($color-background, 5%), $color-background))
     // border-bottom: 1px solid darken($color-background, 10%)
     // @include box-shadow(rgba(0, 0, 0, 0.075) 0 2px 0)
+    @media (max-width: 767px)
+        margin: 0 -20px
 
 
 #footer
