@@ -1,87 +1,91 @@
 <div id='space' class="container" centerish>
-
-	<div ng-show='user.can_edit' class="row">
-		<div class="offset4 span4">
-			<a ng-hide='space.editing' ng-click='space.editing = true' class='pull-right btn btn-link'>edit</a>
-			<edit-resource app='app', toggle='openUserEdit', resource='user'></edit-resource>
-		</div>
-	</div>
-
 	<div class="row">
-		<div class="offset4 span4 pos-rel">
-			<div class='lbl ptx'>To:</div>
+		<div class="span12">
 
-			<div class="center">
-				<ps-img src="{{user.avatar.big_thumb_url}}" alt="{{user.name}}" img-class="img-circle img-polaroid img-big-thumb" attachable-type='User' attachable-id='{{user.id}}' image-type='avatar' image-url='big_thumb_url' can-edit='{{user.id && user.id == app.currentUser.id}}'></ps-img>
-				<div ng-hide='space.editing'>
-					<h2>{{user.name}}</h2>
-					<p>{{user.body}}</p>
-					<p>
-						<span ng-show='user.location.length > 0'><i class='icon-map-marker'></i> {{user.location}}</span>
-						<span ng-show='user.location.length > 0 && user.personal_url.length > 0'>&nbsp;&middot;&nbsp;</span>
-						<span ng-show='user.personal_url.length > 0'>{{user.personal_url}}</span>
-					</p>
+			<div ng-show='user.can_edit' class="row">
+				<div class="span-mobile center">
+					<a ng-hide='space.editing' ng-click='space.editing = true' class='pull-right btn btn-link'>edit</a>
+					<edit-resource app='app', toggle='openUserEdit', resource='user'></edit-resource>
 				</div>
 			</div>
 
-			<form ng-show='space.editing' name='user_profile' class='form-vertical uncenter ptl' ng-submit='saveSpace()' novalidate style='width: 100%;'>
+			<div class="row">
+				<div class="span-mobile center pos-rel">
+					<div class='lbl ptx'>To:</div>
 
-				<control-group label='Full name'>
-					<input name='name' id='user_name' title='your real name (not your username)' placeholder="your full name" class='input-block-level' ng-model='user.name' required></input>
-				</control-group>
+					<div class="center">
+						<ps-img src="{{user.avatar.big_thumb_url}}" alt="{{user.name}}" img-class="img-circle img-polaroid img-big-thumb" attachable-type='User' attachable-id='{{user.id}}' image-type='avatar' image-url='big_thumb_url' can-edit='{{user.id && user.id == app.currentUser.id}}'></ps-img>
+						<div ng-hide='space.editing'>
+							<h2>{{user.name}}</h2>
+							<p>{{user.body}}</p>
+							<p>
+								<span ng-show='user.location.length > 0'><i class='icon-map-marker'></i> {{user.location}}</span>
+								<span ng-show='user.location.length > 0 && user.personal_url.length > 0'>&nbsp;&middot;&nbsp;</span>
+								<span ng-show='user.personal_url.length > 0'>{{user.personal_url}}</span>
+							</p>
+						</div>
+					</div>
 
-				<control-group label='Personal introduction' help-block='Who are you? What one thing would you like to talk about?'>
-					<textarea name='body' id='user_body' title='the one topic you want to talk about now' placeholder="I'm an artist, listener, engineer, storyteller, adventurer... And I want to talk about JUST ONE THING, which is... " class='input-block-level' ng-model='user.body' rows=5 required></textarea>
-				</control-group>
+					<form ng-show='space.editing' name='user_profile' class='form-vertical uncenter ptl' ng-submit='saveSpace()' novalidate style='width: 100%;'>
 
-				<div class="row-fluid">
-					<div class="span6">
-						<control-group label='Location'>
-						    <input type='text' id='user_location' name='location' title='your current location' placeholder='City, State' class='input-block-level' ng-model='user.location' ng-maxlength='140'></input>
+						<control-group label='Full name'>
+							<input name='name' id='user_name' title='your real name (not your username)' placeholder="your full name" class='input-block-level' ng-model='user.name' required></input>
 						</control-group>
-					</div>
 
-					<div class="span6">
-						<control-group label='Website'>
-			                <input type='url' id='user_personal_url' name='personal_url' title='link to your website' placeholder='http://example.com' class='input-block-level' ng-model='user.personal_url' ng-maxlength='800'></input>
-			            </control-group>
-					</div>
+						<control-group label='Personal introduction' help-block='Who are you? What one thing would you like to talk about?'>
+							<textarea name='body' id='user_body' title='the one topic you want to talk about now' placeholder="I'm an artist, listener, engineer, storyteller, adventurer... And I want to talk about JUST ONE THING, which is... " class='input-block-level' ng-model='user.body' rows=5 required></textarea>
+						</control-group>
+
+						<div class="row-fluid">
+							<div class="span6">
+								<control-group label='Location'>
+								    <input type='text' id='user_location' name='location' title='your current location' placeholder='City, State' class='input-block-level' ng-model='user.location' ng-maxlength='140'></input>
+								</control-group>
+							</div>
+
+							<div class="span6">
+								<control-group label='Website'>
+					                <input type='url' id='user_personal_url' name='personal_url' title='link to your website' placeholder='http://example.com' class='input-block-level' ng-model='user.personal_url' ng-maxlength='800'></input>
+					            </control-group>
+							</div>
+						</div>
+
+						<div class='control-group'>
+							<div class='controls'>
+								<button type='submit' class='btn btn-success pull-right'>Update your space</button>
+								<span class='pull-right pts prm' ng-class='{"muted": userBodyRemaining > 10, "text-error": userBodyRemaining <= 10}'>{{userBodyRemaining}}</span>
+								<a ng-hide='space.cantCloseEdit' ng-click='space.editing = false' class='btn btn-link'>close</a>
+							</div>
+						</div>
+
+					</form>
+
 				</div>
+			</div>
 
-				<div class='control-group'>
-					<div class='controls'>
-						<button type='submit' class='btn btn-success pull-right'>Save and see your space</button>
-						<span class='pull-right pts prm' ng-class='{"muted": userBodyRemaining > 10, "text-error": userBodyRemaining <= 10}'>{{userBodyRemaining}}</span>
-						<a ng-hide='space.cantCloseEdit' ng-click='space.editing = false' class='btn btn-link'>close</a>
-					</div>
+			<div ng-hide='space.editing' class="row">
+				<div class="span-mobile center pos-rel">
+					<form name='message' class='form-vertical uncenter' ng-submit='submitMyMessage()' novalidate style='width: 100%;'>
+
+						<div class='lbl ptx'>From:</div>
+						<ps-subtle-login app='app'></ps-subtle-login>
+
+						<control-group>
+							<textarea name='body' id='msg_body' title='message body' placeholder="message{{' to ' + user.name | lowercase}}" class='input-block-level' ng-model='myMessage.body' rows=5 required></textarea>
+						</control-group>
+
+						<div class='control-group'>
+							<div class='controls'>
+								<button ng-hide='myMessage.id' type='submit' class='btn btn-success pull-right'>Start Conversation</button>
+								<button ng-show='myMessage.id' type='submit' class='btn btn-disabled pull-right' disabled>Message Sent</button>
+								<span class='pull-right pts prm' ng-class='{"muted": remainingChars > 10, "text-error": remainingChars <= 10}'>{{remainingChars}}</span>
+							</div>
+						</div>
+
+					</form>
 				</div>
-
-			</form>
+			</div>
 
 		</div>
 	</div>
-
-	<div ng-hide='space.editing' class="row">
-		<div class="offset4 span4 pos-rel">
-			<form name='message' class='form-vertical uncenter' ng-submit='submitMyMessage()' novalidate style='width: 100%;'>
-
-				<div class='lbl ptx'>From:</div>
-				<ps-subtle-login app='app'></ps-subtle-login>
-
-				<control-group>
-					<textarea name='body' id='msg_body' title='message body' placeholder="message{{' to ' + user.name | lowercase}}" class='input-block-level' ng-model='myMessage.body' rows=5 required></textarea>
-				</control-group>
-
-				<div class='control-group'>
-					<div class='controls'>
-						<button ng-hide='myMessage.id' type='submit' class='btn btn-success pull-right'>Start Conversation</button>
-						<button ng-show='myMessage.id' type='submit' class='btn btn-disabled pull-right' disabled>Message Sent</button>
-						<span class='pull-right pts prm' ng-class='{"muted": remainingChars > 10, "text-error": remainingChars <= 10}'>{{remainingChars}}</span>
-					</div>
-				</div>
-
-			</form>
-		</div>
-	</div>
-
 </div>
