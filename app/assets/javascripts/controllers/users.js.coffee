@@ -44,12 +44,12 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 	, (error) ->
 		$location.path('/404')
 
-	$scope.myMessage = new Message {user_id: user_id}
+	$scope.message = new Message {user_id: user_id}
 
 	$scope.$watch 'user.body', (value) ->
 		$scope.userBodyRemaining = 250 - (if value? then value.length else 0)
 
-	$scope.$watch 'myMessage.body', (value) ->
+	$scope.$watch 'message.body', (value) ->
 		$scope.remainingChars = 250 - (if value? then value.length else 0)
 
 	# TODO: revert to original profile if close is clicked instead of save
@@ -69,7 +69,7 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 			angular.element('textarea#user_body').focus()
 			$scope.app.flash 'info', "Please introduce yourself. And share what you would like to talk about."
 
-	$scope.submitMyMessage = ->
+	$scope.submitMessage = ->
 		if $scope.app.loggedIn()
 			$scope.app.show.loading = true
 			success = (data) ->
@@ -78,7 +78,7 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 			error = (error) ->
 				$scope.app.show.loading = false
 				$scope.app.flash 'error', error.data.errors
-			$scope.myMessage.save success, error
+			$scope.message.save success, error
 		else
 			$scope.app.flash 'info', 'It looks like something is missing. Please fill in all fields.'
 ]

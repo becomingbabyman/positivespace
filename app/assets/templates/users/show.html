@@ -65,19 +65,19 @@
 
 			<div ng-hide='space.editing' class="row">
 				<div class="span-mobile center pos-rel">
-					<form name='message' class='form-vertical uncenter' ng-submit='submitMyMessage()' novalidate style='width: 100%;'>
+					<form name='messageForm' class='form-vertical uncenter' ng-submit='submitMessage()' novalidate style='width: 100%;'>
 
 						<div class='lbl ptx'>From:</div>
 						<ps-subtle-login app='app'></ps-subtle-login>
 
 						<control-group>
-							<textarea name='body' id='msg_body' title='message body' placeholder="message{{' to ' + user.name | lowercase}}" class='input-block-level' ng-model='myMessage.body' rows=5 required></textarea>
+							<textarea name='body' id='msg_body' title='message body' placeholder="message{{' to ' + user.name | lowercase}}" class='input-block-level' ng-model='message.body' rows=5 required></textarea>
 						</control-group>
 
 						<div class='control-group'>
 							<div class='controls'>
-								<button ng-hide='myMessage.id' type='submit' class='btn btn-success pull-right'>Start Conversation</button>
-								<button ng-show='myMessage.id' type='submit' class='btn btn-disabled pull-right' disabled>Message Sent</button>
+								<button ng-hide='message.id' type='submit' class='btn btn-success pull-right' ng-disabled="messageForm.body.$invalid">Start Conversation</button>
+								<button ng-show='message.id' type='submit' class='btn btn-disabled pull-right' disabled>Message Sent</button>
 								<span class='pull-right pts prm' ng-class='{"muted": remainingChars > 10, "text-error": remainingChars <= 10}'>{{remainingChars}}</span>
 							</div>
 						</div>

@@ -248,7 +248,7 @@ psDirectives.directive 'psSubtleLogin', ["$timeout", "$location", "User", ($time
 			scope.usernameTaken = true
 
 			scope.checkLogin = () ->
-				login = scope.credentials.email
+				login = element.find("#sbtl_lgn_email").val()
 				User.query
 					login: login
 					(data) ->
@@ -297,7 +297,7 @@ psDirectives.directive 'psSubtleLogin', ["$timeout", "$location", "User", ($time
 					scope.app.show.loading = true
 					User.login
 						user:
-							login: scope.credentials.email
+							login: element.find("#sbtl_lgn_email").val()
 							password: scope.credentials.password
 							# remember_me: rememberMe
 						(data) ->
