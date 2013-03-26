@@ -17,7 +17,7 @@ ps.controller "UserPasswordEditCtrl", ["$scope", "$location", "$routeParams", "U
 		User.updatePassword
 			user:
 				password: $scope.psw.password
-				password_confirmation: $scope.psw.passwordConfirmation
+				password_confirmation: ($scope.psw.passwordConfirmation or '')
 				reset_password_token: $routeParams.reset_password_token
 			(data) ->
 				$scope.app.flash 'success', "Cool, your password has been updated and you are now logged in."

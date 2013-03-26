@@ -132,7 +132,13 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "User", ($scope, $
             (error) ->
                 $scope.app.show.loading = false
                 $scope.app.flash 'error', "Sorry, that <em>email address or username</em> is not registered with us. Please try again or <a href='/register' class='unfancy-link'>request a new account</a>."
-                $('input[name="login"]:visible').focus()
+                $input = $('input.forgot-password:visible')
+                $input.focus()
+                $input.addClass('animated shake')
+                $timeout () ->
+                    $input.removeClass('shake')
+                ,1000
+
 
 ]
 

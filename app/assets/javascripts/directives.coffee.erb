@@ -309,6 +309,12 @@ psDirectives.directive 'psSubtleLogin', ["$timeout", "$location", "User", ($time
 							scope.app.show.loading = false
 							# TODO: put error on input field
 							scope.app.flash 'error', "Oops, that's the wrong password."
+							$input = element.find('#lgn_password')
+							# $input.focus()
+							$input.addClass('animated shake')
+							$timeout () ->
+							    $input.removeClass('shake')
+							,1000
 
 			scope.enterLogin = (e) ->
 				if e.which == 13
@@ -435,6 +441,12 @@ psDirectives.directive 'psLogin', ["$timeout", "$location", "User", ($timeout, $
 							scope.app.show.loading = false
 							# TODO: put error on input field
 							scope.app.flash 'error', "Oops, that's the wrong password."
+							$input = element.find('#lgn_password')
+							$input.focus()
+							$input.addClass('animated shake')
+							$timeout () ->
+							    $input.removeClass('shake')
+							,1000
 
 			scope.fbLogin = () ->
 				scope.app.show.loading = true
