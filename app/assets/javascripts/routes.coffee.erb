@@ -15,10 +15,10 @@ ps.config ['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvid
 	#	templateUrl: "/assets/pages/home.html"
 	.when "/404",
 		controller: "PagesCtrl"
-		templateUrl: "<%= asset_path 'pages/404.html' %>"
+		templateUrl: "/assets/pages/404.html"
 	.when "/about",
 		controller: "PagesCtrl"
-		templateUrl: "<%= asset_path 'pages/about.html' %>"
+		templateUrl: "/assets/pages/about.html"
 	.when "/terms",
 		controller: "PagesCtrl"
 		templateUrl: "/assets/pages/terms.html"
@@ -43,7 +43,7 @@ ps.config ['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvid
 		templateUrl: "/assets/users/settings.html"
 	.when "/users/password/edit",
 		controller: "UserPasswordEditCtrl"
-		templateUrl: '/assets/users/password_edit.html'
+		templateUrl: "/assets/users/password_edit.html"
 	.when "/:user_id",
 		controller: "UsersShowCtrl"
 		templateUrl: "/assets/users/show.html"

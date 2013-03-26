@@ -13,9 +13,9 @@
 				<div class="span-mobile center pos-rel">
 					<div class='lbl ptx'>To:</div>
 
-					<div class="center">
+					<div class="center" ng-class='{"animated fadeInDown": !space.editing, "animated fadeInDown": space.editing}'>
 						<ps-img src="{{user.avatar.big_thumb_url}}" alt="{{user.name}}" img-class="img-circle img-polaroid img-big-thumb" attachable-type='User' attachable-id='{{user.id}}' image-type='avatar' image-url='big_thumb_url' can-edit='{{user.id && user.id == app.currentUser.id}}'></ps-img>
-						<div ng-hide='space.editing'>
+						<div ng-hide='space.editing' ng-class='{"animated fadeInDown": !space.editing, "animated fadeOutUp": space.editing}'>
 							<h2>{{user.name}}</h2>
 							<p>{{user.body}}</p>
 							<p>
@@ -26,7 +26,7 @@
 						</div>
 					</div>
 
-					<form ng-show='space.editing' name='user_profile' class='form-vertical uncenter ptl' ng-submit='saveSpace()' novalidate style='width: 100%;'>
+					<form ng-show='space.editing' ng-class='{"animated fadeInUp": space.editing, "animated fadeOutUp": !space.editing}' name='user_profile' class='form-vertical uncenter ptl' ng-submit='saveSpace()' novalidate style='width: 100%;'>
 
 						<control-group label='Full name'>
 							<input name='name' id='user_name' title='your real name (not your username)' placeholder="your full name" class='input-block-level' ng-model='user.name' required></input>
@@ -63,7 +63,7 @@
 				</div>
 			</div>
 
-			<div ng-hide='space.editing' class="row">
+			<div ng-hide='space.editing' ng-class='{"animated fadeInUp": !space.editing, "animated fadeOutDown": space.editing}' class="row">
 				<div class="span-mobile center pos-rel">
 					<form name='messageForm' class='form-vertical uncenter' ng-submit='submitMessage()' novalidate style='width: 100%;'>
 
