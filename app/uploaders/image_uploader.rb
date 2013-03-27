@@ -6,6 +6,7 @@ class ImageUploader < CarrierWave::Uploader::Base
   include CarrierWave::RMagick
   include CarrierWave::MimeTypes
   # include CarrierWave::MiniMagick
+  include ::CarrierWave::Backgrounder::Delay
 
   # Choose what kind of storage to use for this uploader:
   if %w[development test].include? Rails.env

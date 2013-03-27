@@ -219,12 +219,13 @@ psDirectives.directive "psImg", ["$timeout", ($timeout) ->
 				tooltip.show()
 
 			imgDropzone.on "success", (file, data) ->
-				element.find('img').attr 'src', data["#{scope.imageUrl}"]
-				tooltip.setContent("Nice, #{scope.imageType} successfully changed.")
+				$img = element.find('img')
+				$img.attr 'src', data.url
+				tooltip.setContent("Nice, #{scope.imageType} successfully changed. This is just a preview. Refresh the page in a few seconds to see the final version of your image.")
 				$timeout ->
 					tooltip.hide()
 					tooltip.setContent prompt
-				, 3000
+				, 20000
 
 		# TODO: refactor all can methods. Maybe return a models editors in its json.
 		scope.$watch 'canEdit', (value) ->

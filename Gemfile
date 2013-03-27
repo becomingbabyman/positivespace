@@ -48,7 +48,7 @@ gem 'has_scope'
 gem 'chronic'
 
 # URL Shortening
-gem 'shortener'
+# gem 'shortener'
 
 # State Machine
 gem 'state_machine'
@@ -62,6 +62,7 @@ gem 'asset_sync'
 
 # Uploads and Images
 gem 'carrierwave'
+gem 'carrierwave_backgrounder'
 gem 'rmagick'
 gem 'fog'
 gem 'gravtastic'
