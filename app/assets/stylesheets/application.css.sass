@@ -150,6 +150,10 @@ input, textarea
             img
                 width: 50px
                 height: 32px
+            // &:after
+            //     font-size: 10px
+            //     left: 45px
+            //     bottom: 16px
         @media (max-width: 979px)
             padding-left: 20px
             padding-right: 20px
@@ -201,13 +205,14 @@ input, textarea
             @include transition-delay(0.3s)
             @include transition-duration(1s)
             color: #bbb
-            font-family: serif
-            font-size: 16px
-            content: "Like Twitter For Introverts"
+            font-size: 13px
+            content: "beta"
             letter-spacing: 0.1em
             height: 20px
             line-height: 20px
-            bottom: -60px
+            left: 180px
+            bottom: -34px
+            width: 40px
 
     .nav
         li.dropdown.open > .dropdown-toggle
@@ -247,6 +252,15 @@ input, textarea
 #footer
     .container
         padding-top: 50px
+
+
+.help-block
+    font-size: 14px
+    font-family: sans-serif
+    color: #aaa
+
+.well
+    background-color: #fcfcfc
 
 
 //////////////////////////////////////////////////////
@@ -401,7 +415,7 @@ input, textarea
     .lbl
         position: absolute
         left: -60px
-        color: #e7e7e7
+        color: #ddd
 
 // Import these mixins last to overide everything else
 @import "flat-ui/spaces"

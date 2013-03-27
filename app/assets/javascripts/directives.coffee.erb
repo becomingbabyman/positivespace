@@ -246,6 +246,13 @@ psDirectives.directive 'psSubtleLogin', ["$timeout", "$location", "User", ($time
 		link: (scope, element, attrs) ->
 			scope.credentials = {loginType: ''}
 			scope.usernameTaken = true
+			scope.mousedownHappened = false
+
+			$('a').mousedown ->
+				scope.mousedownHappened = true
+				$timeout () ->
+					scope.mousedownHappened = false
+				, 2000
 
 			scope.checkLogin = () ->
 				login = element.find("#sbtl_lgn_email").val()
@@ -278,43 +285,44 @@ psDirectives.directive 'psSubtleLogin', ["$timeout", "$location", "User", ($time
 					scope.usernameTaken = true
 
 			scope.login = () ->
-				if scope.credentials.loginType == 'register'
-					scope.app.show.loading = true
-					User.register
-						user:
-							email: scope.credentials.email
-							password: scope.credentials.password
-							username: scope.credentials.username
-						(data) ->
-							scope.app.show.loading = false
-							scope.app.currentUser = new User data
-							scope.credentials = {loginType: ''}
-							# scope.app.flash 'success', "Welcome! Go ahead and start a conversation."
-						(error) ->
-							scope.app.show.loading = false
-							scope.app.flash 'error', error.data.errors
-				else
-					scope.app.show.loading = true
-					User.login
-						user:
-							login: element.find("#sbtl_lgn_email").val()
-							password: scope.credentials.password
-							# remember_me: rememberMe
-						(data) ->
-							scope.app.show.loading = false
-							scope.app.currentUser = new User data
-							scope.credentials = {loginType: ''}
-							# scope.app.flash 'success', "Welcome back!"
-						(error) ->
-							scope.app.show.loading = false
-							# TODO: put error on input field
-							scope.app.flash 'error', "Oops, that's the wrong password."
-							$input = element.find('#lgn_password')
-							# $input.focus()
-							$input.addClass('animated shake')
-							$timeout () ->
-							    $input.removeClass('shake')
-							,1000
+				unless scope.app.loggedIn() or scope.mousedownHappened
+					if scope.credentials.loginType == 'register'
+						scope.app.show.loading = true
+						User.register
+							user:
+								email: scope.credentials.email
+								password: scope.credentials.password
+								username: scope.credentials.username
+							(data) ->
+								scope.app.show.loading = false
+								scope.app.currentUser = new User data
+								scope.credentials = {loginType: ''}
+								# scope.app.flash 'success', "Welcome! Go ahead and start a conversation."
+							(error) ->
+								scope.app.show.loading = false
+								scope.app.flash 'error', error.data.errors
+					else
+						scope.app.show.loading = true
+						User.login
+							user:
+								login: element.find("#sbtl_lgn_email").val()
+								password: scope.credentials.password
+								# remember_me: rememberMe
+							(data) ->
+								scope.app.show.loading = false
+								scope.app.currentUser = new User data
+								scope.credentials = {loginType: ''}
+								# scope.app.flash 'success', "Welcome back!"
+							(error) ->
+								scope.app.show.loading = false
+								# TODO: put error on input field
+								scope.app.flash 'error', "Oops, that's the wrong password."
+								$input = element.find('#lgn_password')
+								# $input.focus()
+								$input.addClass('animated shake')
+								$timeout () ->
+								    $input.removeClass('shake')
+								,1000
 
 			scope.enterLogin = (e) ->
 				if e.which == 13
@@ -334,6 +342,9 @@ psDirectives.directive 'psSubtleLogin', ["$timeout", "$location", "User", ($time
 						scope.app.flash 'error', "Sorry, we had trouble contacting facebook. Please try again."
 				),
 					scope: "email"
+
+			scope.forgot = ->
+				scope.app.resetPassword(element.find("#sbtl_lgn_email").val())
 
 ]
 
