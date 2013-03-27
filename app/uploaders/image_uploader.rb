@@ -2,11 +2,12 @@
 
 class ImageUploader < CarrierWave::Uploader::Base
 
+  include ::CarrierWave::Backgrounder::Delay
+
   # Include RMagick or MiniMagick support:
   include CarrierWave::RMagick
   include CarrierWave::MimeTypes
   # include CarrierWave::MiniMagick
-  include ::CarrierWave::Backgrounder::Delay
 
   # Choose what kind of storage to use for this uploader:
   if %w[development test].include? Rails.env
@@ -41,19 +42,19 @@ class ImageUploader < CarrierWave::Uploader::Base
     process :large_process
   end
 
-  version :medium, :from_version => :large do
+  version :medium do
     process :medium_process
   end
 
-  version :small, :from_version => :medium do
+  version :small do
     process :small_process
   end
 
-  version :big_thumb, :from_version => :medium do
+  version :big_thumb do
     process :big_thumb_process
   end
 
-  version :thumb, :from_version => :big_thumb do
+  version :thumb do
     process :thumb_process
   end
 
