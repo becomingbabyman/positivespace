@@ -12,6 +12,7 @@ class Message < ActiveRecord::Base
 	end
 
 	after_create :continue_current_conversation
+	after_create :notify_recipient
 
 	attr_accessible :body, :embed_url, :from_email
 	attr_protected :none, as: :admin
@@ -60,6 +61,10 @@ private
 
 	def continue_current_conversation
 		Message.between(self.from_id, self.to_id).pending.is_not(self.id).each(&:continue)
+	end
+
+	def notify_recipient
+		NotificationsMailer.delay.recieved_message(self.id)
 	end
 
 end
