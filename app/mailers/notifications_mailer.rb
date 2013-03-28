@@ -10,6 +10,6 @@ class NotificationsMailer < ActionMailer::Base
     @message = Message.find message_id
     @reply_path = "inbox?message_id=#{@message.id}"
 
-    mail to: @message.to.email, from: "#{@message.from.name} <#{@message.from.email}>"
+    mail to: "#{@message.to.name} <#{@message.to.email}>", from: "#{@message.from.name} <#{@message.from.email}>", subject: "#{@message.from.name} sent you a message"
   end
 end
