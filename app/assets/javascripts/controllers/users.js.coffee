@@ -30,7 +30,7 @@ ps.controller "UserPasswordEditCtrl", ["$scope", "$location", "$routeParams", "U
 
 ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location", "User", "Message", ($scope, $routeParams, $timeout, $location, User, Message) ->
 	user_id = $routeParams.user_id or 'space'
-	$scope.space = {}
+	$scope.space = {fadeCount: 0}
 
 	# TODO:
 	# $scope.$watch 'app.currentUser.id', ->
@@ -50,7 +50,16 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 		$scope.userBodyRemaining = 250 - (if value? then value.length else 0)
 
 	$scope.$watch 'message.body', (value) ->
+		# Update the count
 		$scope.remainingChars = 250 - (if value? then value.length else 0)
+		# Fade distractions out while typing
+		if $scope.remainingChars < 250
+			if $scope.space.fadeCount == 3 then $('#msg_remaining_chars').fadeOut()
+			$scope.space.fadeCount += 1
+			$timeout ->
+				$scope.space.fadeCount -= 1
+				if $scope.space.fadeCount == 0 then $('#msg_remaining_chars').fadeIn()
+			, 1400
 
 	# TODO: revert to original profile if close is clicked instead of save
 	$scope.saveSpace = ->
@@ -86,3 +95,6 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 
 ps.controller "UsersSettingsCtrl", ["$scope", "User", ($scope, User) ->
 ]
+
+
+

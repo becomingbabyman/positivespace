@@ -59,8 +59,15 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "User", ($scope, $
         $scope.app.show.header = false
         $scope.app.show.footer = false
 
+    ###################
+    # On Route Change #
+    ###################
     $rootScope.$on "$routeChangeStart", (event, next, current) ->
+        # Make sure the chrome is visible
         $scope.app.show.allChrome()
+
+        # Autosize all textareas
+        $timeout (() -> $('textarea').autosize()), 1000
 
 
     #########

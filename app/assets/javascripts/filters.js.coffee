@@ -16,7 +16,7 @@ psFilters.filter "range", ->
 
 psFilters.filter 'linebreaks', ->
 	(text) ->
-		text.replace(/\n/g, '<br/>') if text
+		text.replace(/\n/g, '<br/>') if text?
 
 psFilters.filter "truncate", ->
 	(text, length=10, end='...') ->
@@ -33,9 +33,10 @@ psFilters.filter 'urlEncode', ->
 
 psFilters.filter 'urlSimplify', ->
 	(url) ->
-		if url? and (splitUrl = url.split("//")) and splitUrl.length > 1
-			url = splitUrl[1]
-		if url? and (splitUrl = url.split("/")) and splitUrl.length > 1
-			url = splitUrl[0]
+		if url?
+			if (urls = url.split("//")).length > 1 then url = urls[1]
+			if (urls = url.split("/")).length > 1 then url = urls[0]
+			if (urls = url.split("?")).length > 1 then url = urls[0]
+			if (urls = url.split("#")).length > 1 then url = urls[0]
 		url
 
