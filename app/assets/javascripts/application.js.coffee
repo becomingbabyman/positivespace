@@ -21,6 +21,7 @@
 # App JS
 #= require services
 #= require directives
+#= require filters
 #= require routes
 #= require_tree ./controllers/
 #

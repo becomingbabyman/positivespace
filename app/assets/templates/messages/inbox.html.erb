@@ -5,7 +5,7 @@
 	<div class="row" ng-repeat="message in currentThread" ng-hide='messages.length == $index'>
 		<div class="span-mobile center">
 
-			<blockquote ng-class='{"pull-right": message.from.id == app.currentUser.id}'>
+			<blockquote ng-class='{"pull-right": message.from.id == app.currentUser.id}' ng-bind-html-unsafe="message.body | linebreaks">
 				{{message.body}}
 			</blockquote>
 		</div>
@@ -14,7 +14,7 @@
 	<div class="row message" ng-repeat="message in messages" ng-class='{active: $index == 0}'>
 		<div class="span-mobile center">
 
-			<blockquote>
+			<blockquote ng-bind-html-unsafe="message.body | linebreaks">
 				{{message.body}}
 			</blockquote>
 
