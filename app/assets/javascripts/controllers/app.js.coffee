@@ -1,10 +1,11 @@
-ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "User", ($scope, $timeout, $rootScope, User) ->
+ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "User", ($scope, $timeout, $rootScope, $q, User) ->
 
     ######################
     # App Initialization #
     ######################
     $scope.app = {}
     $scope.app.currentUser = {}
+    $scope.app.dcu = $q.defer() # Defered Current User
     $scope.app.year = (new Date).getFullYear()
     $scope.app.templates =
         loading:
@@ -25,21 +26,25 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "User", ($scope, $
         width: 7
         height: 9
         font: '10px arial'
-        colour: '#ffffff'
+        color: '#ffffff'
         background: '#f00'
         fallback: true
-    Tinycon.setBubble(0)
 
 
     # TODO: bootstrap this data on the angular.html.haml template and only request it if no bootstrap is found
     $scope.app.loadCurrentUser = (userData = null) ->
-        success = (data) ->
+        # Reset the defer everytime the user is reloaded
+        $scope.app.dcu = $q.defer()
+
+        $scope.app.dcu.promise.then (data) ->
             Tinycon.setBubble data.pending_message_count
+
         if userData?
             $scope.app.currentUser = new User userData
-            success(userData)
+            $scope.app.dcu.resolve(userData)
         else
-            $scope.app.currentUser = User.current success
+            $scope.app.currentUser = User.current $scope.app.dcu.resolve, $scope.app.dcu.reject
+
     $scope.app.loadCurrentUser()
 
     $scope.app.loggedIn = ->

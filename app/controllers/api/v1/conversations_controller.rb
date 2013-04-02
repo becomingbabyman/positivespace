@@ -1,8 +1,8 @@
-class Api::V1::MessagesController < InheritedResources::Base
+class Api::V1::ConversationsController < InheritedResources::Base
 	belongs_to :user
 
 	respond_to :json
-	actions :show, :index, :create, :update, :destroy
+	actions :index, :update
 
 	has_scope :with, :only => :index do |controller, scope, value|
 		scope.with(value)
@@ -14,9 +14,6 @@ class Api::V1::MessagesController < InheritedResources::Base
 	has_scope :state, :only => :index do |controller, scope, value|
 		scope.where(state: value)
 	end
-	has_scope :converstiion_id, :only => :index, type: :array do |controller, scope, value|
-		scope.converstiion_id(value.to_i)
-	end
 	has_scope :page, :only => :index, :default => 1 do |controller, scope, value|
 		value.to_i > 0 ? scope.page(value.to_i) : scope.page(1)
 	end
@@ -27,27 +24,17 @@ class Api::V1::MessagesController < InheritedResources::Base
 	load_and_authorize_resource
 
 
-	before_filter :pick_params, :only => [:create, :update]
-
-
-	def create
-		@user = User.find(params[:user_id])
-		@message = Message.new(params[:message])
-		@message.to = @user
-		@message.from = current_user
-		@message.session_id = positivespace_session_id
-		create!
-	end
+	before_filter :pick_params, :only => [:update]
 
 protected
 
 	def collection
-		@messages = apply_scopes(end_of_association_chain)
+		@conversations = apply_scopes(end_of_association_chain)
 	end
 
 	def pick_params
-		if message = params[:message]
-			params[:message] = pick(message, Message.accessible_attributes.to_a)
+		if conversation = params[:conversation]
+			params[:conversation] = pick(conversation, Conversation.accessible_attributes.to_a)
 		end
 	end
 end

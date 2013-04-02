@@ -318,7 +318,7 @@ psDirectives.directive 'psSubtleLogin', ["$timeout", "$location", "User", ($time
 								username: scope.credentials.username
 							(data) ->
 								scope.app.show.loading = false
-								scope.app.currentUser = new User data
+								scope.app.loadCurrentUser data
 								scope.credentials = {loginType: ''}
 								# scope.app.flash 'success', "Welcome! Go ahead and start a conversation."
 							(error) ->
@@ -333,7 +333,7 @@ psDirectives.directive 'psSubtleLogin', ["$timeout", "$location", "User", ($time
 								# remember_me: rememberMe
 							(data) ->
 								scope.app.show.loading = false
-								scope.app.currentUser = new User data
+								scope.app.loadCurrentUser data
 								scope.credentials = {loginType: ''}
 								# scope.app.flash 'success', "Welcome back!"
 							(error) ->
@@ -358,7 +358,7 @@ psDirectives.directive 'psSubtleLogin', ["$timeout", "$location", "User", ($time
 					if response.authResponse
 						$.get '/users/auth/facebook/callback', { signed_request: response.authResponse.signedRequest }, (data) ->
 							scope.app.show.loading = false
-							scope.app.currentUser = new User data
+							scope.app.loadCurrentUser data
 							scope.app.flash 'success', "Welcome!"
 					else
 						scope.app.show.loading = false
@@ -451,7 +451,7 @@ psDirectives.directive 'psLogin', ["$timeout", "$location", "User", ($timeout, $
 							username: scope.credentials.username
 						(data) ->
 							scope.app.show.loading = false
-							scope.app.currentUser = new User data
+							scope.app.loadCurrentUser data
 							scope.credentials = {loginType: 'login'}
 							scope.app.flash 'success', "Welcome. Let's create your PositiveSpace!"
 							$location.path("/#{data.username}")
@@ -467,7 +467,7 @@ psDirectives.directive 'psLogin', ["$timeout", "$location", "User", ($timeout, $
 							# remember_me: rememberMe
 						(data) ->
 							scope.app.show.loading = false
-							scope.app.currentUser = new User data
+							scope.app.loadCurrentUser data
 							scope.credentials = {loginType: 'login'}
 							scope.app.flash 'success', "Welcome back!"
 							$location.path("/#{data.username}")
@@ -488,7 +488,7 @@ psDirectives.directive 'psLogin', ["$timeout", "$location", "User", ($timeout, $
 					if response.authResponse
 						$.get '/users/auth/facebook/callback', { signed_request: response.authResponse.signedRequest }, (data) ->
 							scope.app.show.loading = false
-							scope.app.currentUser = new User data
+							scope.app.loadCurrentUser data
 							scope.app.flash 'success', "Welcome!"
 							$location.path("/#{data.username}")
 					else

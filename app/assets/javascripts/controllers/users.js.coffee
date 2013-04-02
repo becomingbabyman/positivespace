@@ -21,7 +21,7 @@ ps.controller "UserPasswordEditCtrl", ["$scope", "$location", "$routeParams", "U
 				reset_password_token: $routeParams.reset_password_token
 			(data) ->
 				$scope.app.flash 'success', "Cool, your password has been updated and you are now logged in."
-				$scope.app.currentUser = new User data
+				$scope.app.loadCurrentUser data
 				$location.path("/#{data.username}")
 			(error) ->
 				$scope.app.flash 'error', error.data.errors

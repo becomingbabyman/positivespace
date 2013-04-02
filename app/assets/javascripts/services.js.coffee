@@ -11,6 +11,26 @@ psServices = angular.module 'psServices', ['ngResource']
 #                                                   #
 #####################################################
 
+psServices.factory 'Conversation', ['$resource', ($resource) ->
+	Conversation = $resource "/api/users/:user_id/conversations/:list_ctrl/:id/:doc_ctrl",
+		user_id: '@user_id'
+		id: '@id'
+		list_ctrl: '@list_ctrl'
+		doc_ctrl: '@doc_ctrl'
+	,
+		update:
+			method: 'PUT'
+
+	Conversation::save = (success=null, error=null) ->
+		if @id?
+			@$update(success, error)
+		else
+			@$save(success, error)
+
+	Conversation
+]
+
+
 psServices.factory 'User', ['$resource', ($resource) ->
 	User = $resource "/api/users/:list_ctrl/:id/:doc_ctrl",
 		id: '@id'

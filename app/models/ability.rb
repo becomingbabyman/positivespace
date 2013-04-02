@@ -14,6 +14,13 @@ class Ability
 				user.editor? image.attachable
 			end
 
+			can [:index], Conversation do
+				params[:user_id] == user.id
+			end
+			can [:update], Conversation do |c|
+				user.editor?(c)
+			end
+
 			can [:index], Message do
 				params[:user_id] == user.id
 			end
@@ -30,7 +37,7 @@ class Ability
 		######################################################
 		can [:create], Message
 		can [:modify], Message do |m|
-			m.seconds_left_to_edit > 0 and (user.editor?(m) or session_id == m.session_id)
+			(m.draft? or m.seconds_left_to_edit > 0) and (user.editor?(m) or session_id == m.session_id)
 		end
 
 		######################################################

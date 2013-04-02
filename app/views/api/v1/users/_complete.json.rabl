@@ -2,7 +2,7 @@ object @user
 
 extends 'api/v1/users/base'
 
-attributes :body, :location, :personal_url
+attributes :body, :location, :personal_url, :created_at
 attributes :achievements, :positive_response, :negative_response, :if => lambda { |u| can?(:update, u) }
 
 node :can_edit do |user|
@@ -18,5 +18,5 @@ node :accessible_attributes, :if => lambda { |u| can?(:update, u) } do |user|
 end
 
 node :pending_message_count, :if => lambda { |u| can?(:update, u) } do |user|
-	user.messages.pending.size
+	user.messages.sent.size
 end

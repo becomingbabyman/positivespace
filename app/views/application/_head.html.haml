@@ -1,9 +1,9 @@
 - title = yield :title
 - if title.blank?
-	- title = "#{controller.controller_name.titleize} | #{controller.action_name.titleize} - + (_____) - Let people reach out to you."
-- elsif title.include? "+ (_____)"
+	- title = "Positive Space - Slow down and let people reach out to you - +_"
+- elsif title.include? "+_"
 - else
-	- title = "#{title} - + (_____)"
+	- title = "#{title} - +_"
 
 - description = yield :description
 - description ||= "Positivespace is a new way to let people reach out to you. We believe that it's too hard to start a conversation with a stranger. A lot of good ideas and relationships are missed because the right people never talk. We provide simple and direct ways for potential partners to contact you."

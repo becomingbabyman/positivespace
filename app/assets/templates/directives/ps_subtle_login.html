@@ -15,6 +15,13 @@
 
 
 		<div class="row-fluid" ng-show='credentials.loginType == "register"'>
+			<div class="span12">
+				<span style='color:#bbb;'>
+					sign up to get an inbox for your conversations
+				</span>
+			</div>
+		</div>
+		<div class="row-fluid" ng-show='credentials.loginType == "register"'>
 			<div class="span5">
 				<control-group>
 				    <input type='password' id='reg_password' name='password' placeholder='new password' class='input-block-level' ng-model='credentials.password' ng-minlength='8' ng-maxlength='100' required></input>
@@ -37,7 +44,6 @@
 				</a>
 			</div>
 		</div>
-
 
 		<div class="row-fluid" ng-show='credentials.loginType == "login"'>
 			<div class="span8">

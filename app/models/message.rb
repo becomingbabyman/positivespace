@@ -1,36 +1,40 @@
 require 'embedly'
 class Message < ActiveRecord::Base
 
-	state_machine :initial => :pending do
-		event :continue do
-			transition :pending => :continued
+	state_machine :initial => :draft do
+		event :send do
+			transition :draft => :sent
 		end
+		after_transition on: :send, do: :after_send
 
-		event :discontinue do
-			transition :pending => :discontinued
+		event :reply do
+			transition :sent => :replied
 		end
+		after_transition on: :reply, do: :after_reply
 	end
 
-	after_create :continue_current_conversation
-	after_create :notify_recipient
+	before_validation :continue_conversation, on: :create
 
-	attr_accessible :body, :embed_url, :from_email
+	attr_accessible :body, :embed_url, :from_email, :state_event
 	attr_protected :none, as: :admin
 
 	serialize :embed_data
 
 	belongs_to :to, :class_name => 'User', :foreign_key => :to_id
 	belongs_to :from, :class_name => 'User', :foreign_key => :from_id
+	belongs_to :conversation
 
 	validates :body, presence: true, length: {maximum: 250}
 	validates :to_id, presence: true
 	validates :from_id, presence: true
+	validate :validate_not_to_self
+	validate :validate_take_turns, on: :create
 
 	default_scope :order => 'created_at asc'
 
-	scope :pending, where(state: :pending)
-	scope :continued, where(state: :continued)
-	scope :discontinued, where(state: :discontinued)
+	scope :draft, where(state: :draft)
+	scope :sent, where(state: :sent)
+	scope :replied, where(state: :replied)
 	scope :with, lambda { |user_id| where("from_id = ? OR to_id = ?", user_id, user_id) }
 	scope :between, lambda { |id1, id2| where("(from_id = ? AND to_id = ?) OR (from_id = ? AND to_id = ?)", id1, id2, id2, id1) }
 	scope :is_not, lambda { |id| where("id != ?", id) }
@@ -59,12 +63,30 @@ class Message < ActiveRecord::Base
 
 private
 
-	def continue_current_conversation
-		Message.between(self.from_id, self.to_id).pending.is_not(self.id).each(&:continue)
+	def validate_not_to_self
+		errors.add(:you, "cannot send a message to yourself") if self.from_id == self.to_id
+	end
+
+	def validate_take_turns
+		errors.add(:you, "have to wait for a reply before sending another message") if m = self.conversation.messages.last and m.from_id == self.from_id
+	end
+
+	def after_send
+		self.conversation.touch
+		notify_recipient
+	end
+
+	def continue_conversation
+		c = Conversation.find_or_initialize_by_from_id_and_to_id_and_state(self.from_id, self.to_id, :in_progress)
+		self.conversation = c
 	end
 
 	def notify_recipient
 		NotificationsMailer.delay.recieved_message(self.id)
+	end
+
+	def after_reply
+		# Do nothing yet
 	end
 
 end

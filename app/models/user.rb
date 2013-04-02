@@ -38,6 +38,8 @@ class User < ActiveRecord::Base
 	has_many :avatars, :as => :attachable, :source => :images, :class_name => "Image", :conditions => {image_type: "avatar"}, :order => 'created_at desc'
 	has_many :sent_messages, :foreign_key => :from_id, :class_name => 'Message', :order => 'created_at desc'
 	has_many :recieved_messages, :foreign_key => :to_id, :class_name => 'Message', :order => 'created_at desc'
+	has_many :sent_conversations, :foreign_key => :from_id, :class_name => 'Conversation', :order => 'created_at desc'
+	has_many :recieved_conversations, :foreign_key => :to_id, :class_name => 'Conversation', :order => 'created_at desc'
 
 	accepts_nested_attributes_for :images, :avatars
 
@@ -121,6 +123,10 @@ class User < ActiveRecord::Base
 	# TODO: think about merging this with sent messages
 	def messages
 		Message.with(self.id)
+	end
+
+	def conversations
+		Conversation.with(self.id)
 	end
 
 	def avatar
