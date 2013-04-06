@@ -14,8 +14,8 @@ class Api::V1::MessagesController < InheritedResources::Base
 	has_scope :state, :only => :index do |controller, scope, value|
 		scope.where(state: value)
 	end
-	has_scope :converstiion_id, :only => :index, type: :array do |controller, scope, value|
-		scope.converstiion_id(value.to_i)
+	has_scope :conversation_id, :only => :index do |controller, scope, value|
+		scope.conversation_id(value.to_i)
 	end
 	has_scope :page, :only => :index, :default => 1 do |controller, scope, value|
 		value.to_i > 0 ? scope.page(value.to_i) : scope.page(1)

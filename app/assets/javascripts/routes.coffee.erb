@@ -47,7 +47,7 @@ ps.config ['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvid
 	.when "/:user_id",
 		controller: "UsersShowCtrl"
 		templateUrl: "/assets/users/show.html"
-	.otherwise redirectTo: "/"
+	.otherwise redirectTo: "/404"
 ]
 
 root.ps = ps

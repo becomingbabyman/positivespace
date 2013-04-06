@@ -38,6 +38,7 @@ class Message < ActiveRecord::Base
 	scope :with, lambda { |user_id| where("from_id = ? OR to_id = ?", user_id, user_id) }
 	scope :between, lambda { |id1, id2| where("(from_id = ? AND to_id = ?) OR (from_id = ? AND to_id = ?)", id1, id2, id2, id1) }
 	scope :is_not, lambda { |id| where("id != ?", id) }
+	scope :conversation_id, lambda { |id| where("conversation_id = ?", id) }
 
 	def self.total_seconds_to_edit
 		0 # TODO: think about removing all of this out
@@ -77,7 +78,8 @@ private
 	end
 
 	def continue_conversation
-		c = Conversation.find_or_initialize_by_from_id_and_to_id_and_state(self.from_id, self.to_id, :in_progress)
+		c = Conversation.between(self.from_id, self.to_id).in_progress.first
+		c ||= Conversation.new(from_id: self.from_id, to_id: self.to_id, state: :in_progress)
 		self.conversation = c
 	end
 

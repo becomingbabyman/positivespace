@@ -87,6 +87,7 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 			error = (error) ->
 				$scope.app.show.loading = false
 				$scope.app.flash 'error', error.data.errors
+			$scope.message.state_event = 'send'
 			$scope.message.save success, error
 		else
 			$scope.app.flash 'info', 'It looks like something is missing. Please fill in all fields.'

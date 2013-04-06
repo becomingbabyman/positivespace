@@ -1,33 +1,53 @@
 <div id='inbox' class="container">
 
-	<div class="row">
+	<div ng-show='currentMsg.id' class="row pbl">
+		<div class="span-mobile center">
+			<a href="#" ng-click='currentMsg={}' class="btn btn-link pull-left">
+				<i class="icon-angle-left"></i>
+				BACK
+			</a>
+		</div>
+	</div>
+
+	<div ng-hide='currentMsg.id' class="row">
 		<div class="span-mobile center">
 			<div class="row-fluid" ng-repeat="conversation in conversations">
-				<div class="span12">
+				<div class="span12 uncenter">
 					<div class="row-fluid">
-						<div class="span12">
-							{{conversation.from.name}} ->
-							{{conversation.to.name}}
+						<div class="span2">
+							<a href="#" class='unfancy-link' ng-click='selectConversation(conversation)'>
+								<img ng-hide='conversation.from.id == app.currentUser.id' ng-src="{{conversation.from.avatar.thumb_url}}" alt="{{conversation.from.name}}" class="img-circle">
+								<img ng-hide='conversation.to.id == app.currentUser.id' ng-src="{{conversation.to.avatar.thumb_url}}" alt="{{conversation.to.name}}" class="img-circle">
+							</a>
+						</div>
+						<div class="span10">
+							<div class="row-fluid">
+								<div class="span12">
+									<a href="#" class='unfancy-link' ng-click='selectConversation(conversation)'>
+										<span ng-hide='conversation.from.id == app.currentUser.id'>{{conversation.from.name}}</span>
+										<span ng-hide='conversation.to.id == app.currentUser.id'>{{conversation.to.name}}</span>
+									</a>
+								</div>
+								<div class="row-fluid">
+									<div class="span12">
+										<a href="#" class='unfancy-link' ng-click='selectConversation(conversation)'>
+											{{conversation.created_at | date:"MMMM d, yyyy"}}
+										</a>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
-					<div class="row-fluid">
-						<div class="span12">
-							{{conversation.created_at}}
-						</div>
-					</div>
+					<hr/>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div ng-show='currentMessage' class="row">
+	<div ng-show='currentMsg.id' class="row">
 		<div class="span-mobile center">
-
-			<div class="row-fluid" ng-repeat="message in currentThread">
-				{{message.id == currentMessage.id}}
-				{{message.id}}
-				{{currentMessage.id}}
-				<div class="span12" ng-show='show.thread || message.id == currentMessage.id'>
+			<div class="row-fluid" ng-repeat="message in currentMsgs">
+				<div class="span12" ng-show='show.thread || message.id == currentMsg.id'>
 					<div class="row-fluid">
 						<div class="span12 uncenter">
 							<img ng-src="{{message.from.avatar.thumb_url}}" alt="{{message.from.name}}" class="img-circle img-mini">
@@ -43,14 +63,14 @@
 				</div>
 			</div>
 
-			<div class="row-fluid">
+			<div class="row-fluid" ng-show='currentMsgs.length > 1'>
 				<div class="span12 pbm">
-					<a href='#' ng-show='currentThread.length > 1' ng-hide='show.thread' class='btn btn-block btn-link unfancy-link' ng-click='show.thread = true'>expand conversation</a>
+					<a href='#' ng-hide='show.thread' class='btn btn-block btn-link unfancy-link' ng-click='show.thread = true'>expand conversation</a>
 					<a href='#' ng-show='show.thread' class='btn btn-block btn-link unfancy-link' ng-click='show.thread = false'>collapse conversation</a>
 				</div>
 			</div>
 
-			<div ui-if='lastMsgInThread || show.thread' class="row-fluid reply">
+			<div ng-show='lastMsg.to.id == app.currentUser.id && (lastMsg.id == currentMsg.id || show.thread)' class="row-fluid reply">
 				<div class="span12">
 					<!-- <a href="#" class="reply pull-right">reply</a> -->
 
@@ -64,7 +84,7 @@
 								<button type='submit' class='btn btn-success pull-right' ng-disabled="replyForm.body.$invalid">Reply</button>
 
 								<span class='pull-right'>&nbsp;&nbsp;</span>
-								<a href='#' class='btn pull-right' ng-disabled='savedBody == myMessage.body' ng-click='save()'>Save Draft</a>
+								<!-- <a href='#' class='btn pull-right' ng-disabled='savedBody == myMessage.body' ng-click='save()'>Save Draft</a> -->
 
 								<span class='pull-right pts prm' ng-class='{"muted": remainingChars > 10, "text-error": remainingChars <= 10}'>{{remainingChars}}</span>
 
@@ -73,6 +93,12 @@
 						</div>
 					</form>
 
+				</div>
+			</div>
+
+			<div ng-hide='lastMsg.to.id == app.currentUser.id && (lastMsg.id == currentMsg.id || show.thread)' class="row-fluid reply">
+				<div class="span12 well center">
+					Awaiting reply from {{lastMsg.to.name}}
 				</div>
 			</div>
 

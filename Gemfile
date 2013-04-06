@@ -137,7 +137,7 @@ group :development do
   gem 'guard-spork'
   gem 'guard-rspec'
   gem 'brakeman'
-  gem 'foreman'
+  gem 'foreman', '0.60.2'
   # gem 'bullet'
   # gem 'better_errors'
   gem 'binding_of_caller'
