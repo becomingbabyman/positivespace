@@ -3,23 +3,30 @@
 
 		<ul class="nav user-nav pull-right" ng-hide='app.loggedIn()'>
 			<li>
-				<a href="/login">Log in</a>
+				<a href="/login" tooltip='enter' tooltip-placement='bottom'>
+					<i class="icon-signin"></i>
+				</a>
 			</li>
 		</ul>
 
 		<ul class="nav user-nav pull-right" ng-show='app.loggedIn()'>
 			<li>
-				<a href="/{{app.currentUser.username}}">
-					{{app.currentUser.username}}
+				<a href="/{{app.currentUser.username}}" tooltip='{{app.currentUser.username}}' tooltip-placement='bottom'>
+					<img ng-src="{{app.currentUser.avatar.big_thumb_url}}" alt='{{app.currentUser.username}}' class='img-circle avatar'>
 				</a>
 			</li>
 			<li>
-				<a href="/inbox">
-					<i class='icon-inbox'></i>
+				<a href="/inbox" tooltip='conversations' tooltip-placement='bottom'>
+					<i class='icon-envelope-alt'></i>
 					<div ng-show="app.anyMessages()" class='count'>{{app.currentUser.pending_message_count}}</div>
 				</a>
 			</li>
-			<li class="dropdown">
+			<li>
+				<a href="#" tooltip='leave' tooltip-placement='bottom' ng-click='app.logout()'>
+					<i class="icon-signout"></i>
+				</a>
+			</li>
+			<!-- <li class="dropdown">
 				<a href="#" class="dropdown-toggle">
 					<i class="icon-cog"></i>
 				</a>
@@ -32,14 +39,14 @@
 					<li class="divider"></li>
 					<li>
 						<a href="#" ng-click='app.logout()'>
-							logout
+							log out
 						</a>
 					</li>
 				</ul>
-			</li>
+			</li> -->
 		</ul>
 
-		<a href="/" class="brand">
+		<a href="/" class="brand" ng-class='{"logged-in": app.loggedIn()}'>
 			<img src="/assets/+_inset.png" alt='Positive Space' class='inset'>
 			<img src="/assets/+_.png" alt='Positive Space' class='colored'>
 		</a>

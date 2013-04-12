@@ -102,6 +102,9 @@ body
         padding-right: 20px
         padding-left: 20px
 
+    &.focus
+        @include gradient-sky
+
 a
     &:hover
         text-decoration: none
@@ -184,7 +187,7 @@ input, textarea
         .colored
             opacity: 0
             visibility: hidden
-        &:before, &:after
+        &:before.logged-in, &:after.logged-in
             opacity: 0
             visibility: hidden
             pointer-events: none
@@ -192,7 +195,7 @@ input, textarea
             width: 200px
             z-index: 999
             background: white
-        &:before
+        &:before.logged-in
             @include transition-delay(1.2s)
             @include transition-duration(1s)
             color: #ccc
@@ -201,7 +204,7 @@ input, textarea
             height: 40px
             line-height: 40px
             bottom: -40px
-        &:after
+        &:after.logged-in
             @include transition-delay(0.3s)
             @include transition-duration(1s)
             color: #bbb
@@ -218,13 +221,20 @@ input, textarea
         li.dropdown.open > .dropdown-toggle
             background-color: white
 
-        >li a
+        >li >a
+            font-size: 20px
             position: relative
+            color: $color-blue
+            &:hover
+                color: darken($color-blue, 5%)
+            .avatar
+                width: 24px
+                height: 24px
             .count
                 position: absolute
-                right: 3px
-                bottom: 20px
-                background-color: $info
+                right: 6px
+                bottom: 23px
+                background-color: $danger
                 color: #fff
                 padding: 1px 2px
                 min-width: 10px
@@ -234,6 +244,9 @@ input, textarea
                 font-size: 10px
                 line-height: 13px
                 @include border-radius(2px)
+        >li
+            &.open >a
+                color: darken($color-blue, 5%)
 
 
 .navbar-inner

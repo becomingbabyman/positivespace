@@ -19,6 +19,7 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "User", ($sc
             url: "/assets/app/footer.html"
     $scope.app.show =
         loading: false
+        focus: false
         header: true
         footer: true
 
@@ -59,10 +60,12 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "User", ($sc
     $scope.app.show.allChrome = ->
         $scope.app.show.header = true
         $scope.app.show.footer = true
+        $scope.app.show.focus = false
 
     $scope.app.show.noChrome = ->
         $scope.app.show.header = false
         $scope.app.show.footer = false
+        $scope.app.show.focus = true
 
     ###################
     # On Route Change #
@@ -72,7 +75,7 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "User", ($sc
         $scope.app.show.allChrome()
 
         # Autosize all textareas
-        $timeout (() -> $('textarea').autosize()), 1000
+        # $timeout (() -> $('textarea').autosize()), 1000
 
 
     #########

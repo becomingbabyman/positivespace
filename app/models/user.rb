@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
 
 	attr_accessor :login, :invitation_code
 	attr_accessible :username, :login, :email, :password, :password_confirmation, :remember_me
-	attr_accessible :body, :location, :name, :personal_url, :positive_response, :negative_response
+	attr_accessible :body, :location, :name, :personal_url#, :positive_response, :negative_response
 	attr_protected :none, as: :admin
 
 	serialize :achievements
