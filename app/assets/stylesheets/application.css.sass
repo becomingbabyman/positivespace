@@ -187,7 +187,7 @@ input, textarea
         .colored
             opacity: 0
             visibility: hidden
-        &:before.logged-in, &:after.logged-in
+        &:before, &:after
             opacity: 0
             visibility: hidden
             pointer-events: none
@@ -195,7 +195,7 @@ input, textarea
             width: 200px
             z-index: 999
             background: white
-        &:before.logged-in
+        &:before
             @include transition-delay(1.2s)
             @include transition-duration(1s)
             color: #ccc
@@ -204,7 +204,7 @@ input, textarea
             height: 40px
             line-height: 40px
             bottom: -40px
-        &:after.logged-in
+        &:after
             @include transition-delay(0.3s)
             @include transition-duration(1s)
             color: #bbb
@@ -216,6 +216,11 @@ input, textarea
             left: 193px
             bottom: -26px
             width: 40px
+        &.logged-in
+            &:before, &:after
+                content: ""
+                height: 0
+                width: 0
 
     .nav
         li.dropdown.open > .dropdown-toggle
@@ -230,6 +235,7 @@ input, textarea
             .avatar
                 width: 24px
                 height: 24px
+                margin-top: -6px
             .count
                 position: absolute
                 right: 6px
@@ -430,8 +436,41 @@ input, textarea
         left: -60px
         color: #ddd
 
+
+//////////////////////////////////////////////////////
+/**                   about style                  **/
+//////////////////////////////////////////////////////
+#about
+    .img-toggle
+        $d: 100px
+        width: $d
+        height: $d
+        img
+            width: $d
+            height: $d
+        &:hover
+            .headshot
+                display: none
+            .wtf
+                display: block
+        .wtf
+            display: none
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////
+//
+// WARNING
+//
+// DONT PUT ANY STYLE BELLOW HERE
+//
+//
 // Import these mixins last to overide everything else
 @import "flat-ui/spaces"
 @import "html_mixins"
-
-

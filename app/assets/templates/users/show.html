@@ -19,8 +19,8 @@
 							<h2>{{user.name}}</h2>
 							<br/>
 							<p ng-bind-html-unsafe="user.body | linebreaks">{{user.body}}</p>
-							<br/>
-							<p>
+							<br ng-show='user.location.length > 0 || user.personal_url.length > 0'/>
+							<p ng-show='user.location.length > 0 || user.personal_url.length > 0'>
 								<span ng-show='user.location.length > 0'><i class='icon-map-marker'></i> {{user.location}}</span>
 								<span ng-show='user.location.length > 0 && user.personal_url.length > 0'>&nbsp;&middot;&nbsp;</span>
 								<span ng-show='user.personal_url.length > 0'><a href='{{user.personal_url}}' target='_blank' class='unfancy-link'>{{user.personal_url | urlSimplify}}</a></span>
