@@ -2,23 +2,19 @@
 
 :coffeescript
 	fb_root = null #variable use to transfer the state of the fb-root div tag between page requests
-	$ ->
-		load_facebook_sdk()
 
-	load_facebook_sdk = ->
-		window.fbAsyncInit = ->
-			FB.init
-				appId: "#{Facebook::APP_ID}"
-				status: true
-				cookie: true
-				oauth: true
-				frictionlessRequests: true
-				xfbml: true
-			facebook_sdk_loaded()
-		$.getScript(document.location.protocol + "//connect.facebook.net/en_US/all.js")
-
-	facebook_sdk_loaded = ->
+	window.facebookSdkLoaded = ->
 		$(document).trigger("fb:initialized")
+
+	window.fbAsyncInit = ->
+		FB.init
+			appId: "#{Facebook::APP_ID}"
+			status: true
+			cookie: true
+			oauth: true
+			frictionlessRequests: true
+			xfbml: true
+		window.facebookSdkLoaded()
 
 	((d) ->
 		js = undefined

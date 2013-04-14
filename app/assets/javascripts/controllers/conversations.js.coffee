@@ -27,10 +27,10 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 		$scope.messages = Message.query {user_id: user.id, conversation_id: $routeParams.id}, (messages) ->
 			$scope.lastMsg = _.last(messages)
 			$scope.message = $scope.lastMsg unless $routeParams.message_id
-	# , (error) ->
-	#	# user must log in to view a conversation
-	#	$location.path('/login')
-	#	$scope.app.flash 'info', "Please log in to view this conversation."
+	, (error) ->
+		# user must log in to view a conversation
+		$location.path('/login')
+		$scope.app.flash 'info', "Please log in to view this conversation."
 
 
 	$scope.$watch 'myMessage.body', (value) ->
