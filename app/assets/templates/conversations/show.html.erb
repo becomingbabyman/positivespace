@@ -1,18 +1,13 @@
 <div id='conversation' class="container">
 
-	<div class="row pbl">
-		<div class="span-mobile center">
-			<a href="/conversations" class="pull-left">
-				<i class="icon-arrow-left font20 color-blue ptl"></i>
-			</a>
-		</div>
-	</div>
-
 	<div class="row">
 		<div class="span-mobile center">
-			<div class="row-fluid">
+			<div class="row-fluid pbl ptl">
 				<div class="span12">
-					<small class='pull-right'>{{conversation.created_at | date:"MMMM d, yyyy"}}</small>
+					<small class='pull-right faded'>{{conversation.created_at | date:"MMMM d, yyyy"}}</small>
+					<a href="/conversations" class="pull-left">
+						<i class="icon-arrow-left font20 color-blue"></i>
+					</a>
 				</div>
 			</div>
 
@@ -26,15 +21,17 @@
 
 			<div class="row-fluid">
 				<div class="span12">
-					<p class='lead ptm'>{{conversation.prompt}}</p>
+					<p class='ptm' ng-bind-html-unsafe="conversation.prompt | linebreaks">{{conversation.prompt}}</p>
 				</div>
 			</div>
+
 			<hr/>
 
 			<div class="row-fluid" ng-repeat="msg in messages">
 				<div class="span12" ng-show='show.thread || msg.id == message.id'>
 					<div class="row-fluid">
 						<div class="span12 uncenter">
+							<small ui-if="msg.id == lastMsg.id" class='pull-right faded'>{{msg.created_at | date:"MMMM d"}}</small>
 							<a ng-href="/{{msg.from.username}}" title='{{msg.from.name}}' class='unfancy-link'>
 								<img ng-src="{{msg.from.avatar.thumb_url}}" alt="{{msg.from.name}}" class="img-circle img-border img-mini">
 								<small>{{msg.from.name}}</small>
@@ -44,7 +41,7 @@
 
 					<div class="row-fluid">
 						<div class="span11 offset1 uncenter">
-							<p class='plm pts pbs led' ng-bind-html-unsafe="msg.body | linebreaks">{{msg.body}}</p>
+							<p class='plm pts pbs' ng-bind-html-unsafe="msg.body | linebreaks">{{msg.body}}</p>
 						</div>
 					</div>
 				</div>
