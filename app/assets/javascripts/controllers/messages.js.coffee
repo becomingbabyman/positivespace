@@ -73,11 +73,17 @@ ps.controller "MessagesInboxCtrl", ["$scope", "$routeParams", "$location", "$tim
 	#		$scope.currentThread = []
 
 	$scope.save = (state_event = null) ->
-		console.log 'wat'
-		console.log $scope.myMessage
 		success = (data) ->
 			$scope.app.flash 'success', 'Great, your message has been sent.'
-			# $scope.continueConvo()
+			if data.state == 'sent'
+				$scope.currentMsgs.push $scope.myMessage
+				$scope.lastMsg = $scope.myMessage
+				con = _.find $scope.conversations, (c, i) ->
+					c.i = i
+					c.id == $scope.currentCon.id
+				$scope.conversations[con.i] = new Conversation data.conversation
+				$scope.currentCon = $scope.conversations[con.i]
+				$scope.app.currentUser.pending_message_count -= 1
 		error = (error) ->
 			$scope.app.flash 'error', error.data.errors
 		if state_event? then $scope.myMessage.state_event = state_event
