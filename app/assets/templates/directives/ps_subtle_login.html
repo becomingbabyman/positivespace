@@ -1,6 +1,6 @@
 <div ng-show="app.currentUser.id">
 	<div class='control-group'>
-		<img ng-src="{{app.currentUser.avatar.thumb_url}}" alt="{{app.currentUser.name}}" class="img-circle img-polaroid img-mini">
+		<img ng-src="{{app.currentUser.avatar.thumb_url}}" alt="{{app.currentUser.name}}" class="img-circle img-border img-mini">
 		&nbsp;
 		{{app.currentUser.name}}
 	</div>
@@ -10,10 +10,18 @@
 	<ng-form name='login' ng-submit='login()'>
 
 		<control-group>
-			<input type='email' name='email' id='sbtl_lgn_email' placeholder='your email address' class='input-block-level' ng-model='credentials.email' ui-event='{blur: "checkLogin()"}' required></input>
+			<input type='email' name='email' id='sbtl_lgn_email' placeholder='your email address' class='input-block-level forgot-password' ng-model='credentials.email' ui-event='{blur: "checkLogin()"}' required></input>
 		</control-group>
 
 
+		<div class="row-fluid" ng-show='credentials.loginType == "register"'>
+			<div class="span12">
+				<span style='color:#bbb;'>
+					<i class="icon-info-sign pull-right" tooltip="You will get a simple inbox to reply to your active conversations and that's it."></i>
+					sign up to start a conversation
+				</span>
+			</div>
+		</div>
 		<div class="row-fluid" ng-show='credentials.loginType == "register"'>
 			<div class="span5">
 				<control-group>
@@ -32,12 +40,11 @@
 			</div>
 
 			<div class="span1">
-				<a href="#" ng-click='fbLogin()' class="btn btn-block btn-facebook" tooltip='login with facebook'>
+				<a href="#" ng-click='fbLogin()' class="btn btn-block btn-facebook" tooltip='connect with facebook'>
 					<i class="icon-facebook"></i>
 				</a>
 			</div>
 		</div>
-
 
 		<div class="row-fluid" ng-show='credentials.loginType == "login"'>
 			<div class="span8">
@@ -47,14 +54,14 @@
 			</div>
 
 			<div class="span2">
-				<a href="#" class='btn btn-link' ng-click='app.resetPassword(credentials.email)'>forgot?</a>
+				<div class="ptx"><a href="#" ng-click='forgot()'>forgot?</a></div>
 			</div>
 
 			<div class="span1">
 				<div class="center ptx">or</div>
 			</div>
 			<div class="span1">
-				<a href="#" ng-click='fbLogin()' class="btn btn-block btn-facebook" tooltip='login with facebook'>
+				<a href="#" ng-click='fbLogin()' class="btn btn-block btn-facebook" tooltip='connect with facebook'>
 					<i class="icon-facebook"></i>
 				</a>
 			</div>

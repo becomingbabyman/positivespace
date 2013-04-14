@@ -11,5 +11,6 @@
 :queues:
   - [critical, 9]
   - [mailer, 7]
+  - [carrierwave, 6]
   - [default, 5]
   - [slow, 3]

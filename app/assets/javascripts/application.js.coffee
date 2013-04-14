@@ -21,11 +21,13 @@
 # App JS
 #= require services
 #= require directives
+#= require filters
 #= require routes
 #= require_tree ./controllers/
 #
 # Plugins
 #= require select2
+#= require tinycon
 #= require dropzone.jquery
 #= require jquery.scrollTo-min
 #= require jquery.autosize

@@ -1,6 +1,6 @@
 object @message
 
-attributes :id, :body, :embed_url, :embed_data
+attributes :id, :body, :embed_url, :embed_data, :state, :conversation_id, :created_at
 
 node :user_id do |msg|
 	msg.to.id

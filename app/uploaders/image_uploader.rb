@@ -2,6 +2,8 @@
 
 class ImageUploader < CarrierWave::Uploader::Base
 
+  include ::CarrierWave::Backgrounder::Delay
+
   # Include RMagick or MiniMagick support:
   include CarrierWave::RMagick
   include CarrierWave::MimeTypes
@@ -40,19 +42,19 @@ class ImageUploader < CarrierWave::Uploader::Base
     process :large_process
   end
 
-  version :medium, :from_version => :large do
+  version :medium do
     process :medium_process
   end
 
-  version :small, :from_version => :medium do
+  version :small do
     process :small_process
   end
 
-  version :big_thumb, :from_version => :medium do
+  version :big_thumb do
     process :big_thumb_process
   end
 
-  version :thumb, :from_version => :big_thumb do
+  version :thumb do
     process :thumb_process
   end
 
@@ -157,7 +159,7 @@ class ImageUploader < CarrierWave::Uploader::Base
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
   def extension_white_list
-    %w(jpg jpeg gif png)
+    %w(jpg jpeg png gif tif tiff bmp)
   end
 
   def filename

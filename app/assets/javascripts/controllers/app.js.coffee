@@ -1,10 +1,11 @@
-ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "User", ($scope, $timeout, $rootScope, User) ->
+ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "User", ($scope, $timeout, $rootScope, $q, User) ->
 
     ######################
     # App Initialization #
     ######################
     $scope.app = {}
     $scope.app.currentUser = {}
+    $scope.app.dcu = $q.defer() # Defered Current User
     $scope.app.year = (new Date).getFullYear()
     $scope.app.templates =
         loading:
@@ -18,14 +19,40 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "User", ($scope, $
             url: "/assets/app/footer.html"
     $scope.app.show =
         loading: false
+        focus: false
         header: true
         footer: true
 
+    Tinycon.setOptions
+        width: 7
+        height: 9
+        font: '10px arial'
+        color: '#ffffff'
+        background: '#f00'
+        fallback: true
+
+
     # TODO: bootstrap this data on the angular.html.haml template and only request it if no bootstrap is found
-    $scope.app.currentUser = User.current()
+    $scope.app.loadCurrentUser = (userData = null) ->
+        # Reset the defer everytime the user is reloaded
+        $scope.app.dcu = $q.defer()
+
+        $scope.app.dcu.promise.then (data) ->
+            Tinycon.setBubble data.pending_message_count
+
+        if userData?
+            $scope.app.currentUser = new User userData
+            $scope.app.dcu.resolve(userData)
+        else
+            $scope.app.currentUser = User.current $scope.app.dcu.resolve, $scope.app.dcu.reject
+
+    $scope.app.loadCurrentUser()
 
     $scope.app.loggedIn = ->
         !_.isEmpty($scope.app.currentUser)
+    $scope.app.anyMessages = ->
+        $scope.app.loggedIn() and $scope.app.currentUser.pending_message_count? and $scope.app.currentUser.pending_message_count > 0
+
 
     #############
     # Hide/Show #
@@ -33,13 +60,22 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "User", ($scope, $
     $scope.app.show.allChrome = ->
         $scope.app.show.header = true
         $scope.app.show.footer = true
+        $scope.app.show.focus = false
 
     $scope.app.show.noChrome = ->
         $scope.app.show.header = false
         $scope.app.show.footer = false
+        $scope.app.show.focus = true
 
+    ###################
+    # On Route Change #
+    ###################
     $rootScope.$on "$routeChangeStart", (event, next, current) ->
+        # Make sure the chrome is visible
         $scope.app.show.allChrome()
+
+        # Autosize all textareas
+        # $timeout (() -> $('textarea').autosize()), 1000
 
 
     #########
@@ -95,9 +131,9 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "User", ($scope, $
     # User Auth #
     #############
     $scope.app.logout = ->
-        $scope.app.currentUser = User.logout()
-        window.location.reload()
-        $scope.app.flash 'info', "Bye, hope to see you again soon."
+        $scope.app.currentUser = User.logout ->
+            # window.location.reload()
+            $scope.app.flash 'info', "Bye, hope to see you again soon."
 
     $scope.app.resetPassword = (login) ->
         # TODO: handle the reset password link page in angular
@@ -111,7 +147,13 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "User", ($scope, $
             (error) ->
                 $scope.app.show.loading = false
                 $scope.app.flash 'error', "Sorry, that <em>email address or username</em> is not registered with us. Please try again or <a href='/register' class='unfancy-link'>request a new account</a>."
-                $('input[name="login"]:visible').focus()
+                $input = $('input.forgot-password:visible')
+                $input.focus()
+                $input.addClass('animated shake')
+                $timeout () ->
+                    $input.removeClass('shake')
+                ,1000
+
 
 ]
 

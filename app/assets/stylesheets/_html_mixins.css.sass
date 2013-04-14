@@ -27,6 +27,14 @@
 .clearfix
 	@include clearfix
 
+.color-green
+	color: $green
+
+.color-yellow
+	color: $yellow
+
+.color-red
+	color: $red
 
 .display-block
 	display: block
@@ -65,6 +73,10 @@
 	width: 32px
 	height: 32px
 
+.img-border
+	@extend .img-polaroid
+	padding: 0
+
 .m0
 	margin: 0
 
@@ -97,6 +109,9 @@
 .p0
 	padding: 0
 
+.pos-rel
+	position: relative
+
 .pyramid
 	box-sizing: border-box
 	-moz-box-sizing: border-box
@@ -106,6 +121,13 @@
 	border: 1px solid darken($color-background, 5%)
 	@include border-radius(5px)
 	padding: 20px
+
+.span-mobile
+	max-width: 320px
+	min-width: 280px
+
+.text-align-right
+	text-align: right
 
 .text-inset
 	@include text-shadow(0 1px 1px #fff)
