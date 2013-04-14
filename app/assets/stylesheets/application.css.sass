@@ -78,7 +78,7 @@
 //        +_ SCSS         //
 ////////////////////////////
 
-@include sticky-footer(80px, "#wrapper", "#layout_footer", "#footer")
+@include sticky-footer(100px, "#wrapper", "#layout_footer", "#footer")
 
 body
     padding: 0
@@ -98,6 +98,12 @@ body
     // @media (max-width: 979px)
     //  padding-top: 0
     // background: -webkit-linear-gradient(45deg, #020031 0%,#6d3353 100%)
+    @media (max-width: 767px)
+        padding-right: 20px
+        padding-left: 20px
+
+    &.focus
+        @include gradient-sky
 
 a
     &:hover
@@ -112,6 +118,8 @@ p
     font-family: "PT Serif", Vollkorn
     // font-style: italic
     font-weight: 400
+    letter-spacing: 0.05em
+    line-height: 23px
 
 input, button, select, textarea
     font-family: Lato, "Helvetica Neue", Helvetica, Arial, sans-serif
@@ -135,8 +143,120 @@ input, textarea
 
 .navbar
     margin: 0
+    .brand
+        position: relative
+        width: 100px
+        height: 64px
+        @media (max-width: 479px)
+            width: 50px
+            height: 32px
+            img
+                width: 50px
+                height: 32px
+            // &:after
+            //     font-size: 10px
+            //     left: 45px
+            //     bottom: 16px
+        @media (max-width: 979px)
+            padding-left: 20px
+            padding-right: 20px
+            margin: 0 0 0 -20px
+        img
+            @include transition-property(visibility, opacity)
+            @include transition-duration(0.4s)
+            @include transition-delay(0s)
+            position: absolute
+        &:hover
+            .inset
+                opacity: 0
+                visibility: hidden
+            .colored
+                // @include transition-duration(1s)
+                opacity: 1
+                visibility: visible
+            &:before
+                @include transition-delay(0.3s)
+                @include transition-duration(1s)
+                opacity: 1
+                visibility: visible
+            &:after
+                @include transition-delay(1.2s)
+                @include transition-duration(1s)
+                opacity: 1
+                visibility: visible
+        .colored
+            opacity: 0
+            visibility: hidden
+        &:before, &:after
+            opacity: 0
+            visibility: hidden
+            pointer-events: none
+            position: absolute
+            width: 200px
+            z-index: 999
+            background: white
+        &:before
+            @include transition-delay(1.2s)
+            @include transition-duration(1s)
+            color: #ccc
+            content: "Posi+ive Sp_ce"
+            letter-spacing: 0.1em
+            height: 40px
+            line-height: 40px
+            bottom: -40px
+        &:after
+            @include transition-delay(0.3s)
+            @include transition-duration(1s)
+            color: #bbb
+            font-size: 13px
+            content: "beta"
+            letter-spacing: 0.1em
+            height: 20px
+            line-height: 20px
+            left: 193px
+            bottom: -26px
+            width: 40px
+        &.logged-in
+            &:before, &:after
+                content: ""
+                height: 0
+                width: 0
+
+    .nav
+        li.dropdown.open > .dropdown-toggle
+            background-color: white
+
+        >li >a
+            font-size: 20px
+            position: relative
+            color: $color-blue
+            &:hover
+                color: darken($color-blue, 5%)
+            .avatar
+                width: 30px
+                height: 30px
+                margin-top: -6px
+            .count
+                position: absolute
+                right: 6px
+                bottom: 23px
+                background-color: $danger
+                color: #fff
+                padding: 1px 2px
+                min-width: 10px
+                max-width: 26px
+                height: 14px
+                text-align: center
+                font-size: 10px
+                line-height: 13px
+                @include border-radius(2px)
+        >li
+            &.open >a
+                color: darken($color-blue, 5%)
+
 
 .navbar-inner
+    padding-top: 10px
     @include background(none)
     @include box-shadow(none)
     border: none
@@ -144,9 +264,23 @@ input, textarea
     // @include background(image_url("noisy-texture-200x200-o7-d26-c-4F2958-t1.png"), linear-gradient(top, lighten($color-background, 5%), $color-background))
     // border-bottom: 1px solid darken($color-background, 10%)
     // @include box-shadow(rgba(0, 0, 0, 0.075) 0 2px 0)
+    @media (max-width: 767px)
+        margin: 0 -20px
 
-.navbar .nav li.dropdown.open > .dropdown-toggle
-    background-color: white
+
+#footer
+    .container
+        padding-top: 50px
+
+
+.help-block
+    font-size: 14px
+    font-family: sans-serif
+    color: #aaa
+
+.well
+    background-color: #fcfcfc
+
 
 //////////////////////////////////////////////////////
 /**                  loading style                 **/
@@ -187,7 +321,7 @@ input, textarea
         top: 50px
         right: 30px
         margin-left: 30px
-        z-index: 9999z
+        z-index: 9999
         pointer-events: none
         .alert
             margin-bottom: 5px
@@ -288,12 +422,55 @@ input, textarea
 //////////////////////////////////////////////////////
 #inbox
     .message
-        color: lighten($color-text, 50%)
-        &:first-child
-            color: $color-text
+        // color: lighten($color-text, 50%)
+        // &.active
+        //     color: $color-text
 
+
+//////////////////////////////////////////////////////
+/**                   space style                  **/
+//////////////////////////////////////////////////////
+#space
+    .lbl
+        position: absolute
+        left: -60px
+        color: #ddd
+
+
+//////////////////////////////////////////////////////
+/**                   about style                  **/
+//////////////////////////////////////////////////////
+#about
+    .img-toggle
+        $d: 100px
+        width: $d
+        height: $d
+        img
+            width: $d
+            height: $d
+        &:hover
+            .headshot
+                display: none
+            .wtf
+                display: block
+        .wtf
+            display: none
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////
+//
+// WARNING
+//
+// DONT PUT ANY STYLE BELLOW HERE
+//
+//
 // Import these mixins last to overide everything else
 @import "flat-ui/spaces"
 @import "html_mixins"
-
-

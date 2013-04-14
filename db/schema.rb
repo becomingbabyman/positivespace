@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130310163058) do
+ActiveRecord::Schema.define(:version => 20130409131135) do
 
   create_table "administrators", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -30,6 +30,25 @@ ActiveRecord::Schema.define(:version => 20130310163058) do
 
   add_index "administrators", ["email"], :name => "index_administrators_on_email", :unique => true
   add_index "administrators", ["reset_password_token"], :name => "index_administrators_on_reset_password_token", :unique => true
+
+  create_table "conversations", :force => true do |t|
+    t.integer  "from_id"
+    t.integer  "to_id"
+    t.string   "state"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+    t.integer  "last_message_id"
+    t.integer  "last_message_from_id"
+    t.text     "last_message_body"
+    t.text     "prompt"
+  end
+
+  add_index "conversations", ["from_id"], :name => "index_conversations_on_from_id"
+  add_index "conversations", ["last_message_from_id"], :name => "index_conversations_on_last_message_from_id"
+  add_index "conversations", ["last_message_id"], :name => "index_conversations_on_last_message_id"
+  add_index "conversations", ["prompt"], :name => "index_conversations_on_prompt"
+  add_index "conversations", ["state"], :name => "index_conversations_on_state"
+  add_index "conversations", ["to_id"], :name => "index_conversations_on_to_id"
 
   create_table "images", :force => true do |t|
     t.integer  "user_id"
@@ -57,14 +76,19 @@ ActiveRecord::Schema.define(:version => 20130310163058) do
     t.string   "embed_url"
     t.text     "embed_data"
     t.text     "body"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
     t.integer  "session_id"
+    t.string   "state"
+    t.integer  "conversation_id"
   end
 
+  add_index "messages", ["conversation_id"], :name => "index_messages_on_conversation_id"
   add_index "messages", ["from_email"], :name => "index_messages_on_from_email"
+  add_index "messages", ["from_id", "to_id"], :name => "index_messages_on_from_id_and_to_id"
   add_index "messages", ["from_id"], :name => "index_messages_on_from_id"
   add_index "messages", ["session_id"], :name => "index_messages_on_session_id"
+  add_index "messages", ["state"], :name => "index_messages_on_state"
   add_index "messages", ["to_email"], :name => "index_messages_on_to_email"
   add_index "messages", ["to_id"], :name => "index_messages_on_to_id"
 

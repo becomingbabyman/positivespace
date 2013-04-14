@@ -33,6 +33,7 @@ Positivespace::Application.routes.draw do
 		scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
 			# Users
 			resources :users, only: [:index, :show, :update] do
+				resources :conversations, only: [:index, :update]
 				resources :messages, only: [:index, :show, :create, :update, :destroy]
 			end
 

@@ -23,6 +23,7 @@ class Image < ActiveRecord::Base
 	belongs_to :user # The uploader/owner
 	belongs_to :attachable, :polymorphic => true # The thing the image relates to -- Profiles, Projects, etc
 	mount_uploader :image, ImageUploader
+	process_in_background :image
 
 
 	#########################

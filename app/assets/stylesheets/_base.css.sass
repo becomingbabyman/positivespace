@@ -18,6 +18,8 @@ $color-positive-dark:       darken($color-positive, 10%)
 $color-negative-dark:       darken($color-negative, 10%)
 $color-neutral-dark:        darken($color-neutral, 10%)
 
+$color-blue:                #00C0FF
+
 
 // Reset --------------------------------------------------------------
 
@@ -60,3 +62,14 @@ $color-neutral-dark:        darken($color-neutral, 10%)
     background-color: rgba(82,96,117,0.5)
     @include background-clip(text)
     text-shadow: rgba(255,255,255,0.5) 0 5px 6px
+
+@mixin gradient-sky
+    background: -moz-radial-gradient(center, ellipse cover,  #ffffff 50%, #eaeaea 100%)
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(50%,#ffffff), color-stop(100%,#eaeaea))
+    background: -webkit-radial-gradient(center, ellipse cover,  #ffffff 50%,#eaeaea 100%)
+    background: -o-radial-gradient(center, ellipse cover,  #ffffff 50%,#eaeaea 100%)
+    background: -ms-radial-gradient(center, ellipse cover,  #ffffff 50%,#eaeaea 100%)
+    background: radial-gradient(ellipse at center,  #ffffff 50%,#eaeaea 100%)
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eaeaea',GradientType=1 )
+
+

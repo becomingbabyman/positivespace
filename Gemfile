@@ -47,6 +47,12 @@ gem 'has_scope'
 # Time
 gem 'chronic'
 
+# URL Shortening
+# gem 'shortener'
+
+# State Machine
+gem 'state_machine'
+
 # API - JSON Serialization
 gem 'rabl'
 gem 'oj'
@@ -56,6 +62,7 @@ gem 'asset_sync'
 
 # Uploads and Images
 gem 'carrierwave'
+gem 'carrierwave_backgrounder'
 gem 'rmagick'
 gem 'fog'
 gem 'gravtastic'
@@ -130,7 +137,7 @@ group :development do
   gem 'guard-spork'
   gem 'guard-rspec'
   gem 'brakeman'
-  gem 'foreman'
+  gem 'foreman', '0.60.2'
   # gem 'bullet'
   # gem 'better_errors'
   gem 'binding_of_caller'

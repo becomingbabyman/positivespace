@@ -1,9 +1,10 @@
 root = global ? window
 angular = root.angular
 
-ps = angular.module "ps", ['ui', 'ui.bootstrap', 'ngCookies', 'psDirectives', 'psServices']
+ps = angular.module "ps", ['ui', 'ui.bootstrap', 'ngCookies', 'psDirectives', 'psFilters', 'psServices']
 
-ps.config ['$routeProvider', '$locationProvider', ($routeProvider, $locationProvider) ->
+ps.config ['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvider, $locationProvider, $httpProvider) ->
+	$httpProvider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content')
 	#$locationProvider.hashPrefix('');
 	$locationProvider.html5Mode true
 
@@ -12,6 +13,9 @@ ps.config ['$routeProvider', '$locationProvider', ($routeProvider, $locationProv
 	# .when "/",
 	#	controller: "PagesCtrl"
 	#	templateUrl: "/assets/pages/home.html"
+	.when "/404",
+		controller: "PagesCtrl"
+		templateUrl: "/assets/pages/404.html"
 	.when "/about",
 		controller: "PagesCtrl"
 		templateUrl: "/assets/pages/about.html"
@@ -39,11 +43,11 @@ ps.config ['$routeProvider', '$locationProvider', ($routeProvider, $locationProv
 		templateUrl: "/assets/users/settings.html"
 	.when "/users/password/edit",
 		controller: "UserPasswordEditCtrl"
-		templateUrl: '/assets/users/password_edit.html'
+		templateUrl: "/assets/users/password_edit.html"
 	.when "/:user_id",
 		controller: "UsersShowCtrl"
 		templateUrl: "/assets/users/show.html"
-	.otherwise redirectTo: "/"
+	.otherwise redirectTo: "/404"
 ]
 
 root.ps = ps
