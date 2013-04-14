@@ -29,7 +29,7 @@
 						<div class="row-fluid">
 							<div class="span12">
 								<img ng-src="{{conversation.from.avatar.thumb_url}}" alt="{{conversation.from.name}}" class="img-circle img-border img-mini">
-								<img ng-src="{{conversation.to.avatar.thumb_url}}" alt="{{conversation.to.name}}" class="img-circle img-border" tooltip="{{conversation.prompt}}">
+								<img ng-src="{{conversation.to.avatar.thumb_url}}" alt="{{conversation.to.name}}" class="img-circle img-border" tooltip="{{conversation.prompt}}" tooltip-placement='bottom'>
 							</div>
 						</div>
 						<div class="row-fluid">
@@ -43,6 +43,11 @@
 						<div class="row-fluid">
 							<div class="span12">
 								<p class='lead'>{{conversation.last_message_body}}</p>
+							</div>
+						</div>
+						<div class="row-fluid" ng-hide="conversation.last_message_from_id == app.currentUser.id">
+							<div class="span12">
+								<a href="#" class='pull-right' ng-click='selectConversation(conversation)'>reply</a>
 							</div>
 						</div>
 						<hr/>
@@ -72,6 +77,7 @@
 					{{currentCon.prompt}}
 				</div>
 			</div>
+			<hr/>
 
 			<div class="row-fluid" ng-repeat="message in currentMsgs">
 				<div class="span12" ng-show='show.thread || message.id == currentMsg.id'>
