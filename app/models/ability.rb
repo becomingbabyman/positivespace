@@ -14,18 +14,15 @@ class Ability
 				user.editor? image.attachable
 			end
 
-			can [:index], Conversation do
-				params[:user_id] == user.id
+			can [:read], Conversation do
+				params[:user_id].to_i == user.id
 			end
 			can [:update], Conversation do |c|
 				user.editor?(c)
 			end
 
-			can [:index], Message do
-				params[:user_id] == user.id
-			end
-			can [:show], Message do |m|
-				m.from == user or m.to == user
+			can [:read], Message do
+				params[:user_id].to_i == user.id
 			end
 
 			can [:update], User do |u|
@@ -43,6 +40,7 @@ class Ability
 		######################################################
 		# Aliases
 		######################################################
+		alias_action :index, :show, :to => :read
 		alias_action :update, :destroy, :to => :modify
 	end
 end

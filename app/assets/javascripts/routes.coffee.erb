@@ -26,10 +26,15 @@ ps.config ['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvid
 		controller: "PagesCtrl"
 		templateUrl: "/assets/pages/privacy.html"
 
-	# Messages
+	# Conversations
 	.when "/inbox",
-		controller: "MessagesInboxCtrl"
-		templateUrl: "/assets/messages/inbox.html"
+		redirectTo: "/conversations"
+	.when "/conversations",
+		controller: "ConversationsIndexCtrl"
+		templateUrl: "/assets/Conversations/index.html"
+	.when "/conversations/:id",
+		controller: "ConversationsShowCtrl"
+		templateUrl: "/assets/Conversations/show.html"
 
 	# Users
 	.when "/login",

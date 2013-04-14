@@ -2,7 +2,7 @@ class Api::V1::ConversationsController < InheritedResources::Base
 	belongs_to :user
 
 	respond_to :json
-	actions :index, :update
+	actions :index, :show, :update
 
 	has_scope :with, :only => :index do |controller, scope, value|
 		scope.with(value)

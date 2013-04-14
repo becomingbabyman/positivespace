@@ -15,7 +15,7 @@ end
 # end
 
 child :from => :from do |u|
-	attributes :id, :name
+	attributes :id, :name, :username
 
 	node :avatar do |u|
 		{thumb_url: u.avatar.image.thumb.url}
@@ -23,9 +23,17 @@ child :from => :from do |u|
 end
 
 child :to => :to do |u|
-	attributes :id, :name
+	attributes :id, :name, :username
 
 	node :avatar do |u|
 		{thumb_url: u.avatar.image.thumb.url}
+	end
+end
+
+node :partners_id, :if => lambda { |c| (current_user and current_user.editor?(c)) } do |c|
+	if current_user.id == c.from_id
+		c.to_id
+	elsif current_user.id == c.to_id
+		c.from_id
 	end
 end

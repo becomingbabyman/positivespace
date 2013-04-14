@@ -1,0 +1,95 @@
+<div id='conversation' class="container">
+
+	<div class="row pbl">
+		<div class="span-mobile center">
+			<a href="/conversations" class="pull-left">
+				<i class="icon-arrow-left font20 color-blue ptl"></i>
+			</a>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="span-mobile center">
+			<div class="row-fluid">
+				<div class="span12">
+					<small class='pull-right'>{{conversation.created_at | date:"MMMM d, yyyy"}}</small>
+				</div>
+			</div>
+
+			<div class="row-fluid">
+				<div class="span12">
+					<a ng-href="/{{conversation.to.username}}" title='{{conversation.to.name}}'>
+						<img ng-src="{{conversation.to.avatar.thumb_url}}" alt="{{conversation.to.name}}" class="img-circle img-border">
+					</a>
+				</div>
+			</div>
+
+			<div class="row-fluid">
+				<div class="span12">
+					<p class='lead ptm'>{{conversation.prompt}}</p>
+				</div>
+			</div>
+			<hr/>
+
+			<div class="row-fluid" ng-repeat="msg in messages">
+				<div class="span12" ng-show='show.thread || msg.id == message.id'>
+					<div class="row-fluid">
+						<div class="span12 uncenter">
+							<a ng-href="/{{msg.from.username}}" title='{{msg.from.name}}' class='unfancy-link'>
+								<img ng-src="{{msg.from.avatar.thumb_url}}" alt="{{msg.from.name}}" class="img-circle img-border img-mini">
+								<small>{{msg.from.name}}</small>
+							</a>
+						</div>
+					</div>
+
+					<div class="row-fluid">
+						<div class="span11 offset1 uncenter">
+							<p class='plm pts pbs led' ng-bind-html-unsafe="msg.body | linebreaks">{{msg.body}}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row-fluid" ng-show='messages.length > 1'>
+				<div class="span12 pbm">
+					<a href='#' ng-hide='show.thread' class='btn btn-block btn-link' ng-click='show.thread = true'>expand conversation</a>
+					<a href='#' ng-show='show.thread' class='btn btn-block btn-link' ng-click='show.thread = false'>collapse conversation</a>
+				</div>
+			</div>
+
+			<div ng-show='lastMsg.to.id == app.currentUser.id && (lastMsg.id == message.id || show.thread)' class="row-fluid reply">
+				<div class="span12">
+					<!-- <a href="#" class="reply pull-right">reply</a> -->
+
+					<form name='replyForm' class='reply' ng-submit="save('send')" novalidate style='width: 100%;'>
+						<control-group>
+							<textarea name='body' cols="30" rows="4" ng-model='myMessage.body' id='response_body' placeholder='your response' class='input-block-level' required autofocus></textarea>
+						</control-group>
+
+						<div class='control-group'>
+							<div class='controls'>
+								<button type='submit' class='btn btn-success pull-right' ng-disabled="replyForm.body.$invalid">Reply</button>
+
+								<span class='pull-right'>&nbsp;&nbsp;</span>
+								<!-- <a href='#' class='btn pull-right' ng-disabled='savedBody == myMessage.body' ng-click='save()'>Save Draft</a> -->
+
+								<span class='pull-right pts prm' ng-class='{"muted": remainingChars > 10, "text-error": remainingChars <= 10}'>{{remainingChars}}</span>
+
+								<a href='#' class='btn btn-inverse pull-left' ng-click='endConvo()' tooltip="End a conversation if it's going nowhere. You can always start a new one." tooltip-placement='right'>End</a>
+							</div>
+						</div>
+					</form>
+
+				</div>
+			</div>
+
+			<div ng-hide='lastMsg.to.id == app.currentUser.id' class="row-fluid reply">
+				<div class="span12 well center">
+					Awaiting reply from {{lastMsg.to.name}}
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+</div>

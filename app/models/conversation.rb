@@ -25,7 +25,7 @@ class Conversation < ActiveRecord::Base
 	scope :is_not, lambda { |id| where("id != ?", id) }
 
 	def editors
-		[self.to]
+		[self.to, self.from]
 	end
 
 	def last_message

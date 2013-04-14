@@ -8,7 +8,7 @@ class NotificationsMailer < ActionMailer::Base
   #
   def recieved_message message_id
     @message = Message.find message_id
-    @reply_path = "inbox?message_id=#{@message.id}"
+    @reply_path = "conversations/#{@message.conversation_id}?message_id=#{@message.id}"
 
     mail to: "#{@message.to.name} <#{@message.to.email}>", from: "#{@message.from.name} <#{@message.from.email}>", subject: "#{@message.from.name} sent you a message"
   end
