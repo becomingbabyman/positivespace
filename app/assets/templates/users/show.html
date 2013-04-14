@@ -14,7 +14,7 @@
 					<div class='lbl ptx'>To:</div>
 
 					<div class="center" ng-class='{"animated fadeInDown": !space.editing, "animated fadeInDown": space.editing}'>
-						<ps-img src="{{user.avatar.big_thumb_url}}" alt="{{user.name}}" img-class="img-circle img-polaroid img-big-thumb" attachable-type='User' attachable-id='{{user.id}}' image-type='avatar' image-url='big_thumb_url' can-edit='{{user.id && user.id == app.currentUser.id}}'></ps-img>
+						<ps-img src="{{user.avatar.big_thumb_url}}" alt="{{user.name}}" img-class="img-circle img-border img-big-thumb" attachable-type='User' attachable-id='{{user.id}}' image-type='avatar' image-url='big_thumb_url' can-edit='{{user.id && user.id == app.currentUser.id}}'></ps-img>
 						<div ng-hide='space.editing' ng-class='{"animated fadeInDown": !space.editing, "animated fadeOutUp": space.editing}'>
 							<h2>{{user.name}}</h2>
 							<br/>

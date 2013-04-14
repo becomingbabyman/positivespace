@@ -1,6 +1,7 @@
 ps.controller "MessagesInboxCtrl", ["$scope", "$routeParams", "$location", "$timeout", "Message", "Conversation", ($scope, $routeParams, $location, $timeout, Message, Conversation) ->
 	$scope.conversations = []
 	$scope.currentMsg = {}
+	$scope.currentCon = {}
 	$scope.currentMsgs = []
 	$scope.myMessage = {}
 
@@ -16,13 +17,14 @@ ps.controller "MessagesInboxCtrl", ["$scope", "$routeParams", "$location", "$tim
 	$scope.$watch 'currentMsg.conversation_id', (id) ->
 		# console.log id
 		if id?
-			$scope.app.dcu.promise.then (user) ->
+			$scope.app.dcu.promise.then (user) =>
 				$scope.currentMsgs = Message.query {user_id: user.id, conversation_id: id}, (messages) ->
 					$scope.lastMsg = _.last(messages)
-					$scope.myMessage = new Message {user_id: $scope.lastMsg.from.id}
+					$scope.myMessage = new Message {user_id: $scope.lastMsg.from.id, conversation_id: id}
 
 	$scope.selectConversation = (conversation) ->
 		$scope.app.show.loading = true
+		$scope.currentCon = conversation
 		$scope.app.dcu.promise.then (user) ->
 			$scope.currentMsgs = Message.query {user_id: user.id, conversation_id: conversation.id}, (messages) ->
 				$scope.lastMsg = _.last(messages)
@@ -72,6 +74,7 @@ ps.controller "MessagesInboxCtrl", ["$scope", "$routeParams", "$location", "$tim
 
 	$scope.save = (state_event = null) ->
 		console.log 'wat'
+		console.log $scope.myMessage
 		success = (data) ->
 			$scope.app.flash 'success', 'Great, your message has been sent.'
 			# $scope.continueConvo()

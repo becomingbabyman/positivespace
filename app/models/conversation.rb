@@ -5,7 +5,6 @@ class Conversation < ActiveRecord::Base
 		end
 	end
 
-	attr_accessible :state, on: :create
 	attr_accessible :state_event
 	attr_protected :none, as: :admin
 
@@ -15,8 +14,9 @@ class Conversation < ActiveRecord::Base
 
 	validates :to_id, presence: true
 	validates :from_id, presence: true
+	validates :prompt, presence: true
 
-	default_scope :order => 'created_at asc'
+	default_scope :order => 'updated_at ASC'
 
 	scope :in_progress, where(state: :in_progress)
 	scope :ended, where(state: :ended)
@@ -26,5 +26,13 @@ class Conversation < ActiveRecord::Base
 
 	def editors
 		[self.to]
+	end
+
+	def last_message
+		Message.find_by_id(last_message_id)
+	end
+
+	def last_message_from
+		User.find_by_id(last_message_from_id)
 	end
 end

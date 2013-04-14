@@ -35,14 +35,16 @@ ActiveRecord::Schema.define(:version => 20130409131135) do
     t.integer  "from_id"
     t.integer  "to_id"
     t.string   "state"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
-    t.string   "last_message_id"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+    t.integer  "last_message_id"
+    t.integer  "last_message_from_id"
     t.text     "last_message_body"
     t.text     "prompt"
   end
 
   add_index "conversations", ["from_id"], :name => "index_conversations_on_from_id"
+  add_index "conversations", ["last_message_from_id"], :name => "index_conversations_on_last_message_from_id"
   add_index "conversations", ["last_message_id"], :name => "index_conversations_on_last_message_id"
   add_index "conversations", ["prompt"], :name => "index_conversations_on_prompt"
   add_index "conversations", ["state"], :name => "index_conversations_on_state"

@@ -69,12 +69,15 @@ class User < ActiveRecord::Base
 		elsif user = User.find_by_facebook_id(fb_user.id)
 			user
 		elsif user = User.find_by_email(fb_user.try(:email).try(:downcase))
+			attrs = {}
+			attrs[:name] = "#{fb_user.first_name} #{fb_user.last_name}" if !user.name or user.name == user.username
+			attrs[:gender] = fb_user.gender unless user.gender
+			attrs[:birthday] = fb_user.try(:birthday) unless user.birthday
+			attrs[:locale] = fb_user.locale unless user.locale
+			attrs[:timezone] = fb_user.timezone.to_i unless user.timezone
+			attrs[:avatars_attributes] = [ { remote_image_url: "https://graph.facebook.com/#{fb_user.id}/picture?type=large" } ] unless user.avatar
+			user.update_attributes attrs
 			user.update_attribute(:facebook_id, fb_user.id)
-			unless user.avatar
-				# TODO: UNHACK: This is a whackasshack. I don't know how to store the model's attributes before processing the image in the uploader. This proccesses twice, the first time with no image.
-				image = user.avatars.new
-				image.update_attribute :remote_image_url, "https://graph.facebook.com/#{fb_user.id}/picture?type=large"
-			end
 			user
 		else # Create a user.
 			password = SecureRandom.hex(20)

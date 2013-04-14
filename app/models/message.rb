@@ -15,7 +15,7 @@ class Message < ActiveRecord::Base
 
 	before_validation :continue_conversation, on: :create
 
-	attr_accessible :body, :embed_url, :from_email, :state_event
+	attr_accessible :body, :embed_url, :from_email, :state_event, :conversation_id
 	attr_protected :none, as: :admin
 
 	serialize :embed_data
@@ -29,6 +29,8 @@ class Message < ActiveRecord::Base
 	validates :from_id, presence: true
 	validate :validate_not_to_self
 	validate :validate_take_turns, on: :create
+	validate :validate_not_ended, on: :create
+	validate :validate_from_is_in_conversation
 
 	default_scope :order => 'created_at asc'
 
@@ -69,18 +71,37 @@ private
 	end
 
 	def validate_take_turns
-		errors.add(:you, "have to wait for a reply before sending another message") if m = self.conversation.messages.last and m.from_id == self.from_id
+		errors.add(:you, "have to wait for a reply before sending another message") if m = self.conversation.last_message and m.from_id == self.from_id
+	end
+
+	def validate_not_ended
+		errors.add(:you, "have already had a conversation with #{self.to.name} about this topic") if self.conversation.ended?
+	end
+
+	def validate_from_is_in_conversation
+		errors.add(:you, "must be a member of this conversation to reply to it") unless self.from_id == self.conversation.from_id or self.from_id == self.conversation.to_id
 	end
 
 	def after_send
-		self.conversation.touch
+		self.conversation.last_message.reply if self.conversation.last_message
+		append_message_to_conversation
 		notify_recipient
 	end
 
 	def continue_conversation
-		c = Conversation.between(self.from_id, self.to_id).in_progress.first
-		c ||= Conversation.new(from_id: self.from_id, to_id: self.to_id, state: :in_progress)
-		self.conversation = c
+		unless self.conversation
+			c = Conversation.between(self.from_id, self.to_id).where(prompt: self.to.body).first
+			c ||= Conversation.new(from_id: self.from_id, to_id: self.to_id, prompt: self.to.body)
+			self.conversation = c
+		end
+	end
+
+	def append_message_to_conversation
+		c = self.conversation
+		c.last_message_id = self.id
+		c.last_message_from_id = self.from.id
+		c.last_message_body = self.body
+		c.save
 	end
 
 	def notify_recipient
