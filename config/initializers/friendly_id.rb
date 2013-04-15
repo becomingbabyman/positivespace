@@ -31,7 +31,7 @@ FriendlyId.defaults do |config|
 		dev
 		direct_messages
 		downloads
-		edit 
+		edit
 		email
 		emptiness
 		enterprise
@@ -47,10 +47,9 @@ FriendlyId.defaults do |config|
 		home
 		hosting
 		ideas
-		index 
+		index
 		invitations
 		invite
-		jobs
 		koosalagoopagoop
 		lists
 		login
@@ -62,7 +61,7 @@ FriendlyId.defaults do |config|
 		mine
 		nameless
 		negentropy
-		new 
+		new
 		news
 		oauth
 		oauth_clients
@@ -90,7 +89,7 @@ FriendlyId.defaults do |config|
 		sessions
 		settings
 		shop
-		show 
+		show
 		signup
 		sitemap
 		ssl
