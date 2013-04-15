@@ -31,6 +31,10 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "User", ($sc
         background: '#f00'
         fallback: true
 
+    Modernizr.load
+        test: Modernizr.input.placeholder
+        nope: [ 'placeholder_polyfill.min.css'
+                'placeholder_polyfill.jquery.min.combo.js' ]
 
     # TODO: bootstrap this data on the angular.html.haml template and only request it if no bootstrap is found
     $scope.app.loadCurrentUser = (userData = null) ->
@@ -39,6 +43,25 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "User", ($sc
 
         $scope.app.dcu.promise.then (data) ->
             Tinycon.setBubble data.pending_message_count
+            analytics.identify data.id,
+                name                : data.name
+                slug                : data.slug
+                body                : data.body
+                email               : data.email
+                locale              : data.locale
+                gender              : data.gender
+                username            : data.username
+                location            : data.location
+                birthday            : data.birthday
+                timezone            : data.timezone
+                createdAt           : data.created_at
+                updatedAt           : data.updated_at
+                facebookId          : data.facebook_id
+                signInCount         : data.sign_in_count
+                personalUrl         : data.personal_url
+                lastSignInAt        : data.last_sign_in_at
+                achievements        : JSON.stringify(data.achievements)
+                pendingMessageCount : data.pending_message_count
 
         if userData?
             $scope.app.currentUser = new User userData
@@ -73,6 +96,11 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "User", ($sc
     $rootScope.$on "$routeChangeStart", (event, next, current) ->
         # Make sure the chrome is visible
         $scope.app.show.allChrome()
+
+        # Track a pageview
+        analytics.pageview()
+        analytics.track 'page viewed',
+            href: window.location.href
 
         # Autosize all textareas
         # $timeout (() -> $('textarea').autosize()), 1000

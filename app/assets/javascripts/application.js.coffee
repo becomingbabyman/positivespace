@@ -33,7 +33,8 @@
 #= require jquery.autosize
 #= require opentip-jquery
 #= require jquery.transit.min
+#= require modernizr.min
 #
-# Not Currentyl Required
+# Not Currently Required
 # require jquery.jlabel
-# require modernizr.min
+#
