@@ -17,6 +17,14 @@ node :accessible_attributes, :if => lambda { |u| can?(:update, u) } do |user|
 	User.map_accessible_attributes
 end
 
-node :pending_message_count, :if => lambda { |u| can?(:update, u) } do |user|
-	user.recieved_messages.sent.size
+node :ready_conversations_count, :if => lambda { |u| can?(:update, u) } do |user|
+	user.conversations.in_progress.turn(user.id).size
+end
+
+node :waiting_conversations_count, :if => lambda { |u| can?(:update, u) } do |user|
+	user.conversations.in_progress.not_turn(user.id).size
+end
+
+node :ended_conversations_count, :if => lambda { |u| can?(:update, u) } do |user|
+	user.conversations.ended.size
 end

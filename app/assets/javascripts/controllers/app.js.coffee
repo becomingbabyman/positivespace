@@ -23,6 +23,7 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "User", ($sc
         header: true
         footer: true
 
+    # Style count in favicon
     Tinycon.setOptions
         width: 7
         height: 9
@@ -31,10 +32,17 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "User", ($sc
         background: '#f00'
         fallback: true
 
+    #Load Modernizer
+    # - placeholder_polyfill
     Modernizr.load
         test: Modernizr.input.placeholder
         nope: [ 'placeholder_polyfill.min.css'
                 'placeholder_polyfill.jquery.min.combo.js' ]
+
+    # Add CSRF to all jQuery ajax
+    $("body").bind "ajaxSend", (elm, xhr, s) ->
+        $.rails.CSRFProtection(xhr) if s.type is "POST"
+
 
     # TODO: bootstrap this data on the angular.html.haml template and only request it if no bootstrap is found
     $scope.app.loadCurrentUser = (userData = null) ->
@@ -42,26 +50,28 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "User", ($sc
         $scope.app.dcu = $q.defer()
 
         $scope.app.dcu.promise.then (data) ->
-            Tinycon.setBubble data.pending_message_count
+            Tinycon.setBubble data.ready_conversations_count
             analytics.identify data.id,
-                name                : data.name
-                slug                : data.slug
-                body                : data.body
-                email               : data.email
-                locale              : data.locale
-                gender              : data.gender
-                username            : data.username
-                location            : data.location
-                birthday            : data.birthday
-                timezone            : data.timezone
-                createdAt           : data.created_at
-                updatedAt           : data.updated_at
-                facebookId          : data.facebook_id
-                signInCount         : data.sign_in_count
-                personalUrl         : data.personal_url
-                lastSignInAt        : data.last_sign_in_at
-                achievements        : JSON.stringify(data.achievements)
-                pendingMessageCount : data.pending_message_count
+                name                      : data.name
+                slug                      : data.slug
+                body                      : data.body
+                email                     : data.email
+                locale                    : data.locale
+                gender                    : data.gender
+                username                  : data.username
+                location                  : data.location
+                birthday                  : data.birthday
+                timezone                  : data.timezone
+                createdAt                 : data.created_at
+                updatedAt                 : data.updated_at
+                facebookId                : data.facebook_id
+                signInCount               : data.sign_in_count
+                personalUrl               : data.personal_url
+                lastSignInAt              : data.last_sign_in_at
+                achievements              : JSON.stringify(data.achievements)
+                readyConversationsCount   : data.ready_conversations_count
+                endedConversationsCount   : data.ended_conversations_count
+                waitingConversationsCount : data.waiting_conversations_count
 
         if userData?
             $scope.app.currentUser = new User userData
@@ -74,7 +84,7 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "User", ($sc
     $scope.app.loggedIn = ->
         !_.isEmpty($scope.app.currentUser)
     $scope.app.anyMessages = ->
-        $scope.app.loggedIn() and $scope.app.currentUser.pending_message_count? and $scope.app.currentUser.pending_message_count > 0
+        $scope.app.loggedIn() and $scope.app.currentUser.ready_conversations_count? and $scope.app.currentUser.ready_conversations_count > 0
 
 
     #############

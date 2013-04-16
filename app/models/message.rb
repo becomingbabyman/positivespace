@@ -20,8 +20,8 @@ class Message < ActiveRecord::Base
 
 	serialize :embed_data
 
-	belongs_to :to, :class_name => 'User', :foreign_key => :to_id
-	belongs_to :from, :class_name => 'User', :foreign_key => :from_id
+	belongs_to :to, :class_name => 'User'
+	belongs_to :from, :class_name => 'User'
 	belongs_to :conversation
 
 	validates :body, presence: true, length: {maximum: 250}
@@ -37,10 +37,12 @@ class Message < ActiveRecord::Base
 	scope :draft, where(state: :draft)
 	scope :sent, where(state: :sent)
 	scope :replied, where(state: :replied)
-	scope :with, lambda { |user_id| where("from_id = ? OR to_id = ?", user_id, user_id) }
-	scope :between, lambda { |id1, id2| where("(from_id = ? AND to_id = ?) OR (from_id = ? AND to_id = ?)", id1, id2, id2, id1) }
-	scope :is_not, lambda { |id| where("id != ?", id) }
-	scope :conversation_id, lambda { |id| where("conversation_id = ?", id) }
+	scope :in_progress, joins(:conversation).where("conversations.state = ?", :in_progress)
+	scope :ended, joins(:conversation).where("conversations.state = ?", :ended)
+	scope :with, lambda { |user_id| where("messages.from_id = ? OR messages.to_id = ?", user_id, user_id) }
+	scope :between, lambda { |id1, id2| where("(messages.from_id = ? AND messages.to_id = ?) OR (messages.from_id = ? AND messages.to_id = ?)", id1, id2, id2, id1) }
+	scope :is_not, lambda { |id| where("messages.id != ?", id) }
+	scope :conversation_id, lambda { |id| where("messages.conversation_id = ?", id) }
 
 	def self.total_seconds_to_edit
 		0 # TODO: think about removing all of this out

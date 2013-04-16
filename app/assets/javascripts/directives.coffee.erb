@@ -453,7 +453,7 @@ psDirectives.directive 'psLogin', ["$timeout", "$location", "User", ($timeout, $
 							scope.app.show.loading = false
 							scope.app.loadCurrentUser data
 							scope.credentials = {loginType: 'login'}
-							scope.app.flash 'success', "Welcome. Let's create your PositiveSpace!"
+							scope.app.flash 'success', "Welcome. Let's create your Positive Space!"
 							$location.path("/#{data.username}")
 						(error) ->
 							scope.app.show.loading = false

@@ -59,7 +59,7 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 				$scope.messages.push $scope.myMessage
 				$scope.lastMsg = $scope.myMessage
 				$scope.message = $scope.myMessage
-				$scope.app.currentUser.pending_message_count -= 1
+				$scope.app.currentUser.ready_conversations_count -= 1
 				$scope.conversation = new Conversation data.conversation
 		error = (error) ->
 			$scope.app.flash 'error', error.data.errors
