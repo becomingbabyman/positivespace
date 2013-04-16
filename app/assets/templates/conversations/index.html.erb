@@ -38,7 +38,7 @@
 					<a ng-href="/conversations/{{conversation.id}}?message_id={{conversation.last_message_id}}" class='unfancy-link'>
 						<div class="row-fluid">
 							<div class="span12">
-								<small class='pull-right faded'>{{conversation.created_at | date:"MMMM d, yyyy"}}</small>
+								<small class='pull-right faded'>{{conversation.updated_at | date:"MMMM d, yyyy"}}</small>
 								<i class="icon-circle-blank opacity5 color-green pull-left" ng-show="conversation.state == 'in_progress' && conversation.last_message_from_id != app.currentUser.id" tooltip="Reply now!"></i>
 								<i class="icon-time opacity5 color-yellow pull-left" ng-show="conversation.state == 'in_progress' && conversation.last_message_from_id == app.currentUser.id" tooltip="Wait for a reply."></i>
 								<i class="icon-remove-circle opacity5 color-red pull-left" ng-show="conversation.state == 'ended'" tooltip="All done."></i>
