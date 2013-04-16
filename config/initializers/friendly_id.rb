@@ -23,7 +23,6 @@ FriendlyId.defaults do |config|
 		compare
 		config
 		connect
-		contact
 		create
 		current
 		data

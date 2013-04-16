@@ -5,6 +5,14 @@ extends 'api/v1/users/base'
 attributes :body, :location, :personal_url, :created_at
 attributes :achievements, :facebook_id, :sign_in_count, :last_sign_in_at, :updated_at, :gender, :birthday, :locale, :timezone, :if => lambda { |u| can?(:update, u) }
 
+node :first_name do |user|
+	user.first_name
+end
+
+node :last_name do |user|
+	user.last_name
+end
+
 node :can_edit do |user|
 	can?(:update, user)
 end

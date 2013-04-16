@@ -108,6 +108,15 @@ class User < ActiveRecord::Base
 		super || self.username
 	end
 
+	def first_name
+		name.split(' ').first
+	end
+
+	def last_name
+		n = name.split(' ')
+		n.last if n.size > 1
+	end
+
 	def email_to_name
 		email.split("@").first.split(/[\-\_\.]/).reduce{ |full_name, name| full_name = "#{full_name} #{name}" }.titleize rescue ""
 	end

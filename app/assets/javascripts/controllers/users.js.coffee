@@ -35,6 +35,7 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 	# TODO:
 	# $scope.$watch 'app.currentUser.id', ->
 	$scope.user = User.get {id: user_id}, ->
+		$scope.userCopy = angular.copy $scope.user
 		if !$scope.user.body? or $scope.user.body.length == 0
 			if $scope.user.id == $scope.app.currentUser.id
 				$scope.space.editing = true
@@ -44,9 +45,10 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 	, (error) ->
 		$location.path('/404')
 
+
 	$scope.message = new Message {user_id: user_id}
 
-	$scope.$watch 'user.body', (value) ->
+	$scope.$watch 'userCopy.body', (value) ->
 		$scope.userBodyRemaining = 250 - (if value? then value.length else 0)
 
 	$scope.$watch 'message.body', (value) ->
@@ -63,17 +65,18 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 
 	# TODO: revert to original profile if close is clicked instead of save
 	$scope.saveSpace = ->
-		if $scope.user.body? and $scope.user.body.length > 0
+		if $scope.userCopy.body? and $scope.userCopy.body.length > 0
 			$scope.app.show.loading = true
 			success = (data) ->
 				$scope.app.show.loading = false
 				$scope.space.editing = false
 				$scope.space.cantCloseEdit = false
+				$scope.user = angular.copy $scope.userCopy
 				$scope.app.flash 'success', 'Great, your space has been updated.'
 			error = (error) ->
 				$scope.app.show.loading = false
 				$scope.app.flash 'error', error.data.errors
-			$scope.user.save success, error
+			$scope.userCopy.save success, error
 		else
 			angular.element('textarea#user_body').focus()
 			$scope.app.flash 'info', "Please introduce yourself. And share what you would like to talk about."

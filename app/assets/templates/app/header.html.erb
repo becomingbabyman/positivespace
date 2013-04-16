@@ -21,29 +21,29 @@
 					<div ng-show="app.anyMessages()" class='count'>{{app.currentUser.ready_conversations_count}}</div>
 				</a>
 			</li>
-			<li>
+			<!-- <li>
 				<a href="#" tooltip='leave' tooltip-placement='bottom' ng-click='app.logout()'>
 					<i class="icon-signout"></i>
 				</a>
-			</li>
-			<!-- <li class="dropdown">
+			</li> -->
+			<li class="dropdown">
 				<a href="#" class="dropdown-toggle">
 					<i class="icon-cog"></i>
 				</a>
 				<ul class="dropdown-menu">
 					<li>
 						<a href="/settings">
-							settings
+							<i class="icon-cogs faded prs"></i> settings
 						</a>
 					</li>
 					<li class="divider"></li>
 					<li>
 						<a href="#" ng-click='app.logout()'>
-							log out
+							<i class="icon-signout faded prs"></i> log out
 						</a>
 					</li>
 				</ul>
-			</li> -->
+			</li>
 		</ul>
 
 		<a href="/" class="brand" ng-class='{"logged-in": app.loggedIn()}'>

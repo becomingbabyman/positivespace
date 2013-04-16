@@ -1,14 +1,14 @@
 <div modal="toggle" close="toggle = false" options='{backdrop: false}'>
-	<form name='editResourceForm' class='form-vertical uncenter' ng-submit='submitForm()' novalidate style='width: 100%;'>
+	<form name='editResourceCopyForm' class='form-vertical uncenter' ng-submit='submitForm()' novalidate style='width: 100%;'>
 		<div class="modal-header">
 			<button type="button" class="close" ng-click="toggle = false" aria-hidden="true">&times;</button>
 			<h3><i class='icon-edit'></i></h3>
 		</div>
 		<div class="modal-body">
-			<div ng-repeat='attribute in resource.accessible_attributes'>
+			<div ng-repeat='attribute in resourceCopy.accessible_attributes'>
 				<control-group label='{{attribute.name | inflector}}'>
-					<input ui-if='attribute.type == "string"' type='text' name='{{attribute.name}}' placeholder='{{attribute.name | inflector}}' id='{{attribute.name}}' class='input-block-level' ng-model='resource[attribute.name]'></input>
-					<textarea ui-if='attribute.type == "text"' name='{{attribute.name}}' placeholder='{{attribute.name | inflector}}' id='{{attribute.name}}' class='input-block-level' ng-model='resource[attribute.name]'></textarea>
+					<input ui-if='attribute.type == "string"' type='text' name='{{attribute.name}}' placeholder='{{attribute.name | inflector}}' id='{{attribute.name}}' class='input-block-level' ng-model='resourceCopy[attribute.name]'></input>
+					<textarea ui-if='attribute.type == "text"' name='{{attribute.name}}' placeholder='{{attribute.name | inflector}}' id='{{attribute.name}}' class='input-block-level' ng-model='resourceCopy[attribute.name]'></textarea>
 				</control-group>
 			</div>
 		</div>

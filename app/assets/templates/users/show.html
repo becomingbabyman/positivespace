@@ -32,23 +32,23 @@
 					<form ng-show='space.editing' ng-class='{"animated fadeInUp": space.editing, "animated fadeOutUp": !space.editing}' name='user_profile' class='form-vertical uncenter ptl' ng-submit='saveSpace()' novalidate style='width: 100%;'>
 
 						<control-group label='Full name'>
-							<input name='name' id='user_name' title='your real name (not your username)' placeholder="your full name" class='input-block-level' ng-model='user.name' required></input>
+							<input name='name' id='user_name' title='your real name (not your username)' placeholder="your full name" class='input-block-level' ng-model='userCopy.name' required></input>
 						</control-group>
 
 						<control-group label="Today's conversation starter" help-block='What one thing would you like to talk about right now?'>
-							<textarea name='body' id='user_body' title='the one thing you want to talk about' placeholder="I want to talk about JUST ONE THING, which is... " class='input-block-level' ng-model='user.body' rows=5 required></textarea>
+							<textarea name='body' id='user_body' title='the one thing you want to talk about' placeholder="I want to talk about JUST ONE THING, which is... " class='input-block-level' ng-model='userCopy.body' rows=5 required></textarea>
 						</control-group>
 
 						<div class="row-fluid">
 							<div class="span6">
 								<control-group label='Location'>
-								    <input type='text' id='user_location' name='location' title='your current location' placeholder='City, State' class='input-block-level' ng-model='user.location' ng-maxlength='140'></input>
+								    <input type='text' id='user_location' name='location' title='your current location' placeholder='City, State' class='input-block-level' ng-model='userCopy.location' ng-maxlength='140'></input>
 								</control-group>
 							</div>
 
 							<div class="span6">
 								<control-group label='Website'>
-					                <input type='url' id='user_personal_url' name='personal_url' title='link to your website' placeholder='http://example.com' class='input-block-level' ng-model='user.personal_url' ng-maxlength='800'></input>
+					                <input type='url' id='user_personal_url' name='personal_url' title='link to your website' placeholder='http://example.com' class='input-block-level' ng-model='userCopy.personal_url' ng-maxlength='800'></input>
 					            </control-group>
 							</div>
 						</div>
