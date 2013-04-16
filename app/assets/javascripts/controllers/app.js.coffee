@@ -29,7 +29,7 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "User", ($sc
         height: 9
         font: '10px arial'
         color: '#ffffff'
-        background: '#f00'
+        background: '#00C0FF'
         fallback: true
 
     #Load Modernizer
