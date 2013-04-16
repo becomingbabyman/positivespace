@@ -18,7 +18,7 @@ class Conversation < ActiveRecord::Base
 	validates :from_id, presence: true
 	validates :prompt, presence: true
 
-	default_scope :order => 'updated_at ASC'
+	# default_scope :order => 'updated_at ASC'
 
 	scope :in_progress, where(state: :in_progress)
 	scope :ended, where(state: :ended)

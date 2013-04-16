@@ -3,11 +3,24 @@ ps.controller "ConversationsIndexCtrl", ["$scope", "$routeParams", "$location", 
 
 	# Initialize
 	$scope.app.dcu.promise.then (user) ->
-		$scope.conversations = Conversation.query {user_id: user.id}
+		$scope.conversations = Conversation.query {user_id: user.id, order: "updated_at DESC"}
 	, (error) ->
 		# user must log in to view conversations
 		$location.path('/login')
 		$scope.app.flash 'info', "Sorry, we don't know whose conversations to show you. Please log in."
+
+	$scope.filter = (option) ->
+		$scope.app.dcu.promise.then (user) ->
+			if option != $scope.selectedFilter
+				switch option
+					when 'ready' then $scope.conversations = Conversation.query {user_id: user.id, state: 'in_progress', turn_id: user.id, order: "updated_at ASC"}
+					when 'waiting' then $scope.conversations = Conversation.query {user_id: user.id, state: 'in_progress', not_turn_id: user.id, order: "updated_at DESC"}
+					when 'ended' then $scope.conversations = Conversation.query {user_id: user.id, state: 'ended', order: "updated_at DESC"}
+				$scope.selectedFilter = option
+			else
+				$scope.conversations = Conversation.query {user_id: user.id, order: "updated_at DESC"}
+				$scope.selectedFilter = null
+
 ]
 
 

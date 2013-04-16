@@ -14,6 +14,15 @@ class Api::V1::ConversationsController < InheritedResources::Base
 	has_scope :state, :only => :index do |controller, scope, value|
 		scope.where(state: value)
 	end
+	has_scope :turn_id, :only => :index do |controller, scope, value|
+		scope.turn(value.to_i)
+	end
+	has_scope :not_turn_id, :only => :index do |controller, scope, value|
+		scope.not_turn(value.to_i)
+	end
+	has_scope :order, :only => :index do |controller, scope, value|
+		scope.order(ActiveRecord::Base::sanitize(value).gsub("'", ""))
+	end
 	has_scope :page, :only => :index, :default => 1 do |controller, scope, value|
 		value.to_i > 0 ? scope.page(value.to_i) : scope.page(1)
 	end

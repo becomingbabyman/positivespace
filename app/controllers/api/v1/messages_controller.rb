@@ -17,11 +17,13 @@ class Api::V1::MessagesController < InheritedResources::Base
 	has_scope :conversation_id, :only => :index do |controller, scope, value|
 		scope.conversation_id(value.to_i)
 	end
+	has_scope :order, :only => :index do |controller, scope, value|
+		scope.order(ActiveRecord::Base::sanitize(value).gsub("'", ""))
+	end
 	has_scope :page, :only => :index, :default => 1 do |controller, scope, value|
 		value.to_i > 0 ? scope.page(value.to_i) : scope.page(1)
 	end
 	has_scope :per, :only => :index, :default => 10
-
 
 	before_filter :authenticate_user! #, :except => [:create, :update]
 	load_and_authorize_resource

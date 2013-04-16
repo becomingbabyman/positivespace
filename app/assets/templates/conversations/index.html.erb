@@ -7,19 +7,25 @@
 					conversations
 				</div>
 			</div>
-			<div class="row-fluid faded">
-				<div class="span4">
-					<i class="icon-circle-blank opacity5 color-green prs" tooltip="Ready"></i>
-					{{app.currentUser.ready_conversations_count}}
-				</div>
-				<div class="span4">
-					<i class="icon-time opacity5 color-yellow prs" tooltip="Wating"></i>
-					{{app.currentUser.waiting_conversations_count}}
-				</div>
-				<div class="span4">
-					<i class="icon-remove-circle opacity5 color-red prs" tooltip="Ended"></i>
-					{{app.currentUser.ended_conversations_count}}
-				</div>
+			<div class="row-fluid">
+				<a href="#" ng-click='filter("ready")'>
+					<div class="span4 faded" tooltip="{{selectedFilter != 'ready' && 'Show Ready' || 'Show All'}}">
+						<i class="icon-circle-blank color-green prs" ng-class="{opacity5: selectedFilter != 'ready'}"></i>
+						{{app.currentUser.ready_conversations_count}}
+					</div>
+				</a>
+				<a href="#" ng-click='filter("waiting")'>
+					<div class="span4 faded" tooltip="{{selectedFilter != 'waiting' && 'Show Waiting' || 'Show All'}}">
+						<i class="icon-time color-yellow prs" ng-class="{opacity5: selectedFilter != 'waiting'}"></i>
+						{{app.currentUser.waiting_conversations_count}}
+					</div>
+				</a>
+				<a href="#" ng-click='filter("ended")'>
+					<div class="span4 faded" tooltip="{{selectedFilter != 'ended' && 'Show Ended' || 'Show All'}}">
+						<i class="icon-remove-circle color-red prs" ng-class="{opacity5: selectedFilter != 'ended'}"></i>
+						{{app.currentUser.ended_conversations_count}}
+					</div>
+				</a>
 			</div>
 			<div class="row-fluid">
 				<div class="span12" ng-show='conversations.length == 0'>
