@@ -76,7 +76,7 @@
 
 						<div class='control-group'>
 							<div class='controls'>
-								<button ng-hide='message.id' type='submit' class='btn btn-success pull-right' ng-disabled="messageForm.body.$invalid">Start Conversation</button>
+								<button ng-hide='message.id' type='submit' class='btn btn-success pull-right' ng-disabled="messageForm.body.$invalid">Reply</button>
 								<button ng-show='message.id' type='submit' class='btn btn-disabled pull-right' disabled>Message Sent</button>
 								<span class='pull-right pts prm' id='msg_remaining_chars' ng-class='{"muted": remainingChars > 10, "text-error": remainingChars <= 10}'>{{remainingChars}}</span>
 							</div>
