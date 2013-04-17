@@ -85,9 +85,6 @@ gem 'haml'
 # Form Helpers
 gem 'simple_form'
 
-# Analytics
-# gem 'newrelic_rpm'
-# gem 'airbrake'
 # Google Cookie Parser
 gem 'ga_cookie_parser'
 
@@ -148,6 +145,11 @@ end
 
 
 group :production, :staging do
+  # Analytics
+  gem 'newrelic_rpm'
+  gem 'airbrake'
+  gem 'librato-rails'
+
   gem 'exception_notification'
   gem 'heroku-deflater'
 end

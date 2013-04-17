@@ -29,6 +29,11 @@ GEM
       i18n (~> 0.6)
       multi_json (~> 1.0)
     addressable (2.3.3)
+    aggregate (0.2.2)
+    airbrake (3.1.11)
+      activesupport
+      builder
+      json
     arel (3.0.2)
     asset_sync (0.5.4)
       activemodel
@@ -197,6 +202,13 @@ GEM
       addressable (~> 2.3)
     letter_opener (1.1.0)
       launchy (~> 2.2.0)
+    librato-metrics (1.0.4)
+      aggregate (~> 0.2.2)
+      faraday (~> 0.7)
+      multi_json
+    librato-rails (0.8.2)
+      librato-metrics (~> 1.0.2)
+      rails (>= 3.0)
     libv8 (3.11.8.17)
     listen (0.7.3)
     lumberjack (1.0.3)
@@ -216,6 +228,7 @@ GEM
     net-scp (1.1.0)
       net-ssh (>= 2.6.5)
     net-ssh (2.6.6)
+    newrelic_rpm (3.6.0.83)
     nokogiri (1.5.9)
     oauth (0.4.7)
     oauth2 (0.8.1)
@@ -424,6 +437,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  airbrake
   asset_sync
   binding_of_caller
   bootstrap-sass (~> 2.2.2.0)
@@ -462,8 +476,10 @@ DEPENDENCIES
   jquery-rails
   kaminari
   letter_opener
+  librato-rails
   memcachier
   meta_request
+  newrelic_rpm
   oj
   omniauth (~> 1.1.1)
   omniauth-facebook (= 1.4.0)
