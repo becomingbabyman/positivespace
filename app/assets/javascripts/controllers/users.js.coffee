@@ -32,16 +32,15 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 	user_id = $routeParams.user_id or 'space'
 	$scope.space = {fadeCount: 0}
 
-	# TODO:
-	# $scope.$watch 'app.currentUser.id', ->
 	$scope.user = User.get {id: user_id}, ->
 		$scope.userCopy = angular.copy $scope.user
 		if !$scope.user.body? or $scope.user.body.length == 0
-			if $scope.user.id == $scope.app.currentUser.id
-				$scope.space.editing = true
-				$scope.space.cantCloseEdit = true
-			else
-				$location.path('/')
+			$scope.app.dcu.promise.then (currentUser) ->
+				if $scope.user.id == currentUser.id
+					$scope.space.editing = true
+					$scope.space.cantCloseEdit = true
+				else
+					$location.path('/')
 	, (error) ->
 		$location.path('/404')
 

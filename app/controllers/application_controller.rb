@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
 	protect_from_forgery
 
-	before_filter :intercept_html_requests
+	# before_filter :intercept_html_requests
 
 	# TODO: REMOVE: PERFORMANCE: This is killer, but I don't know a better way to bust the cache when files are updated. Maybe if we can get timestamped html served from a CDN we can remove this
 	before_filter :set_cache_buster

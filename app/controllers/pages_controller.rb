@@ -1,7 +1,16 @@
 class PagesController < ApplicationController
 
 	def home
-		render :layout => 'angular'
+		# TODO: LAUNCH: REMOVE: the redirect
+		if current_user
+			render :layout => 'angular', :template => 'pages/home'
+		else
+			redirect_to "http://signup.positivespace.io"
+		end
+	end
+
+	def wildcard
+		render :layout => 'angular', :template => 'pages/home'
 	end
 
 	def robots

@@ -62,5 +62,5 @@ Positivespace::Application.routes.draw do
 	root :to => 'pages#home'
 
 	# Route wildcard routes to angular for client side routing
-	match "*path", to: "pages#home"
+	match "*path", to: "pages#wildcard"
 end
