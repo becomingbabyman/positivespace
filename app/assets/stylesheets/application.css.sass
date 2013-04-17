@@ -92,7 +92,6 @@ body
     @include sans
     font-size: $base-font-size
     line-height: $base-line-height
-    font-family: Lato, "Helvetica Neue", Helvetica, Arial, sans-serif
     // letter-spacing: 0.1em
     // padding-top: 41px
     // @media (max-width: 979px)
@@ -115,8 +114,7 @@ a
         left: 1px
 
 p
-    font-family: "PT Serif", Vollkorn
-    // font-style: italic
+    @include serif
     font-weight: 400
     letter-spacing: 0.05em
     line-height: 23px
@@ -175,13 +173,13 @@ input, textarea
                 opacity: 1
                 visibility: visible
             &:before
-                @include transition-delay(0.3s)
-                @include transition-duration(1s)
+                @include transition-delay(0.1s)
+                @include transition-duration(0.7s)
                 opacity: 1
                 visibility: visible
             &:after
-                @include transition-delay(1.2s)
-                @include transition-duration(1s)
+                @include transition-delay(0.7s)
+                @include transition-duration(0.7s)
                 opacity: 1
                 visibility: visible
         .colored
@@ -196,8 +194,8 @@ input, textarea
             z-index: 999
             background: white
         &:before
-            @include transition-delay(1.2s)
-            @include transition-duration(1s)
+            @include transition-delay(0.7s)
+            @include transition-duration(0.7s)
             color: #ccc
             content: "Posi+ive Sp_ce"
             letter-spacing: 0.1em
@@ -205,8 +203,8 @@ input, textarea
             line-height: 40px
             bottom: -40px
         &:after
-            @include transition-delay(0.3s)
-            @include transition-duration(1s)
+            @include transition-delay(0.1s)
+            @include transition-duration(0.7s)
             color: #bbb
             font-size: 13px
             content: "beta"

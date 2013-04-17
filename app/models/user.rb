@@ -75,7 +75,7 @@ class User < ActiveRecord::Base
 			attrs[:birthday] = fb_user.try(:birthday) unless user.birthday
 			attrs[:locale] = fb_user.locale unless user.locale
 			attrs[:timezone] = fb_user.timezone.to_i unless user.timezone
-			attrs[:avatars_attributes] = [ { remote_image_url: "https://graph.facebook.com/#{fb_user.id}/picture?type=large" } ] unless user.avatar
+			attrs[:avatars_attributes] = [ { process_image_upload: true, remote_image_url: "https://graph.facebook.com/#{fb_user.id}/picture?type=large" } ] unless user.avatar
 			user.update_attributes attrs
 			user.update_attribute(:facebook_id, fb_user.id)
 			user
@@ -90,7 +90,7 @@ class User < ActiveRecord::Base
 				password: password,
 				password_confirmation: password,
 				avatars_attributes: [
-					{ remote_image_url: "https://graph.facebook.com/#{fb_user.id}/picture?type=large" }
+					{ process_image_upload: true, remote_image_url: "https://graph.facebook.com/#{fb_user.id}/picture?type=large" }
 				]
 			})#, invitation_id: invitation_id, invitation_code: invitation_code })
 			user.update_attribute(:facebook_id, fb_user.id)
@@ -178,7 +178,7 @@ private
 	 # Adds a gravatar if no avatar exists
 	def add_gravatar
 		unless avatar
-			avatars.create({ remote_image_url: gravatar_url, user_id: id })
+			avatars.create({ process_image_upload: true, remote_image_url: gravatar_url, user_id: id })
 		end
 	end
 end

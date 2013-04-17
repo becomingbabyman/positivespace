@@ -144,6 +144,12 @@
 	opacity: 0.8
 .opacity9
 	opacity: 0.9
+.opacity-full-hover
+	@include transition-property(opacity)
+	@include transition-duration(0.4s)
+	&:hover
+		@include transition-duration(0.4s)
+		opacity: 1
 
 .p0
 	padding: 0

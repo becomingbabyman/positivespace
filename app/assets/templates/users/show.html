@@ -16,16 +16,13 @@
 					<div class="center" ng-class='{"animated fadeInDown": !space.editing, "animated fadeInDown": space.editing}'>
 						<ps-img src="{{user.avatar.big_thumb_url}}" alt="{{user.name}}" img-class="img-circle img-border img-big-thumb" attachable-type='User' attachable-id='{{user.id}}' image-type='avatar' image-url='big_thumb_url' can-edit='{{user.id && user.id == app.currentUser.id}}'></ps-img>
 						<div ng-hide='space.editing' ng-class='{"animated fadeInDown": !space.editing, "animated fadeOutUp": space.editing}'>
-							<h2>{{user.name}}</h2>
-							<br/>
-							<p ng-bind-html-unsafe="user.body | linebreaks">{{user.body}}</p>
-							<br ng-show='user.location.length > 0 || user.personal_url.length > 0'/>
-							<p ng-show='user.location.length > 0 || user.personal_url.length > 0'>
+							<h2 class='pbm pts'>{{user.name}}</h2>
+							<p ng-bind-html-unsafe="user.body | linebreaks" class='pbm'>{{user.body}}</p>
+							<p ng-show='user.location.length > 0 || user.personal_url.length > 0' class='pbm'>
 								<span ng-show='user.location.length > 0'><i class='icon-map-marker'></i> {{user.location}}</span>
 								<span ng-show='user.location.length > 0 && user.personal_url.length > 0'>&nbsp;&middot;&nbsp;</span>
 								<span ng-show='user.personal_url.length > 0'><a href='{{user.personal_url}}' target='_blank' class='unfancy-link'>{{user.personal_url | urlSimplify}}</a></span>
 							</p>
-							<br/>
 						</div>
 					</div>
 

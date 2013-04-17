@@ -14,7 +14,7 @@ class Image < ActiveRecord::Base
 	# Setup attributes (reader, accessible, protected)
 	#########################
 	#attr_reader
-	attr_accessible :image, :remote_image_url, :image_type, :attachable, :attachable_id, :attachable_type, :name, :lat, :lon, :user_id
+	attr_accessible :image, :remote_image_url, :image_type, :attachable, :attachable_id, :attachable_type, :name, :lat, :lon, :user_id, :process_image_upload
 
 
 	#########################
