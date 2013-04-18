@@ -3,7 +3,7 @@ ps.controller "ConversationsIndexCtrl", ["$scope", "$routeParams", "$location", 
 
 	# Initialize
 	$scope.app.dcu.promise.then (user) ->
-		$scope.conversations = Conversation.query {user_id: user.id, order: "updated_at DESC"}, ->
+		$scope.conversations = Conversation.query {user_id: user.id, order: "updated_at DESC", per: 100}, ->
 			analytics.track 'view conversations success',
 				user_id: user.id
 				user_name: user.name
@@ -58,9 +58,10 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 				fromId: conversation.from.id
 				fromName: conversation.from.name
 		$scope.message = Message.get {user_id: user.id, id: $routeParams.message_id} if $routeParams.message_id
-		$scope.messages = Message.query {user_id: user.id, conversation_id: $routeParams.id}, (messages) ->
+		$scope.messages = Message.query {user_id: user.id, conversation_id: $routeParams.id, per: 100}, (messages) ->
 			$scope.lastMsg = _.last(messages)
 			$scope.message = $scope.lastMsg unless $routeParams.message_id
+			console.log $scope.message, $scope.lastMsg, $scope.messages
 	, (error) ->
 		# user must log in to view a conversation
 		$location.path('/login')

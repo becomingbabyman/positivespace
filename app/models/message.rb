@@ -32,7 +32,7 @@ class Message < ActiveRecord::Base
 	validate :validate_not_ended, on: :create
 	validate :validate_from_is_in_conversation
 
-	default_scope :order => 'created_at asc'
+	# default_scope :order => 'created_at asc'
 
 	scope :draft, where(state: :draft)
 	scope :sent, where(state: :sent)

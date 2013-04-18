@@ -43,35 +43,37 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "User", ($sc
     $("body").bind "ajaxSend", (elm, xhr, s) ->
         $.rails.CSRFProtection(xhr) if s.type is "POST"
 
+    $scope.app.identify = (user) ->
+        analytics.identify user.id,
+            name                      : user.name
+            slug                      : user.slug
+            body                      : user.body
+            email                     : user.email
+            locale                    : user.locale
+            gender                    : user.gender
+            username                  : user.username
+            location                  : user.location
+            birthday                  : user.birthday
+            timezone                  : user.timezone
+            createdAt                 : user.created_at
+            updatedAt                 : user.updated_at
+            facebookId                : user.facebook_id
+            signInCount               : user.sign_in_count
+            personalUrl               : user.personal_url
+            lastSignInAt              : user.last_sign_in_at
+            achievements              : JSON.stringify(user.achievements)
+            readyConversationsCount   : user.ready_conversations_count
+            endedConversationsCount   : user.ended_conversations_count
+            waitingConversationsCount : user.waiting_conversations_count
 
     # TODO: bootstrap this data on the angular.html.haml template and only request it if no bootstrap is found
     $scope.app.loadCurrentUser = (userData = null) ->
         # Reset the defer everytime the user is reloaded
         $scope.app.dcu = $q.defer()
 
-        $scope.app.dcu.promise.then (data) ->
-            Tinycon.setBubble data.ready_conversations_count
-            analytics.identify data.id,
-                name                      : data.name
-                slug                      : data.slug
-                body                      : data.body
-                email                     : data.email
-                locale                    : data.locale
-                gender                    : data.gender
-                username                  : data.username
-                location                  : data.location
-                birthday                  : data.birthday
-                timezone                  : data.timezone
-                createdAt                 : data.created_at
-                updatedAt                 : data.updated_at
-                facebookId                : data.facebook_id
-                signInCount               : data.sign_in_count
-                personalUrl               : data.personal_url
-                lastSignInAt              : data.last_sign_in_at
-                achievements              : JSON.stringify(data.achievements)
-                readyConversationsCount   : data.ready_conversations_count
-                endedConversationsCount   : data.ended_conversations_count
-                waitingConversationsCount : data.waiting_conversations_count
+        $scope.app.dcu.promise.then (user) ->
+            Tinycon.setBubble user.ready_conversations_count
+            $scope.app.identify user
 
         if userData?
             $scope.app.currentUser = new User userData
@@ -106,6 +108,10 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "User", ($sc
     $rootScope.$on "$routeChangeStart", (event, next, current) ->
         # Make sure the chrome is visible
         $scope.app.show.allChrome()
+
+        # Identify the user
+        $scope.app.dcu.promise.then (user) ->
+            $scope.app.identify user
 
         # Track a pageview
         analytics.pageview()

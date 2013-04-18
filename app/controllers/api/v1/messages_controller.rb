@@ -17,7 +17,7 @@ class Api::V1::MessagesController < InheritedResources::Base
 	has_scope :conversation_id, :only => :index do |controller, scope, value|
 		scope.conversation_id(value.to_i)
 	end
-	has_scope :order, :only => :index do |controller, scope, value|
+	has_scope :order, :only => :index, :default => "created_at ASC" do |controller, scope, value|
 		scope.order(ActiveRecord::Base::sanitize(value).gsub("'", ""))
 	end
 	has_scope :page, :only => :index, :default => 1 do |controller, scope, value|
