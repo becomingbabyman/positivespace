@@ -170,7 +170,8 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "User", ($sc
     #############
     $scope.app.logout = ->
         $scope.app.currentUser = User.logout ->
-            # window.location.reload()
+            window.location.reload()
+            $scope.app.show.loading = true
             $scope.app.flash 'info', "Bye, hope to see you again soon."
 
     $scope.app.resetPassword = (login) ->
