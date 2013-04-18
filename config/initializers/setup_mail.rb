@@ -2,6 +2,7 @@
 require "development_mail_interceptor"
 
 if Rails.env.to_s == "development"
+  # Do nothing
 elsif ["test", "sandbox"].include?(Rails.env.to_s)
   ActionMailer::Base.raise_delivery_errors = true
 
@@ -20,17 +21,17 @@ elsif ["test", "sandbox"].include?(Rails.env.to_s)
 else
 
   ActionMailer::Base.smtp_settings = {
-    :port =>           '587',
-    :address =>        'smtp.mandrillapp.com',
-    :user_name =>      ENV['MANDRILL_USERNAME'],
-    :password =>       ENV['MANDRILL_APIKEY'],
-    :domain =>         'positivespace.io',
+    :port           => ENV['MAILGUN_SMTP_PORT'],
+    :address        => ENV['MAILGUN_SMTP_SERVER'],
+    :user_name      => ENV['MAILGUN_SMTP_LOGIN'],
+    :password       => ENV['MAILGUN_SMTP_PASSWORD'],
     :authentication => :plain
   }
   ActionMailer::Base.delivery_method = :smtp
 
   ActionMailer::Base.register_interceptor(DevelopmentMailInterceptor) if Rails.env == 'staging' # sends all mail to test-email-account1@positivespace.io
 end
+
 
 if Rails.env == "test"
   ActionMailer::Base.delivery_method = :test
