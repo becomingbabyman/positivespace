@@ -3,11 +3,19 @@ ps.controller "ConversationsIndexCtrl", ["$scope", "$routeParams", "$location", 
 
 	# Initialize
 	$scope.app.dcu.promise.then (user) ->
-		$scope.conversations = Conversation.query {user_id: user.id, order: "updated_at DESC"}
+		$scope.conversations = Conversation.query {user_id: user.id, order: "updated_at DESC"}, ->
+			analytics.track 'view conversations success',
+				user_id: user.id
+				user_name: user.name
+				readyConversationsCount   : user.ready_conversations_count
+				endedConversationsCount   : user.ended_conversations_count
+				waitingConversationsCount : user.waiting_conversations_count
 	, (error) ->
 		# user must log in to view conversations
 		$location.path('/login')
 		$scope.app.flash 'info', "Sorry, we don't know whose conversations to show you. Please log in."
+		analytics.track 'view conversations error',
+			error: 'not logged in'
 
 	$scope.filter = (option) ->
 		$scope.app.dcu.promise.then (user) ->
@@ -17,9 +25,11 @@ ps.controller "ConversationsIndexCtrl", ["$scope", "$routeParams", "$location", 
 					when 'waiting' then $scope.conversations = Conversation.query {user_id: user.id, state: 'in_progress', not_turn_id: user.id, order: "updated_at DESC"}
 					when 'ended' then $scope.conversations = Conversation.query {user_id: user.id, state: 'ended', order: "updated_at DESC"}
 				$scope.selectedFilter = option
+				analytics.track "conversations filter by #{option}"
 			else
 				$scope.conversations = Conversation.query {user_id: user.id, order: "updated_at DESC"}
 				$scope.selectedFilter = null
+				analytics.track "conversations filter by all"
 
 ]
 
@@ -38,6 +48,15 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 		$scope.conversation = Conversation.get {user_id: user.id, id: $routeParams.id}, (conversation) ->
 			$scope.show.conversation = true if conversation.state == 'ended'
 			$scope.myMessage = new Message {user_id: conversation.partners_id, conversation_id: $routeParams.id}
+			analytics.track 'view conversation success',
+				href: window.location.href
+				routeId: $routeParams.id
+				conversationId: conversation.id
+				conversationPrompt: $scope.conversation.prompt
+				toId: conversation.to.id
+				toName: conversation.to.name
+				fromId: conversation.from.id
+				fromName: conversation.from.name
 		$scope.message = Message.get {user_id: user.id, id: $routeParams.message_id} if $routeParams.message_id
 		$scope.messages = Message.query {user_id: user.id, conversation_id: $routeParams.id}, (messages) ->
 			$scope.lastMsg = _.last(messages)
@@ -46,6 +65,9 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 		# user must log in to view a conversation
 		$location.path('/login')
 		$scope.app.flash 'info', "Please log in to view this conversation."
+		analytics.track 'view conversation error',
+			routeId: $routeParams.id
+			error: 'not logged in'
 
 
 	$scope.$watch 'myMessage.body', (value) ->
@@ -57,6 +79,27 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 			$scope.conversation.save (conversation) ->
 				$scope.app.currentUser.ready_conversations_count -= 1
 				$scope.app.currentUser.ended_conversations_count += 1
+				analytics.track 'end conversation success',
+					href: window.location.href
+					routeId: $routeParams.id
+					conversationId: $scope.conversation.id
+					conversationPrompt: $scope.conversation.prompt
+					toId: $scope.conversation.to.id
+					toName: $scope.conversation.to.name
+					fromId: $scope.conversation.from.id
+					fromName: $scope.conversation.from.name
+			, (error) ->
+				analytics.track 'end conversation error',
+					href: window.location.href
+					routeId: $routeParams.id
+					conversationId: $scope.conversation.id
+					conversationPrompt: $scope.conversation.prompt
+					toId: $scope.conversation.to.id
+					toName: $scope.conversation.to.name
+					fromId: $scope.conversation.from.id
+					fromName: $scope.conversation.from.name
+					error: JSON.stringify(error)
+
 
 	# $scope.continueConvo = ->
 	#	el = angular.element('.message').first()
@@ -76,8 +119,39 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 				$scope.app.currentUser.ready_conversations_count -= 1
 				$scope.app.currentUser.waiting_conversations_count += 1
 				$scope.conversation = new Conversation data.conversation
+
+				analytics.track 'message conversation success',
+					href: window.location.href
+					routeId: $routeParams.id
+					conversationId: $scope.conversation.id
+					conversationPrompt: $scope.conversation.prompt
+					messageId: data.id
+					toId: data.to.id
+					toName: data.to.name
+					fromId: data.from.id
+					fromName: data.from.name
+			else
+				analytics.track 'message conversation save draft',
+					href: window.location.href
+					routeId: $routeParams.id
+					conversationId: $scope.conversation.id
+					conversationPrompt: $scope.conversation.prompt
+					messageId: data.id
+					toId: data.to.id
+					toName: data.to.name
+					fromId: data.from.id
+					fromName: data.from.name
 		error = (error) ->
 			$scope.app.flash 'error', error.data.errors
+			analytics.track 'message conversation error',
+				href: window.location.href
+				routeId: $routeParams.id
+				conversationId: $scope.conversation.id
+				conversationPrompt: $scope.conversation.prompt
+				error: JSON.stringify(error)
+
 		if state_event? then $scope.myMessage.state_event = state_event
+
 		$scope.myMessage.save success, error
+
 ]

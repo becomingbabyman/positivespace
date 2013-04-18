@@ -169,10 +169,14 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "User", ($sc
     # User Auth #
     #############
     $scope.app.logout = ->
-        $scope.app.currentUser = User.logout ->
-            window.location.reload()
+        User.logout ->
             $scope.app.show.loading = true
-            $scope.app.flash 'info', "Bye, hope to see you again soon."
+            analytics.track 'logout success'
+            $timeout ->
+                # IDK why, but we must reload the page on logout.
+                # Otherwise the user will not get saved in the session on the next login.
+                window.location.reload()
+            ,500
 
     $scope.app.resetPassword = (login) ->
         # TODO: handle the reset password link page in angular
@@ -183,6 +187,7 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "User", ($sc
             (data) ->
                 $scope.app.show.loading = false
                 $scope.app.flash 'info', "Check your inbox (including your spam folder) for password reset instructions. The email should arrive in less than a minute.", {sticky: true}
+                analytics.track 'request reset password success'
             (error) ->
                 $scope.app.show.loading = false
                 $scope.app.flash 'error', "Sorry, that <em>email address or username</em> is not registered with us. Please try again or <a href='/register' class='unfancy-link'>request a new account</a>."
@@ -192,6 +197,8 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "User", ($sc
                 $timeout () ->
                     $input.removeClass('shake')
                 ,1000
+                analytics.track 'request reset password error',
+                    error: JSON.stringify(error)
 
 
 ]

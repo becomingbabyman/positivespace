@@ -23,8 +23,11 @@ ps.controller "UserPasswordEditCtrl", ["$scope", "$location", "$routeParams", "U
 				$scope.app.flash 'success', "Cool, your password has been updated and you are now logged in."
 				$scope.app.loadCurrentUser data
 				$location.path("/#{data.username}")
+				analytics.track 'reset password success'
 			(error) ->
 				$scope.app.flash 'error', error.data.errors
+				analytics.track 'reset password error',
+					error: JSON.stringify(error)
 ]
 
 
@@ -41,8 +44,16 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 					$scope.space.cantCloseEdit = true
 				else
 					$location.path('/')
+		analytics.track 'view space success',
+			href: window.location.href
+			routeId: $routeParams.user_id
+			userId: $scope.user.id
+			userName: $scope.user.name
+			userBody: $scope.user.body
 	, (error) ->
 		$location.path('/404')
+		analytics.track 'view space error',
+			routeId: $routeParams.user_id
 
 
 	$scope.message = new Message {user_id: user_id}
@@ -69,12 +80,29 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 			success = (data) ->
 				$scope.app.show.loading = false
 				$scope.space.editing = false
+				firstSave = $scope.space.cantCloseEdit
 				$scope.space.cantCloseEdit = false
 				$scope.user = angular.copy $scope.userCopy
 				$scope.app.flash 'success', 'Great, your space has been updated.'
+				analytics.track 'save space success',
+					href: window.location.href
+					routeId: $routeParams.user_id
+					userId: $scope.user.id
+					userName: $scope.user.name
+					userBody: $scope.user.body
+					firstSave: firstSave
 			error = (error) ->
 				$scope.app.show.loading = false
 				$scope.app.flash 'error', error.data.errors
+				analytics.track 'save space error',
+					href: window.location.href
+					routeId: $routeParams.user_id
+					userId: $scope.user.id
+					userName: $scope.user.name
+					userBody: $scope.user.body
+					firstSave: $scope.space.cantCloseEdit
+					error: JSON.stringify(error)
+
 			$scope.userCopy.save success, error
 		else
 			angular.element('textarea#user_body').focus()
@@ -86,13 +114,37 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 			success = (data) ->
 				$scope.app.show.loading = false
 				$scope.app.flash 'success', 'Great, your message has been sent.'
+				analytics.track 'message space success',
+					href: window.location.href
+					routeId: $routeParams.user_id
+					userId: $scope.user.id
+					userName: $scope.user.name
+					userBody: $scope.user.body
+					fromId: $scope.app.currentUser.id
+					fromName: $scope.app.currentUser.name
 			error = (error) ->
 				$scope.app.show.loading = false
 				$scope.app.flash 'error', error.data.errors
+				analytics.track 'message space error',
+					href: window.location.href
+					routeId: $routeParams.user_id
+					userId: $scope.user.id
+					userName: $scope.user.name
+					userBody: $scope.user.body
+					fromId: $scope.app.currentUser.id
+					fromName: $scope.app.currentUser.name
+					error: JSON.stringify(error)
 			$scope.message.state_event = 'send'
 			$scope.message.save success, error
 		else
 			$scope.app.flash 'info', 'It looks like something is missing. Please fill in all fields.'
+			analytics.track 'message space error',
+				href: window.location.href
+				routeId: $routeParams.user_id
+				userId: $scope.user.id
+				userName: $scope.user.name
+				userBody: $scope.user.body
+				error: 'not logged in'
 ]
 
 
