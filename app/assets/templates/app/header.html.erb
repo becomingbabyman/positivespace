@@ -11,7 +11,7 @@
 
 		<ul class="nav user-nav pull-right" ng-show='app.loggedIn()'>
 			<li>
-				<a href="/{{app.currentUser.username}}" tooltip='{{app.currentUser.username}}' tooltip-placement='bottom'>
+				<a href="/{{app.currentUser.slug}}" tooltip='{{app.currentUser.username}}' tooltip-placement='bottom'>
 					<img ng-src="{{app.currentUser.avatar.big_thumb_url}}" alt='{{app.currentUser.username}}' class='img-circle img-border avatar'>
 				</a>
 			</li>
@@ -50,5 +50,13 @@
 			<img src="/assets/+_inset.png" alt='Positive Space' class='inset'>
 			<img src="/assets/+_.png" alt='Positive Space' class='colored'>
 		</a>
+
+		<ul class="nav opacity2 opacity-full-hover center" ng-show='app.loggedIn()'>
+			<li>
+				<a href="#" ng-click='app.randomSpace()'>
+					<i class="icon-random"></i>
+				</a>
+			</li>
+		</ul>
 	</div>
 </div>

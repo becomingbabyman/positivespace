@@ -14,6 +14,9 @@ class Api::V1::UsersController < InheritedResources::Base
 	has_scope :id, :only => :index do |controller, scope, value|
 		scope.where("id = ?", value.downcase)
 	end
+	has_scope :has_space, :only => :index, type: :boolean do |controller, scope, value|
+		scope.where("body IS NOT NULL")
+	end
 	has_scope :order, :only => :index do |controller, scope, value|
 		scope.order(value)
 	end

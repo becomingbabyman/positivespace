@@ -13,7 +13,7 @@
 
 			<div class="row-fluid">
 				<div class="span12">
-					<a ng-href="/{{conversation.to.username}}" title='{{conversation.to.name}}'>
+					<a ng-href="/{{conversation.to.slug}}" title='{{conversation.to.name}}'>
 						<img ng-src="{{conversation.to.avatar.thumb_url}}" alt="{{conversation.to.name}}" class="img-circle img-border">
 					</a>
 				</div>
@@ -32,7 +32,7 @@
 					<div class="row-fluid">
 						<div class="span12 uncenter">
 							<small ui-if="msg.id == lastMsg.id" class='pull-right faded'>{{msg.created_at | date:"MMMM d"}}</small>
-							<a ng-href="/{{msg.from.username}}" title='{{msg.from.name}}' class='unfancy-link'>
+							<a ng-href="/{{msg.from.slug}}" title='{{msg.from.name}}' class='unfancy-link'>
 								<img ng-src="{{msg.from.avatar.thumb_url}}" alt="{{msg.from.name}}" class="img-circle img-border img-mini">
 								<small class='from-name faded'>{{msg.from.name}}</small>
 							</a>

@@ -1,6 +1,6 @@
 object @user
 
-attributes :id, :username, :name
+attributes :id, :username, :name, :slug
 attributes :email, :if => lambda { |u| can?(:update, u) }
 
 child :avatar => :avatar do

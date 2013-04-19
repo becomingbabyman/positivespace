@@ -1,4 +1,4 @@
-ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "User", ($scope, $timeout, $rootScope, $q, User) ->
+ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location", "User", ($scope, $timeout, $rootScope, $q, $location, User) ->
 
     ######################
     # App Initialization #
@@ -206,6 +206,14 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "User", ($sc
                 analytics.track 'request reset password error',
                     error: JSON.stringify(error)
 
+    ################
+    # Random Space #
+    ################
+    $scope.app.randomSpace = ->
+        $scope.app.show.loading = true
+        User.query {per: 1, order: 'RANDOM()', has_space: true}, (users) ->
+            $scope.app.show.loading = false
+            $location.path("/#{users[0].slug}")
 
 ]
 
