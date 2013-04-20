@@ -32,13 +32,6 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
         background: '#00C0FF'
         fallback: true
 
-    #Load Modernizer
-    # - placeholder_polyfill
-    Modernizr.load
-        test: Modernizr.input.placeholder
-        nope: [ 'placeholder_polyfill.min.css'
-                'placeholder_polyfill.jquery.min.combo.js' ]
-
     # Add CSRF to all jQuery ajax
     $("body").bind "ajaxSend", (elm, xhr, s) ->
         $.rails.CSRFProtection(xhr) if s.type is "POST"
@@ -117,6 +110,10 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
         analytics.pageview()
         analytics.track 'page viewed',
             href: window.location.href
+            page: $location.path()
+
+        # Placeholder fallback
+        # $timeout (() -> $('input, textarea').placeholder()), 1000
 
         # Autosize all textareas
         # $timeout (() -> $('textarea').autosize()), 1000

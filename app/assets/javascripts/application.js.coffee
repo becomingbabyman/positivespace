@@ -34,6 +34,7 @@
 #= require opentip-jquery
 #= require jquery.transit.min
 #= require modernizr.min
+#= require jquery.placeholder.min
 #
 # Not Currently Required
 # require jquery.jlabel
