@@ -252,6 +252,16 @@ input, textarea
         >li
             &.open >a
                 color: darken($color-blue, 5%)
+
+        .dropdown-menu
+            @include border-radius(3px)
+            @include box-shadow(0 2px 10px rgba(0, 0, 0, 0.15))
+            padding: 0
+            border: 1px solid #ddd
+            a
+                padding: 9px 20px
+            .divider
+                margin: 0 1px
     .center
         margin: 0px auto
         float: none

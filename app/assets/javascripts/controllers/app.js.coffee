@@ -112,9 +112,6 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
             href: window.location.href
             page: $location.path()
 
-        # Placeholder fallback
-        # $timeout (() -> $('input, textarea').placeholder()), 1000
-
         # Autosize all textareas
         # $timeout (() -> $('textarea').autosize()), 1000
 

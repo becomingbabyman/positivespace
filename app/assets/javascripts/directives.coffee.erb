@@ -23,19 +23,12 @@ fieldDirectiveDefinitionObject =
 	link: (scope, element, attrs) ->
 		if element.prop("tagName") == 'INPUT' and !attrs.type?
 			attrs.$set 'type', (attrs.type or 'text')
+		unless attrs.placeholder? then attrs.$set 'placeholder', attrs.name
 		unless attrs.title? then attrs.$set 'title', (attrs.placeholder or attrs.name)
 		unless attrs.id? then attrs.$set 'id', _.uniqueId("#{attrs.name}_")
 		# attrs.$set 'name', (attrs.name or attrs.placeholder.replace(///^\s+|\s+$///g, '').split(' ').join('-'))
-
-		unless attrs.placeholder? then attrs.$set 'placeholder', attrs.name
-		# TODO: jLabel does not work with response inputs that can update other inputs. Decide if we want cross browser compatibility enough to use jLabel. Or roll your own directive.
-		# set placeholder - if jLabel is availible use it instead
-		# if element.prop("tagName") == 'INPUT'
-		#     if _.isFunction element.jLabel
-		#         element.jLabel({ speed : 200, opacity : 0.4 })
-		#         attrs.$set 'placeholder', ''
-		#     else if !attrs.placeholder?
-		#         attrs.$set 'placeholder', attrs.name
+		# Placeholder pollyfill
+		if element.prop("tagName") == 'INPUT' or element.prop("tagName") == 'TEXTAREA' then element.placeholder()
 
 psDirectives.directive 'input', () ->
 	return fieldDirectiveDefinitionObject
