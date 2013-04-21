@@ -92,7 +92,7 @@ Positivespace::Application.configure do
   config.gzip_compression = true
 
   config.middleware.use ExceptionNotifier,
-    sender_address: 'noreply@positivespace.io',
+    sender_address: 'staging@positivespace.io',
     exception_recipients: 'dev@positivespace.io'
 
 end

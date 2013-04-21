@@ -92,7 +92,7 @@ Positivespace::Application.configure do
 
 
   config.middleware.use ExceptionNotifier,
-    sender_address: 'noreply@positivespace.io',
+    sender_address: 'production@positivespace.io',
     exception_recipients: 'dev@positivespace.io'
 
 end

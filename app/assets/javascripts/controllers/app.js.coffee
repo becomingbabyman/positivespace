@@ -48,7 +48,11 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
             location                  : user.location
             birthday                  : user.birthday
             timezone                  : user.timezone
+            lastName                  : user.last_name
+            firstName                 : user.first_name
+            created                   : user.created_at
             createdAt                 : user.created_at
+            updated                   : user.updated_at
             updatedAt                 : user.updated_at
             facebookId                : user.facebook_id
             signInCount               : user.sign_in_count
