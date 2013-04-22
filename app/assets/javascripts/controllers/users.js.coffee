@@ -1,15 +1,18 @@
 ps.controller "UsersLoginCtrl", ["$scope", "User", ($scope, User) ->
 	$scope.app.show.noChrome()
+	$scope.app.meta.title = "Log in · Positive Space"
 ]
 
 
 ps.controller "UsersRegisterCtrl", ["$scope", "User", ($scope, User) ->
 	$scope.app.show.noChrome()
+	$scope.app.meta.title = "Start · Positive Space"
 ]
 
 
 ps.controller "UserPasswordEditCtrl", ["$scope", "$location", "$routeParams", "User", ($scope, $location, $routeParams, User) ->
 	$scope.app.show.noChrome()
+	$scope.app.meta.title = "Reset Password · Positive Space"
 
 	$scope.psw = {password: '', passwordConfirmation: ''}
 
@@ -44,6 +47,9 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 					$scope.space.cantCloseEdit = true
 				else
 					$location.path('/')
+		$scope.app.meta.title = "#{$scope.user.name}"
+		$scope.app.meta.description = "#{$scope.user.body}"
+		$scope.app.meta.imageUrl = "<%= asset_path('#{$scope.user.avatar.big_thumb_url}') %>"
 		analytics.track 'view space success',
 			href: window.location.href
 			routeId: $routeParams.user_id
@@ -149,6 +155,7 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 
 
 ps.controller "UsersSettingsCtrl", ["$scope", "User", ($scope, User) ->
+	$scope.app.meta.title = "Settings"
 ]
 
 

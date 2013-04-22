@@ -1,8 +1,8 @@
 !!! 5
-- html_tag "ng-app" => "ps", :class => "no-js", :lang => "en", :"xmlns:fb" => "http://ogp.me/ns/fb#" do
+- html_tag "ng-app" => "ps", "ng-controller" => "AppCtrl", :class => "no-js", :lang => "en", :"xmlns:fb" => "http://ogp.me/ns/fb#" do
 	= render "head"
 
-	%body{ "ng-controller" => "AppCtrl", "ng-class" => "{focus: app.show.focus}" }
+	%body{ "ng-class" => "{focus: app.show.focus}" }
 
 		#wrapper
 			#loading{"ng-include" => "app.templates.loading.url"}

@@ -1,9 +1,12 @@
 ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location", "User", ($scope, $timeout, $rootScope, $q, $location, User) ->
 
-    ######################
-    # App Initialization #
-    ######################
+    #####################
+    # App Initialization
+    #
+
     $scope.app = {}
+    $scope.app.meta = {}
+    $scope.app.alerts = {}
     $scope.app.currentUser = {}
     $scope.app.dcu = $q.defer() # Defered Current User
     $scope.app.year = (new Date).getFullYear()
@@ -77,7 +80,6 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
             $scope.app.dcu.resolve(userData)
         else
             $scope.app.currentUser = User.current $scope.app.dcu.resolve, $scope.app.dcu.reject
-
     $scope.app.loadCurrentUser()
 
     $scope.app.loggedIn = ->
@@ -85,6 +87,15 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
     $scope.app.anyMessages = ->
         $scope.app.loggedIn() and $scope.app.currentUser.ready_conversations_count? and $scope.app.currentUser.ready_conversations_count > 0
 
+
+    ########
+    # Meta #
+    ########
+    $scope.app.meta.reset = ->
+        $scope.app.meta.title = "Positive Space · Simply Converse"
+        $scope.app.meta.description = "We believe that thoughtful 1 on 1 conversation leads to understanding, synchronicity, and more interesting relationships. Our goal is to help everyone have at least one great conversation every day."
+        $scope.app.meta.imageUrl = "<%= asset_path('+_.png') %>"
+    $scope.app.meta.reset()
 
     #############
     # Hide/Show #
@@ -99,10 +110,14 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
         $scope.app.show.footer = false
         $scope.app.show.focus = true
 
+
     ###################
     # On Route Change #
     ###################
     $rootScope.$on "$routeChangeStart", (event, next, current) ->
+        # Reset the meta tags
+        $scope.app.meta.reset()
+
         # Make sure the chrome is visible
         $scope.app.show.allChrome()
 
@@ -119,11 +134,14 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
         # Autosize all textareas
         # $timeout (() -> $('textarea').autosize()), 1000
 
+    #
+    # End Initialization
+    #####################
+
 
     #########
     # Flash #
     #########
-    $scope.app.alerts = {}
     $scope.app.flash = (type, msg, options={}) ->
         key = options.key or null
         sticky = if options.sticky == true then true else false

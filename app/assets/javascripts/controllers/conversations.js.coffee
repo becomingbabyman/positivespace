@@ -1,5 +1,6 @@
 ps.controller "ConversationsIndexCtrl", ["$scope", "$routeParams", "$location", "$timeout", "Message", "Conversation", ($scope, $routeParams, $location, $timeout, Message, Conversation) ->
 	$scope.conversations = []
+	$scope.app.meta.title = "My Conversations"
 
 	# Initialize
 	$scope.app.dcu.promise.then (user) ->
@@ -48,6 +49,7 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 		$scope.conversation = Conversation.get {user_id: user.id, id: $routeParams.id}, (conversation) ->
 			$scope.show.conversation = true if conversation.state == 'ended'
 			$scope.myMessage = new Message {user_id: conversation.partners_id, conversation_id: $routeParams.id}
+			$scope.app.meta.title = "Conversation · #{conversation.from.name} -> #{conversation.to.name}"
 			analytics.track 'view conversation success',
 				href: window.location.href
 				routeId: $routeParams.id
@@ -61,7 +63,6 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 		$scope.messages = Message.query {user_id: user.id, conversation_id: $routeParams.id, per: 100}, (messages) ->
 			$scope.lastMsg = _.last(messages)
 			$scope.message = $scope.lastMsg unless $routeParams.message_id
-			console.log $scope.message, $scope.lastMsg, $scope.messages
 	, (error) ->
 		# user must log in to view a conversation
 		$location.path('/login')
