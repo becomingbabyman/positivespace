@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
 		if request.format == Mime::HTML
 			redirect_to root_url, :alert => "You do not have permission to view that page."
 		else
-			render json: {errors: ["Sorry, you can't do that"]}, status: 401
+			render json: {errors: ["Sorry, you can't do that. Please refresh the page and make sure that you are logged in."]}, status: 401
 		end
 	end
 
