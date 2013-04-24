@@ -5,10 +5,12 @@ ps.controller "ConversationsIndexCtrl", ["$scope", "$routeParams", "$location", 
 	$scope.busy = true
 
 	# Initialize
+	$scope.app.show.loading = true
 	$scope.app.dcu.promise.then (user) ->
 		$scope.query = {user_id: user.id, state: 'in_progress', turn_id: user.id, order: "updated_at DESC", page: 1}
 		$scope.conversations = Conversation.query $scope.query, ->
 			$scope.busy = false
+			$scope.app.show.loading = false
 			analytics.track 'view conversations success',
 				user_id: user.id
 				user_name: user.name
@@ -36,16 +38,20 @@ ps.controller "ConversationsIndexCtrl", ["$scope", "$routeParams", "$location", 
 			_.extend($scope.query, {order: "updated_at DESC", page: 1})
 			$scope.selectedFilter = null
 		$scope.busy = true
+		$scope.app.show.loading = true
 		$scope.conversations = Conversation.query $scope.query, ->
 			$scope.busy = false
+			$scope.app.show.loading = false
 			analytics.track "conversations filter by #{$scope.selectedFilter}"
 
 	$scope.loadMoreConversations = ->
 		if $scope.query and $scope.query.page < $scope.conversations.total_pages
 			$scope.query.page += 1
 			$scope.busy = true
+			$scope.app.show.loading = true
 			Conversation.query $scope.query, (response) ->
 				$scope.conversations.collection = $scope.conversations.collection.concat response.collection
+				$scope.app.show.loading = false
 				$scope.busy = false unless $scope.query.page >= $scope.conversations.total_pages
 
 ]
@@ -55,11 +61,10 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 	# $scope.conversations = []
 	$scope.conversation = {}
 	$scope.message = {}
-	$scope.messages = []
+	$scope.messages = {collection: []}
 	$scope.myMessage = {}
 	$scope.lastMsg = {}
 	$scope.show = {conversation: false}
-	$scope.query = {page: 1}
 
 	# Initialize
 	$scope.app.dcu.promise.then (user) ->
@@ -77,8 +82,9 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 				fromId: conversation.from.id
 				fromName: conversation.from.name
 		$scope.message = Message.get {user_id: user.id, id: $routeParams.message_id} if $routeParams.message_id
-		$scope.messages = Message.query {user_id: user.id, conversation_id: $routeParams.id, page: $scope.query.page}, (messages) ->
-			$scope.lastMsg = _.last(messages)
+		$scope.query = {user_id: user.id, conversation_id: $routeParams.id, page: 1}
+		$scope.messages = Message.query $scope.query, (messages) ->
+			$scope.lastMsg = _.last(messages.collection)
 			$scope.message = $scope.lastMsg unless $routeParams.message_id
 	, (error) ->
 		# user must log in to view a conversation
@@ -132,7 +138,7 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 		success = (data) ->
 			$scope.app.flash 'success', 'Great, your message has been sent.'
 			if data.state == 'sent'
-				$scope.messages.push $scope.myMessage
+				$scope.messages.collection.push $scope.myMessage
 				$scope.lastMsg = $scope.myMessage
 				$scope.message = $scope.myMessage
 				$scope.app.currentUser.ready_conversations_count -= 1
