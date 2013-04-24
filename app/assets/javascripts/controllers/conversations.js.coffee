@@ -1,10 +1,11 @@
 ps.controller "ConversationsIndexCtrl", ["$scope", "$routeParams", "$location", "$timeout", "Message", "Conversation", ($scope, $routeParams, $location, $timeout, Message, Conversation) ->
 	$scope.conversations = []
 	$scope.app.meta.title = "My Conversations"
+	$scope.selectedFilter = 'ready'
 
 	# Initialize
 	$scope.app.dcu.promise.then (user) ->
-		$scope.conversations = Conversation.query {user_id: user.id, order: "updated_at DESC", per: 100}, ->
+		$scope.conversations = Conversation.query {user_id: user.id, state: 'in_progress', turn_id: user.id, order: "updated_at DESC", per: 100}, ->
 			analytics.track 'view conversations success',
 				user_id: user.id
 				user_name: user.name
@@ -22,13 +23,13 @@ ps.controller "ConversationsIndexCtrl", ["$scope", "$routeParams", "$location", 
 		$scope.app.dcu.promise.then (user) ->
 			if option != $scope.selectedFilter
 				switch option
-					when 'ready' then $scope.conversations = Conversation.query {user_id: user.id, state: 'in_progress', turn_id: user.id, order: "updated_at ASC"}
-					when 'waiting' then $scope.conversations = Conversation.query {user_id: user.id, state: 'in_progress', not_turn_id: user.id, order: "updated_at DESC"}
-					when 'ended' then $scope.conversations = Conversation.query {user_id: user.id, state: 'ended', order: "updated_at DESC"}
+					when 'ready' then $scope.conversations = Conversation.query {user_id: user.id, state: 'in_progress', turn_id: user.id, order: "updated_at ASC", per: 100}
+					when 'waiting' then $scope.conversations = Conversation.query {user_id: user.id, state: 'in_progress', not_turn_id: user.id, order: "updated_at DESC", per: 100}
+					when 'ended' then $scope.conversations = Conversation.query {user_id: user.id, state: 'ended', order: "updated_at DESC", per: 100}
 				$scope.selectedFilter = option
 				analytics.track "conversations filter by #{option}"
 			else
-				$scope.conversations = Conversation.query {user_id: user.id, order: "updated_at DESC"}
+				$scope.conversations = Conversation.query {user_id: user.id, order: "updated_at DESC", per: 100}
 				$scope.selectedFilter = null
 				analytics.track "conversations filter by all"
 

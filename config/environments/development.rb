@@ -39,7 +39,7 @@ Positivespace::Application.configure do
   config.assets.debug = true
 
   config.action_mailer.delivery_method = :letter_opener
-  
+
   config.action_controller.asset_host = 'http://localhost:3000'
   config.action_mailer.asset_host = 'http://localhost:3000' # for emails
 
