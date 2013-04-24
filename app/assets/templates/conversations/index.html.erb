@@ -28,52 +28,54 @@
 				</div>
 			</div>
 			<div class="row-fluid">
-				<div class="span12" ng-show='conversations.length == 0'>
+				<div class="span12" ng-show='conversations.collection.length == 0'>
 					<h3 class='faded'>You should start one.</h3>
 				</div>
 			</div>
-			<div class="row-fluid" ng-repeat="conversation in conversations">
-				<div class="span12">
-					<hr/>
-					<a ng-href="/conversations/{{conversation.id}}?message_id={{conversation.last_message_id}}" class='unfancy-link'>
-						<div class="row-fluid">
-							<div class="span12">
-								<small class='pull-right faded'>{{conversation.updated_at | date:"MMMM d, yyyy"}}</small>
-								<i class="icon-circle-blank color-green pull-left" ng-show="conversation.state == 'in_progress' && conversation.last_message_from_id != app.currentUser.id" tooltip="Reply now!"></i>
-								<i class="icon-time color-yellow pull-left" ng-show="conversation.state == 'in_progress' && conversation.last_message_from_id == app.currentUser.id" tooltip="Wait for a reply."></i>
-								<i class="icon-remove-circle color-red pull-left" ng-show="conversation.state == 'ended'" tooltip="All done."></i>
+			<div infinite-scroll='loadMoreConversations()' infinite-scroll-disabled='busy' infinite-scroll-distance='1'>
+				<div class="row-fluid" ng-repeat="conversation in conversations.collection">
+					<div class="span12">
+						<hr/>
+						<a ng-href="/conversations/{{conversation.id}}?message_id={{conversation.last_message_id}}" class='unfancy-link'>
+							<div class="row-fluid">
+								<div class="span12">
+									<small class='pull-right faded'>{{conversation.updated_at | date:"MMMM d, yyyy"}}</small>
+									<i class="icon-circle-blank color-green pull-left" ng-show="conversation.state == 'in_progress' && conversation.last_message_from_id != app.currentUser.id" tooltip="Reply now!"></i>
+									<i class="icon-time color-yellow pull-left" ng-show="conversation.state == 'in_progress' && conversation.last_message_from_id == app.currentUser.id" tooltip="Wait for a reply."></i>
+									<i class="icon-remove-circle color-red pull-left" ng-show="conversation.state == 'ended'" tooltip="All done."></i>
+								</div>
 							</div>
-						</div>
-						<!-- <div class="row-fluid">
-							<div class="span12">
-								<small>{{conversation.prompt}}</small>
+							<!-- <div class="row-fluid">
+								<div class="span12">
+									<small>{{conversation.prompt}}</small>
+								</div>
+							</div> -->
+							<div class="row-fluid">
+								<div class="span12">
+									<img ng-src="{{conversation.from.avatar.thumb_url}}" alt="{{conversation.from.name}}" class="img-circle img-border img-mini">
+									<img ng-src="{{conversation.to.avatar.thumb_url}}" alt="{{conversation.to.name}}" class="img-circle img-border" tooltip="{{conversation.prompt}}" tooltip-placement='bottom'>
+								</div>
 							</div>
-						</div> -->
-						<div class="row-fluid">
-							<div class="span12">
-								<img ng-src="{{conversation.from.avatar.thumb_url}}" alt="{{conversation.from.name}}" class="img-circle img-border img-mini">
-								<img ng-src="{{conversation.to.avatar.thumb_url}}" alt="{{conversation.to.name}}" class="img-circle img-border" tooltip="{{conversation.prompt}}" tooltip-placement='bottom'>
+							<div class="row-fluid ptm">
+								<div class="span12">
+									<small ng-hide='conversation.from.id == app.currentUser.id'>from</small>
+									<small ng-hide='conversation.to.id == app.currentUser.id'>to</small>
+									<span ng-hide='conversation.from.id == app.currentUser.id'>{{conversation.from.name}}</span>
+									<span ng-hide='conversation.to.id == app.currentUser.id'>{{conversation.to.name}}</span>
+								</div>
 							</div>
-						</div>
-						<div class="row-fluid ptm">
-							<div class="span12">
-								<small ng-hide='conversation.from.id == app.currentUser.id'>from</small>
-								<small ng-hide='conversation.to.id == app.currentUser.id'>to</small>
-								<span ng-hide='conversation.from.id == app.currentUser.id'>{{conversation.from.name}}</span>
-								<span ng-hide='conversation.to.id == app.currentUser.id'>{{conversation.to.name}}</span>
+							<div class="row-fluid">
+								<div class="span12">
+									<p class='lead' ng-bind-html-unsafe="conversation.last_message_body | linebreaks">{{conversation.last_message_body}}</p>
+								</div>
 							</div>
-						</div>
-						<div class="row-fluid">
-							<div class="span12">
-								<p class='lead' ng-bind-html-unsafe="conversation.last_message_body | linebreaks">{{conversation.last_message_body}}</p>
+							<div class="row-fluid" ng-show="conversation.state != 'ended' && conversation.last_message_from_id != app.currentUser.id">
+								<div class="span12">
+									<div class='btn btn-link btn-block' ng-click='selectConversation(conversation)'>reply</div>
+								</div>
 							</div>
-						</div>
-						<div class="row-fluid" ng-show="conversation.state != 'ended' && conversation.last_message_from_id != app.currentUser.id">
-							<div class="span12">
-								<div class='btn btn-link btn-block' ng-click='selectConversation(conversation)'>reply</div>
-							</div>
-						</div>
-					</a>
+						</a>
+					</div>
 				</div>
 			</div>
 		</div>

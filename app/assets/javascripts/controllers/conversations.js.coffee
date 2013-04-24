@@ -1,11 +1,14 @@
 ps.controller "ConversationsIndexCtrl", ["$scope", "$routeParams", "$location", "$timeout", "Message", "Conversation", ($scope, $routeParams, $location, $timeout, Message, Conversation) ->
-	$scope.conversations = []
+	$scope.conversations = {collection: []}
 	$scope.app.meta.title = "My Conversations"
 	$scope.selectedFilter = 'ready'
+	$scope.busy = true
 
 	# Initialize
 	$scope.app.dcu.promise.then (user) ->
-		$scope.conversations = Conversation.query {user_id: user.id, state: 'in_progress', turn_id: user.id, order: "updated_at DESC", per: 100}, ->
+		$scope.query = {user_id: user.id, state: 'in_progress', turn_id: user.id, order: "updated_at DESC", page: 1}
+		$scope.conversations = Conversation.query $scope.query, ->
+			$scope.busy = false
 			analytics.track 'view conversations success',
 				user_id: user.id
 				user_name: user.name
@@ -20,18 +23,30 @@ ps.controller "ConversationsIndexCtrl", ["$scope", "$routeParams", "$location", 
 			error: 'not logged in'
 
 	$scope.filter = (option) ->
-		$scope.app.dcu.promise.then (user) ->
-			if option != $scope.selectedFilter
-				switch option
-					when 'ready' then $scope.conversations = Conversation.query {user_id: user.id, state: 'in_progress', turn_id: user.id, order: "updated_at ASC", per: 100}
-					when 'waiting' then $scope.conversations = Conversation.query {user_id: user.id, state: 'in_progress', not_turn_id: user.id, order: "updated_at DESC", per: 100}
-					when 'ended' then $scope.conversations = Conversation.query {user_id: user.id, state: 'ended', order: "updated_at DESC", per: 100}
-				$scope.selectedFilter = option
-				analytics.track "conversations filter by #{option}"
-			else
-				$scope.conversations = Conversation.query {user_id: user.id, order: "updated_at DESC", per: 100}
-				$scope.selectedFilter = null
-				analytics.track "conversations filter by all"
+		delete $scope.query["state"]
+		delete $scope.query["turn_id"]
+		delete $scope.query["not_turn_id"]
+		if option != $scope.selectedFilter
+			switch option
+				when 'ready' then $scope.conversations = _.extend($scope.query, {state: 'in_progress', turn_id: $scope.query.user_id, order: "updated_at ASC", page: 1})
+				when 'waiting' then $scope.conversations = _.extend($scope.query, {state: 'in_progress', not_turn_id: $scope.query.user_id, order: "updated_at DESC", page: 1})
+				when 'ended' then $scope.conversations = _.extend($scope.query, {state: 'ended', order: "updated_at DESC", page: 1})
+			$scope.selectedFilter = option
+		else
+			_.extend($scope.query, {order: "updated_at DESC", page: 1})
+			$scope.selectedFilter = null
+		$scope.busy = true
+		$scope.conversations = Conversation.query $scope.query, ->
+			$scope.busy = false
+			analytics.track "conversations filter by #{$scope.selectedFilter}"
+
+	$scope.loadMoreConversations = ->
+		if $scope.query and $scope.query.page < $scope.conversations.total_pages
+			$scope.query.page += 1
+			$scope.busy = true
+			Conversation.query $scope.query, (response) ->
+				$scope.conversations.collection = $scope.conversations.collection.concat response.collection
+				$scope.busy = false unless $scope.query.page >= $scope.conversations.total_pages
 
 ]
 
@@ -44,6 +59,7 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 	$scope.myMessage = {}
 	$scope.lastMsg = {}
 	$scope.show = {conversation: false}
+	$scope.query = {page: 1}
 
 	# Initialize
 	$scope.app.dcu.promise.then (user) ->
@@ -61,7 +77,7 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 				fromId: conversation.from.id
 				fromName: conversation.from.name
 		$scope.message = Message.get {user_id: user.id, id: $routeParams.message_id} if $routeParams.message_id
-		$scope.messages = Message.query {user_id: user.id, conversation_id: $routeParams.id, per: 100}, (messages) ->
+		$scope.messages = Message.query {user_id: user.id, conversation_id: $routeParams.id, page: $scope.query.page}, (messages) ->
 			$scope.lastMsg = _.last(messages)
 			$scope.message = $scope.lastMsg unless $routeParams.message_id
 	, (error) ->

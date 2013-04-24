@@ -1,4 +1,9 @@
-collection @messages
-cache @messages
+object false
 
-extends 'api/v1/messages/base'
+node(:total) { |i| @messages.total_count }
+node(:total_pages) { |i| @messages.num_pages }
+
+child @messages => :collection do
+	cache @messages
+	extends 'api/v1/messages/base'
+end

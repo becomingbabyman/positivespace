@@ -18,6 +18,10 @@ psServices.factory 'Conversation', ['$resource', ($resource) ->
 		list_ctrl: '@list_ctrl'
 		doc_ctrl: '@doc_ctrl'
 	,
+		query:
+			method: 'GET'
+			isArray: false
+
 		update:
 			method: 'PUT'
 
@@ -28,6 +32,30 @@ psServices.factory 'Conversation', ['$resource', ($resource) ->
 			@$save(success, error)
 
 	Conversation
+]
+
+
+psServices.factory 'Message', ['$resource', ($resource) ->
+	Message = $resource "/api/users/:user_id/messages/:list_ctrl/:id/:doc_ctrl",
+		user_id: '@user_id'
+		id: '@id'
+		list_ctrl: '@list_ctrl'
+		doc_ctrl: '@doc_ctrl'
+	,
+		query:
+			method: 'GET'
+			isArray: false
+
+		update:
+			method: 'PUT'
+
+	Message::save = (success=null, error=null) ->
+		if @id?
+			@$update(success, error)
+		else
+			@$save(success, error)
+
+	Message
 ]
 
 
@@ -88,22 +116,3 @@ psServices.factory 'User', ['$resource', ($resource) ->
 	User
 ]
 
-
-psServices.factory 'Message', ['$resource', ($resource) ->
-	Message = $resource "/api/users/:user_id/messages/:list_ctrl/:id/:doc_ctrl",
-		user_id: '@user_id'
-		id: '@id'
-		list_ctrl: '@list_ctrl'
-		doc_ctrl: '@doc_ctrl'
-	,
-		update:
-			method: 'PUT'
-
-	Message::save = (success=null, error=null) ->
-		if @id?
-			@$update(success, error)
-		else
-			@$save(success, error)
-
-	Message
-]
