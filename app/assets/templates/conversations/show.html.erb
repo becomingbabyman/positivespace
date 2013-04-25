@@ -47,8 +47,9 @@
 
 					<div class="row-fluid" ui-if='msg.embed_url'>
 						<div class="span12 uncenter body">
+							<img ng-show='(msg.embed_data.thumbnail_url || msg.embed_data.type == "photo") && !msg.embed_data.html' alt='{{msg.embed_data.title}}' title='{{msg.embed_data.title}}' ng-src='{{msg.embed_data.thumbnail_url || msg.embed_data.url}}'>
 							<div ng-bind-html-unsafe="msg.embed_data.html"></div>
-							<a ng-href='{{msg.embed_url}}' target='_blank' class='font12'>{{msg.embed_url}}</a>
+							<a ng-href='{{msg.embed_url}}' target='_blank' title='{{msg.embed_data.description}}' class='font12'>{{msg.embed_url}}</a>
 						</div>
 					</div>
 				</div>
@@ -87,7 +88,7 @@
 
 								<a href='#' class='pull-left' ng-click='end()' tooltip="End the conversation if it's going nowhere. You can always start a new one." tooltip-placement='right'><i class="icon-remove-circle font30 color-red opacity8"></i></a>
 
-								<a href='#' class='muted pull-left pll' ng-click='show.embedInput = true' ng-hide='show.embedInput'><i class='icon-link pts font20' tooltip='embed one link' tooltip-placement='right'></i></a>
+								<a href='#' class='muted pull-left pll' ng-click='show.embedInput = true' ng-hide='show.embedInput'><i class='icon-link pts font20' tooltip='Attach a link to embed a picture, video, audio, or a website.' tooltip-placement='right'></i></a>
 								<a href='#' class='muted pull-left pll' ng-click='show.embedInput = false' ng-show='show.embedInput'><i class='icon-link pts font20'></i></a>
 							</div>
 						</div>
