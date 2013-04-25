@@ -71,13 +71,23 @@
 						<ps-subtle-login app='app'></ps-subtle-login>
 
 						<control-group>
-							<textarea name='body' id='msg_body' title='message body' placeholder="message{{' to ' + user.name | lowercase}}" class='input-block-level' ng-model='message.body' rows=5 required></textarea>
+							<textarea name='body' id='msg_body' title='message body' placeholder="message{{' to ' + user.name | lowercase}}" class='input-block-level' ng-model='message.body' rows=5 required ng-disabled='message.id'></textarea>
 						</control-group>
+
+						<div ng-show='show.embedInput'>
+							<control-group>
+								<input type="url" name='embed_url' id='msg_embed_url' title='embed url' placeholder='http://example.com' class='input-block-level' ng-model='message.embed_url' ng-disabled='message.id'>
+							</control-group>
+						</div>
 
 						<div class='control-group'>
 							<div class='controls'>
-								<button ng-hide='message.id' type='submit' class='btn btn-success pull-right' ng-disabled="messageForm.body.$invalid">Reply</button>
+								<a href='#' class='muted' ng-click='show.embedInput = true' ng-hide='show.embedInput'><i class='icon-link pts font20' tooltip='embed one link' tooltip-placement='right'></i></a>
+								<a href='#' class='muted' ng-click='show.embedInput = false' ng-show='show.embedInput'><i class='icon-link pts font20'></i></a>
+
+								<button ng-hide='message.id' type='submit' class='btn btn-success pull-right' ng-disabled="messageForm.body.$invalid">Start Conversation</button>
 								<button ng-show='message.id' type='submit' class='btn btn-disabled pull-right' disabled>Message Sent</button>
+
 								<span class='pull-right pts prm' id='msg_remaining_chars' ng-class='{"muted": remainingChars > 10, "text-error": remainingChars <= 10}'>{{remainingChars}}</span>
 							</div>
 						</div>

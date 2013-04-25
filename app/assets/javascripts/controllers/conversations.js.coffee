@@ -65,7 +65,7 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 	$scope.messages = {collection: []}
 	$scope.myMessage = {}
 	$scope.lastMsg = {}
-	$scope.show = {conversation: false}
+	$scope.show = {conversation: false, embedInput: false}
 
 	# Initialize
 	$scope.app.dcu.promise.then (user) ->
@@ -137,6 +137,7 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 
 	$scope.save = (state_event = null) ->
 		success = (data) ->
+			$scope.app.loading = false
 			$scope.app.flash 'success', 'Great, your message has been sent.'
 			if data.state == 'sent'
 				$scope.messages.collection.push $scope.myMessage
@@ -168,6 +169,7 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 					fromId: data.from.id
 					fromName: data.from.name
 		error = (error) ->
+			$scope.app.loading = false
 			$scope.app.flash 'error', error.data.errors
 			analytics.track 'message conversation error',
 				href: window.location.href
@@ -176,8 +178,9 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 				conversationPrompt: $scope.conversation.prompt
 				error: JSON.stringify(error)
 
+		$scope.app.loading = true
 		if state_event? then $scope.myMessage.state_event = state_event
-
+		delete $scope.message['embed_url'] unless $scope.show.embedInput
 		$scope.myMessage.save success, error
 
 ]

@@ -12,7 +12,7 @@ class Conversation < ActiveRecord::Base
 	belongs_to :from, :class_name => 'User'
 	belongs_to :last_message, :class_name => 'Message'
 	belongs_to :last_message_from, :class_name => 'User'
-	has_many :messages
+	has_many :messages, :dependent => :destroy
 
 	validates :to_id, presence: true
 	validates :from_id, presence: true

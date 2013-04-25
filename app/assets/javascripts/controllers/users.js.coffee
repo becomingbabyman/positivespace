@@ -37,6 +37,7 @@ ps.controller "UserPasswordEditCtrl", ["$scope", "$location", "$routeParams", "U
 ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location", "User", "Message", ($scope, $routeParams, $timeout, $location, User, Message) ->
 	user_id = $routeParams.user_id or 'space'
 	$scope.space = {fadeCount: 0}
+	$scope.show = {embedInput: false}
 
 	$scope.user = User.get {id: user_id}, ->
 		$scope.userCopy = angular.copy $scope.user
@@ -141,6 +142,7 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 					fromName: $scope.app.currentUser.name
 					error: JSON.stringify(error)
 			$scope.message.state_event = 'send'
+			delete $scope.message['embed_url'] unless $scope.show.embedInput
 			$scope.message.save success, error
 		else
 			$scope.app.flash 'info', 'It looks like something is missing. Please fill in all fields.'
