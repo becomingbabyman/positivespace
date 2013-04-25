@@ -42,7 +42,8 @@ ps.controller "ConversationsIndexCtrl", ["$scope", "$routeParams", "$location", 
 		$scope.conversations = Conversation.query $scope.query, ->
 			$scope.busy = false
 			$scope.app.show.loading = false
-			analytics.track "conversations filter by #{$scope.selectedFilter}"
+			filter = $scope.selectedFilter or 'all'
+			analytics.track "conversations filter by #{filter}"
 
 	$scope.loadMoreConversations = ->
 		if $scope.query and $scope.query.page < $scope.conversations.total_pages
