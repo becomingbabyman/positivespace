@@ -479,7 +479,7 @@ psDirectives.directive 'psLogin', ["$timeout", "$location", "User", ($timeout, $
 							scope.app.show.loading = false
 							scope.app.loadCurrentUser data
 							scope.credentials = {loginType: 'login'}
-							scope.app.flash 'success', "Welcome. Let's create your Positive Space!"
+							scope.app.flash 'success', "Welcome. Let's create your Positive Space! What do you want to talk about?"
 							$location.path("/#{data.username}")
 							analytics.track 'sign up success',
 								type: 'form'

@@ -89,7 +89,7 @@ ps.controller "UsersEditCtrl", ["$scope", "$routeParams", "$timeout", "$location
 			$scope.user.save success, error
 		else
 			angular.element('textarea#user_body').focus()
-			$scope.app.flash 'info', "Please share what you would like to talk about."
+			$scope.app.flash 'info', "Please share what you want to talk about. Then you can see your space."
 
 ]
 

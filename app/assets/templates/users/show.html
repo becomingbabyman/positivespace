@@ -23,7 +23,7 @@
 						<div class='animated fadeInDown'>
 							<h2 class='pts pbs'>{{user.name}}</h2>
 							<p ng-bind-html-unsafe="user.body | linebreaks" class='prompt'>{{user.body}}</p>
-							<p ng-show='user.location.length > 0 || user.personal_url.length > 0' class='pbm ptl'>
+							<p ng-show='user.location.length > 0 || user.personal_url.length > 0' class='m0 ptl'>
 								<span ng-show='user.location.length > 0'><i class='icon-map-marker'></i> {{user.location}}</span>
 								<span ng-show='user.location.length > 0 && user.personal_url.length > 0'>&nbsp;&middot;&nbsp;</span>
 								<span ng-show='user.personal_url.length > 0'><a href='{{user.personal_url}}' target='_blank' class='unfancy-link'>{{user.personal_url | urlSimplify}}</a></span>
@@ -34,7 +34,7 @@
 				</div>
 			</div>
 
-			<div class='row animated fadeInUp'>
+			<div class='row animated fadeInUp ptl'>
 				<div class="span-mobile center pos-rel">
 					<form name='messageForm' class='form-vertical uncenter' ng-submit='submitMessage()' novalidate style='width: 100%;'>
 
