@@ -2,19 +2,48 @@
 	<div class="row">
 		<div class="span12">
 
-			<div ng-show='user.can_edit' class="row">
+			<div ng-show='user.can_edit && !hideShare' class="row">
 				<div class="span-mobile center">
-					<!-- TODO: Share prompt -->
+					<div class='row-fluid'>
+						<div class="span12 alert alert-info alert-block uncenter bgw">
+							<button type="button" class="close" ng-click="hideShare = true">&times;</button>
+							<h4>1. Start a conversation</h4>
+							Share your space with the people you want to have a conversation with.
+							<!-- AddThis Button BEGIN -->
+							<div class="addthis_toolbox addthis_default_style ptm">
+								<a class="addthis_button_facebook"></a>
+								<a class="addthis_button_twitter"></a>
+								<a class="addthis_button_google_plusone_share"></a>
+								<a class="addthis_button_email"></a>
+								<a href="http://addthis.com/bookmark.php?v=250" class="addthis_button_compact"></a>
+								<a class="addthis_button_facebook_send" style='margin-top: -3px;'></a>
+							</div>
+							<!-- AddThis Button END -->
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div ng-show='user.can_edit && !hideEmbed' class="row" ng-class='{ptl: !hideShare}'>
+				<div class="span-mobile center">
+					<div class='row-fluid'>
+						<div class="span12 alert alert-info alert-block uncenter bgw">
+							<button type="button" class="close" ng-click="hideEmbed = true">&times;</button>
+							<h4>2. Embed your space</h4>
+							Let conversations come to you. Embed your space in your website or blog.
+							<a href="#" ng-click="requestEmbedCode()" class="btn btn-link btn-block">Click to get embed code</a>
+						</div>
+					</div>
 				</div>
 			</div>
 
 			<div ng-show='user.can_edit' class="row">
-				<div class="span-mobile center">
+				<div class="span-mobile center ptm">
 					<a ng-href='/{{user.slug}}/edit' class='pull-right btn btn-link'>edit</a>
 				</div>
 			</div>
 
-			<div class="row">
+			<div class="row ptm">
 				<div class="span-mobile center pos-rel">
 					<div class='lbl ptx'>To:</div>
 

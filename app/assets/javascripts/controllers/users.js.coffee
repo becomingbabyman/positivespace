@@ -45,7 +45,7 @@ ps.controller "UsersEditCtrl", ["$scope", "$routeParams", "$timeout", "$location
 					$location.path('/')
 		$scope.app.meta.title = "Edit #{$scope.user.name}"
 		$scope.app.meta.description = "Configure your space just the way you want it."
-		$scope.app.meta.imageUrl = "<%= asset_path('#{$scope.user.avatar.big_thumb_url}') %>"
+		$scope.app.meta.imageUrl = $scope.user.avatar.big_thumb_url
 		analytics.track 'view edit space success',
 			href: window.location.href
 			routeId: $routeParams.user_id
@@ -100,15 +100,28 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 	$scope.show = {embedInput: false}
 
 	$scope.user = User.get {id: user_id}, ->
+		$scope.app.meta.title = "#{$scope.user.name}"
+		$scope.app.meta.description = "#{$scope.user.body}"
+		$scope.app.meta.imageUrl = $scope.user.avatar.big_thumb_url
 		if !$scope.user.body? or $scope.user.body.length == 0
 			$scope.app.dcu.promise.then (currentUser) ->
 				if $scope.user.id == currentUser.id
 					$location.path("/#{currentUser.slug}/edit")
 				else
 					$location.path('/')
-		$scope.app.meta.title = "#{$scope.user.name}"
-		$scope.app.meta.description = "#{$scope.user.body}"
-		$scope.app.meta.imageUrl = "<%= asset_path('#{$scope.user.avatar.big_thumb_url}') %>"
+		else
+			$scope.app.dcu.promise.then (currentUser) ->
+				if $scope.user.id == currentUser.id
+					addthis_share =
+						url: window.location.href
+						title: $scope.app.meta.title
+						description: $scope.app.meta.description
+						templates:
+							twitter: "Check out my space {{url}} and we can have a conversation via @positivespaceny"
+					addthis.toolbox '.addthis_toolbox', {}, addthis_share
+					# addthis.addEventListener 'addthis.menu.share', (evt) ->
+					#     console.log evt
+
 		analytics.track 'view space success',
 			href: window.location.href
 			routeId: $routeParams.user_id
@@ -134,6 +147,10 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 				$scope.space.fadeCount -= 1
 				if $scope.space.fadeCount == 0 then $('#msg_remaining_chars').fadeIn()
 			, 1400
+
+	$scope.requestEmbedCode = ->
+		analytics.track 'request embed code'
+		window.alert "This feature is under development. In the meantime you can link you your space \"#{window.location.href}\" from your website or blog. And you can speak with us at \"people@consignd.com\" and share your thoughts about embedding. We are sorry for the inconvenience."
 
 	$scope.submitMessage = ->
 		if $scope.app.loggedIn()

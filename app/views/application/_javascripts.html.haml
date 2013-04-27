@@ -4,30 +4,6 @@
 	:javascript
 		!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
 
--# LuckyOrange
-	:javascript
-		var __wtw_lucky_ref_id = "TODO:";
-		var __wtw_lucky_setup_key = {};
-		__wtw_lucky_setup_key.id = 'TODO:';
-		__wtw_lucky_setup_key.key = 'TODO:';
-		(function() {
-			var wa = document.createElement('script'); wa.type = 'text/javascript'; wa.async = true;
-			wa.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://ca402981') + '.luckyorange.com/w.js';
-			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(wa, s);
-		})();
-
--# Mixpanel People API
-	- if current_user
-		:coffeescript
-			mixpanel.people.identify '#{current_user.id}'
-			mixpanel.people.set
-				"$email": '#{current_user.email}'
-				"$created": '#{current_user.created_at.strftime("%Y-%m-%d %H:%M:%S")}'
-				"$last_login": '#{current_user.last_sign_in_at.strftime("%Y-%m-%d %H:%M:%S")}'
-				"$username" : '#{current_user.username}'
-				"$name" : '#{current_user.full_name}'
-				"sign_in_count" : '#{current_user.sign_in_count}'
-				# "credits": 150                     # ...or numbers
-				# "gender": "Male"                   # feel free to define your own properties
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-517b28810bfc2b62"></script>
 
 = yield :javascripts
