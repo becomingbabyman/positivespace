@@ -116,6 +116,7 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 						url: window.location.href
 						title: $scope.app.meta.title
 						description: $scope.app.meta.description
+						screenshot: $scope.app.meta.imageUrl
 						templates:
 							twitter: "Check out my space {{url}} and we can have a conversation via @positivespaceny"
 					addthis.toolbox '.addthis_toolbox', {}, addthis_share

@@ -23,10 +23,11 @@
     -# Mobile viewport optimized: h5bp.com/viewport
     %meta{ :name => "viewport", :content => "width=device-width, initial-scale=1.0, maximum-scale=1.0" }
 
-    %meta{property: "og:image", content: "{{app.meta.imageUrl}}"}
-    %meta{property: "og:title", content: "{{app.meta.title}}"}
-    %meta{property: "og:name", content: "Positive Space"}
-    %meta{property: "og:description", content: "{{app.meta.description}}"}
+    -#
+        %meta{property: "og:image", content: "{{app.meta.imageUrl}}"}
+        %meta{property: "og:title", content: "{{app.meta.title}}"}
+        %meta{property: "og:name", content: "Positive Space"}
+        %meta{property: "og:description", content: "{{app.meta.description}}"}
 
     %meta{ :name => "description", :content => "{{app.meta.description}}" }
     %title{ "ng-bind" => "app.currentUser.ready_conversations_count > 0 && '('+app.currentUser.ready_conversations_count+') ' + app.meta.title || app.meta.title" } Positive Space - Simply Converse
