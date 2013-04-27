@@ -27,6 +27,13 @@
 
 			<hr/>
 
+			<div class="row-fluid" ng-show='conversation.state != "ended" && messages.collection.length > 1'>
+				<div class="span12 pbm">
+					<a href='#' ng-hide='show.conversation' class='btn btn-block btn-link' ng-click='show.conversation = true'>expand conversation</a>
+					<a href='#' ng-show='show.conversation' class='btn btn-block btn-link' ng-click='show.conversation = false'>collapse conversation</a>
+				</div>
+			</div>
+
 			<div class="row-fluid" ng-repeat="msg in messages.collection">
 				<div class="span12 message pbs ptm" ng-show='show.conversation || msg.id == message.id'>
 					<div class="row-fluid">
@@ -52,13 +59,6 @@
 							<a ng-href='{{msg.embed_url}}' target='_blank' title='{{msg.embed_data.description}}' class='font12'>{{msg.embed_url}}</a>
 						</div>
 					</div>
-				</div>
-			</div>
-
-			<div class="row-fluid" ng-show='conversation.state != "ended" && messages.collection.length > 1'>
-				<div class="span12 pbm">
-					<a href='#' ng-hide='show.conversation' class='btn btn-block btn-link' ng-click='show.conversation = true'>expand conversation</a>
-					<a href='#' ng-show='show.conversation' class='btn btn-block btn-link' ng-click='show.conversation = false'>collapse conversation</a>
 				</div>
 			</div>
 
@@ -88,7 +88,7 @@
 
 								<a href='#' class='pull-left' ng-click='end()' tooltip="End the conversation if it's going nowhere. You can always start a new one." tooltip-placement='right'><i class="icon-remove-circle font30 color-red opacity8"></i></a>
 
-								<a href='#' class='muted pull-left pll' ng-click='show.embedInput = true' ng-hide='show.embedInput'><i class='icon-link pts font20' tooltip='Attach a link to embed a picture, video, audio, or a website.' tooltip-placement='right'></i></a>
+								<a href='#' class='muted pull-left pll' ng-click='show.embedInput = true' ng-hide='show.embedInput'><i class='icon-link pts font20' tooltip='Attach a link. We will magically find and embed picture, video, audio, and more.' tooltip-placement='right'></i></a>
 								<a href='#' class='muted pull-left pll' ng-click='show.embedInput = false' ng-show='show.embedInput'><i class='icon-link pts font20'></i></a>
 							</div>
 						</div>
