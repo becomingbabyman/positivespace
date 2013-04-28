@@ -6,7 +6,8 @@
 
 		#wrapper
 			#loading{"ng-include" => "app.templates.loading.url"}
-				= image_tag 'loading.gif'
+				= image_tag "#{root_url}apple-touch-icon-144x144.png"
+				= image_tag 'loading.gif', style: "position: absolute;left: 0;top: 0;width: 144px;height: 144px;"
 			%header#header{"ng-class" => "app.templates.header.classes", "ng-include" => "app.templates.header.url"}
 			#main{ :role => "main" }
 				#flash{"ng-include" => "app.templates.flash.url"}
