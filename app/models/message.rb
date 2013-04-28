@@ -56,7 +56,7 @@ class Message < ActiveRecord::Base
 		# TODO: move the key out of the model
 		unless url.blank?
 			embedly_api = Embedly::API.new :key => 'f42bdb4234f14b998f8f7bbe95d5acb3', :user_agent => 'Mozilla/5.0 (compatible; mytestapp/1.0; my@email.com)'
-			obj = embedly_api.oembed :url => url, autoplay: false, width: 278#, maxheight: 500 #, maxwidth: 278, frame: true, secure: true
+			obj = embedly_api.oembed :url => url, autoplay: false, width: 358#, maxheight: 500 #, maxwidth: 278, frame: true, secure: true
 			self.embed_data = obj[0].marshal_dump
 		end
 		super url

@@ -114,14 +114,19 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 				if $scope.user.id == currentUser.id
 					addthis_share =
 						url: window.location.href
-						title: $scope.app.meta.title
-						description: $scope.app.meta.description
+						title: 'Have a conversation with me on my Positive Space'
+						description: $scope.user.body
 						screenshot: $scope.app.meta.imageUrl
+						email_template: "share_space"
+						# email_vars:
+						#	body: $scope.user.body
 						templates:
-							twitter: "Check out my space {{url}} and we can have a conversation via @positivespaceny"
+							twitter: "Have a conversation with me on my Positive Space {{url}} via @positivespaceny #+_"
 					addthis.toolbox '.addthis_toolbox', {}, addthis_share
-					# addthis.addEventListener 'addthis.menu.share', (evt) ->
-					#     console.log evt
+					addthis.addEventListener 'addthis.menu.share', (evt) ->
+						analytics.track 'click share my space button',
+							service: evt.data.service
+							url: evt.data.url
 
 		analytics.track 'view space success',
 			href: window.location.href
