@@ -154,6 +154,13 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 				if $scope.space.fadeCount == 0 then $('#msg_remaining_chars').fadeIn()
 			, 1400
 
+	$scope.$watch 'show.embedInput', (value) ->
+		if value
+			analytics.track 'click reveal embed url input',
+				href: window.location.href
+				routeId: $routeParams.id
+
+
 	$scope.requestEmbedCode = ->
 		analytics.track 'request embed code'
 		window.alert "This feature is under development. In the meantime you can link you your space \"#{window.location.href}\" from your website or blog. And you can speak with us at \"people@consignd.com\" and share your thoughts about embedding. We are sorry for the inconvenience."
@@ -172,6 +179,7 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 					userBody: $scope.user.body
 					fromId: $scope.app.currentUser.id
 					fromName: $scope.app.currentUser.name
+					hasEmbedUrl: $scope.message.embed_url?
 			error = (error) ->
 				$scope.app.show.loading = false
 				$scope.app.flash 'error', error.data.errors
@@ -183,6 +191,7 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 					userBody: $scope.user.body
 					fromId: $scope.app.currentUser.id
 					fromName: $scope.app.currentUser.name
+					hasEmbedUrl: $scope.message.embed_url?
 					error: JSON.stringify(error)
 			$scope.message.state_event = 'send'
 			delete $scope.message['embed_url'] unless $scope.show.embedInput

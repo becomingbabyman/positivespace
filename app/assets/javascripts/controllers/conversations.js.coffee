@@ -99,6 +99,13 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 	$scope.$watch 'myMessage.body', (value) ->
 		$scope.remainingChars = 250 - (if value? then value.length else 0)
 
+
+	$scope.$watch 'show.embedInput', (value) ->
+		if value
+			analytics.track 'click reveal embed url input',
+				href: window.location.href
+				routeId: $routeParams.id
+
 	$scope.end = ->
 		if window.confirm 'This conversation is finished.'
 			$scope.conversation.state_event = 'end'
@@ -157,6 +164,7 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 					toName: data.to.name
 					fromId: data.from.id
 					fromName: data.from.name
+					hasEmbedUrl: $scope.myMessage.embed_url?
 			else
 				analytics.track 'message conversation save draft',
 					href: window.location.href
@@ -168,6 +176,7 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 					toName: data.to.name
 					fromId: data.from.id
 					fromName: data.from.name
+					hasEmbedUrl: $scope.myMessage.embed_url?
 		error = (error) ->
 			$scope.app.loading = false
 			$scope.app.flash 'error', error.data.errors
@@ -176,11 +185,12 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 				routeId: $routeParams.id
 				conversationId: $scope.conversation.id
 				conversationPrompt: $scope.conversation.prompt
+				hasEmbedUrl: $scope.myMessage.embed_url?
 				error: JSON.stringify(error)
 
 		$scope.app.loading = true
 		if state_event? then $scope.myMessage.state_event = state_event
-		delete $scope.message['embed_url'] unless $scope.show.embedInput
+		delete $scope.myMessage['embed_url'] unless $scope.show.embedInput
 		$scope.myMessage.save success, error
 
 ]
