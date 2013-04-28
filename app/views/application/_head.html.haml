@@ -23,11 +23,10 @@
     -# Mobile viewport optimized: h5bp.com/viewport
     %meta{ :name => "viewport", :content => "width=device-width, initial-scale=1.0, maximum-scale=1.0" }
 
-    -#
-        %meta{property: "og:image", content: "{{app.meta.imageUrl}}"}
-        %meta{property: "og:title", content: "{{app.meta.title}}"}
-        %meta{property: "og:name", content: "Positive Space"}
-        %meta{property: "og:description", content: "{{app.meta.description}}"}
+    %meta{property: "og:image", content: "#{root_url}apple-touch-icon-144x144.png"}
+    %meta{property: "og:title", content: "Simply Converse"}
+    %meta{property: "og:name", content: "Positive Space"}
+    %meta{property: "og:description", content: "Positive Space is a new way to let people reach out to you. We believe that it's too hard to start a conversation with a stranger. A lot of good ideas and relationships are missed because the right people never talk."}
 
     %meta{ :name => "description", :content => "{{app.meta.description}}" }
     %title{ "ng-bind" => "app.currentUser.ready_conversations_count > 0 && '('+app.currentUser.ready_conversations_count+') ' + app.meta.title || app.meta.title" } Positive Space - Simply Converse
