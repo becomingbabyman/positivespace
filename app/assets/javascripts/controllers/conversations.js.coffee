@@ -19,6 +19,9 @@ ps.controller "ConversationsIndexCtrl", ["$scope", "$routeParams", "$location", 
 				waitingConversationsCount : user.waiting_conversations_count
 	, (error) ->
 		# user must log in to view conversations
+		$scope.app.show.loading = false
+		$location.search('path', window.location.pathname)
+		$location.search('search', window.location.search)
 		$location.path('/login')
 		$scope.app.flash 'info', "Sorry, we don't know whose conversations to show you. Please log in."
 		analytics.track 'view conversations error',
@@ -89,6 +92,8 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 			$scope.message = $scope.lastMsg unless $routeParams.message_id
 	, (error) ->
 		# user must log in to view a conversation
+		$location.search('path', window.location.pathname)
+		$location.search('search', window.location.search)
 		$location.path('/login')
 		$scope.app.flash 'info', "Please log in to view this conversation."
 		analytics.track 'view conversation error',

@@ -400,7 +400,7 @@ psDirectives.directive 'psSubtleLogin', ["$timeout", "$location", "User", ($time
 
 ####################################################
 # <ps-login>
-psDirectives.directive 'psLogin', ["$timeout", "$location", "User", ($timeout, $location, User) ->
+psDirectives.directive 'psLogin', ["$timeout", "$routeParams", "$location", "User", ($timeout, $routeParams, $location, User) ->
 	directiveDefinitionObject =
 		restrict: 'E'
 		scope:
@@ -480,7 +480,11 @@ psDirectives.directive 'psLogin', ["$timeout", "$location", "User", ($timeout, $
 							scope.app.loadCurrentUser data
 							scope.credentials = {loginType: 'login'}
 							scope.app.flash 'success', "Welcome. Let's create your Positive Space! What do you want to talk about?"
-							$location.path("/#{data.username}")
+							if $routeParams.path?
+								$location.search(unescape($routeParams.search).replace('?', ''))
+								$location.path($routeParams.path)
+							else
+								$location.path("/#{data.username}")
 							analytics.track 'sign up success',
 								type: 'form'
 								href: window.location.href
@@ -503,7 +507,11 @@ psDirectives.directive 'psLogin', ["$timeout", "$location", "User", ($timeout, $
 							scope.app.loadCurrentUser data
 							scope.credentials = {loginType: 'login'}
 							scope.app.flash 'success', "Welcome back!"
-							$location.path("/#{data.username}")
+							if $routeParams.path?
+								$location.search(unescape($routeParams.search).replace('?', ''))
+								$location.path($routeParams.path)
+							else
+								$location.path("/#{data.username}")
 							analytics.track 'sign in success',
 								type: 'form'
 								href: window.location.href
@@ -530,7 +538,11 @@ psDirectives.directive 'psLogin', ["$timeout", "$location", "User", ($timeout, $
 							scope.app.show.loading = false
 							scope.app.loadCurrentUser data
 							scope.app.flash 'success', "Welcome!"
-							$location.path("/#{data.username}")
+							if $routeParams.path?
+								$location.search(unescape($routeParams.search).replace('?', ''))
+								$location.path($routeParams.path)
+							else
+								$location.path("/#{data.username}")
 							analytics.track 'connect with facebook success',
 								type: 'form'
 								href: window.location.href
