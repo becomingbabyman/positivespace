@@ -7,7 +7,7 @@ ps.controller "ConversationsIndexCtrl", ["$scope", "$routeParams", "$location", 
 	# Initialize
 	$scope.app.show.loading = true
 	$scope.app.dcu.promise.then (user) ->
-		$scope.query = {user_id: user.id, state: 'in_progress', turn_id: user.id, order: "updated_at DESC", page: 1}
+		$scope.query = {user_id: user.id, state: 'in_progress', turn_id: user.id, order: "updated_at ASC", page: 1}
 		$scope.conversations = Conversation.query $scope.query, ->
 			$scope.busy = false
 			$scope.app.show.loading = false
