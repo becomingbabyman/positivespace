@@ -1,28 +1,36 @@
 #fb-root
 
-:coffeescript
-	fb_root = null #variable use to transfer the state of the fb-root div tag between page requests
+:javascript
+	var fb_root;
 
-	window.facebookSdkLoaded = ->
-		$(document).trigger("fb:initialized")
+	fb_root = null;
 
-	window.fbAsyncInit = ->
-		FB.init
-			appId: "#{Facebook::APP_ID}"
-			status: true
-			cookie: true
-			oauth: true
-			frictionlessRequests: true
+	window.facebookSdkLoaded = function() {
+		return $(document).trigger("fb:initialized");
+	};
+
+	window.fbAsyncInit = function() {
+		FB.init({
+			appId: "#{Facebook::APP_ID}",
+			status: true,
+			cookie: true,
+			oauth: true,
+			frictionlessRequests: true,
 			xfbml: true
-		window.facebookSdkLoaded()
+		});
+		return window.facebookSdkLoaded();
+	};
 
-	((d) ->
-		js = undefined
-		id = "facebook-jssdk"
-		return  if d.getElementById(id)
-		js = d.createElement("script")
-		js.id = id
-		js.async = true
-		js.src = "//connect.facebook.net/en_US/all.js"
-		d.getElementsByTagName("head")[0].appendChild js
-	) document
+	(function(d) {
+		var id, js;
+		js = void 0;
+		id = "facebook-jssdk";
+		if (d.getElementById(id)) {
+			return;
+		}
+		js = d.createElement("script");
+		js.id = id;
+		js.async = true;
+		js.src = "//connect.facebook.net/en_US/all.js";
+		return d.getElementsByTagName("head")[0].appendChild(js);
+	})(document);
