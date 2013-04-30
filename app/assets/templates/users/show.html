@@ -2,11 +2,19 @@
 	<div class="row">
 		<div class="span12">
 
-			<div ng-show='user.can_edit && !hideShare' class="row">
+			<div ng-show='user.can_edit' class="row pbm">
+				<div class="span-mobile center">
+					<div class='row-fluid'>
+						<a href='#' class='btn btn-block btn-link btn-large bd circle' style='background: #fbfbfb;' ng-click='showShare = !showShare; showEmbed = !showEmbed'>Promote your space</a>
+					</div>
+				</div>
+			</div>
+
+			<div ng-show='user.can_edit && showShare' class="row">
 				<div class="span-mobile center">
 					<div class='row-fluid'>
 						<div class="span12 alert alert-info alert-block uncenter bgw">
-							<button type="button" class="close" ng-click="hideShare = true">&times;</button>
+							<button type="button" class="close" ng-click="showShare = false">&times;</button>
 							<h4>1. Start a conversation</h4>
 							Share your space with the people you want to have a conversation with.
 							<!-- AddThis Button BEGIN -->
@@ -24,11 +32,11 @@
 				</div>
 			</div>
 
-			<div ng-show='user.can_edit && !hideEmbed' class="row" ng-class='{ptl: !hideShare}'>
+			<div ng-show='user.can_edit && showEmbed' class="row" ng-class='{ptl: !hideShare}'>
 				<div class="span-mobile center">
 					<div class='row-fluid'>
 						<div class="span12 alert alert-info alert-block uncenter bgw">
-							<button type="button" class="close" ng-click="hideEmbed = true">&times;</button>
+							<button type="button" class="close" ng-click="showEmbed = false">&times;</button>
 							<h4>2. Embed your space</h4>
 							Let conversations come to you. Embed your space in your website or blog.
 							<a href="#" ng-click="requestEmbedCode()" class="btn btn-link btn-block">Click to get embed code</a>
@@ -39,7 +47,7 @@
 
 			<div ng-show='user.can_edit' class="row">
 				<div class="span-mobile center ptm">
-					<a ng-href='/{{user.slug}}/edit' class='pull-right btn btn-link'>edit</a>
+					<a ng-href='/{{user.slug}}/edit' class='pull-right btn btn-link btn-large'>edit</a>
 				</div>
 			</div>
 
