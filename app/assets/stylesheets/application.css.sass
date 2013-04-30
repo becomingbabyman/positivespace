@@ -143,84 +143,158 @@ input, textarea
 .navbar
     height: 60px
     margin: 0
-    .brand
-        position: relative
-        width: 138px
-        height: 64px
-        @media (max-width: 479px)
-            width: 50px
-            height: 32px
-            img
+
+    .brand-dropdown
+        @include transition-property(visibility, opacity, height)
+        @include transition-delay(3.0s)
+        @include transition-duration(3.0s)
+        &:hover, &.open
+            .brand
+                .inset
+                    opacity: 0
+                    visibility: hidden
+                .colored
+                    // @include transition-duration(1s)
+                    opacity: 1
+                    visibility: visible
+                &:before
+                    @include transition-delay(0.1s)
+                    @include transition-duration(0.7s)
+                    opacity: 1
+                    visibility: visible
+                &:after
+                    @include transition-delay(0.7s)
+                    @include transition-duration(0.7s)
+                    opacity: 1
+                    visibility: visible
+            .brand-dropdown-menu
+                @include transition-delay(0s)
+                @include transition-duration(0.4s)
+                opacity: 1
+                visibility: visible
+                // display: block
+                a
+                    @include transition-delay(0s)
+                    @include transition-duration(0.4s)
+                    height: 40px
+        .brand
+            position: relative
+            width: 138px
+            height: 64px
+            @media (max-width: 479px)
                 width: 50px
                 height: 32px
-            // &:after
-            //     font-size: 10px
-            //     left: 45px
-            //     bottom: 16px
-        @media (max-width: 979px)
-            padding-left: 20px
-            padding-right: 20px
-            margin: 0 0 0 -20px
-        img
-            @include transition-property(visibility, opacity)
-            @include transition-duration(0.4s)
-            @include transition-delay(0s)
-            position: absolute
-        &:hover
-            .inset
+                img
+                    width: 50px
+                    height: 32px
+                // &:after
+                //     font-size: 10px
+                //     left: 45px
+                //     bottom: 16px
+            @media (max-width: 979px)
+                padding-left: 20px
+                padding-right: 20px
+                margin: 0 0 0 -20px
+            img
+                @include transition-property(visibility, opacity)
+                @include transition-duration(0.4s)
+                @include transition-delay(0s)
+                position: absolute
+            .colored
                 opacity: 0
                 visibility: hidden
-            .colored
-                // @include transition-duration(1s)
-                opacity: 1
-                visibility: visible
+            &:before, &:after
+                opacity: 0
+                visibility: hidden
+                pointer-events: none
+                position: absolute
+                width: 200px
+                z-index: 9999
+                background: white
             &:before
-                @include transition-delay(0.1s)
-                @include transition-duration(0.7s)
-                opacity: 1
-                visibility: visible
-            &:after
                 @include transition-delay(0.7s)
                 @include transition-duration(0.7s)
-                opacity: 1
-                visibility: visible
-        .colored
-            opacity: 0
+                color: #ccc
+                content: "Posi+ive Sp_ce"
+                letter-spacing: 0.1em
+                height: 40px
+                line-height: 40px
+                bottom: -40px
+            &:after
+                @include transition-delay(0.1s)
+                @include transition-duration(0.7s)
+                color: #bbb
+                font-size: 13px
+                content: "beta"
+                letter-spacing: 0.1em
+                height: 20px
+                line-height: 20px
+                left: 193px
+                bottom: -26px
+                width: 40px
+            &.logged-in
+                &:before, &:after
+                    content: ""
+                    height: 0
+                    width: 0
+
+        .brand-dropdown-menu
+            @include transition-property(visibility, opacity)
+            @include transition-duration(0.4s)
+            @include transition-delay(0.4s)
             visibility: hidden
-        &:before, &:after
+            // display: none
             opacity: 0
-            visibility: hidden
-            pointer-events: none
             position: absolute
-            width: 200px
-            z-index: 999
-            background: white
-        &:before
-            @include transition-delay(0.7s)
-            @include transition-duration(0.7s)
-            color: #ccc
-            content: "Posi+ive Sp_ce"
-            letter-spacing: 0.1em
-            height: 40px
-            line-height: 40px
-            bottom: -40px
-        &:after
-            @include transition-delay(0.1s)
-            @include transition-duration(0.7s)
-            color: #bbb
-            font-size: 13px
-            content: "beta"
-            letter-spacing: 0.1em
-            height: 20px
-            line-height: 20px
-            left: 193px
-            bottom: -26px
-            width: 40px
-        &.logged-in
-            &:before, &:after
-                content: ""
-                height: 0
-                width: 0
+            top: 83px
+            left: 0px
+            width: 100px
+            padding: 7px 60px 40px 20px
+            z-index: 9998
+            @media (max-width: 479px)
+                top: 53px
+                background-color: white
+                padding: 5px 20px 20px 20px
+                @include border-radius(3px)
+            // @media (max-width: 979px)
+            a
+                @include transition-property(height)
+                @include transition-duration(0.4s)
+                @include transition-delay(0.4s)
+                font-size: 20px
+                position: relative
+                display: block
+                width: 100%
+                height: 0px
+                background: #eee
+                margin: 0 auto
+                margin-top: 5px
+                @include border-radius(3px)
+                text-align: center
+                line-height: 38px
+                &:hover
+                    background: #ddd
+                img
+                    height: 90%
+                    margin-top: -1px
+                i
+                    font-size: 30px
+                    margin-top: 4px
+                    color: $color-blue
+                .count
+                    position: absolute
+                    right: 27px
+                    bottom: 24px
+                    background-color: $danger
+                    color: #fff
+                    padding: 1px 2px
+                    min-width: 12px
+                    max-width: 26px
+                    height: 16px
+                    text-align: center
+                    font-size: 12px
+                    line-height: 15px
+                    @include border-radius(2px)
 
     .nav
         li.dropdown.open > .dropdown-toggle

@@ -1,7 +1,7 @@
 <div class="navbar-inner" ng-class='{opacity0: !app.show.header}'>
 	<div class="container">
 
-		<ul class="nav user-nav pull-right opacity4 opacity-full-hover" ng-hide='app.loggedIn()'>
+		<!-- <ul class="nav user-nav pull-right opacity4 opacity-full-hover" ng-hide='app.loggedIn()'>
 			<li>
 				<a href="/login" tooltip='enter' tooltip-placement='bottom'>
 					<i class="icon-signin"></i>
@@ -21,11 +21,6 @@
 					<div ng-show="app.anyMessages()" class='count'>{{app.currentUser.ready_conversations_count}}</div>
 				</a>
 			</li>
-			<!-- <li>
-				<a href="#" tooltip='leave' tooltip-placement='bottom' ng-click='app.logout()'>
-					<i class="icon-signout"></i>
-				</a>
-			</li> -->
 			<li class="dropdown">
 				<a href="#" class="dropdown-toggle">
 					<i class="icon-caret-down"></i>
@@ -44,19 +39,60 @@
 					</li>
 				</ul>
 			</li>
+		</ul> -->
+
+		<ul class="nav user-nav pull-right hidden-desktop">
+			<li>
+				<a href="#" ng-click="openBrandDropdown = !openBrandDropdown">
+					<i class="icon-reorder font20 color-blue"></i>
+				</a>
+			</li>
 		</ul>
 
-		<a href="/" class="brand" ng-class='{"logged-in": app.loggedIn()}'>
-			<img src="<%= asset_path('ps_logo_inset.png') %>" alt='Positive Space' class='inset'>
-			<img src="<%= asset_path('ps_logo.png') %>" alt='Positive Space' class='colored'>
-		</a>
+		<div class="brand-dropdown" ng-class='{open: openBrandDropdown}'>
+			<a href="/" class="brand" ng-class='{"logged-in": app.loggedIn()}'>
+				<img src="<%= asset_path('ps_logo_inset.png') %>" alt='Positive Space' class='inset'>
+				<img src="<%= asset_path('ps_logo.png') %>" alt='Positive Space' class='colored'>
+			</a>
 
-		<ul class="nav opacity2 opacity-full-hover center" ng-show='app.loggedIn()'>
+			<div class="brand-dropdown-menu">
+				<div ng-hide='app.loggedIn()' style='height: 45px;'></div>
+				<a href="/login" tooltip='enter' tooltip-placement='right' ng-hide='app.loggedIn()' ng-class="{'visible-desktop': !app.loggedIn()}">
+					<i class="icon-signin"></i>
+				</a>
+				<a href="/login" class="color-blue" ng-hide='app.loggedIn()' ng-class="{'hidden-desktop': !app.loggedIn()}">
+					Log in
+				</a>
+				<a href="/{{app.currentUser.slug}}" ng-show='app.loggedIn()'>
+					<img ng-src="{{app.currentUser.avatar.big_thumb_url}}" alt='{{app.currentUser.username}}' class='img-circle img-border avatar'>
+				</a>
+				<a href="/conversations" ng-show='app.loggedIn()'>
+					<i class='icon-envelope-alt'></i>
+					<div ng-show="app.anyMessages()" class='count'>{{app.currentUser.ready_conversations_count}}</div>
+				</a>
+				<a href="#" ng-click='app.randomSpace()' ng-show='app.loggedIn()'>
+					<i class="icon-random"></i>
+				</a>
+				<a href="/about" class='muted'>about</a>
+				<a href="/terms" class='muted'>terms</a>
+				<a href="/privacy" class='muted'>privacy</a>
+				<a href="/jobs" class='muted'>jobs</a>
+				<a href="/contact" class='muted'>contact</a>
+				<a href="https://www.facebook.com/positivespaceny" target="_blank" class='facebook'><i class="icon-facebook"></i></a>
+				<a href="https://twitter.com/positivespaceny" target="_blank" class='muted'><i class="icon-twitter"></i></a>
+				<a href="#" ng-click='app.logout()' class='muted' ng-show='app.loggedIn()'>
+					log out
+				</a>
+				<span class='font10 faded center pts'>Positve Space &copy; {{app.year}}</span>
+			</div>
+		</div>
+
+		<!-- <ul class="nav opacity2 opacity-full-hover center" ng-show='app.loggedIn()'>
 			<li>
 				<a href="#" ng-click='app.randomSpace()'>
 					<i class="icon-random"></i>
 				</a>
 			</li>
-		</ul>
+		</ul> -->
 	</div>
 </div>
