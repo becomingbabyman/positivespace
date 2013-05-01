@@ -15,7 +15,7 @@ end
 # end
 
 child :from => :from do |u|
-	attributes :id, :name, :username
+	attributes :id, :name, :username, :slug
 
 	node :avatar do |u|
 		{thumb_url: u.avatar.image.thumb.url}
@@ -23,7 +23,7 @@ child :from => :from do |u|
 end
 
 child :to => :to do |u|
-	attributes :id, :name, :username
+	attributes :id, :name, :username, :slug
 
 	node :avatar do |u|
 		{thumb_url: u.avatar.image.thumb.url}

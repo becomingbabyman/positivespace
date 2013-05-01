@@ -12,14 +12,14 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
     $scope.app.year = (new Date).getFullYear()
     $scope.app.templates =
         loading:
-            url: "/assets/app/loading.html"
+            url: "<%= asset_path('app/loading.html') %>"
         header:
-            url: "/assets/app/header.html"
+            url: "<%= asset_path('app/header.html') %>"
             classes: "navbar"
         flash:
-            url: "/assets/app/flash.html"
+            url: "<%= asset_path('app/flash.html') %>"
         footer:
-            url: "/assets/app/footer.html"
+            url: "<%= asset_path('app/footer.html') %>"
     $scope.app.show =
         loading: false
         focus: false

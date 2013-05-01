@@ -59,7 +59,7 @@ psDirectives.directive 'controlGroup', () ->
 			label: '@'
 			helpInline: '@'
 			helpBlock: '@'
-		templateUrl: "/assets/directives/control_group.html"
+		templateUrl: "<%= asset_path('directives/control_group.html') %>"
 		transclude: true
 		replace: true
 		require: '?^form'
@@ -117,7 +117,7 @@ psDirectives.directive 'editResource', ->
 			app: '='
 			toggle: '='
 			resource: '='
-		templateUrl: "/assets/directives/edit_resource.html"
+		templateUrl: "<%= asset_path('directives/edit_resource.html') %>"
 
 		link: (scope, element, attrs) ->
 			scope.resourceCopy = angular.copy scope.resource
@@ -198,7 +198,7 @@ psDirectives.directive "psImg", ["$timeout", ($timeout) ->
 		attachableId: '@'
 		imageType: '@'
 		imageUrl: '@'
-	templateUrl: "/assets/directives/ps_img.html"
+	templateUrl: "<%= asset_path('directives/ps_img.html') %>"
 
 	link: (scope, element, attrs) ->
 
@@ -270,7 +270,7 @@ psDirectives.directive 'psSubtleLogin', ["$timeout", "$location", "User", ($time
 		restrict: 'E'
 		scope:
 			app: '='
-		templateUrl: "/assets/directives/ps_subtle_login.html"
+		templateUrl: "<%= asset_path('directives/ps_subtle_login.html') %>"
 
 		link: (scope, element, attrs) ->
 			scope.credentials = {loginType: ''}
@@ -405,7 +405,7 @@ psDirectives.directive 'psLogin', ["$timeout", "$routeParams", "$location", "Use
 		restrict: 'E'
 		scope:
 			app: '='
-		templateUrl: "/assets/directives/ps_login.html"
+		templateUrl: "<%= asset_path('directives/ps_login.html') %>"
 
 		link: (scope, element, attrs) ->
 			scope.credentials = {loginType: attrs.loginType}

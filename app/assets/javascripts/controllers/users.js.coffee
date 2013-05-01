@@ -163,7 +163,7 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 
 	$scope.requestEmbedCode = ->
 		analytics.track 'request embed code'
-		window.alert "This feature is under development. In the meantime you can link you your space \"#{window.location.href}\" from your website or blog. And you can speak with us at \"people@consignd.com\" and share your thoughts about embedding. We are sorry for the inconvenience."
+		window.alert "This feature is under development. In the meantime you can link you your space \"#{window.location.href}\" from your website or blog. And you can speak with us at \"people@positivespace.io\" and share your thoughts about embedding. We are sorry for the inconvenience."
 
 	$scope.submitMessage = ->
 		if $scope.app.loggedIn()

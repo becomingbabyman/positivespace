@@ -12,55 +12,55 @@ ps.config ['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvid
 	# Pages
 	# .when "/",
 	#	controller: "PagesCtrl"
-	#	templateUrl: "/assets/pages/home.html"
+	#	templateUrl: "<%= asset_path('pages/home.html') %>"
 	.when "/404",
 		controller: "PagesCtrl"
-		templateUrl: "/assets/pages/404.html"
+		templateUrl: "<%= asset_path('pages/404.html') %>"
 	.when "/about",
 		controller: "PagesCtrl"
-		templateUrl: "/assets/pages/about.html"
+		templateUrl: "<%= asset_path('pages/about.html') %>"
 	.when "/terms",
 		controller: "PagesCtrl"
-		templateUrl: "/assets/pages/terms.html"
+		templateUrl: "<%= asset_path('pages/terms.html') %>"
 	.when "/privacy",
 		controller: "PagesCtrl"
-		templateUrl: "/assets/pages/privacy.html"
+		templateUrl: "<%= asset_path('pages/privacy.html') %>"
 	# .when "/jobs",
 	#	controller: "PagesCtrl"
-	#	templateUrl: "/assets/pages/jobs.html"
+	#	templateUrl: "<%= asset_path('pages/jobs.html') %>"
 	# .when "/contact",
 	#	controller: "PagesCtrl"
-	#	templateUrl: "/assets/pages/contact.html"
+	#	templateUrl: "<%= asset_path('pages/contact.html') %>"
 
 	# Conversations
 	.when "/inbox",
 		redirectTo: "/conversations"
 	.when "/conversations",
 		controller: "ConversationsIndexCtrl"
-		templateUrl: "/assets/conversations/index.html"
+		templateUrl: "<%= asset_path('conversations/index.html') %>"
 	.when "/conversations/:id",
 		controller: "ConversationsShowCtrl"
-		templateUrl: "/assets/conversations/show.html"
+		templateUrl: "<%= asset_path('conversations/show.html') %>"
 
 	# Users
 	.when "/login",
 		controller: "UsersLoginCtrl"
-		templateUrl: "/assets/users/login.html"
+		templateUrl: "<%= asset_path('users/login.html') %>"
 	.when "/register",
 		controller: "UsersRegisterCtrl"
-		templateUrl: "/assets/users/register.html"
+		templateUrl: "<%= asset_path('users/register.html') %>"
 	.when "/settings",
 		controller: "UsersSettingsCtrl"
-		templateUrl: "/assets/users/settings.html"
+		templateUrl: "<%= asset_path('users/settings.html') %>"
 	.when "/users/password/edit",
 		controller: "UserPasswordEditCtrl"
-		templateUrl: "/assets/users/password_edit.html"
+		templateUrl: "<%= asset_path('users/password_edit.html') %>"
 	.when "/:user_id/edit",
 		controller: "UsersEditCtrl"
-		templateUrl: "/assets/users/edit.html"
+		templateUrl: "<%= asset_path('users/edit.html') %>"
 	.when "/:user_id",
 		controller: "UsersShowCtrl"
-		templateUrl: "/assets/users/show.html"
+		templateUrl: "<%= asset_path('users/show.html') %>"
 	.otherwise redirectTo: "/404"
 ]
 
