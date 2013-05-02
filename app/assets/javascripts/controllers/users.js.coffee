@@ -37,12 +37,16 @@ ps.controller "UserPasswordEditCtrl", ["$scope", "$location", "$routeParams", "U
 ps.controller "UsersEditCtrl", ["$scope", "$routeParams", "$timeout", "$location", "User", ($scope, $routeParams, $timeout, $location, User) ->
 	$scope.space = {}
 	$scope.user = User.get {id: $routeParams.user_id}, ->
+		# Can the user view the form
+		$scope.app.dcu.promise.then (currentUser) ->
+			if $scope.user.id != currentUser.id
+				$location.path("/#{$scope.user.slug}")
+		, (error) ->
+			$location.path("/#{$scope.user.slug}")
+
+		# Can the user close the edit form?
 		if !$scope.user.body? or $scope.user.body.length == 0
-			$scope.app.dcu.promise.then (currentUser) ->
-				if $scope.user.id == currentUser.id
-					$scope.space.cantCloseEdit = true
-				else
-					$location.path('/')
+			$scope.space.cantCloseEdit = true
 		$scope.app.meta.title = "Edit #{$scope.user.name}"
 		$scope.app.meta.description = "Configure your space just the way you want it."
 		$scope.app.meta.imageUrl = $scope.user.avatar.big_thumb_url
@@ -109,6 +113,11 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 					$location.path("/#{currentUser.slug}/edit")
 				else
 					$location.path('/')
+			,(error) ->
+				$location.path('/404')
+				analytics.track 'view space error',
+					routeId: $routeParams.user_id
+					type: 'incomplete'
 		else
 			$scope.app.dcu.promise.then (currentUser) ->
 				if $scope.user.id == currentUser.id
@@ -138,6 +147,7 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 		$location.path('/404')
 		analytics.track 'view space error',
 			routeId: $routeParams.user_id
+			type: 'not found'
 
 
 	$scope.message = new Message {user_id: user_id}

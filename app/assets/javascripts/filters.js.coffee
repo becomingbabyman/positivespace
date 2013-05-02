@@ -42,4 +42,7 @@ psFilters.filter 'urlSimplify', ->
 
 psFilters.filter 'possessive', ->
 	(text) ->
-		if text[text.length - 1] == 's' then text + "'" else text + "'s"
+		if text
+			if text[text.length - 1] == 's' then text + "'" else text + "'s"
+		else
+			''
