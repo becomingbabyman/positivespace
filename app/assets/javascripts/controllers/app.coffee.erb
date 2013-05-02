@@ -233,5 +233,14 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
             $scope.app.show.loading = false
             $location.path("/#{users[0].slug}")
 
+
+    ########
+    # Misc #
+    ########
+    $scope.app.clickPoweredBy = ->
+        $scope.app.show.headerDropdownToggle = !$scope.app.show.headerDropdown
+        $scope.app.show.headerDropdown = !$scope.app.show.headerDropdown
+        analytics.track "click powered by"
+
 ]
 
