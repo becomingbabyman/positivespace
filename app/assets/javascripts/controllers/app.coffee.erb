@@ -129,7 +129,7 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
 
         # Track a pageview
         analytics.pageview()
-        analytics.track 'page viewed',
+        analytics.track 'view page',
             href: window.location.href
             page: $location.path()
 
