@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130502162253) do
+ActiveRecord::Schema.define(:version => 20130502183128) do
 
   create_table "administrators", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -178,7 +178,7 @@ ActiveRecord::Schema.define(:version => 20130502162253) do
     t.datetime "birthday"
     t.string   "locale"
     t.integer  "timezone"
-    t.integer  "impressions_count"
+    t.integer  "impressions_count",      :default => 1
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true
