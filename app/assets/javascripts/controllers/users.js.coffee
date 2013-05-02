@@ -98,7 +98,7 @@ ps.controller "UsersEditCtrl", ["$scope", "$routeParams", "$timeout", "$location
 ]
 
 
-ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location", "User", "Message", ($scope, $routeParams, $timeout, $location, User, Message) ->
+ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location", "User", "Message", "Conversation", ($scope, $routeParams, $timeout, $location, User, Message, Conversation) ->
 	user_id = $routeParams.user_id or 'space'
 	$scope.space = {fadeCount: 0}
 	$scope.show = {embedInput: false}
@@ -136,6 +136,10 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 						analytics.track 'click share my space button',
 							service: evt.data.service
 							url: evt.data.url
+				else
+					# Check for in_progress conversation
+					Conversation.query {user_id: currentUser.id, to: $scope.user.id, state: 'in_progress', order: 'created_at DESC'}, (conversations) ->
+						$scope.conversation = conversations.collection[0]
 
 		analytics.track 'view space success',
 			href: window.location.href

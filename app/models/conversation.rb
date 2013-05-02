@@ -24,6 +24,8 @@ class Conversation < ActiveRecord::Base
 	scope :ended, where(state: :ended)
 	scope :turn, lambda { |user_id| joins(:last_message).where("messages.to_id = ?", user_id) }
 	scope :not_turn, lambda { |user_id| joins(:last_message).where("messages.from_id = ?", user_id) }
+	scope :to, lambda { |user_id| where("conversations.to_id = ?", user_id) }
+	scope :from, lambda { |user_id| where("conversations.from_id = ?", user_id) }
 	scope :with, lambda { |user_id| where("conversations.from_id = ? OR conversations.to_id = ?", user_id, user_id) }
 	scope :between, lambda { |id1, id2| where("(conversations.from_id = ? AND conversations.to_id = ?) OR (conversations.from_id = ? AND conversations.to_id = ?)", id1, id2, id2, id1) }
 	scope :is_not, lambda { |id| where("conversations.id != ?", id) }

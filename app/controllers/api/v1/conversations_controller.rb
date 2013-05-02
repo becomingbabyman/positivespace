@@ -4,6 +4,12 @@ class Api::V1::ConversationsController < InheritedResources::Base
 	respond_to :json
 	actions :index, :show, :update
 
+	has_scope :to, :only => :index do |controller, scope, value|
+		scope.to(value)
+	end
+	has_scope :from, :only => :index do |controller, scope, value|
+		scope.from(value)
+	end
 	has_scope :with, :only => :index do |controller, scope, value|
 		scope.with(value)
 	end

@@ -66,9 +66,12 @@
 									<p class='prompt' ng-bind-html-unsafe="conversation.prompt | linebreaks">{{conversation.prompt}}</p>
 								</div>
 							</div>
-							<div class="row-fluid">
-								<div class="span11 offset1">
-									<p class='font18 uncenter ptl' ng-bind-html-unsafe="conversation.last_message_body | linebreaks">{{conversation.last_message_body}}</p>
+							<div class="row-fluid ptl">
+								<div class="span1">
+									-
+								</div>
+								<div class="span11">
+									<p class='font18 uncenter' ng-bind-html-unsafe="conversation.last_message_body | linebreaks">{{conversation.last_message_body}}</p>
 								</div>
 							</div>
 							<div class="row-fluid" ng-show="conversation.state != 'ended' && conversation.last_message_from_id != app.currentUser.id">

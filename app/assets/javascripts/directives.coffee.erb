@@ -325,9 +325,9 @@ psDirectives.directive 'psSubtleLogin', ["$timeout", "$location", "User", ($time
 						scope.app.show.loading = true
 						User.register
 							user:
-								email: scope.credentials.email
-								password: scope.credentials.password
-								username: scope.credentials.username
+								email: element.find("#sbtl_lgn_email").val()
+								password: element.find("#reg_password").val()
+								username: element.find("#reg_username").val()
 							(data) ->
 								scope.app.show.loading = false
 								scope.app.loadCurrentUser data
@@ -348,7 +348,7 @@ psDirectives.directive 'psSubtleLogin', ["$timeout", "$location", "User", ($time
 						User.login
 							user:
 								login: element.find("#sbtl_lgn_email").val()
-								password: scope.credentials.password
+								password: element.find("#lgn_password").val()
 								# remember_me: rememberMe
 							(data) ->
 								scope.app.show.loading = false
@@ -478,9 +478,9 @@ psDirectives.directive 'psLogin', ["$timeout", "$routeParams", "$location", "Use
 					scope.app.show.loading = true
 					User.register
 						user:
-							email: scope.credentials.email
-							password: scope.credentials.password
-							username: scope.credentials.username
+							email: element.find("#reg_email").val()
+							password: element.find("#reg_password").val()
+							username: element.find("#reg_username").val()
 						(data) ->
 							scope.app.show.loading = false
 							scope.app.loadCurrentUser data
@@ -505,8 +505,8 @@ psDirectives.directive 'psLogin', ["$timeout", "$routeParams", "$location", "Use
 					scope.app.show.loading = true
 					User.login
 						user:
-							login: scope.credentials.login
-							password: scope.credentials.password
+							login: element.find("#login").val()
+							password: element.find("#lgn_password").val()
 							# remember_me: rememberMe
 						(data) ->
 							scope.app.show.loading = false
