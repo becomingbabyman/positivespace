@@ -1,4 +1,3 @@
-require 'embedly'
 class Message < ActiveRecord::Base
 
 	state_machine :initial => :draft do
@@ -14,6 +13,7 @@ class Message < ActiveRecord::Base
 	end
 
 	before_validation :continue_conversation, on: :create
+	after_create :parse_embed_url
 
 	attr_accessible :body, :embed_url, :from_email, :state_event, :conversation_id
 	attr_protected :none, as: :admin
@@ -50,16 +50,6 @@ class Message < ActiveRecord::Base
 
 	def seconds_left_to_edit
 		self.created_at + Message.total_seconds_to_edit - DateTime.now.utc
-	end
-
-	def embed_url= url
-		# TODO: move the key out of the model
-		unless url.blank?
-			embedly_api = Embedly::API.new :key => 'f42bdb4234f14b998f8f7bbe95d5acb3', :user_agent => 'Mozilla/5.0 (compatible; mytestapp/1.0; my@email.com)'
-			obj = embedly_api.oembed :url => url, autoplay: false, width: 358#, maxheight: 500 #, maxwidth: 278, frame: true, secure: true
-			self.embed_data = obj[0].marshal_dump
-		end
-		super url
 	end
 
 	def editors
@@ -108,6 +98,10 @@ private
 
 	def notify_recipient
 		NotificationsMailer.delay.recieved_message(self.id)
+	end
+
+	def parse_embed_url
+		ParseMessageEmbedUrl.perform_in(2.seconds, self.id) unless self.embed_url.blank?
 	end
 
 	def after_reply
