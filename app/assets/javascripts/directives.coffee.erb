@@ -294,12 +294,18 @@ psDirectives.directive 'psSubtleLogin', ["$timeout", "$location", "User", ($time
 							$timeout () ->
 								element.find('#lgn_password').focus()
 							, 100
+							analytics.track 'sign up expand',
+								type: 'subtle'
+								href: window.location.href
 						else if data.length == 0
 							scope.credentials.loginType = 'register'
 							# scope.app.flash 'info', "Looks like you need an account. Go ahead and start one."
 							$timeout () ->
 								element.find('#reg_password').focus()
 							, 100
+							analytics.track 'sign in expand',
+								type: 'subtle'
+								href: window.location.href
 
 			scope.checkUsername = (username = scope.credentials.username) ->
 				if scope.credentials.loginType == 'register'

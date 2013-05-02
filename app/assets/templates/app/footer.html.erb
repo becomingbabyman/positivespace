@@ -25,7 +25,7 @@
 	</div>
 </div> -->
 
-<a href='#' class='watermark' ng-show='app.show.footer && !app.loggedIn()' ng-click='app.show.headerDropdownToggle = !app.show.headerDropdown; app.show.headerDropdown = !app.show.headerDropdown;'>
+<a href='#' class='watermark' ng-show='app.show.footer && !app.loggedIn()' ng-click='app.show.headerDropdownToggle = !app.show.headerDropdown; app.show.headerDropdown = !app.show.headerDropdown; analytics.track("click powered by", {location: "footer"});'>
 	<div class='powered-by'>powered by</div>
 	<div class='positive-space'>Positive Space</div>
 	<!-- <div class='learn-more'>Learn more</div> -->

@@ -126,6 +126,7 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 					toName: $scope.conversation.to.name
 					fromId: $scope.conversation.from.id
 					fromName: $scope.conversation.from.name
+					conversationDuration: (Date.parse(new Date) - Date.parse(new Date($scope.conversation.created_at)))
 			, (error) ->
 				analytics.track 'end conversation error',
 					href: window.location.href
@@ -136,6 +137,7 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 					toName: $scope.conversation.to.name
 					fromId: $scope.conversation.from.id
 					fromName: $scope.conversation.from.name
+					conversationDuration: (Date.parse(new Date) - Date.parse(new Date($scope.conversation.created_at)))
 					error: JSON.stringify(error)
 
 
@@ -153,6 +155,7 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 			$scope.app.flash 'success', 'Great, your message has been sent.'
 			if data.state == 'sent'
 				$scope.messages.collection.push $scope.myMessage
+				previousMsg = angular.copy($scope.lastMsg)
 				$scope.lastMsg = $scope.myMessage
 				$scope.message = $scope.myMessage
 				$scope.app.currentUser.ready_conversations_count -= 1
@@ -170,6 +173,7 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 					fromId: data.from.id
 					fromName: data.from.name
 					hasEmbedUrl: $scope.myMessage.embed_url?
+					timeToReply: (Date.parse(new Date) - Date.parse(new Date(previousMsg.created_at)))
 			else
 				analytics.track 'message conversation save draft',
 					href: window.location.href
@@ -182,6 +186,7 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 					fromId: data.from.id
 					fromName: data.from.name
 					hasEmbedUrl: $scope.myMessage.embed_url?
+					timeToReply: (Date.parse(new Date) - Date.parse(new Date($scope.lastMsg.created_at)))
 		error = (error) ->
 			$scope.app.loading = false
 			$scope.app.flash 'error', error.data.errors
@@ -191,6 +196,7 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 				conversationId: $scope.conversation.id
 				conversationPrompt: $scope.conversation.prompt
 				hasEmbedUrl: $scope.myMessage.embed_url?
+				timeToReply: (Date.parse(new Date) - Date.parse(new Date($scope.lastMsg.created_at)))
 				error: JSON.stringify(error)
 
 		$scope.app.loading = true
