@@ -1,4 +1,4 @@
-<!-- <div class="container center" ng-class='{opacity0: !app.show.footer, opacity4: !app.loggedIn() && app.show.footer, "opacity-full-hover": !app.loggedIn()}'>
+<!-- <div class="container-fluid" ng-class='{opacity0: !app.show.footer, opacity4: !app.loggedIn() && app.show.footer, "opacity-full-hover": !app.loggedIn()}'>
 	<div class="row">
 		<div class="span12 faded">
 			<a href="/about" class='muted'>about</a>
@@ -23,5 +23,11 @@
 			<p style='color:#ddd;'>slow down and have a conversation</p>
 		</div>
 	</div>
-</div>
- -->
+</div> -->
+
+<a href='#' class='watermark' ng-hide='app.loggedIn()' ng-click='app.show.headerDropdownToggle = !app.show.headerDropdown; app.show.headerDropdown = !app.show.headerDropdown;'>
+	<div class='powered-by'>powered by</div>
+	<div class='positive-space'>Positive Space</div>
+	<!-- <div class='learn-more'>Learn more</div> -->
+</a>
+

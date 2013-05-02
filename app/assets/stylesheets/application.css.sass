@@ -262,7 +262,7 @@ input, textarea
                 @include transition-property(height)
                 @include transition-duration(0.4s)
                 @include transition-delay(0.1s)
-                font-size: 20px
+                // font-size: 18px
                 position: relative
                 display: block
                 width: 100%
@@ -358,8 +358,39 @@ input, textarea
 
 
 #footer
-    .container
+    .container-fluid
         padding-top: 25px
+    .watermark
+        position: absolute
+        bottom: 0
+        right: 20px
+        width: 125px
+        padding: 5px 10px 10px
+        border-left: 1px solid #eee
+        border-top: 1px solid #eee
+        border-right: 1px solid #eee
+        @include border-top-radius(3px)
+        color: #aaa
+        &:hover
+            color: #888
+        &:active
+            bottom: 1px
+            right: 21px
+            left: auto
+            top: auto
+        @media (max-width: 767px)
+            right: 0
+            &:active
+                right: -1px
+        .powered-by
+            float: right
+            font-size: 14px
+        .positive-space
+            float: right
+            font-size: 19px
+        .learn-more
+            // float: right
+            font-size: 16px
 
 
 .help-block

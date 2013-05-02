@@ -47,9 +47,9 @@
     %meta#csrf{"data-csrf" => form_authenticity_token, "ng-controller" => "CsrfCtrl"}
 
     -# Disable Caching
-    %meta{:content => "no-cache", "http-equiv" => "cache-control"}/
-    %meta{:content => "0", "http-equiv" => "expires"}/
-    %meta{:content => "no-cache", "http-equiv" => "pragma"}/
+    -#%meta{:content => "no-cache", "http-equiv" => "cache-control"}/
+    -#%meta{:content => "0", "http-equiv" => "expires"}/
+    -#%meta{:content => "no-cache", "http-equiv" => "pragma"}/
 
     = yield :head
 

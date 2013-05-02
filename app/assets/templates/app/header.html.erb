@@ -1,27 +1,30 @@
 <div class="navbar-inner" ng-class='{opacity0: !app.show.header}'>
 	<div class="container">
 
-		<!-- <ul class="nav user-nav pull-right opacity4 opacity-full-hover" ng-hide='app.loggedIn()'>
-			<li>
-				<a href="/login" tooltip='enter' tooltip-placement='bottom'>
+		<ul class="nav user-nav pull-right">
+			<!-- <li class='opacity4 opacity-full-hover' ng-hide='app.loggedIn()'>
+				<a href="/login">
 					<i class="icon-signin"></i>
 				</a>
-			</li>
-		</ul>
+			</li> -->
 
-		<ul class="nav user-nav pull-right" ng-show='app.loggedIn()'>
 			<li>
-				<a href="/{{app.currentUser.slug}}" tooltip='{{app.currentUser.username}}' tooltip-placement='bottom'>
+				<a href="#" ng-class="{'visible-desktop': !app.show.headerDropdownToggle}" style='visibility: hidden; pointer-events: none;' >
+					<i class="icon-random"></i>
+				</a>
+			</li>
+			<li ng-show='app.loggedIn()'>
+				<a href="/{{app.currentUser.slug}}" title="{{app.currentUser.username | possessive}} space">
 					<img ng-src="{{app.currentUser.avatar.big_thumb_url}}" alt='{{app.currentUser.username}}' class='img-circle img-border avatar'>
 				</a>
 			</li>
-			<li>
-				<a href="/conversations" tooltip='conversations' tooltip-placement='bottom'>
+			<li ng-show='app.loggedIn()'>
+				<a href="/conversations" title='{{app.currentUser.username | possessive}}  conversations'>
 					<i class='icon-envelope-alt'></i>
 					<div ng-show="app.anyMessages()" class='count'>{{app.currentUser.ready_conversations_count}}</div>
 				</a>
 			</li>
-			<li class="dropdown">
+			<!-- <li class="dropdown">
 				<a href="#" class="dropdown-toggle">
 					<i class="icon-caret-down"></i>
 				</a>
@@ -38,18 +41,16 @@
 						</a>
 					</li>
 				</ul>
-			</li>
-		</ul> -->
+			</li> -->
 
-		<ul class="nav user-nav pull-right hidden-desktop">
-			<li>
-				<a href="#" ng-click="openBrandDropdown = !openBrandDropdown">
+			<li ng-class="{'hidden-desktop': !app.show.headerDropdownToggle}">
+				<a href="#" ng-click="app.show.headerDropdown = !app.show.headerDropdown">
 					<i class="icon-reorder font20 color-blue"></i>
 				</a>
 			</li>
 		</ul>
 
-		<div class="brand-dropdown" ng-class='{open: openBrandDropdown}'>
+		<div class="brand-dropdown" ng-class='{open: app.show.headerDropdown}'>
 			<a href="/" class="brand" ng-class='{"logged-in": app.loggedIn()}'>
 				<img src="<%= asset_path('ps_logo_inset.png') %>" alt='Positive Space' class='inset'>
 				<img src="<%= asset_path('ps_logo.png') %>" alt='Positive Space' class='colored'>
@@ -57,20 +58,17 @@
 
 			<div class="brand-dropdown-menu">
 				<div ng-hide='app.loggedIn()' style='height: 45px;'></div>
-				<a href="/login" tooltip='enter' tooltip-placement='right' ng-hide='app.loggedIn()' ng-class="{'visible-desktop': !app.loggedIn()}">
-					<i class="icon-signin"></i>
-				</a>
-				<a href="/login" class="color-blue" ng-hide='app.loggedIn()' ng-class="{'hidden-desktop': !app.loggedIn()}">
+				<a href="/login" class="color-blue font18" ng-hide='app.loggedIn()'>
 					Log in
 				</a>
-				<a href="/{{app.currentUser.slug}}" ng-show='app.loggedIn()'>
+				<!-- <a href="/{{app.currentUser.slug}}" ng-show='app.loggedIn()'>
 					<img ng-src="{{app.currentUser.avatar.big_thumb_url}}" alt='{{app.currentUser.username}}' class='img-circle img-border avatar'>
 				</a>
 				<a href="/conversations" ng-show='app.loggedIn()'>
 					<i class='icon-envelope-alt'></i>
 					<div ng-show="app.anyMessages()" class='count'>{{app.currentUser.ready_conversations_count}}</div>
-				</a>
-				<a href="#" ng-click='app.randomSpace()' ng-show='app.loggedIn()'>
+				</a> -->
+				<a href="#" ng-click='app.randomSpace()' ng-show='app.loggedIn()' title='click to see a new space'>
 					<i class="icon-random"></i>
 				</a>
 				<a href="/about" class='muted'>about</a>
@@ -88,12 +86,12 @@
 			</div>
 		</div>
 
-		<!-- <ul class="nav opacity2 opacity-full-hover center" ng-show='app.loggedIn()'>
+		<ul class="nav opacity5 opacity-full-hover center" ng-show='app.loggedIn()'>
 			<li>
-				<a href="#" ng-click='app.randomSpace()'>
+				<a href="#" ng-click='app.randomSpace()' title='click to see a new space'>
 					<i class="icon-random"></i>
 				</a>
 			</li>
-		</ul> -->
+		</ul>
 	</div>
 </div>
