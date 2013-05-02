@@ -88,6 +88,9 @@ gem 'simple_form'
 # Google Cookie Parser
 gem 'ga_cookie_parser'
 
+# View tracking
+gem 'impressionist'
+
 # Misc
 gem 'html5-rails' # TODO: is this needed?
 gem 'possessive'
@@ -135,11 +138,22 @@ group :development do
   gem 'guard-rspec'
   gem 'brakeman'
   gem 'foreman', '0.60.2'
-  # gem 'bullet'
+
+  # Profiling
+  gem 'bullet'
+  gem 'rack-mini-profiler'
+
   # gem 'better_errors'
+
   gem 'binding_of_caller'
   gem 'meta_request'
-  # gem 'growl'
+
+  # Notifiers
+  gem 'ruby-growl'
+  gem 'ruby_gntp'
+  gem 'xmpp4r'
+  gem "uniform_notifier"
+
   # gem 'ruby-debug19', :require => 'ruby-debug'  # NOTE: only use when needed
 end
 

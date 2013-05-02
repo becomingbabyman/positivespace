@@ -2,7 +2,7 @@ object @user
 
 extends 'api/v1/users/base'
 
-attributes :body, :location, :personal_url, :created_at
+attributes :body, :location, :personal_url, :created_at, :impressions_count
 attributes :achievements, :facebook_id, :sign_in_count, :last_sign_in_at, :updated_at, :gender, :birthday, :locale, :timezone, :if => lambda { |u| can?(:update, u) }
 
 node :first_name do |user|

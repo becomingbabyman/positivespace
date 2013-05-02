@@ -37,6 +37,7 @@ class Api::V1::UsersController < InheritedResources::Base
 
 	def show
 		@user = (params[:id] == 'me' ? current_user : User.find(params[:id]))
+		impressionist @user if @user != current_user
 		show!
 	end
 

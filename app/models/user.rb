@@ -25,6 +25,9 @@ class User < ActiveRecord::Base
 	            :default => :identicon,
 	            :size => 1024
 
+	# Track views
+	is_impressionable :counter_cache => { :unique => true }
+
 	attr_accessor :login, :invitation_code
 	attr_accessible :username, :login, :email, :password, :password_confirmation, :remember_me
 	attr_accessible :body, :location, :name, :personal_url#, :positive_response, :negative_response

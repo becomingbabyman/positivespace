@@ -1,11 +1,14 @@
 <div id='space' class="container" centerish>
 	<div class="row">
 		<div class="span12">
-
 			<div ng-show='user.can_edit' class="row pbm">
 				<div class="span-mobile center">
 					<div class='row-fluid'>
-						<a href='#' class='btn btn-block btn-link btn-large bd circle' style='background: #fbfbfb;' ng-click='showShare = !showShare; showEmbed = !showEmbed'>Promote your space</a>
+						<a href='#' class='btn btn-block btn-link btn-large bd circle' style='background: #fbfbfb;' ng-click='showShare = !showShare; showEmbed = !showEmbed'>
+							<ng-pluralize class="impressions" count='user.impressions_count' when="{1: '{} Visitor', 'other': '{} Visitors'}"></ng-pluralize>
+							&middot;
+							Promote your space
+						</a>
 					</div>
 				</div>
 			</div>
