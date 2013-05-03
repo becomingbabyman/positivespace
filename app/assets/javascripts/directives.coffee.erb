@@ -505,7 +505,7 @@ psDirectives.directive 'psLogin', ["$timeout", "$routeParams", "$location", "Use
 					scope.app.show.loading = true
 					User.login
 						user:
-							login: element.find("#login").val()
+							login: element.find("#lgn_login").val()
 							password: element.find("#lgn_password").val()
 							# remember_me: rememberMe
 						(data) ->
