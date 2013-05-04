@@ -40,7 +40,7 @@ Positivespace::Application.routes.draw do
 			# Images
 			resources :images, only: [:create, :destroy, :show]
 
-			# # Simplified user routes
+			# ## Simplified user routes
 			# resources :users, path: '', only: [:show] do
 			# end
 		end
