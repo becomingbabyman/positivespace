@@ -1,6 +1,18 @@
 class User < ActiveRecord::Base
 	include Gravtastic
 
+	state_machine :initial => :uninvited do
+		event :invite do
+			transition :uninvited => :invited
+		end
+		# after_transition on: :invite, do: :after_invite
+
+		event :complete do
+			transition :invited => :completed
+		end
+		# after_transition on: :complete, do: :after_complete
+	end
+
 	after_validation :validate_username_reserved
 	before_create do
 		# initialize_profile
@@ -37,12 +49,15 @@ class User < ActiveRecord::Base
 
 	extend FriendlyId
 	friendly_id :username
+	has_shortened_urls
 	has_many :images, :as => :attachable
 	has_many :avatars, :as => :attachable, :source => :images, :class_name => "Image", :conditions => {image_type: "avatar"}, :order => 'created_at desc'
 	has_many :sent_messages, :foreign_key => :from_id, :class_name => 'Message', :order => 'created_at desc'
 	has_many :recieved_messages, :foreign_key => :to_id, :class_name => 'Message', :order => 'created_at desc'
 	has_many :sent_conversations, :foreign_key => :from_id, :class_name => 'Conversation', :order => 'created_at desc'
 	has_many :recieved_conversations, :foreign_key => :to_id, :class_name => 'Conversation', :order => 'created_at desc'
+	has_many :invitations
+	belongs_to :invitation
 
 	accepts_nested_attributes_for :images, :avatars
 
@@ -51,6 +66,7 @@ class User < ActiveRecord::Base
 	validates :positive_response, length: 1..250, allow_blank: true
 	validates :negative_response, length: 1..250, allow_blank: true
 	validate  :validate_username_format
+	# validate  :validate_invitation, on: :create
 
 
 	# Authenticate with email or username
@@ -152,6 +168,11 @@ class User < ActiveRecord::Base
 		self.avatars.new(image: image)
 	end
 
+	def track_achievement achievement_name
+		self.achievements[achievement_name]=true
+		self.save
+	end
+
 private
 	def validate_username_reserved
 		if errors[:friendly_id].present?
@@ -184,4 +205,19 @@ private
 			avatars.create({ process_image_upload: true, remote_image_url: gravatar_url, user_id: id })
 		end
 	end
+
+	# def validate_invitation
+	#	invitation = Invitation.find_by_id(self.invitation_id)
+	#	unless invitation and invitation.legit?(self.invitation_code)
+	#		errors.add(:invitation, "must be valid")
+	#	end
+	# end
+
+	# def use_invitation
+
+	#	self.invitation.mark_as_used if self.invitation
+
+	#	# SendWelcomeEmailWorker.perform_in(2.seconds, self.id)
+	#	# FirstForwardableInvitationWorker.perform_at(Chronic.parse("2 days from now at 6:23pm"), self.id)
+	# end
 end

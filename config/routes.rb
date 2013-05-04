@@ -63,4 +63,10 @@ Positivespace::Application.routes.draw do
 
 	# Route wildcard routes to angular for client side routing
 	match "*path", to: "pages#wildcard"
+	match '/robots.:format' => 'pages#robots'
+	# match '/sitemap' => redirect('http://sitemap.positivespace.io')
+
+	constraints subdomain: 's' do
+		match '/:id' => "shortener/shortened_urls#show"
+	end
 end

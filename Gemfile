@@ -48,7 +48,7 @@ gem 'has_scope'
 gem 'chronic'
 
 # URL Shortening
-# gem 'shortener'
+gem 'shortener'
 
 # State Machine
 gem 'state_machine'

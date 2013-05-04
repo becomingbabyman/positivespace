@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130502183128) do
+ActiveRecord::Schema.define(:version => 20130503232533) do
 
   create_table "administrators", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -92,6 +92,20 @@ ActiveRecord::Schema.define(:version => 20130502183128) do
   add_index "impressions", ["impressionable_type", "impressionable_id", "session_hash"], :name => "poly_session_index"
   add_index "impressions", ["impressionable_type", "message", "impressionable_id"], :name => "impressionable_type_message_index"
   add_index "impressions", ["user_id"], :name => "index_impressions_on_user_id"
+
+  create_table "invitations", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "code"
+    t.integer  "max_use_count",     :default => 1
+    t.integer  "current_use_count", :default => 0
+    t.integer  "share_count",       :default => 0
+    t.integer  "impressions_count", :default => 0
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+  end
+
+  add_index "invitations", ["code"], :name => "index_invitations_on_code"
+  add_index "invitations", ["user_id"], :name => "index_invitations_on_user_id"
 
   create_table "messages", :force => true do |t|
     t.integer  "from_id"
@@ -179,6 +193,9 @@ ActiveRecord::Schema.define(:version => 20130502183128) do
     t.string   "locale"
     t.integer  "timezone"
     t.integer  "impressions_count",      :default => 1
+    t.integer  "invitation_id"
+    t.integer  "invitation_count",       :default => 0
+    t.string   "state"
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true
@@ -186,11 +203,13 @@ ActiveRecord::Schema.define(:version => 20130502183128) do
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["facebook_id"], :name => "index_users_on_facebook_id"
   add_index "users", ["impressions_count"], :name => "index_users_on_impressions_count"
+  add_index "users", ["invitation_count"], :name => "index_users_on_invitation_count"
   add_index "users", ["location"], :name => "index_users_on_location"
   add_index "users", ["name"], :name => "index_users_on_name"
   add_index "users", ["permissions"], :name => "index_users_on_permissions"
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
   add_index "users", ["slug"], :name => "index_users_on_slug", :unique => true
+  add_index "users", ["state"], :name => "index_users_on_state"
   add_index "users", ["unlock_token"], :name => "index_users_on_unlock_token", :unique => true
   add_index "users", ["username"], :name => "index_users_on_username", :unique => true
 

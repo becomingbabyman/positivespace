@@ -386,6 +386,8 @@ GEM
       rubyzip
       websocket (~> 1.0.4)
     sexp_processor (4.2.0)
+    shortener (0.2.0)
+      rails (>= 3.0.7)
     shoulda-matchers (2.0.0)
       activesupport (>= 3.0.0)
     sidekiq (2.9.0)
@@ -522,6 +524,7 @@ DEPENDENCIES
   ruby_gntp
   sass-rails (~> 3.2.3)
   select2-rails
+  shortener
   shoulda-matchers
   sidekiq
   sidekiq-failures
