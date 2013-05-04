@@ -120,7 +120,7 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 					type: 'incomplete'
 		else
 			$scope.app.dcu.promise.then (currentUser) ->
-				if $scope.user.id == currentUser.id
+				if $scope.user.id == currentUser.id and addthis?
 					addthis_share =
 						url: window.location.href
 						title: 'Have a conversation with me on my Positive Space'

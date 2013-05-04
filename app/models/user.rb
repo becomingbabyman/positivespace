@@ -1,16 +1,21 @@
 class User < ActiveRecord::Base
 	include Gravtastic
 
-	state_machine :initial => :uninvited do
-		event :invite do
-			transition :uninvited => :invited
+	state_machine :initial => :unendorsed do
+		event :endorse do
+			transition :unendorsed => :endorsed
 		end
-		# after_transition on: :invite, do: :after_invite
+		# after_transition on: :invite, do: :after_endorse
 
-		event :complete do
-			transition :invited => :completed
-		end
-		# after_transition on: :complete, do: :after_complete
+		# event :publish do
+		#	transition [:endorsed, :unpublished] => :published
+		# end
+		# # after_transition on: :complete, do: :after_publish
+
+		# event :unpublish do
+		#	transition [:published] => :unpublished
+		# end
+		# # after_transition on: :complete, do: :after_unpublish
 	end
 
 	after_validation :validate_username_reserved
@@ -67,6 +72,10 @@ class User < ActiveRecord::Base
 	validates :negative_response, length: 1..250, allow_blank: true
 	validate  :validate_username_format
 	# validate  :validate_invitation, on: :create
+
+
+	scope :unendorsed, where(state: :unendorsed)
+	scope :endorsed, where(state: :endorsed)
 
 
 	# Authenticate with email or username

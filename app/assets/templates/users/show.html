@@ -5,7 +5,8 @@
 			<div ng-show='user.can_edit' class="row pbm">
 				<div class="span-mobile center">
 					<div class='row-fluid'>
-						<a href='#' class='btn btn-block btn-link btn-large bd circle' style='background: #fbfbfb;' ng-click='showShare = !showShare; showEmbed = !showEmbed'>
+						<a href='#' class='btn btn-block btn-link btn-lrge bd circle' style='background: #fbfbfb;' ng-click='showShare = !showShare; showEmbed = !showEmbed; showEndorse = !showEndorse'>
+							<i class='icon-group prs'></i>
 							<ng-pluralize class="impressions" count='user.impressions_count' when="{1: '{} Visitor', 'other': '{} Visitors'}"></ng-pluralize>
 							&middot;
 							Share your space
@@ -38,7 +39,7 @@
 			</div>
 
 
-			<div ng-show='user.can_edit && showEmbed' class="row" ng-class='{ptl: !hideShare}'>
+			<div ng-show='user.can_edit && showEmbed' class="row" ng-class='{ptl: showShare}'>
 				<div class="span-mobile center">
 					<div class='row-fluid'>
 						<div class="span12 alert alert-info alert-block uncenter bgw">
@@ -52,9 +53,23 @@
 			</div>
 
 
+			<div ng-show='user.can_edit && user.state == "unendorsed" && showEndorse' class="row" ng-class='{ptl: (showShare || showEmbed)}'>
+				<div class="span-mobile center">
+					<div class='row-fluid'>
+						<div class="span12 alert alert-info alert-block uncenter bgw">
+							<button type="button" class="close" ng-click="showEndorse = false">&times;</button>
+							<h4>3. Publish your space</h4>
+							Make you space public and discoverable to everyone using Positive Space. You must be endorsed by one published person.
+							<a href="#" ng-click="requestEndorsement()" class="btn btn-info btn-block">Request an endorsement</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
 			<div ng-show='user.can_edit' class="row">
 				<div class="span-mobile center ptm">
-					<a ng-href='/{{user.slug}}/edit' class='pull-right btn btn-link btn-large'>edit</a>
+					<a ng-href='/{{user.slug}}/edit' class='pull-right btn btn-link btn-large' title='change your space'>edit</a>
 				</div>
 			</div>
 
@@ -64,18 +79,53 @@
 					<!-- <div class='lbl ptx'>To:</div> -->
 
 					<div class="center animated fadeInDown">
+						<div>
+							<a href="#" class='faded plm pull-right opacity5 opacity-full-hover' title='save for later'>
+								<i class='icon-bookmark-empty'></i>
+							</a>
+
+							<!-- <i class='icon-eye-open faded plm pull-right' title='subscribe'></i> -->
+							<a href="#" class='faded plm pull-right opacity5 opacity-full-hover' title='like'>
+								<i class='icon-star-empty'></i>
+							</a>
+
+							<a href="#" class='faded prm pull-left opacity5 opacity-full-hover' title='endorse this space - you have ({{app.currentUser.invitation_count}}) remaining' ng-show='user.state == "unendorsed"' tooltip='Endorse this space - you have ({{app.currentUser.invitation_count}}) remaining' ng-show='user.state == "unendorsed"' tooltip-placement='right'>
+								<i class='icon-heart-empty'></i>
+							</a>
+							<a href="#" class='faded prm pull-left opacity5 opacity-full-hover' title='endorsed by {{user.invitation.user.name}}' ui-if='user.state != "unendorsed"'>
+								<i class='icon-heart'></i>
+							</a>
+							<!-- <i class='icon-bolt faded prm pull-left' title=''></i> -->
+						</div>
+						<br/>
 						<ps-img src="{{user.avatar.big_thumb_url}}" alt="{{user.name}}" img-class="img-circle img-border img-big-thumb"></ps-img>
+
 						<div class='animated fadeInDown'>
 							<h2 class='pts pbs'>{{user.name}}</h2>
 							<p ng-bind-html-unsafe="user.body | linebreaks" class='prompt'>{{user.body}}</p>
-							<p ng-show='user.location.length > 0 || user.personal_url.length > 0' class='m0 ptl'>
+
+							<!-- <div class='ptl'>
+								<i class='icon-certificate faded prm' title='verified account'></i>
+								<i class='icon-rss faded prm'></i>
+								<i class='icon-trophy faded prm'></i>
+								<i class='icon-money faded prm'></i>
+								<i class='icon-group faded prm'></i>
+								<i class='icon-facebook faded prm'></i>
+								<i class='icon-twitter faded prm'></i>
+								<i class='icon-github faded prm'></i>
+								<i class='icon-linkedin faded prm'></i>
+								<i class='icon-pinterest faded prm'></i>
+								<i class='icon-google-plus faded'></i>
+							</div> -->
+
+							<div ng-show='user.location.length > 0 || user.personal_url.length > 0' class='m0 ptl'>
 								<div ng-show='user.location.length > 0'>
 									<i class='icon-map-marker faded'></i>
 									<br/>
 									<strong>{{user.location}}</strong>
 								</div>
 								<div ng-show='user.personal_url.length > 0'><a href='{{user.personal_url}}' target='_blank' class='unfancy-link underline'>{{user.personal_url | urlSimplify}}</a></div>
-							</p>
+							</div>
 						</div>
 					</div>
 
