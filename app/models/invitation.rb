@@ -1,9 +1,10 @@
+# AKA Endorsment
 class Invitation < ActiveRecord::Base
 	#########################
 	# Callbacks & Misc method calls (e.g. devise for, acts_as_whatever )
 	#########################
 	after_initialize :generate_code, on: :create
-	# after_create :email_code_to_user
+	after_create :decrement_remaining_invitations
 
 
 	#########################
@@ -96,6 +97,11 @@ private
 
 	def max_use_count_gt_current
 		self.errors.add(:max_use_count, "must be greater than current use count") if self.max_use_count <= self.current_use_count
+	end
+
+	def decrement_remaining_invitations
+		self.user.decrement(:remaining_invitations_count)
+		self.user.save!
 	end
 
 	# def email_code_to_user

@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
 		event :endorse do
 			transition :unendorsed => :endorsed
 		end
-		# after_transition on: :invite, do: :after_endorse
+		after_transition on: :endorse, do: :after_endorse
 
 		# event :publish do
 		#	transition [:endorsed, :unpublished] => :published
@@ -43,9 +43,9 @@ class User < ActiveRecord::Base
 	            :size => 1024
 
 
-	attr_accessor :login, :invitation_code, :socialable_type, :socialable_id, :socialable_action
+	attr_accessor :login, :invitation_code, :socialable_type, :socialable_id, :socialable_action, :endorse_user
 	attr_accessible :username, :login, :email, :password, :password_confirmation, :remember_me
-	attr_accessible :body, :location, :name, :personal_url, :socialable_type, :socialable_id, :socialable_action#, :positive_response, :negative_response
+	attr_accessible :body, :location, :name, :personal_url, :socialable_type, :socialable_id, :socialable_action, :endorse_user#, :positive_response, :negative_response
 	attr_protected :none, as: :admin
 
 	serialize :achievements
@@ -197,14 +197,19 @@ class User < ActiveRecord::Base
 		end
 	end
 
-	def unlikeable_id= id
-		m = self.unlikeable_type.classify.constantize.find_by_id(id)
-		self.unlike! m if m
-	end
-
 	def track_achievement achievement_name
 		self.achievements[achievement_name]=true
 		self.save
+	end
+
+	def endorse_user= id
+		if self.endorsed? and self.remaining_invitations_count > 0 and invitee = User.find_by_id(id) and invitee.unendorsed?
+			invite = self.invitations.create
+			invitee.invitation_id = invite.id
+			invitee.endorse
+		else
+			self.errors.add(:endorsement, "unsuccessful")
+		end
 	end
 
 private
@@ -238,6 +243,11 @@ private
 		unless avatar
 			avatars.create({ process_image_upload: true, remote_image_url: gravatar_url, user_id: id })
 		end
+	end
+
+	def after_endorse
+		# The endorsed user can now endorse others
+		self.update_attribute(:remaining_invitations_count, 3)
 	end
 
 	# def validate_invitation

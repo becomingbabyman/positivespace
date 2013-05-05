@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130505001851) do
+ActiveRecord::Schema.define(:version => 20130505141806) do
 
   create_table "administrators", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -202,12 +202,12 @@ ActiveRecord::Schema.define(:version => 20130505001851) do
   add_index "shortened_urls", ["url"], :name => "index_shortened_urls_on_url"
 
   create_table "users", :force => true do |t|
-    t.string   "email",                  :default => "",                         :null => false
-    t.string   "encrypted_password",     :default => "",                         :null => false
+    t.string   "email",                       :default => "",                         :null => false
+    t.string   "encrypted_password",          :default => "",                         :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          :default => 0
+    t.integer  "sign_in_count",               :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -216,13 +216,13 @@ ActiveRecord::Schema.define(:version => 20130505001851) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
-    t.integer  "failed_attempts",        :default => 0
+    t.integer  "failed_attempts",             :default => 0
     t.string   "unlock_token"
     t.datetime "locked_at"
     t.string   "authentication_token"
-    t.datetime "created_at",                                                     :null => false
-    t.datetime "updated_at",                                                     :null => false
-    t.integer  "permissions",            :default => 0
+    t.datetime "created_at",                                                          :null => false
+    t.datetime "updated_at",                                                          :null => false
+    t.integer  "permissions",                 :default => 0
     t.string   "facebook_id"
     t.string   "username"
     t.string   "slug"
@@ -231,7 +231,7 @@ ActiveRecord::Schema.define(:version => 20130505001851) do
     t.string   "name"
     t.text     "body"
     t.string   "location"
-    t.text     "achievements",           :default => "---\n:registered: true\n"
+    t.text     "achievements",                :default => "---\n:registered: true\n"
     t.string   "personal_url"
     t.text     "positive_response"
     t.text     "negative_response"
@@ -239,13 +239,13 @@ ActiveRecord::Schema.define(:version => 20130505001851) do
     t.datetime "birthday"
     t.string   "locale"
     t.integer  "timezone"
-    t.integer  "impressions_count",      :default => 1
+    t.integer  "impressions_count",           :default => 1
     t.integer  "invitation_id"
-    t.integer  "invitation_count",       :default => 0
     t.string   "state"
-    t.integer  "followers_count",        :default => 0
-    t.integer  "likers_count",           :default => 0
-    t.integer  "mentioners_count",       :default => 0
+    t.integer  "followers_count",             :default => 0
+    t.integer  "likers_count",                :default => 0
+    t.integer  "mentioners_count",            :default => 0
+    t.integer  "remaining_invitations_count", :default => 0
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true
@@ -254,12 +254,12 @@ ActiveRecord::Schema.define(:version => 20130505001851) do
   add_index "users", ["facebook_id"], :name => "index_users_on_facebook_id"
   add_index "users", ["followers_count"], :name => "index_users_on_followers_count"
   add_index "users", ["impressions_count"], :name => "index_users_on_impressions_count"
-  add_index "users", ["invitation_count"], :name => "index_users_on_invitation_count"
   add_index "users", ["likers_count"], :name => "index_users_on_likers_count"
   add_index "users", ["location"], :name => "index_users_on_location"
   add_index "users", ["mentioners_count"], :name => "index_users_on_mentioners_count"
   add_index "users", ["name"], :name => "index_users_on_name"
   add_index "users", ["permissions"], :name => "index_users_on_permissions"
+  add_index "users", ["remaining_invitations_count"], :name => "index_users_on_remaining_invitations_count"
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
   add_index "users", ["slug"], :name => "index_users_on_slug", :unique => true
   add_index "users", ["state"], :name => "index_users_on_state"
