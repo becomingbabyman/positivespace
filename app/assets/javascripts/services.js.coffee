@@ -112,7 +112,6 @@ psServices.factory 'User', ['$resource', ($resource) ->
 		if @id?
 			@$update(success, error)
 
-
 	User
 ]
 

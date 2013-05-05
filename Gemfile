@@ -88,8 +88,11 @@ gem 'simple_form'
 # Google Cookie Parser
 gem 'ga_cookie_parser'
 
-# View tracking
+# View Tracking
 gem 'impressionist'
+
+# Follow, Like, Mention
+gem 'socialization'
 
 # Misc
 gem 'html5-rails' # TODO: is this needed?

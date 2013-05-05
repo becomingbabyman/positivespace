@@ -79,25 +79,29 @@
 					<!-- <div class='lbl ptx'>To:</div> -->
 
 					<div class="center animated fadeInDown">
-						<div>
-							<a href="#" class='faded plm pull-right opacity5 opacity-full-hover' title='save for later'>
+						<div class='uncenter row-fluid font22'>
+							<a href="#" class='faded plm pull-right opacity6 opacity-full-hover' title='follow' ng-hide='user.has_follow' ng-click='social("follow")'>
 								<i class='icon-bookmark-empty'></i>
 							</a>
+							<a href="#" class='plm pull-right opacity6 opacity-full-hover' title='unfollow' ng-show='user.has_follow' ng-click='social("unfollow")'>
+								<i class='icon-bookmark color-green'></i>
+							</a>
 
-							<!-- <i class='icon-eye-open faded plm pull-right' title='subscribe'></i> -->
-							<a href="#" class='faded plm pull-right opacity5 opacity-full-hover' title='like'>
+							<a href="#" class='faded plm pull-right opacity6 opacity-full-hover' title='like' ng-hide='user.has_like' ng-click='social("like")'>
 								<i class='icon-star-empty'></i>
 							</a>
+							<a href="#" class='plm pull-right opacity6 opacity-full-hover' title='unlike' ng-show='user.has_like' ng-click='social("unlike")'>
+								<i class='icon-star color-yellow'></i>
+							</a>
 
-							<a href="#" class='faded prm pull-left opacity5 opacity-full-hover' title='endorse this space - you have ({{app.currentUser.invitation_count}}) remaining' ng-show='user.state == "unendorsed"' tooltip='Endorse this space - you have ({{app.currentUser.invitation_count}}) remaining' ng-show='user.state == "unendorsed"' tooltip-placement='right'>
+							<a href="#" class='faded prm pull-left opacity6 opacity-full-hover' ng-show='user.state == "unendorsed"' tooltip='Endorse this space - you have ({{app.currentUser.invitation_count}}) remaining' ng-show='user.state == "unendorsed"' tooltip-placement='right'>
 								<i class='icon-heart-empty'></i>
 							</a>
-							<a href="#" class='faded prm pull-left opacity5 opacity-full-hover' title='endorsed by {{user.invitation.user.name}}' ui-if='user.state != "unendorsed"'>
+							<a href="#" class='faded prm pull-left opacity6 opacity-full-hover' title='endorsed by {{user.invitation.user.name}}' ui-if='user.state != "unendorsed"'>
 								<i class='icon-heart'></i>
 							</a>
 							<!-- <i class='icon-bolt faded prm pull-left' title=''></i> -->
 						</div>
-						<br/>
 						<ps-img src="{{user.avatar.big_thumb_url}}" alt="{{user.name}}" img-class="img-circle img-border img-big-thumb"></ps-img>
 
 						<div class='animated fadeInDown'>

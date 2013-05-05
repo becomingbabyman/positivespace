@@ -20,6 +20,7 @@ class Message < ActiveRecord::Base
 
 	serialize :embed_data
 
+	acts_as_mentioner
 	belongs_to :to, :class_name => 'User'
 	belongs_to :from, :class_name => 'User'
 	belongs_to :conversation

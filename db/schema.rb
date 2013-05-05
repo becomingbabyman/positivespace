@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130503232533) do
+ActiveRecord::Schema.define(:version => 20130505001851) do
 
   create_table "administrators", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -49,6 +49,17 @@ ActiveRecord::Schema.define(:version => 20130503232533) do
   add_index "conversations", ["prompt"], :name => "index_conversations_on_prompt"
   add_index "conversations", ["state"], :name => "index_conversations_on_state"
   add_index "conversations", ["to_id"], :name => "index_conversations_on_to_id"
+
+  create_table "follows", :force => true do |t|
+    t.string   "follower_type"
+    t.integer  "follower_id"
+    t.string   "followable_type"
+    t.integer  "followable_id"
+    t.datetime "created_at"
+  end
+
+  add_index "follows", ["followable_id", "followable_type"], :name => "fk_followables"
+  add_index "follows", ["follower_id", "follower_type"], :name => "fk_follows"
 
   create_table "images", :force => true do |t|
     t.integer  "user_id"
@@ -107,6 +118,28 @@ ActiveRecord::Schema.define(:version => 20130503232533) do
   add_index "invitations", ["code"], :name => "index_invitations_on_code"
   add_index "invitations", ["user_id"], :name => "index_invitations_on_user_id"
 
+  create_table "likes", :force => true do |t|
+    t.string   "liker_type"
+    t.integer  "liker_id"
+    t.string   "likeable_type"
+    t.integer  "likeable_id"
+    t.datetime "created_at"
+  end
+
+  add_index "likes", ["likeable_id", "likeable_type"], :name => "fk_likeables"
+  add_index "likes", ["liker_id", "liker_type"], :name => "fk_likes"
+
+  create_table "mentions", :force => true do |t|
+    t.string   "mentioner_type"
+    t.integer  "mentioner_id"
+    t.string   "mentionable_type"
+    t.integer  "mentionable_id"
+    t.datetime "created_at"
+  end
+
+  add_index "mentions", ["mentionable_id", "mentionable_type"], :name => "fk_mentionables"
+  add_index "mentions", ["mentioner_id", "mentioner_type"], :name => "fk_mentions"
+
   create_table "messages", :force => true do |t|
     t.integer  "from_id"
     t.integer  "to_id"
@@ -154,6 +187,20 @@ ActiveRecord::Schema.define(:version => 20130503232533) do
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
+  create_table "shortened_urls", :force => true do |t|
+    t.integer  "owner_id"
+    t.string   "owner_type", :limit => 20
+    t.string   "url",                                     :null => false
+    t.string   "unique_key", :limit => 10,                :null => false
+    t.integer  "use_count",                :default => 0, :null => false
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
+  end
+
+  add_index "shortened_urls", ["owner_id", "owner_type"], :name => "index_shortened_urls_on_owner_id_and_owner_type"
+  add_index "shortened_urls", ["unique_key"], :name => "index_shortened_urls_on_unique_key", :unique => true
+  add_index "shortened_urls", ["url"], :name => "index_shortened_urls_on_url"
+
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "",                         :null => false
     t.string   "encrypted_password",     :default => "",                         :null => false
@@ -196,15 +243,21 @@ ActiveRecord::Schema.define(:version => 20130503232533) do
     t.integer  "invitation_id"
     t.integer  "invitation_count",       :default => 0
     t.string   "state"
+    t.integer  "followers_count",        :default => 0
+    t.integer  "likers_count",           :default => 0
+    t.integer  "mentioners_count",       :default => 0
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["facebook_id"], :name => "index_users_on_facebook_id"
+  add_index "users", ["followers_count"], :name => "index_users_on_followers_count"
   add_index "users", ["impressions_count"], :name => "index_users_on_impressions_count"
   add_index "users", ["invitation_count"], :name => "index_users_on_invitation_count"
+  add_index "users", ["likers_count"], :name => "index_users_on_likers_count"
   add_index "users", ["location"], :name => "index_users_on_location"
+  add_index "users", ["mentioners_count"], :name => "index_users_on_mentioners_count"
   add_index "users", ["name"], :name => "index_users_on_name"
   add_index "users", ["permissions"], :name => "index_users_on_permissions"
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true

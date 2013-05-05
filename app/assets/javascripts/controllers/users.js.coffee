@@ -179,6 +179,21 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 		analytics.track 'request embed code'
 		window.alert "This feature is under development. In the meantime you can link you your space \"#{window.location.href}\" from your website or blog. And you can speak with us at \"people@positivespace.io\" and share your thoughts about embedding. We are sorry for the inconvenience."
 
+	$scope.social = (action) ->
+		has = "has_#{action.replace(/^un/, '')}"
+		unless $scope.user.id == $scope.app.currentUser.id
+			$scope.user[has] = !$scope.user[has]
+			User.update
+				id: $scope.app.currentUser.id
+				socialable_type: 'User'
+				socialable_id: $scope.user.id
+				socialable_action: action
+			, ((user) -> {}), (error) ->
+				$scope.user[has] = !$scope.user[has]
+				$scope.app.flash 'error', error.data.errors
+		else
+			$scope.app.flash 'notice', "Sorry, you cannot #{action} yourself"
+
 	$scope.submitMessage = ->
 		if $scope.app.loggedIn()
 			$scope.app.show.loading = true

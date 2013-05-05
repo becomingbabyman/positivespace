@@ -42,12 +42,10 @@ class User < ActiveRecord::Base
 	            :default => :identicon,
 	            :size => 1024
 
-	# Track views
-	is_impressionable :counter_cache => { :unique => true }
 
-	attr_accessor :login, :invitation_code
+	attr_accessor :login, :invitation_code, :socialable_type, :socialable_id, :socialable_action
 	attr_accessible :username, :login, :email, :password, :password_confirmation, :remember_me
-	attr_accessible :body, :location, :name, :personal_url#, :positive_response, :negative_response
+	attr_accessible :body, :location, :name, :personal_url, :socialable_type, :socialable_id, :socialable_action#, :positive_response, :negative_response
 	attr_protected :none, as: :admin
 
 	serialize :achievements
@@ -55,6 +53,12 @@ class User < ActiveRecord::Base
 	extend FriendlyId
 	friendly_id :username
 	has_shortened_urls
+	is_impressionable :counter_cache => { :unique => true }
+	acts_as_follower
+	acts_as_followable
+	acts_as_liker
+	acts_as_likeable
+	acts_as_mentionable
 	has_many :images, :as => :attachable
 	has_many :avatars, :as => :attachable, :source => :images, :class_name => "Image", :conditions => {image_type: "avatar"}, :order => 'created_at desc'
 	has_many :sent_messages, :foreign_key => :from_id, :class_name => 'Message', :order => 'created_at desc'
@@ -175,6 +179,27 @@ class User < ActiveRecord::Base
 
 	def avatar= image
 		self.avatars.new(image: image)
+	end
+
+	def socialable_action= action
+		m = self.socialable_type.classify.constantize.find_by_id(self.socialable_id)
+		if m
+			case action
+			when 'like'
+				self.like! m
+			when 'unlike'
+				self.unlike! m
+			when 'follow'
+				self.follow! m
+			when 'unfollow'
+				self.unfollow! m
+			end
+		end
+	end
+
+	def unlikeable_id= id
+		m = self.unlikeable_type.classify.constantize.find_by_id(id)
+		self.unlike! m if m
 	end
 
 	def track_achievement achievement_name
