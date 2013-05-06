@@ -21,7 +21,7 @@ Positivespace::Application.configure do
   config.assets.digest = true
 
   # Set Mailer Host
-  config.action_mailer.default_url_options = { :host => 'www.ps-stage.herokuapp.com' }
+  config.action_mailer.default_url_options = { :host => 'ps-stage.herokuapp.com' }
 
   # Defaults to Rails.root.join("public/assets")
   # config.assets.manifest = YOUR_PATH
@@ -80,12 +80,16 @@ Positivespace::Application.configure do
 
   # config.action_controller.asset_host = ENV['FOG_HOST']
   config.action_controller.asset_host = Proc.new do |source, request=nil|
-    if request and request.ssl?
-      ENV['FOG_HOST_SSL']
-    else
-      ENV['FOG_HOST']
-    end
+    # Serves HTML and Fonts Locally
+    /.html$|.eot$|.ttf$|.woff$|.otf$/.match(source) ? '//ps-stage.herokuapp.com' : ENV['FOG_HOST_SSL']
   end
+  # config.action_controller.asset_host = Proc.new do |source, request=nil|
+  #   if request and request.ssl?
+  #     ENV['FOG_HOST_SSL']
+  #   else
+  #     ENV['FOG_HOST']
+  #   end
+  # end
   config.action_mailer.asset_host = ENV['FOG_HOST']
 
 
