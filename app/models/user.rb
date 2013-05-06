@@ -24,6 +24,8 @@ class User < ActiveRecord::Base
 		initialize_permissions
 	end
 	after_create :add_gravatar
+	# TODO: BETA: REMOVE: don't auto endorse people on create
+	after_create :endorse
 	after_save do
 		# sync_slug if username != profile.slug
 		generate_username unless username?
@@ -45,7 +47,7 @@ class User < ActiveRecord::Base
 
 	attr_accessor :login, :invitation_code, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :endorse_user_id
 	attr_accessible :username, :login, :email, :password, :password_confirmation, :remember_me
-	attr_accessible :body, :location, :name, :personal_url, :socialable_type, :socialable_id, :socialable_action, :endorse_user#, :positive_response, :negative_response
+	attr_accessible :body, :location, :name, :personal_url, :socialable_type, :socialable_id, :socialable_action, :endorse_user #, :positive_response, :negative_response
 	attr_protected :none, as: :admin
 
 	serialize :achievements

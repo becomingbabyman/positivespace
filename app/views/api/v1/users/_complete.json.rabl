@@ -37,8 +37,8 @@ node :ended_conversations_count, :if => lambda { |u| can?(:update, u) } do |user
 	user.conversations.ended.size
 end
 
-child :invitation do
-	child :user do
+child :invitation => :invitation do
+	child :user => :user do
 		extends "api/v1/users/base"
 	end
 end
