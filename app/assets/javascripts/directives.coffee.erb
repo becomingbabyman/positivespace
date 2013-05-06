@@ -487,7 +487,7 @@ psDirectives.directive 'psLogin', ["$timeout", "$routeParams", "$location", "Use
 							scope.credentials = {loginType: 'login'}
 							scope.app.flash 'success', "Welcome. Let's create your Positive Space! What do you want to talk about?"
 							if $routeParams.path?
-								$location.search(unescape($routeParams.search).replace('?', ''))
+								$location.search(unescape($routeParams.search or '').replace('?', ''))
 								$location.path($routeParams.path)
 							else
 								$location.path("/#{data.username}")
@@ -514,7 +514,7 @@ psDirectives.directive 'psLogin', ["$timeout", "$routeParams", "$location", "Use
 							scope.credentials = {loginType: 'login'}
 							scope.app.flash 'success', "Welcome back!"
 							if $routeParams.path?
-								$location.search(unescape($routeParams.search).replace('?', ''))
+								$location.search(unescape($routeParams.search or '').replace('?', ''))
 								$location.path($routeParams.path)
 							else
 								$location.path("/#{data.username}")
@@ -545,7 +545,7 @@ psDirectives.directive 'psLogin', ["$timeout", "$routeParams", "$location", "Use
 							scope.app.loadCurrentUser data
 							scope.app.flash 'success', "Welcome!"
 							if $routeParams.path?
-								$location.search(unescape($routeParams.search).replace('?', ''))
+								$location.search(unescape($routeParams.search or '').replace('?', ''))
 								$location.path($routeParams.path)
 							else
 								$location.path("/#{data.username}")

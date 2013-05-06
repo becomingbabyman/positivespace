@@ -43,7 +43,7 @@ class User < ActiveRecord::Base
 	            :size => 1024
 
 
-	attr_accessor :login, :invitation_code, :socialable_type, :socialable_id, :socialable_action, :endorse_user
+	attr_accessor :login, :invitation_code, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :endorse_user_id
 	attr_accessible :username, :login, :email, :password, :password_confirmation, :remember_me
 	attr_accessible :body, :location, :name, :personal_url, :socialable_type, :socialable_id, :socialable_action, :endorse_user#, :positive_response, :negative_response
 	attr_protected :none, as: :admin
@@ -75,6 +75,7 @@ class User < ActiveRecord::Base
 	validates :positive_response, length: 1..250, allow_blank: true
 	validates :negative_response, length: 1..250, allow_blank: true
 	validate  :validate_username_format
+	validate  :validate_can_endorse_user
 	# validate  :validate_invitation, on: :create
 
 
@@ -202,13 +203,13 @@ class User < ActiveRecord::Base
 		self.save
 	end
 
-	def endorse_user= id
-		if self.endorsed? and self.remaining_invitations_count > 0 and invitee = User.find_by_id(id) and invitee.unendorsed?
+	def endorse_user= uid
+		# TODO: REFACTOR: call validate before
+		self.endorse_user_id = uid
+		if self.endorsed? and self.remaining_invitations_count > 0 and invitee = User.find_by_id(uid) and invitee.unendorsed?
 			invite = self.invitations.create
 			invitee.invitation_id = invite.id
 			invitee.endorse
-		else
-			self.errors.add(:endorsement, "unsuccessful")
 		end
 	end
 
@@ -227,6 +228,16 @@ private
 	def validate_username_format
 		unless username =~ /^[a-zA-Z][a-zA-Z0-9-]*$/ or username == id.to_s
 			errors.add(:username, "may only contain letters, numbers, and dashes")
+		end
+	end
+
+	def validate_can_endorse_user
+		unless self.endorse_user_id.nil?
+			if self.endorsed? and self.remaining_invitations_count > 0 and invitee = User.find_by_id(self.endorse_user_id) and invitee.unendorsed?
+				# win!
+			else
+				errors.add(:endorsement, "unsuccessful")
+			end
 		end
 	end
 

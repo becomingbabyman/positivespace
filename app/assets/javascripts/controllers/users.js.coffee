@@ -180,30 +180,79 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 		window.alert "This feature is under development. In the meantime you can link you your space \"#{window.location.href}\" from your website or blog. And you can speak with us at \"people@positivespace.io\" and share your thoughts about embedding. We are sorry for the inconvenience."
 
 	$scope.endorse = ->
-		$scope.user.state = 'endorsed'
-		$scope.user.invitation = {user: $scope.app.currentUser}
-		User.update
-			id: $scope.app.currentUser.id
-			endorse_user: $scope.user.id
-		, ((user) -> {}), (error) ->
-			$scope.user.state = 'unendorsed'
-			$scope.user.invitation = null
-			$scope.app.flash 'error', error.data.errors
+		if window.confirm("\nPlease note. This action cannot be undone. \n\nEndorsing this space will make it discoverable to the Positive Space community! And this space will forever link to yours. Do you want to endorse #{$scope.user.name}?")
+			if $scope.app.loggedIn()
+				$scope.user.state = 'endorsed'
+				$scope.user.invitation = {user: $scope.app.currentUser}
+				User.update
+					id: $scope.app.currentUser.id
+					endorse_user: $scope.user.id
+				, (user) ->
+					$scope.app.flash 'success', "Awesome, #{$scope.user.name} is now officially part of the Positive Space community. #{$scope.user.first_name} will be notified and #{window.possessive($scope.user.first_name)} space is now linked to your space."
+					analytics.track "endorse space success",
+						href: window.location.href
+						routeId: $routeParams.user_id
+						userId: $scope.user.id
+						userName: $scope.user.name
+						userBody: $scope.user.body
+						currentId: $scope.app.currentUser.id
+						currentName: $scope.app.currentUser.name
+				, (error) ->
+					$scope.user.state = 'unendorsed'
+					$scope.user.invitation = null
+					$scope.app.flash 'error', error.data.errors
+					analytics.track "endorse space error",
+						href: window.location.href
+						routeId: $routeParams.user_id
+						userId: $scope.user.id
+						userName: $scope.user.name
+						userBody: $scope.user.body
+						currentId: $scope.app.currentUser.id
+						currentName: $scope.app.currentUser.name
+						error: JSON.stringify(error)
+			else
+				$scope.app.flash 'info', "Log in to endorse #{window.possessive($scope.user.first_name)} space"
+				$location.search('path', "/#{$scope.user.slug}")
+				$location.path('/login')
 
 	$scope.social = (action) ->
 		has = "has_#{action.replace(/^un/, '')}"
-		unless $scope.user.id == $scope.app.currentUser.id
-			$scope.user[has] = !$scope.user[has]
-			User.update
-				id: $scope.app.currentUser.id
-				socialable_type: 'User'
-				socialable_id: $scope.user.id
-				socialable_action: action
-			, ((user) -> {}), (error) ->
+		if $scope.app.loggedIn()
+			unless $scope.user.id == $scope.app.currentUser.id
 				$scope.user[has] = !$scope.user[has]
-				$scope.app.flash 'error', error.data.errors
+				User.update
+					id: $scope.app.currentUser.id
+					socialable_type: 'User'
+					socialable_id: $scope.user.id
+					socialable_action: action
+				, (user) ->
+					analytics.track "#{action} space success",
+						href: window.location.href
+						routeId: $routeParams.user_id
+						userId: $scope.user.id
+						userName: $scope.user.name
+						userBody: $scope.user.body
+						currentId: $scope.app.currentUser.id
+						currentName: $scope.app.currentUser.name
+				, (error) ->
+					$scope.user[has] = !$scope.user[has]
+					$scope.app.flash 'error', error.data.errors
+					analytics.track "#{action} space error",
+						href: window.location.href
+						routeId: $routeParams.user_id
+						userId: $scope.user.id
+						userName: $scope.user.name
+						userBody: $scope.user.body
+						currentId: $scope.app.currentUser.id
+						currentName: $scope.app.currentUser.name
+						error: JSON.stringify(error)
+			else
+				$scope.app.flash 'notice', "Sorry, you cannot #{action} yourself"
 		else
-			$scope.app.flash 'notice', "Sorry, you cannot #{action} yourself"
+			$scope.app.flash 'info', "Log in to #{action} #{window.possessive($scope.user.first_name)} space"
+			$location.search('path', "/#{$scope.user.slug}")
+			$location.path('/login')
+
 
 	$scope.submitMessage = ->
 		if $scope.app.loggedIn()

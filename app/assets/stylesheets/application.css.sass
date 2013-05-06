@@ -536,6 +536,17 @@ input, textarea
                     visibility: visible
                     opacity: 1
 
+//////////////////////////////////////////////////////
+/**                  misc bootstrap                **/
+//////////////////////////////////////////////////////
+.accordion-group
+    border: none
+    .accordion-toggle
+        padding-left: 0
+        padding-right: 0
+    .accordion-inner
+        border: none
+        border-bottom: 1px solid #eee
 
 //////////////////////////////////////////////////////
 /**                   inbox style                  **/
@@ -571,9 +582,9 @@ input, textarea
 
 
 //////////////////////////////////////////////////////
-/**                   about style                  **/
+/**                  purpose style                 **/
 //////////////////////////////////////////////////////
-#about
+#purpose
     .img-toggle
         $d: 100px
         width: $d
@@ -609,5 +620,5 @@ input, textarea
 //
 //
 // Import these mixins last to overide everything else
-@import "flat-ui/spaces"
 @import "html_mixins"
+@import "flat-ui/spaces"

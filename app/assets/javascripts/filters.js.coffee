@@ -40,9 +40,12 @@ psFilters.filter 'urlSimplify', ->
 			if (urls = url.split("#")).length > 1 then url = urls[0]
 		url
 
+# TODO: attach this somwhere better
+window.possessive = (text) ->
+	if text
+		if text[text.length - 1] == 's' then text + "'" else text + "'s"
+	else
+		''
 psFilters.filter 'possessive', ->
 	(text) ->
-		if text
-			if text[text.length - 1] == 's' then text + "'" else text + "'s"
-		else
-			''
+		window.possessive text
