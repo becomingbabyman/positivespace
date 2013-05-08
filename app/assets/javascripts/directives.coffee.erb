@@ -261,6 +261,88 @@ psDirectives.directive "psImg", ["$timeout", ($timeout) ->
 ]
 
 
+#####################################################
+# <a href="#" share='facebook'>
+# must be 'a' tag
+#
+psDirectives.directive "share", ["$location", ($location) ->
+	restrict: "A"
+	scope:
+		shareName:"@"
+		shareDesc:"@"
+		shareUrl:"@"
+		shareImage:"@"
+	link: (scope, element, attrs) ->
+
+		element.bind 'click', ->
+			scope.generateShareTarget()
+			analytics.track 'click share button',
+				service: attrs.share
+				url: scope.shareUrl
+				name: scope.shareName
+				description: scope.shareDesc
+				image: scope.shareImage
+				href: window.location.href
+				path: window.location.pathname
+
+		scope.generateShareTarget = ->
+			scope.shareImage = scope.shareImage.addHttp() if scope.shareImage
+			scope.shareUrl ||= $location.absUrl()
+
+			fbShare = (method) ->
+				callback = (response) ->
+					if response and response.post_id
+						analytics.track 'share success',
+							service: "facebook - #{method}"
+					else
+						analytics.track 'share error',
+							service: "facebook - #{method}"
+				share = ->
+					fbObject =
+						method: method
+						caption: "Positive Space"
+					fbObject.link =        scope.shareUrl   if scope.shareUrl?
+					fbObject.name =        scope.shareName  if scope.shareName?
+					fbObject.description = scope.shareDesc  if scope.shareDesc?
+					fbObject.picture =     scope.shareImage if scope.shareImage?
+
+					FB.ui fbObject, callback
+
+				share()
+				false
+
+			switch attrs.share
+				when 'facebook'
+					fbShare('feed')
+
+				when 'facebook send'
+					fbShare('send')
+
+				when 'pinterest'
+					url = 'http://pinterest.com/pin/create/button/?' +
+						if !scope.shareUrl?   then '' else "url=#{encodeURIComponent(scope.shareUrl)}" +
+						if !scope.shareName?  then '' else "&description=#{encodeURIComponent(scope.shareName)}" +
+						if !scope.shareImage? then '' else "&media=#{encodeURIComponent(scope.shareImage)}"
+					pinWindow = window.openCenter url, 'Post to Pinterest', 700, 300
+					false
+
+
+				when 'twitter'
+					element.attr 'target', '_blank'
+					element.attr 'href', "https://twitter.com/intent/tweet?hashtags=positivespace" +
+						if !scope.shareUrl?   then '' else "&url=#{encodeURIComponent(scope.shareUrl)}" +
+						if !scope.shareName?  then '' else "&text=#{encodeURIComponent(scope.shareName)}%20via%20%40positivespaceny"
+
+				when 'tumblr'
+					url = "http://www.tumblr.com/share/link?" +
+						if !scope.shareUrl?   then '' else "url=#{encodeURIComponent(scope.shareUrl)}" +
+						if !scope.shareName?  then '' else "&name=#{encodeURIComponent(scope.shareName)}" +
+						if !scope.shareDesc?  then '' else "&description=#{encodeURIComponent(scope.shareDesc)}"
+					tumblrWindow = window.openCenter url, 'Post to Tumblr', 450, 450
+					false
+]
+
+
 ####################################################
 ####################################################
 # <ps-subtle-login>

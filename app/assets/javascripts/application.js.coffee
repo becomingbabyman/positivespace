@@ -39,3 +39,56 @@
 # Not Currently Required
 # require jquery.jlabel
 #
+
+String.prototype.addHttp = () ->
+	@.replace(/^.*\/\//, 'http://')
+
+window.log = (content) ->
+	console.log content
+
+window.retargetExternalLinks = ->
+	$(document.links).filter( () ->
+		this.hostname != window.location.hostname
+	).attr('target', '_blank')
+
+$.fn.serializeJSON = ->
+	json = {}
+	jQuery.map $(this).serializeArray(), (n, i) ->
+		json[n["name"]] = n["value"]
+	json
+
+window.parallaxify = (element) ->
+	$(window).scroll ->
+		s = $(@).scrollTop() - $(element).offset().top
+		$(element).css "background-position", "center " + s/3 + "px"
+	$(window).scroll()
+
+window.videoResize = ($iframe, newWidth) ->
+	width = $iframe.attr('width')
+	height = $iframe.attr('height')
+	aspectRatio = height/width
+	$iframe.attr('width', newWidth)
+	$iframe.attr('height', newWidth*aspectRatio)
+
+# To Select Text
+window.selectText = (className) ->
+	doc = document
+	text = doc.getElementsByClassName(className)[0]
+	range = undefined
+	selection = undefined
+	if doc.body.createTextRange #ms
+		range = doc.body.createTextRange()
+		range.moveToElementText text
+		range.select()
+	else if window.getSelection #all others
+		selection = window.getSelection()
+		range = doc.createRange()
+		range.selectNodeContents text
+		selection.removeAllRanges()
+		selection.addRange range
+
+window.openCenter = (url, title, w, h) ->
+	left = (screen.width/2)-(w/2)
+	top = (screen.height/2)-(h/2)
+	window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left)
+

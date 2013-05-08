@@ -242,5 +242,8 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
         $scope.app.show.headerDropdown = !$scope.app.show.headerDropdown
         analytics.track "click powered by"
 
+    $scope.app.selectText = (className) ->
+        window.selectText(className)
+
 ]
 

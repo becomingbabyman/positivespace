@@ -120,23 +120,24 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 					type: 'incomplete'
 		else
 			$scope.app.dcu.promise.then (currentUser) ->
-				if $scope.user.id == currentUser.id and addthis?
-					addthis_share =
-						url: window.location.href
-						title: 'Have a conversation with me on my Positive Space'
-						description: $scope.user.body
-						screenshot: $scope.app.meta.imageUrl
-						email_template: "share_space"
-						# email_vars:
-						#	body: $scope.user.body
-						templates:
-							twitter: "Have a conversation with me on my Positive Space {{url}} via @positivespaceny #+_"
-					addthis.toolbox '.addthis_toolbox', {}, addthis_share
-					addthis.addEventListener 'addthis.menu.share', (evt) ->
-						analytics.track 'click share my space button',
-							service: evt.data.service
-							url: evt.data.url
-				else
+				# if $scope.user.id == currentUser.id and addthis?
+				#	addthis_share =
+				#		url: window.location.href
+				#		title: 'Have a conversation with me on my Positive Space'
+				#		description: $scope.user.body
+				#		screenshot: $scope.app.meta.imageUrl
+				#		email_template: "share_space"
+				#		# email_vars:
+				#		#	body: $scope.user.body
+				#		templates:
+				#			twitter: "Have a conversation with me on my Positive Space {{url}} via @positivespaceny #positivespace"
+				#	addthis.toolbox '.addthis_toolbox', {}, addthis_share
+				#	addthis.addEventListener 'addthis.menu.share', (evt) ->
+				#		analytics.track 'click share my space button',
+				#			service: evt.data.service
+				#			url: evt.data.url
+
+				if $scope.user.id != currentUser.id
 					# Check for in_progress conversation
 					Conversation.query {user_id: currentUser.id, to: $scope.user.id, state: 'in_progress', order: 'created_at DESC'}, (conversations) ->
 						$scope.conversation = conversations.collection[0]

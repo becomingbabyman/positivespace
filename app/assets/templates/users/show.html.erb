@@ -23,16 +23,41 @@
 							<button type="button" class="close" ng-click="showShare = false">&times;</button>
 							<h4>1. Start a conversation</h4>
 							Share your space with the people you want to have a conversation with.
-							<!-- AddThis Button BEGIN -->
-							<div class="addthis_toolbox addthis_default_style ptm">
-								<a class="addthis_button_facebook"></a>
-								<a class="addthis_button_twitter"></a>
-								<a class="addthis_button_google_plusone_share"></a>
-								<a class="addthis_button_email"></a>
-								<a href="http://addthis.com/bookmark.php?v=250" class="addthis_button_compact"></a>
-								<a class="addthis_button_facebook_send" style='margin-top: -3px;'></a>
+							<div class='font64 ptm'>
+								<a class="color-pinterest" href="#"
+									title='share on pinterest'
+									share="pinterest"
+									share-url="http://www.positivespace.io/{{user.slug}}"
+									share-name="Let’s talk about --- {{user.body}} --- on Positive Space"
+									share-image="<%= asset_path 'ps_logo_padded@2x.jpg' %>"
+								><i class="share icon-pinterest"></i></a>
+								<a class="color-facebook" href="#"
+									title='send to a friend'
+									share="facebook send"
+									share-url="http://www.positivespace.io/{{user.slug}}"
+									share-name="Have a conversation with me about ..."
+									share-desc="{{user.body}}"
+									share-image="<%= asset_path 'ps_logo_padded@2x.jpg' %>"
+								><i class="share icon-facebook-sign"></i></a>
+								<a class="color-twitter" href="#"
+									title='share on twitter'
+									share="twitter"
+									share-url="http://www.positivespace.io/{{user.slug}}"
+									share-name="Talk with me about ..."
+								><i class="share icon-twitter"></i></a>
+								<a class="color-tumblr" href="#"
+									title='share on tumblr'
+									share="tumblr"
+									share-url="http://www.positivespace.io/{{user.slug}}"
+									share-name="Have a conversation with me about ..."
+									share-desc="{{user.body}}"
+									share-image="<%= asset_path 'ps_logo_padded@2x.jpg' %>"
+								><img src="<%= asset_path 'tumblr64.png' %>" alt='tumblr' style='width: 55px; height: 55px; margin-top: -13px;'></a>
 							</div>
-							<!-- AddThis Button END -->
+							<div class='ptm'>
+								<small class='muted'>shareable url</small>
+								<pre ng-click="app.selectText('share-url')" class="share-url sans bold font14">http://www.positivespace.io/{{user.slug}}</pre>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -53,7 +78,7 @@
 			</div>
 
 
-			<!-- <div ng-show='user.can_edit && user.state == "unendorsed" && showEndorse' class="row" ng-class='{ptl: (showShare || showEmbed)}'>
+			<div ng-show='user.can_edit && user.state == "unendorsed" && showEndorse' class="row" ng-class='{ptl: (showShare || showEmbed)}'>
 				<div class="span-mobile center">
 					<div class='row-fluid'>
 						<div class="span12 alert alert-info alert-block uncenter bgw">
@@ -64,7 +89,19 @@
 						</div>
 					</div>
 				</div>
-			</div> -->
+			</div>
+			<div ng-show='user.can_edit && user.state != "unendorsed" && showEndorse' class="row" ng-class='{ptl: (showShare || showEmbed)}'>
+				<div class="span-mobile center">
+					<div class='row-fluid'>
+						<div class="span12 alert alert-success alert-block uncenter bgw">
+							<button type="button" class="close" ng-click="showEndorse = false">&times;</button>
+							<h4>3. Publish your space - Complete</h4>
+							You have been endorsed by
+							<a href='user.invitation.user.slug'>{{user.invitation.user.name || "Positive Space"}}</a>.
+						</div>
+					</div>
+				</div>
+			</div>
 
 
 			<div ng-show='user.can_edit' class="row">
