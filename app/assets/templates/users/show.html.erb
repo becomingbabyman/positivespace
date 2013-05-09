@@ -116,7 +116,8 @@
 					<!-- <div class='lbl ptx'>To:</div> -->
 
 					<div class="center animated fadeInDown">
-						<div class='uncenter row-fluid font22'>
+
+						<div class='uncenter row-fluid font22' ng-hide='true'>
 							<a href="#" class='faded plm pull-right opacity6 opacity-full-hover' title='save for later' ng-hide='user.has_follow' ng-click='social("follow")'>
 								<i class='icon-bookmark-empty'></i>
 							</a>
@@ -139,11 +140,12 @@
 							</a>
 							<!-- <i class='icon-bolt faded prm pull-left' title=''></i> -->
 						</div>
-						<ps-img src="{{user.avatar.big_thumb_url}}" alt="{{user.name}}" img-class="img-circle img-border img-big-thumb"></ps-img>
+
+						<ps-img ng-hide='true' src="{{user.avatar.big_thumb_url}}" alt="{{user.name}}" img-class="img-circle img-border img-big-thumb"></ps-img>
 
 						<div class='animated fadeInDown'>
-							<h2 class='pts pbs'>{{user.name}}</h2>
-							<p ng-bind-html-unsafe="user.body | linebreaks" class='prompt'>{{user.body}}</p>
+							<h2 ng-hide='true' class='pts pbs'>{{user.name}}</h2>
+							<p ng-bind-html-unsafe="user.body | linebreaks" class='prompt' tooltip="{{user.name}} says">{{user.body}}</p>
 
 							<!-- <div class='ptl'>
 								<i class='icon-certificate faded prm' title='verified account'></i>
@@ -159,19 +161,23 @@
 								<i class='icon-google-plus faded'></i>
 							</div> -->
 
-							<div ng-show='user.location.length > 0 || user.personal_url.length > 0' class='m0 ptl'>
-								<div ng-show='user.location.length > 0'>
-									<i class='icon-map-marker faded'></i>
-									<br/>
-									<strong>{{user.location}}</strong>
+							<div ng-hide='true'>
+								<div ng-show='user.location.length > 0 || user.personal_url.length > 0' class='m0 ptl'>
+									<div ng-show='user.location.length > 0'>
+										<i class='icon-map-marker faded'></i>
+										<br/>
+										<strong>{{user.location}}</strong>
+									</div>
+									<div ng-show='user.personal_url.length > 0'><a href='{{user.personal_url}}' target='_blank' class='unfancy-link underline'>{{user.personal_url | urlSimplify}}</a></div>
 								</div>
-								<div ng-show='user.personal_url.length > 0'><a href='{{user.personal_url}}' target='_blank' class='unfancy-link underline'>{{user.personal_url | urlSimplify}}</a></div>
 							</div>
 						</div>
 					</div>
 
 				</div>
 			</div>
+
+			<br/>
 
 
 			<div class='row animated fadeInUp ptl' ng-hide="conversation && conversation.prompt == user.body">
@@ -183,7 +189,7 @@
 						<ps-subtle-login app='app'></ps-subtle-login>
 
 						<control-group>
-							<textarea name='body' id='msg_body' title='message body' placeholder="message{{' to ' + user.name | lowercase}}" class='input-block-level' ng-model='message.body' rows=5 required ng-disabled='message.id'></textarea>
+							<textarea name='body' id='msg_body' title='message body' placeholder="respond{{' to ' + user.first_name | lowercase}}" class='input-block-level' ng-model='message.body' rows=5 required ng-disabled='message.id'></textarea>
 						</control-group>
 
 						<div ng-show='show.embedInput'>
@@ -194,10 +200,12 @@
 
 						<div class='control-group'>
 							<div class='controls'>
-								<a href='#' class='muted' ng-click='show.embedInput = true' ng-hide='show.embedInput'><i class='icon-link pts font20' tooltip='Attach a link. We will magically find and embed picture, video, audio, and more.' tooltip-placement='right'></i></a>
-								<a href='#' class='muted' ng-click='show.embedInput = false' ng-show='show.embedInput'><i class='icon-link pts font20'></i></a>
+								<span ng-hide='true'>
+									<a href='#' class='muted' ng-click='show.embedInput = true' ng-hide='show.embedInput'><i class='icon-link pts font20' tooltip='Attach a link. We will magically find and embed picture, video, audio, and more.' tooltip-placement='right'></i></a>
+									<a href='#' class='muted' ng-click='show.embedInput = false' ng-show='show.embedInput'><i class='icon-link pts font20'></i></a>
+								</span>
 
-								<button ng-hide='message.id' type='submit' class='btn btn-success pull-right' ng-disabled="messageForm.body.$invalid">Start Conversation</button>
+								<button ng-hide='message.id' type='submit' class='btn btn-success pull-right' ng-disabled="messageForm.body.$invalid">Reply</button>
 								<button ng-show='message.id' type='submit' class='btn btn-disabled pull-right' disabled>Message Sent</button>
 
 								<span class='pull-right pts prm' id='msg_remaining_chars' ng-class='{"muted": remainingChars > 10, "text-error": remainingChars <= 10}'>{{remainingChars}}</span>
