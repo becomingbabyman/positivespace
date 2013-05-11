@@ -145,7 +145,12 @@
 
 						<div class='animated fadeInDown'>
 							<h2 ng-hide='true' class='pts pbs'>{{user.name}}</h2>
-							<p ng-bind-html-unsafe="user.body | linebreaks" class='prompt' tooltip="{{user.name}} says">{{user.body}}</p>
+
+							<div class="prompt-wrapper" ng-class="{clicked: show.form, 'not-clicked': !show.form}">
+								<p ng-bind-html-unsafe="user.body | linebreaks" class='prompt'>{{user.body}}</p>
+								<a href="#" ng-click='respond()' class="respond-button btn">Respond</a>
+							</div>
+							<a href="#" ng-click='respond()' class="btn btn-success btn-large btn-block mtl" ng-hide='show.form' ng-class="{'hidden-desktop': !show.form}">Respond</a>
 
 							<!-- <div class='ptl'>
 								<i class='icon-certificate faded prm' title='verified account'></i>
@@ -188,7 +193,7 @@
 			</div>
 
 
-			<div class='row animated fadeInUp ptl' ng-hide="conversation && conversation.prompt == user.body">
+			<div class='row animated fadeInDown ptl' ng-hide="!show.form || (conversation && conversation.prompt == user.body)">
 				<div class="span-mobile center pos-rel">
 					<form name='messageForm' class='form-vertical uncenter' ng-submit='submitMessage()' novalidate style='width: 100%;'>
 
@@ -197,7 +202,7 @@
 						<ps-subtle-login app='app'></ps-subtle-login>
 
 						<control-group>
-							<textarea name='body' id='msg_body' title='message body' placeholder="your response ..." class='input-block-level' ng-model='message.body' rows=5 required ng-disabled='message.id'></textarea>
+							<textarea name='body' id='msg_body' title='message body' placeholder="your response ..." class='input-block-level' ng-model='message.body' rows=5 required ng-disabled='message.id' autofocus></textarea>
 						</control-group>
 
 						<div ng-show='show.embedInput'>
@@ -213,7 +218,7 @@
 									<a href='#' class='muted' ng-click='show.embedInput = false' ng-show='show.embedInput'><i class='icon-link pts font20'></i></a>
 								</span>
 
-								<button ng-hide='message.id' type='submit' class='btn btn-success pull-right' ng-disabled="messageForm.body.$invalid">Reply</button>
+								<button ng-hide='message.id' type='submit' class='btn btn-success pull-right' ng-disabled="messageForm.body.$invalid">Send</button>
 								<button ng-show='message.id' type='submit' class='btn btn-disabled pull-right' disabled>Message Sent</button>
 
 								<span class='pull-right pts prm' id='msg_remaining_chars' ng-class='{"muted": remainingChars > 10, "text-error": remainingChars <= 10}'>{{remainingChars}}</span>

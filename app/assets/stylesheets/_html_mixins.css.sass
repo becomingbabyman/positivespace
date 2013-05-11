@@ -10,6 +10,48 @@ p.prompt
 	margin-top: 10px
 	text-align: left
 
+div.prompt-wrapper
+	min-height: 7em
+	position: relative
+	border-radius: 3px
+	background: #f6f6f6
+	.prompt
+		height: 100%
+	.respond-button
+		display: none
+		position: absolute
+		top: 50%
+		left: 50%
+		width: 140px
+		height: 42px
+		padding: 0
+		margin-left: -70px
+		margin-top: -21px
+		text-align: center
+		background: $color-blue
+		color: white
+		font-size: 20px
+		line-height: 42px
+		letter-spacing: 1px
+		z-index: 6
+		@include text-shadow(#bbb 1px -1px 0)
+		&:hover
+			background: lighten($color-blue, 5%)
+	&:hover.not-clicked
+		&:after
+			position: absolute
+			top: 0
+			left: 0
+			content: ""
+			width: 100%
+			height: 100%
+			background: white
+			opacity: 0.3
+		.respond-button
+			display: block
+
+
+
 .amp
 	//http://css-tricks.com/snippets/css/fancy-ampersand/
 	font-family: Baskerville, 'Goudy Old Style', Palatino, 'Book Antiqua', serif

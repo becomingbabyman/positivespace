@@ -101,7 +101,7 @@ ps.controller "UsersEditCtrl", ["$scope", "$routeParams", "$timeout", "$location
 ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location", "User", "Message", "Conversation", ($scope, $routeParams, $timeout, $location, User, Message, Conversation) ->
 	user_id = $routeParams.user_id or 'space'
 	$scope.space = {fadeCount: 0}
-	$scope.show = {embedInput: false}
+	$scope.show = {embedInput: false, form: false}
 
 	$scope.user = User.get {id: user_id}, ->
 		$scope.app.meta.title = "#{$scope.user.name}"
@@ -154,6 +154,16 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 				href: window.location.href
 				routeId: $routeParams.id
 
+	$scope.respond = ->
+		$scope.show.form = true
+		analytics.track 'click respond',
+			href: window.location.href
+			routeId: $routeParams.user_id
+			userId: $scope.user.id
+			userName: $scope.user.name
+			userBody: $scope.user.body
+			currentId: $scope.app.currentUser.id
+			currentName: $scope.app.currentUser.name
 
 	$scope.requestEmbedCode = ->
 		analytics.track 'request embed code'
