@@ -111,36 +111,15 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 			$scope.app.dcu.promise.then (currentUser) ->
 				if $scope.user.id == currentUser.id
 					$location.path("/#{currentUser.slug}/edit")
-				else
-					$location.path('/')
-			,(error) ->
-				$location.path('/404')
-				analytics.track 'view space error',
-					routeId: $routeParams.user_id
-					type: 'incomplete'
-		else
-			$scope.app.dcu.promise.then (currentUser) ->
-				# if $scope.user.id == currentUser.id and addthis?
-				#	addthis_share =
-				#		url: window.location.href
-				#		title: 'Have a conversation with me on my Positive Space'
-				#		description: $scope.user.body
-				#		screenshot: $scope.app.meta.imageUrl
-				#		email_template: "share_space"
-				#		# email_vars:
-				#		#	body: $scope.user.body
-				#		templates:
-				#			twitter: "Have a conversation with me on my Positive Space {{url}} via @positivespaceny #positivespace"
-				#	addthis.toolbox '.addthis_toolbox', {}, addthis_share
-				#	addthis.addEventListener 'addthis.menu.share', (evt) ->
-				#		analytics.track 'click share my space button',
-				#			service: evt.data.service
-				#			url: evt.data.url
+					analytics.track 'view space error',
+						routeId: $routeParams.user_id
+						type: 'redirect to edit'
 
-				if $scope.user.id != currentUser.id
-					# Check for in_progress conversation
-					Conversation.query {user_id: currentUser.id, to: $scope.user.id, state: 'in_progress', order: 'created_at DESC'}, (conversations) ->
-						$scope.conversation = conversations.collection[0]
+		$scope.app.dcu.promise.then (currentUser) ->
+			if $scope.user.id != currentUser.id
+				# Check for in_progress conversation
+				Conversation.query {user_id: currentUser.id, to: $scope.user.id, state: 'in_progress', order: 'created_at DESC'}, (conversations) ->
+					$scope.conversation = conversations.collection[0]
 
 		analytics.track 'view space success',
 			href: window.location.href
@@ -300,6 +279,25 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 
 ps.controller "UsersSettingsCtrl", ["$scope", "User", ($scope, User) ->
 	$scope.app.meta.title = "Settings"
+
+	$scope.saveSettings = ->
+		$scope.app.show.loading = true
+		success = (data) ->
+			$scope.app.show.loading = false
+			$scope.app.flash 'success', 'Your settings have been saved'
+			analytics.track 'save settings success',
+				href: window.location.href
+				userId: $scope.app.currentUser.id
+				userName: $scope.app.currentUser.name
+		error = (error) ->
+			$scope.app.show.loading = false
+			$scope.app.flash 'error', error.data.errors
+			analytics.track 'save settings error',
+				href: window.location.href
+				userId: $scope.app.currentUser.id
+				userName: $scope.app.currentUser.name
+				error: JSON.stringify(error)
+		$scope.app.currentUser.save success, error
 ]
 
 

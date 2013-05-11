@@ -16,7 +16,6 @@ class Conversation < ActiveRecord::Base
 
 	validates :to_id, presence: true
 	validates :from_id, presence: true
-	validates :prompt, presence: true
 
 	# default_scope :order => 'updated_at ASC'
 

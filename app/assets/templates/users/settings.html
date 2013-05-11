@@ -1,4 +1,4 @@
-<div class="container">
+<!-- <div class="container">
 
 	<br/>
 	<br/>
@@ -23,4 +23,40 @@
 			</div>
 		</div>
 	</div>
+</div> -->
+
+
+<div id='edit_settings' class="container" centerish>
+	<div class="row">
+		<div class="span12">
+
+			<div class="row">
+				<div class="span-mobile center pos-rel">
+
+					<form class='ptm uncenter animated fadeInUp' name='user_settings' class='form-vertical uncenter ptl' ng-submit='saveSettings()' novalidate style='width: 100%;'>
+
+						<control-group label='Username'>
+							<input name='username' id='user_username' title='your username' placeholder="your username" class='input-block-level' ng-model='app.currentUser.username' required></input>
+						</control-group>
+						<div class='muted pbl'>http://positivespace.io/{{app.currentUser.username}}</div>
+
+						<control-group label='Email'>
+							<input type='email' name='email' id='user_email' title='your email address' placeholder="your email address" class='input-block-level' ng-model='app.currentUser.email' required></input>
+						</control-group>
+
+
+						<div class='control-group'>
+							<div class='controls'>
+								<button type='submit' class='btn btn-success pull-right'>Save settings</button>
+							</div>
+						</div>
+
+					</form>
+
+				</div>
+			</div>
+
+		</div>
+	</div>
 </div>
+

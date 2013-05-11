@@ -52,6 +52,7 @@ class User < ActiveRecord::Base
 
 	serialize :achievements
 
+	has_paper_trail
 	extend FriendlyId
 	friendly_id :username
 	has_shortened_urls

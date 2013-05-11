@@ -179,6 +179,14 @@
 
 			<br/>
 
+			<div class='row animated fadeInUp ptl' ng-show="!user.body || user.body.length == 0">
+				<div class="span-mobile center">
+					<div class='well well-small'>
+						This space is empty. Tell {{user.name}} to fill it in.
+					</div>
+				</div>
+			</div>
+
 
 			<div class='row animated fadeInUp ptl' ng-hide="conversation && conversation.prompt == user.body">
 				<div class="span-mobile center pos-rel">
@@ -189,7 +197,7 @@
 						<ps-subtle-login app='app'></ps-subtle-login>
 
 						<control-group>
-							<textarea name='body' id='msg_body' title='message body' placeholder="respond{{' to ' + user.first_name | lowercase}}" class='input-block-level' ng-model='message.body' rows=5 required ng-disabled='message.id'></textarea>
+							<textarea name='body' id='msg_body' title='message body' placeholder="your response ..." class='input-block-level' ng-model='message.body' rows=5 required ng-disabled='message.id'></textarea>
 						</control-group>
 
 						<div ng-show='show.embedInput'>
