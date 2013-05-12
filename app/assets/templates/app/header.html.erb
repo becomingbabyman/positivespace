@@ -87,11 +87,17 @@
 			</div>
 		</div>
 
-		<ul class="nav opacity5 opacity-full-hover center" ng-show='app.loggedIn()'>
+		<ul class="nav center" ng-show='app.loggedIn()' ng-controller="SearchsHeaderCtrl">
 			<li>
-				<a href="#" ng-click='app.randomSpace()' title='click to see a new space'>
+				<form class="form-search pts uncenter" name="searchHeaderForm" ng-submit="" novalidate style='position: relative;'>
+
+					<input type="text" name="query" ng-model="query" id='search_header_query' class="input-large search-query opacity5 opacity-full-hover" placeholder="Search" typeahead="user.name for user in users.collection | filter:$viewValue" ui-event="{keyup: 'queryUpdated($event)'}" autocomplete="off" autofocus>
+
+					<img ng-show="loading" src="<%= asset_path('ajax-loader-black-dots.gif') %>" alt="loading dots" style='position: absolute; right: 10px; top: 18px;'>
+				</form>
+				<!-- <a href="#" ng-click='app.randomSpace()' title='click to see a new space'>
 					<i class="icon-random"></i>
-				</a>
+				</a> -->
 			</li>
 		</ul>
 	</div>

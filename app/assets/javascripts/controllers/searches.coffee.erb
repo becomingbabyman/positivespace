@@ -1,0 +1,18 @@
+ps.controller "SearchsHeaderCtrl", ["$scope", "User", ($scope, User) ->
+	$scope.query = null
+	$scope.users = {collection: []}
+
+	typingTimeoutId = 0
+	$scope.queryUpdated = (e) ->
+		unless e.keyCode in [37, 38, 39, 40] # arrow keys
+			clearTimeout(typingTimeoutId)
+			typingTimeoutId = setTimeout $scope.search, 300
+
+	$scope.search = ->
+		$scope.loading = true
+		$scope.users = User.query {q: $scope.query}, (users) ->
+			$scope.loading = false
+			log users
+		, (error) ->
+			$scope.loading = false
+]

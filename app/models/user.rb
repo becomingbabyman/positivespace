@@ -1,6 +1,41 @@
 class User < ActiveRecord::Base
 	include Gravtastic
 
+	include Tire::Model::Search
+	include Tire::Model::Callbacks
+
+	tire.settings   :number_of_shards => 1,
+					:number_of_replicas => 1,
+					:analysis => {
+						:filter => {
+							:url_ngram  => {
+								"type"     => "nGram",
+								"max_gram" => 5,
+								"min_gram" => 3 }
+						},
+						:analyzer => {
+							:url_analyzer => {
+									"tokenizer"    => "lowercase",
+									"filter"       => ["stop", "url_ngram"],
+									"type"         => "custom" }
+						}
+					} do
+		mapping do
+			indexes :id,           :index    => :not_analyzed, type: :integer
+			indexes :name,         :analyzer => 'snowball'
+			indexes :body,         :analyzer => 'snowball'#, :boost => 2.0
+			# indexes :content_size, :as       => 'content.size'
+			indexes :username,     :analyzer => 'snowball'
+			indexes :slug,         :analyzer => 'snowball'
+			indexes :state,        :analyzer => 'keyword'
+			indexes :location,     :analyzer => 'snowball'
+			indexes :personal_url, :analyzer => 'url_analyzer'
+			indexes :update_at,    :type => 'date'
+			indexes :created_at,   :type => 'date'
+		end
+	end
+
+
 	state_machine :initial => :unendorsed do
 		event :endorse do
 			transition :unendorsed => :endorsed
@@ -40,9 +75,9 @@ class User < ActiveRecord::Base
 			:async, :authentication_keys => [:login]
 
 	gravtastic :secure => false,
-	            :filetype => :jpg,
-	            :default => :identicon,
-	            :size => 1024
+				:filetype => :jpg,
+				:default => :identicon,
+				:size => 1024
 
 
 	attr_accessor :login, :invitation_code, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :endorse_user_id
@@ -131,6 +166,14 @@ class User < ActiveRecord::Base
 			})#, invitation_id: invitation_id, invitation_code: invitation_code })
 			user.update_attribute(:facebook_id, fb_user.id)
 			user
+		end
+	end
+
+	def self.search(params)
+		# TODO: disable load true by caching errthang you need
+		tire.search(load: true, page: params[:page], per_page: params[:per]) do
+			query { string params[:q], default_operator: "AND" } if params[:q].present?
+			# filter :not => { :term => { :state => :unendorsed } }
 		end
 	end
 

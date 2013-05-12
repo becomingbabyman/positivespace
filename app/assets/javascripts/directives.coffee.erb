@@ -370,7 +370,7 @@ psDirectives.directive 'psSubtleLogin', ["$timeout", "$location", "User", ($time
 				User.query
 					login: login
 					(data) ->
-						if data.length > 0
+						if data.collection.length > 0
 							scope.credentials.loginType = 'login'
 							# scope.app.flash 'info', "Looks like you already have an account. Go ahead and log in."
 							$timeout () ->
@@ -394,7 +394,7 @@ psDirectives.directive 'psSubtleLogin', ["$timeout", "$location", "User", ($time
 					User.query
 						username: username
 						(data) ->
-							if data.length > 0 and scope.credentials.loginType == 'register'
+							if data.collection.length > 0 and scope.credentials.loginType == 'register'
 								scope.usernameTaken = false
 							else
 								scope.usernameTaken = true
@@ -522,7 +522,7 @@ psDirectives.directive 'psLogin', ["$timeout", "$routeParams", "$location", "Use
 				User.query
 					login: login
 					(data) ->
-						if data.length > 0 and registering
+						if data.collection.length > 0 and registering
 							scope.credentials.loginType = 'login'
 							scope.credentials.login = login
 							scope.app.flash 'info', "Looks like you already have an account. Go ahead and log in."
@@ -532,7 +532,7 @@ psDirectives.directive 'psLogin', ["$timeout", "$routeParams", "$location", "Use
 								else
 									element.find('#lgn_password').focus()
 							, 100
-						else if data.length == 0 and !registering
+						else if data.collection.length == 0 and !registering
 							scope.credentials.loginType = 'register'
 							scope.app.flash 'info', "Looks like you need an account. Go ahead and start one."
 							$timeout () ->
@@ -547,7 +547,7 @@ psDirectives.directive 'psLogin', ["$timeout", "$routeParams", "$location", "Use
 					User.query
 						username: username
 						(data) ->
-							if data.length > 0 and scope.credentials.loginType == 'register'
+							if data.collection.length > 0 and scope.credentials.loginType == 'register'
 								scope.usernameTaken = false
 							else
 								scope.usernameTaken = true

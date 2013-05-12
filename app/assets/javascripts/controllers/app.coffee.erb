@@ -236,7 +236,7 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
         $scope.app.show.loading = true
         User.query {per: 1, order: 'RANDOM()', has_space: true}, (users) ->
             $scope.app.show.loading = false
-            $location.path("/#{users[0].slug}")
+            $location.path("/#{users.collection[0].slug}")
 
 
     ########
