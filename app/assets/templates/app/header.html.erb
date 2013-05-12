@@ -8,10 +8,13 @@
 				</a>
 			</li> -->
 
-			<li>
-				<a href="#" ng-class="{'visible-desktop': !app.show.headerDropdownToggle}" style='visibility: hidden; pointer-events: none;' >
-					<i class="icon-random"></i>
-				</a>
+			<li ng-controller="SearchsHeaderCtrl">
+				<form class="form-search pts uncenter" name="searchHeaderForm" ng-submit="" novalidate style='position: relative;'>
+
+					<input type="text" name="query" ng-model="query" id='search_header_query' class="input-xlarge search-query opacity5 opacity-full-hover" placeholder="Search" typeahead="user.typeahead for user in search($viewValue)" autocomplete="off" autofocus>
+
+					<img ng-show="loading" src="<%= asset_path('ajax-loader-black-dots.gif') %>" alt="loading dots" style='position: absolute; right: 10px; top: 18px;'>
+				</form>
 			</li>
 			<li ng-show='app.loggedIn()'>
 				<a href="/{{app.currentUser.slug}}" title="{{app.currentUser.username | possessive}} space">
@@ -87,18 +90,12 @@
 			</div>
 		</div>
 
-		<ul class="nav center" ng-show='app.loggedIn()' ng-controller="SearchsHeaderCtrl">
+		<!-- <ul class="nav center" ng-show='app.loggedIn()'>
 			<li>
-				<form class="form-search pts uncenter" name="searchHeaderForm" ng-submit="" novalidate style='position: relative;'>
-
-					<input type="text" name="query" ng-model="query" id='search_header_query' class="input-large search-query opacity5 opacity-full-hover" placeholder="Search" typeahead="user.name for user in users.collection | filter:$viewValue" ui-event="{keyup: 'queryUpdated($event)'}" autocomplete="off" autofocus>
-
-					<img ng-show="loading" src="<%= asset_path('ajax-loader-black-dots.gif') %>" alt="loading dots" style='position: absolute; right: 10px; top: 18px;'>
-				</form>
-				<!-- <a href="#" ng-click='app.randomSpace()' title='click to see a new space'>
+				<a href="#" ng-click='app.randomSpace()' title='click to see a new space'>
 					<i class="icon-random"></i>
-				</a> -->
+				</a>
 			</li>
-		</ul>
+		</ul> -->
 	</div>
 </div>

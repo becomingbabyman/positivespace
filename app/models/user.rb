@@ -172,7 +172,7 @@ class User < ActiveRecord::Base
 	def self.search(params)
 		# TODO: disable load true by caching errthang you need
 		tire.search(load: true, page: params[:page], per_page: params[:per]) do
-			query { string params[:q], default_operator: "AND" } if params[:q].present?
+			query { string params[:q], default_operator: "OR" } if params[:q].present?
 			# filter :not => { :term => { :state => :unendorsed } }
 		end
 	end
