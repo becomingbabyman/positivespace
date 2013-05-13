@@ -144,13 +144,53 @@
 						<ps-img ng-hide='true' src="{{user.avatar.big_thumb_url}}" alt="{{user.name}}" img-class="img-circle img-border img-big-thumb"></ps-img>
 
 						<div class='animated fadeInDown'>
-							<h2 ng-hide='true' class='pts pbs'>{{user.name}}</h2>
+							<h3 class='pts pbs ghost'>{{user.name}}</h3>
 
 							<div class="prompt-wrapper" ng-class="{clicked: show.form, 'not-clicked': !show.form}">
 								<p ng-bind-html-unsafe="user.body | linebreaks" class='prompt'>{{user.body}}</p>
 								<a href="#" ng-click='respond()' class="respond-button btn">Respond</a>
 							</div>
 							<a href="#" ng-click='respond()' class="btn btn-success btn-large btn-block mtl" ng-hide='show.form' ng-class="{'hidden-desktop': !show.form}">Respond</a>
+
+							<a href="#" class='ptl pull-right unfancy-link opacity5 opacity-full-hover' ng-hide="showShareMini" ng-click="showShareMini = !showShareMini">share</a>
+							<div class='font24 ptl uncenter animated fadeInLeft' ng-show="showShareMini">
+								<a href="#" class='font18 unfancy-link opacity5 opacity-full-hover prm vac' ng-click="showShareMini = !showShareMini" title="close">
+									<i class="icon-remove-circle"></i>
+								</a>
+								<a class="color-pinterest prs opacity5 opacity-full-hover" href="#"
+									title='share on pinterest'
+									share="pinterest"
+									share-url="http://www.positivespace.io/{{user.slug}}"
+									share-name="Let’s talk about --- {{user.body}} --- on Positive Space"
+									share-image="<%= asset_path 'ps_logo_padded@2x.jpg' %>"
+								><i class="share icon-pinterest"></i></a>
+								<a class="color-facebook prs opacity5 opacity-full-hover" href="#"
+									title='send to a friend'
+									share="facebook send"
+									share-url="http://www.positivespace.io/{{user.slug}}"
+									share-name="Have a conversation with me about ..."
+									share-desc="{{user.body}}"
+									share-image="<%= asset_path 'ps_logo_padded@2x.jpg' %>"
+								><i class="share icon-facebook-sign"></i></a>
+								<a class="color-twitter prs opacity5 opacity-full-hover" href="#"
+									title='share on twitter'
+									share="twitter"
+									share-url="http://www.positivespace.io/{{user.slug}}"
+									share-name="Talk with me about ..."
+								><i class="share icon-twitter"></i></a>
+								<a class="color-tumblr prs opacity5 opacity-full-hover" href="#"
+									title='share on tumblr'
+									share="tumblr"
+									share-url="http://www.positivespace.io/{{user.slug}}"
+									share-name="Have a conversation with me about ..."
+									share-desc="{{user.body}}"
+									share-image="<%= asset_path 'ps_logo_padded@2x.jpg' %>"
+								><img src="<%= asset_path 'tumblr24.png' %>" alt='tumblr' style='width: 20px; height: 20px; margin-top: -5px;'></a>
+								<span class="opacity5 opacity-full-hover" title="share link">
+									<i class="font20 icon-link muted" ng-click="app.selectText('share-url-mini')"></i>
+									<pre ng-click="app.selectText('share-url-mini')" class="share-url-mini sans bold font12" style="padding:2px 4px; max-width: 150px; overflow: hidden; white-space:nowrap; display: inline-block; vertical-align: top;">http://www.positivespace.io/{{user.slug}}</pre>
+								</span>
+							</div>
 
 							<!-- <div class='ptl'>
 								<i class='icon-certificate faded prm' title='verified account'></i>
@@ -199,11 +239,11 @@
 
 						<!-- <div class='lbl ptx'>From:</div> -->
 
-						<ps-subtle-login app='app'></ps-subtle-login>
-
 						<control-group>
 							<textarea name='body' id='msg_body' title='message body' placeholder="your response ..." class='input-block-level' ng-model='message.body' rows=5 required ng-disabled='message.id' autofocus></textarea>
 						</control-group>
+
+						<ps-subtle-login app='app'></ps-subtle-login>
 
 						<div ng-show='show.embedInput'>
 							<control-group>
@@ -218,7 +258,8 @@
 									<a href='#' class='muted' ng-click='show.embedInput = false' ng-show='show.embedInput'><i class='icon-link pts font20'></i></a>
 								</span>
 
-								<button ng-hide='message.id' type='submit' class='btn btn-success pull-right' ng-disabled="messageForm.body.$invalid">Send</button>
+								<button ng-hide='app.loggedIn()' type='submit' class='btn btn-success pull-right' ng-disabled="messageForm.body.$invalid">Continue</button>
+								<button ng-show='app.loggedIn() && !message.id' type='submit' class='btn btn-success pull-right' ng-disabled="messageForm.body.$invalid">Send</button>
 								<button ng-show='message.id' type='submit' class='btn btn-disabled pull-right' disabled>Message Sent</button>
 
 								<span class='pull-right pts prm' id='msg_remaining_chars' ng-class='{"muted": remainingChars > 10, "text-error": remainingChars <= 10}'>{{remainingChars}}</span>

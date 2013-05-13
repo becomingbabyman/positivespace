@@ -1,6 +1,6 @@
 object @user
 
-attributes :id, :username, :name, :slug
+attributes :id, :username, :name, :slug, :body, :location, :personal_url
 attributes :email, :if => lambda { |u| can?(:update, u) }
 
 child :avatar => :avatar do
@@ -8,5 +8,5 @@ child :avatar => :avatar do
 end
 
 node :uri do |user|
-	"#{root_url}api/users/#{user.username}" rescue nil
+	"#{root_url}api/users/#{user.slug}" rescue nil
 end

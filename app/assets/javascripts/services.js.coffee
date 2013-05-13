@@ -65,6 +65,10 @@ psServices.factory 'User', ['$resource', ($resource) ->
 		list_ctrl: '@list_ctrl'
 		doc_ctrl: '@doc_ctrl'
 	,
+		query:
+			method: 'GET'
+			isArray: false
+
 		current:
 			method: 'GET'
 			params:
