@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
 
 	include Tire::Model::Search
 	include Tire::Model::Callbacks
+	index_name ES_INDEX_NAME
 	tire do
 		settings :index => {
 			:number_of_shards => ENV["ELASTIC_SEARCH_SHARDS"] || 1,
