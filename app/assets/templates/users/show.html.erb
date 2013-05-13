@@ -152,6 +152,46 @@
 							</div>
 							<a href="#" ng-click='respond()' class="btn btn-success btn-large btn-block mtl" ng-hide='show.form' ng-class="{'hidden-desktop': !show.form}">Respond</a>
 
+							<a href="#" class=' ptl pull-right unfancy-link opacity5 opacity-full-hover' ng-hide="showShareMini" ng-click="showShareMini = !showShareMini">share</a>
+							<div class='font24 ptl uncenter animated fadeInLeft' ng-show="showShareMini">
+								<a href="#" class='font18 unfancy-link opacity5 opacity-full-hover prm vac' ng-click="showShareMini = !showShareMini">
+									<i class="icon-remove-circle"></i>
+								</a>
+								<a class="color-pinterest prs opacity5 opacity-full-hover" href="#"
+									title='share on pinterest'
+									share="pinterest"
+									share-url="http://www.positivespace.io/{{user.slug}}"
+									share-name="Let’s talk about --- {{user.body}} --- on Positive Space"
+									share-image="<%= asset_path 'ps_logo_padded@2x.jpg' %>"
+								><i class="share icon-pinterest"></i></a>
+								<a class="color-facebook prs opacity5 opacity-full-hover" href="#"
+									title='send to a friend'
+									share="facebook send"
+									share-url="http://www.positivespace.io/{{user.slug}}"
+									share-name="Have a conversation with me about ..."
+									share-desc="{{user.body}}"
+									share-image="<%= asset_path 'ps_logo_padded@2x.jpg' %>"
+								><i class="share icon-facebook-sign"></i></a>
+								<a class="color-twitter prs opacity5 opacity-full-hover" href="#"
+									title='share on twitter'
+									share="twitter"
+									share-url="http://www.positivespace.io/{{user.slug}}"
+									share-name="Talk with me about ..."
+								><i class="share icon-twitter"></i></a>
+								<a class="color-tumblr prs opacity5 opacity-full-hover" href="#"
+									title='share on tumblr'
+									share="tumblr"
+									share-url="http://www.positivespace.io/{{user.slug}}"
+									share-name="Have a conversation with me about ..."
+									share-desc="{{user.body}}"
+									share-image="<%= asset_path 'ps_logo_padded@2x.jpg' %>"
+								><img src="<%= asset_path 'tumblr24.png' %>" alt='tumblr' style='width: 20px; height: 20px; margin-top: -5px;'></a>
+								<span class="opacity5 opacity-full-hover">
+									<i class="font20 icon-link muted" ng-click="app.selectText('share-url-mini')" tooltip="you can copy this link and share it"></i>
+									<pre ng-click="app.selectText('share-url-mini')" class="share-url-mini sans bold font12" style="padding:2px 4px; max-width: 150px; overflow: hidden; white-space:nowrap; display: inline-block; vertical-align: top;">http://www.positivespace.io/{{user.slug}}</pre>
+								</span>
+							</div>
+
 							<!-- <div class='ptl'>
 								<i class='icon-certificate faded prm' title='verified account'></i>
 								<i class='icon-rss faded prm'></i>
