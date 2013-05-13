@@ -17,22 +17,22 @@ child @users => :collection do
 			html << "<div style='white-space: normal;'>"
 				html << "<div class='pbs'>"
 					html << "<div class='pull-left mrs'>"
-						html << image_tag(u.avatar.image.thumb.url, :class => "img-circle img-border img-mini")
+						html << image_tag(u.avatar.image.thumb.url, :class => "img-circle img-border img-mini") if u.avatar
 					html << "</div>"
 					html << "<div>"
-						html << u.username
+						html << u.username if u.username
 						# html << "<br/>"
 						# html << "<small>#{u.name}</small>"
 					html << "</div>"
 				html << "</div>"
 				html << "<div><small>"
-					html << u.body
+					html << u.body if u.body
 				html << "</small></div>"
 				html << "<div class='muted pull-right plm'><small>"
-					html << u.location
+					html << u.location if u.location
 				html << "</small></div>"
 				html << "<div class='faded'><small>"
-					html << u.personal_url
+					html << u.personal_url if u.personal_url
 				html << "</small></div>"
 			html << "</div>"
 		html
