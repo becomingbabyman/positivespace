@@ -11,13 +11,14 @@
 
 		<control-group>
 			<input type='email' name='email' id='sbtl_lgn_email' placeholder='your email address' class='input-block-level forgot-password' ng-model='credentials.email' ui-event='{blur: "checkLogin()"}' required></input>
+			<i class="icon-lock faded" style="position: absolute; right: 10px; top: 9px;" tooltip="Don't worry, your email is private and never shared. We only need it to notify you of any replies to you message." tooltip-placement="left"></i>
 		</control-group>
 
 
 		<div class="row-fluid" ng-show='credentials.loginType == "register"'>
 			<div class="span12">
 				<span style='color:#bbb;'>
-					<i class="icon-info-sign pull-right" tooltip="You will get a simple inbox to reply to your active conversations and that's it."></i>
+					<i class="icon-info-sign pull-right" tooltip="Sorry for the inconvenience; in order to protect everyone's identities - sign up is required." tooltip-placement="left" style="padding-right: 8px;"></i>
 					sign up to start a conversation
 				</span>
 			</div>

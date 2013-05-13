@@ -18,6 +18,9 @@ gem 'sinatra', require: false
 gem 'slim'
 gem 'sidekiq-failures'
 
+# Search
+gem 'tire'
+
 # Memcached
 gem 'memcachier'
 gem 'dalli'

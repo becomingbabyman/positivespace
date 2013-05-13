@@ -24,10 +24,10 @@ class Api::V1::UsersController < InheritedResources::Base
 		value.to_i > 0 ? scope.page(value.to_i) : scope.page(1)
 	end
 	has_scope :per, :only => :index, :default => Proc.new { |c| c.session[:users_per] ? c.session[:users_per] : 10 } do |controller, scope, value|
-		# controller.session[:users_per] = value.to_i if (1..100) === value.to_i
-		# controller.session[:users_per] ? scope.per(controller.session[:users_per]) : scope.per(10)
+		controller.session[:users_per] = value.to_i if (1..20) === value.to_i
+		controller.session[:users_per] ? scope.per(controller.session[:users_per]) : scope.per(10)
 		# TODO: add throttling to this to make it a little harder to get all the emails out of the DB
-		scope.per(1)
+		# scope.per(1)
 	end
 
 	before_filter :authenticate_user!, only: [:show], :if => lambda { params[:id] == 'me' }
@@ -44,7 +44,12 @@ class Api::V1::UsersController < InheritedResources::Base
 protected
 
 	def collection
-		@users ||= apply_scopes(end_of_association_chain)
+		# Consider unifying this into just .search and replacing some scopes by using the search string
+		if params[:q]
+			@users ||= end_of_association_chain.search(params)
+		else
+			@users ||= apply_scopes(end_of_association_chain)
+		end
 	end
 
 	def pick_params

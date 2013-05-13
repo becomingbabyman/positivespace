@@ -1,6 +1,44 @@
 class User < ActiveRecord::Base
 	include Gravtastic
 
+	include Tire::Model::Search
+	include Tire::Model::Callbacks
+	tire do
+		settings :index => {
+			:number_of_shards => ENV["ELASTIC_SEARCH_SHARDS"] || 1,
+			:number_of_replicas => ENV["ELASTIC_SEARCH_REPLICAS"] || 1,
+			:analysis => {
+				:filter => {
+					:autocomplete_ngram  => {
+						"type"     => "ngram",
+						"min_gram" => 2,
+						"max_gram" => 16 }
+				},
+				:analyzer => {
+					:autocomplete => {
+						"type"         => "custom",
+						"tokenizer"    => "standard",
+						"filter"       => [ "standard", "lowercase", "stop", "kstem", "autocomplete_ngram" ] }
+				}
+			}
+		} do
+			mapping do
+				indexes :id,            type: 'integer', index:    :not_analyzed
+				indexes :slug,          type: 'string',  analyzer: 'keyword'
+				indexes :state,         type: 'string',  analyzer: 'keyword'
+				indexes :name,          type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball'
+				indexes :body,          type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball' #, :boost => 2.0
+				# indexes :content_size, :as       => 'content.size'
+				indexes :username,      type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball'
+				indexes :location,      type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball'
+				indexes :personal_url,  type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball'
+				indexes :update_at,     type: 'date'
+				indexes :created_at,    type: 'date'
+			end
+		end
+	end
+
+
 	state_machine :initial => :unendorsed do
 		event :endorse do
 			transition :unendorsed => :endorsed
@@ -8,12 +46,12 @@ class User < ActiveRecord::Base
 		after_transition on: :endorse, do: :after_endorse
 
 		# event :publish do
-		#	transition [:endorsed, :unpublished] => :published
+		#   transition [:endorsed, :unpublished] => :published
 		# end
 		# # after_transition on: :complete, do: :after_publish
 
 		# event :unpublish do
-		#	transition [:published] => :unpublished
+		#   transition [:published] => :unpublished
 		# end
 		# # after_transition on: :complete, do: :after_unpublish
 	end
@@ -35,14 +73,14 @@ class User < ActiveRecord::Base
 	# Include default devise modules. Others available are:
 	# :confirmable
 	devise  :database_authenticatable, :registerable,
-			:recoverable, :rememberable, :trackable, :validatable,
-			:omniauthable, :lockable, :timeoutable, :token_authenticatable,
-			:async, :authentication_keys => [:login]
+		:recoverable, :rememberable, :trackable, :validatable,
+		:omniauthable, :lockable, :timeoutable, :token_authenticatable,
+		:async, :authentication_keys => [:login]
 
 	gravtastic :secure => false,
-	            :filetype => :jpg,
-	            :default => :identicon,
-	            :size => 1024
+		:filetype => :jpg,
+		:default => :identicon,
+		:size => 1024
 
 
 	attr_accessor :login, :invitation_code, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :endorse_user_id
@@ -118,19 +156,31 @@ class User < ActiveRecord::Base
 		else # Create a user.
 			password = SecureRandom.hex(20)
 			user = User.create({ email: fb_user.email.downcase,
-				name: "#{fb_user.first_name} #{fb_user.last_name}",
-				gender: fb_user.gender,
-				birthday: fb_user.try(:birthday),
-				locale: fb_user.locale,
-				timezone: fb_user.timezone.to_i,
-				password: password,
-				password_confirmation: password,
-				avatars_attributes: [
-					{ process_image_upload: true, remote_image_url: "https://graph.facebook.com/#{fb_user.id}/picture?type=large" }
-				]
-			})#, invitation_id: invitation_id, invitation_code: invitation_code })
+								 name: "#{fb_user.first_name} #{fb_user.last_name}",
+								 gender: fb_user.gender,
+								 birthday: fb_user.try(:birthday),
+								 locale: fb_user.locale,
+								 timezone: fb_user.timezone.to_i,
+								 password: password,
+								 password_confirmation: password,
+								 avatars_attributes: [
+									 { process_image_upload: true, remote_image_url: "https://graph.facebook.com/#{fb_user.id}/picture?type=large" }
+								 ]
+								 })#, invitation_id: invitation_id, invitation_code: invitation_code })
 			user.update_attribute(:facebook_id, fb_user.id)
 			user
+		end
+	end
+
+	def self.search(params)
+		# TODO: disable load true by caching errthang you need
+		tire.search(load: true, page: params[:page], per_page: params[:per]) do
+			query do
+				match [:name, :username, :body, :location, :personal_url], params[:q]
+				# TODO: try to set default_operator, maybe it can't be set on a match
+				# default_operator: "AND"
+			end
+			# filter :not => { :term => { :state => :unendorsed } }
 		end
 	end
 
@@ -216,7 +266,7 @@ class User < ActiveRecord::Base
 		end
 	end
 
-private
+	private
 	def validate_username_reserved
 		if errors[:friendly_id].present?
 			errors[:username] = "is reserved. Please choose something else."
@@ -252,7 +302,7 @@ private
 		# TODO: search for newly completed achievements and check them off
 	end
 
-	 # Adds a gravatar if no avatar exists
+	# Adds a gravatar if no avatar exists
 	def add_gravatar
 		unless avatar
 			avatars.create({ process_image_upload: true, remote_image_url: gravatar_url, user_id: id })
@@ -265,17 +315,17 @@ private
 	end
 
 	# def validate_invitation
-	#	invitation = Invitation.find_by_id(self.invitation_id)
-	#	unless invitation and invitation.legit?(self.invitation_code)
-	#		errors.add(:invitation, "must be valid")
-	#	end
+	#   invitation = Invitation.find_by_id(self.invitation_id)
+	#   unless invitation and invitation.legit?(self.invitation_code)
+	#       errors.add(:invitation, "must be valid")
+	#   end
 	# end
 
 	# def use_invitation
 
-	#	self.invitation.mark_as_used if self.invitation
+	#   self.invitation.mark_as_used if self.invitation
 
-	#	# SendWelcomeEmailWorker.perform_in(2.seconds, self.id)
-	#	# FirstForwardableInvitationWorker.perform_at(Chronic.parse("2 days from now at 6:23pm"), self.id)
+	#   # SendWelcomeEmailWorker.perform_in(2.seconds, self.id)
+	#   # FirstForwardableInvitationWorker.perform_at(Chronic.parse("2 days from now at 6:23pm"), self.id)
 	# end
 end
