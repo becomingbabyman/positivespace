@@ -1,4 +1,5 @@
-ps.controller "SearchsHeaderCtrl", ["$scope", "$http", ($scope, $http) ->
+ps.controller "SearchsHeaderCtrl", ["$scope", "$http", "$location", ($scope, $http, $location) ->
+	$scope.users = []
 
 	$scope.search = (query) ->
 		$scope.loading = true
@@ -9,4 +10,9 @@ ps.controller "SearchsHeaderCtrl", ["$scope", "$http", ($scope, $http) ->
 		, (error) ->
 			$scope.loading = false
 
+	# TODO: REFACTOR: This is a crappy way to select a search result. Find a better way.
+	$scope.$watch 'query', (query) ->
+		if _.isObject(query) and query.slug?
+			$location.path("/#{query.slug}")
+			$scope.query = null
 ]
