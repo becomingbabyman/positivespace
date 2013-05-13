@@ -379,7 +379,7 @@ psDirectives.directive 'psSubtleLogin', ["$timeout", "$location", "User", ($time
 							analytics.track 'sign up expand',
 								type: 'subtle'
 								href: window.location.href
-						else if data.length == 0
+						else if data.collection.length == 0
 							scope.credentials.loginType = 'register'
 							# scope.app.flash 'info', "Looks like you need an account. Go ahead and start one."
 							$timeout () ->

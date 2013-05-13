@@ -19,12 +19,18 @@ child @users => :collection do
 					html << "</div>"
 					html << "<div>"
 						html << u.username
-						html << "<br/>"
-						html << "<small>#{u.name}</small>"
+						# html << "<br/>"
+						# html << "<small>#{u.name}</small>"
 					html << "</div>"
 				html << "</div>"
 				html << "<div><small>"
 					html << u.body
+				html << "</small></div>"
+				html << "<div class='muted pull-right plm'><small>"
+					html << u.location
+				html << "</small></div>"
+				html << "<div class='faded'><small>"
+					html << u.personal_url
 				html << "</small></div>"
 			html << "</div>"
 		html

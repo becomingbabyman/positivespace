@@ -4,6 +4,7 @@ ps.controller "SearchsHeaderCtrl", ["$scope", "$http", ($scope, $http) ->
 		$scope.loading = true
 		return $http.get("/api/users?q=#{query}").then (response) ->
 			$scope.loading = false
+			$scope.users = response.data
 			response.data.collection
 		, (error) ->
 			$scope.loading = false

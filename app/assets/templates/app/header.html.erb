@@ -64,13 +64,6 @@
 				<a href="/login" class="color-blue font18" ng-hide='app.loggedIn()'>
 					Log in
 				</a>
-				<!-- <a href="/{{app.currentUser.slug}}" ng-show='app.loggedIn()'>
-					<img ng-src="{{app.currentUser.avatar.big_thumb_url}}" alt='{{app.currentUser.username}}' class='img-circle img-border avatar'>
-				</a>
-				<a href="/conversations" ng-show='app.loggedIn()'>
-					<i class='icon-envelope-alt'></i>
-					<div ng-show="app.anyMessages()" class='count'>{{app.currentUser.ready_conversations_count}}</div>
-				</a> -->
 				<a href="#" class='muted' ng-click='app.randomSpace()' ng-show='app.loggedIn()' title='click to see a new space'>
 					<i class="icon-random"></i>
 				</a>
