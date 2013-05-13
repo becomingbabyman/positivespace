@@ -6,8 +6,8 @@ class User < ActiveRecord::Base
 	index_name ES_INDEX_NAME
 	tire do
 		settings :index => {
-			:number_of_shards => ENV["ELASTIC_SEARCH_SHARDS"] || 1,
-			:number_of_replicas => ENV["ELASTIC_SEARCH_REPLICAS"] || 1,
+			:number_of_shards => (ENV["ELASTIC_SEARCH_SHARDS"] || 1).to_i,
+			:number_of_replicas => (ENV["ELASTIC_SEARCH_REPLICAS"] || 1).to_i,
 			:analysis => {
 				:filter => {
 					:autocomplete_ngram  => {
