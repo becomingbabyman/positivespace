@@ -204,6 +204,10 @@ class User < ActiveRecord::Base
 		n.last if n.size > 1
 	end
 
+	def slug
+		super || username || id.to_s
+	end
+
 	def email_to_name
 		email.split("@").first.split(/[\-\_\.]/).reduce{ |full_name, name| full_name = "#{full_name} #{name}" }.titleize rescue ""
 	end
