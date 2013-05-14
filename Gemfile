@@ -142,7 +142,7 @@ group :development do
   gem 'guard'
   gem 'guard-spork'
   gem 'guard-rspec'
-  gem 'brakeman'
+  # gem 'brakeman', :require => false
   gem 'foreman', '0.60.2'
 
   # Profiling

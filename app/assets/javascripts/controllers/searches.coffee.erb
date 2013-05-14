@@ -14,5 +14,9 @@ ps.controller "SearchsHeaderCtrl", ["$scope", "$http", "$location", ($scope, $ht
 	$scope.$watch 'query', (query) ->
 		if _.isObject(query) and query.slug?
 			$location.path("/#{query.slug}")
+			q = angular.copy $scope.query
 			$scope.query = null
+			analytics.track "search success",
+				username: q.username
+				id: q.id
 ]

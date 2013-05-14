@@ -8,7 +8,7 @@
 				</a>
 			</li> -->
 
-			<li ng-controller="SearchsHeaderCtrl">
+			<li ng-controller="SearchsHeaderCtrl" class="hidden-phone">
 				<form class="form-search pts uncenter" name="searchHeaderForm" ng-submit="" novalidate style='position: relative;'>
 
 					<input type="text" name="query" ng-model="query" id='search_header_query' class="input-xlarge search-query opacity5 opacity-full-hover" placeholder="Search" typeahead="user as user.typeahead for user in search($viewValue)" autocomplete="off" autofocus>
@@ -90,5 +90,15 @@
 				</a>
 			</li>
 		</ul> -->
+	</div>
+
+	<div ng-controller="SearchsHeaderCtrl" class="container visible-phone">
+		<form class="form-search pts" name="searchHeaderForm" ng-submit="" novalidate style='position: relative;'>
+			<div class="row">
+				<input type="text" name="query" ng-model="query" id='search_header_query' class="span12 search-query opacity5 opacity-full-hover" placeholder="Search" typeahead="user as user.typeahead for user in search($viewValue)" autocomplete="off" autofocus>
+
+				<img ng-show="loading" src="<%= asset_path('ajax-loader-black-dots.gif') %>" alt="loading dots" style='position: absolute; right: 10px; top: 18px;'>
+			</div>
+		</form>
 	</div>
 </div>
