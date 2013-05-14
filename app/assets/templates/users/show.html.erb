@@ -150,9 +150,10 @@
 								<p ng-bind-html-unsafe="user.body | linebreaks" class='prompt'>{{user.body}}</p>
 								<a href="#" ng-click='respond()' class="respond-button btn">Respond</a>
 							</div>
-							<a href="#" ng-click='respond()' class="btn btn-success btn-large btn-block mtl" ng-hide='show.form' ng-class="{'hidden-desktop': !show.form}">Respond</a>
 
-							<a href="#" class='ptl pull-right unfancy-link opacity5 opacity-full-hover' ng-hide="showShareMini" ng-click="showShareMini = !showShareMini">share</a>
+							<a href="#" ng-click='respond()' class="btn btn-info btn-block mtl opacity7 opacity-full-hover" ng-hide='show.form' ng-class="{'hidden-desktop': !show.form}">Respond</a>
+
+							<a href="#" class='ptl prs pull-right unfancy-link opacity5 opacity-full-hover' ng-hide="showShareMini" ng-click="showShareMini = !showShareMini">share</a>
 							<div class='font24 ptl uncenter animated fadeInLeft' ng-show="showShareMini">
 								<a href="#" class='font18 unfancy-link opacity5 opacity-full-hover prm vac' ng-click="showShareMini = !showShareMini" title="close">
 									<i class="icon-remove-circle"></i>
@@ -192,6 +193,11 @@
 								</span>
 							</div>
 
+							<i ng-show='!showShareMini && user.location.length > 0' class='icon-map-marker faded uncenter pls ptl prl font20' tooltip='{{user.location}}'></i>
+							<a ng-show='!showShareMini && user.personal_url.length > 0' href='{{user.personal_url}}' target='_blank' class='faded uncenter ptl font20'>
+								<i class="icon-link" tooltip="{{user.personal_url}}"></i>
+							</a>
+
 							<!-- <div class='ptl'>
 								<i class='icon-certificate faded prm' title='verified account'></i>
 								<i class='icon-rss faded prm'></i>
@@ -206,16 +212,6 @@
 								<i class='icon-google-plus faded'></i>
 							</div> -->
 
-							<div ng-hide='true'>
-								<div ng-show='user.location.length > 0 || user.personal_url.length > 0' class='m0 ptl'>
-									<div ng-show='user.location.length > 0'>
-										<i class='icon-map-marker faded'></i>
-										<br/>
-										<strong>{{user.location}}</strong>
-									</div>
-									<div ng-show='user.personal_url.length > 0'><a href='{{user.personal_url}}' target='_blank' class='unfancy-link underline'>{{user.personal_url | urlSimplify}}</a></div>
-								</div>
-							</div>
 						</div>
 					</div>
 
