@@ -35,6 +35,9 @@
 #= require jquery.transit.min
 #= require modernizr.min
 #= require jquery.placeholder.min
+#= require raphael-min
+#= require g.raphael-min
+#= require g.line-min
 #
 # Not Currently Required
 # require jquery.jlabel

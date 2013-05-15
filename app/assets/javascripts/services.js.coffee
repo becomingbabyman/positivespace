@@ -112,6 +112,15 @@ psServices.factory 'User', ['$resource', ($resource) ->
 		update:
 			method: 'PUT'
 
+		metrics:
+			method: 'GET'
+			isArray: false
+			params:
+				list_ctrl: 'metrics'
+				days_ago: 0
+				days_range: 7
+				intervals: 7
+
 	User::save = (success=null, error=null) ->
 		if @id?
 			@$update(success, error)

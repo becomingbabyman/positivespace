@@ -271,7 +271,51 @@ class User < ActiveRecord::Base
 		end
 	end
 
-	private
+	# params: {days_ago: integer, days_range: integer, metrics: string(comma separated metrics list), intervals: integer}
+	def metrics params
+		response = {}
+		end_time = Chronic.parse("#{params[:days_ago].to_i} days ago at 0:00")
+		start_time = end_time - params[:days_range].to_i.days
+		intervals = params[:intervals].to_i
+		metrics = params[:metrics].split(',').map{|s| s.strip()}
+
+		# lets not go too crazy just yet
+		if intervals < 60
+			if metrics.include? 'views'
+				query = lambda {|range| impressions.where(created_at: range).count}
+				response[:views] = metrics_for_range query, start_time, end_time, intervals
+			end
+			if metrics.include? 'responses'
+				query = lambda {|range| recieved_conversations.where(created_at: range).count}
+				response[:responses] = metrics_for_range query, start_time, end_time, intervals
+			end
+			if metrics.include? 'initiations'
+				query = lambda {|range| sent_conversations.where(created_at: range).count}
+				response[:initiations] = metrics_for_range query, start_time, end_time, intervals
+			end
+		end
+
+		response
+	end
+
+	# query: lambda that accepts a date range in the form of starttime..endtime
+	# start_time: time
+	# end_time: time
+	# intervals: integer
+	def metrics_for_range query, start_time, end_time, intervals
+		response = []
+		interval = (end_time.to_i - start_time.to_i) / intervals
+		current_time = start_time
+		(0..intervals-1).each do |i|
+			next_time = current_time + interval
+			response[i] = query.call(current_time..next_time)
+			current_time = next_time
+		end
+		response
+	end
+
+private
+
 	def validate_username_reserved
 		if errors[:friendly_id].present?
 			errors[:username] = "is reserved. Please choose something else."

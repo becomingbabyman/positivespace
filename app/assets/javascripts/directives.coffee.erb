@@ -186,6 +186,51 @@ psDirectives.directive "psA", [() ->
 
 
 ####################################################
+# <ps-a>
+psDirectives.directive "psLinechart", [() ->
+	restrict: "E"
+	template: "<div class='chart chart-line'></div>"
+	replace: true
+	scope:
+		# height: '@'  # use attrs
+		values: '='	   # { x: Array, y: Array of arrays, labels: Array the length of y }
+		# label: '@'   # use attrs
+		# opts: '@'
+
+	link: (scope, element, attrs) ->
+		attrs.$set 'id', _.uniqueId("linechart_")
+		element.css("height", attrs.height)
+		r = Raphael(attrs.id)
+
+		r.text(10, 10, attrs.label).attr({font: "18px sans-serif", 'text-anchor': 'start', fill: '#999'}) if attrs.label?
+
+		scope.$watch 'values', (values) ->
+			if _.isArray(values.x) and _.isArray(values.y)
+				draw()
+		, true
+
+		# TODO: if the trend is up the color should be green, down should be red.
+		# TODO: animate
+		# TODO: aggregate meta/trend info below like segment.io
+		# TODO: put a subtle key at the to show time frame
+
+		draw = ->
+			linechart = r.linechart(0, 0, element.width(), attrs.height, scope.values.x, scope.values.y, {smooth: true, colors: ['#8e44ad', '#00C0FF', '#46a546', '#e67e22', '#9d261d'], symbol: '', shade: false, nostroke: false});
+			linechart.hoverColumn ->
+				@tags = r.set()
+				for i in [0..@y.length-1]
+					label = @values[i] + " " + (if @values[i] == 1 then scope.values.labels[i].slice(0,-1) else scope.values.labels[i])
+					angle = if @axis < scope.values.x.length/2 then 0 else 180
+					@tags.push r.flag(@x, @y[i], label, angle).insertBefore(@).attr([{ fill: "#fff", stroke: "#ddd", 'stroke-width': 1 }, { fill: "#333" }])
+			, ->
+				@tags and @tags.remove()
+
+
+
+]
+
+
+####################################################
 # <ps-img>
 psDirectives.directive "psImg", ["$timeout", ($timeout) ->
 	restrict: "E"

@@ -102,6 +102,7 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 	user_id = $routeParams.user_id or 'space'
 	$scope.space = {fadeCount: 0}
 	$scope.show = {embedInput: false, form: false}
+	$scope.chart = { views: { values: {} } }
 
 	$scope.user = User.get {id: user_id}, ->
 		$scope.app.meta.title = "#{$scope.user.name}"
@@ -116,7 +117,16 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 						type: 'redirect to edit'
 
 		$scope.app.dcu.promise.then (currentUser) ->
-			if $scope.user.id != currentUser.id
+			if $scope.user.id == currentUser.id
+				User.metrics {metrics: "views,responses,initiations"}, (metrics) ->
+					$scope.chart.views.values.x = [0..metrics.views.length-1]
+					$scope.chart.views.values.y = [metrics.views, metrics.responses, metrics.initiations]
+					$scope.chart.views.values.labels = ['views', 'responses', 'initiations']
+					$scope.chart.views.opts = {}
+				User.metrics {metrics: "responses,initiations", days_range:10000, intervals: 1}, (metrics) ->
+					$scope.totalResponses = metrics.responses[0]
+					$scope.totalInitiations = metrics.initiations[0]
+			else
 				# Check for in_progress conversation
 				Conversation.query {user_id: currentUser.id, to: $scope.user.id, state: 'in_progress', order: 'created_at DESC'}, (conversations) ->
 					$scope.conversation = conversations.collection[0]

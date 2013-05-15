@@ -2,116 +2,186 @@
 	<div class="row">
 		<div class="span12">
 
-			<div ng-show='user.can_edit' class="row pbm">
+			<div class="row pbm" ng-show='user.can_edit && hideAdmin'>
 				<div class="span-mobile center">
 					<div class='row-fluid'>
-						<a href='#' class='btn btn-block btn-link btn-lrge bd circle' style='background: #fbfbfb;' ng-click='showShare = !showShare; showEmbed = !showEmbed; showEndorse = !showEndorse'>
-							<i class='icon-group prs'></i>
-							<ng-pluralize class="impressions" count='user.impressions_count' when="{1: '{} Visitor', 'other': '{} Visitors'}"></ng-pluralize>
-							&middot;
-							Share your space
-						</a>
+						<a href='#' class='faded pull-right font12 opacity1 opacity-full-hover' ng-click='hideAdmin = !hideAdmin'>show details</a>
 					</div>
 				</div>
 			</div>
 
+			<div ng-show='user.can_edit && !hideAdmin'>
 
-			<div ng-show='user.can_edit && showShare' class="row">
-				<div class="span-mobile center">
-					<div class='row-fluid'>
-						<div class="span12 alert alert-info alert-block uncenter bgw">
-							<button type="button" class="close" ng-click="showShare = false">&times;</button>
-							<h4>1. Start a conversation</h4>
-							Share your space with the people you want to have a conversation with.
-							<div class='font64 ptm'>
-								<a class="color-pinterest" href="#"
-									title='share on pinterest'
-									share="pinterest"
-									share-url="http://www.positivespace.io/{{user.slug}}"
-									share-name="Let’s talk about --- {{user.body}} --- on Positive Space"
-									share-image="<%= asset_path 'ps_logo_padded@2x.jpg' %>"
-								><i class="share icon-pinterest"></i></a>
-								<a class="color-facebook" href="#"
-									title='send to a friend'
-									share="facebook send"
-									share-url="http://www.positivespace.io/{{user.slug}}"
-									share-name="Have a conversation with me about ..."
-									share-desc="{{user.body}}"
-									share-image="<%= asset_path 'ps_logo_padded@2x.jpg' %>"
-								><i class="share icon-facebook-sign"></i></a>
-								<a class="color-twitter" href="#"
-									title='share on twitter'
-									share="twitter"
-									share-url="http://www.positivespace.io/{{user.slug}}"
-									share-name="Talk with me about ..."
-								><i class="share icon-twitter"></i></a>
-								<a class="color-tumblr" href="#"
-									title='share on tumblr'
-									share="tumblr"
-									share-url="http://www.positivespace.io/{{user.slug}}"
-									share-name="Have a conversation with me about ..."
-									share-desc="{{user.body}}"
-									share-image="<%= asset_path 'ps_logo_padded@2x.jpg' %>"
-								><img src="<%= asset_path 'tumblr64.png' %>" alt='tumblr' style='width: 55px; height: 55px; margin-top: -13px;'></a>
+				<div class="row pbm">
+					<div class="span-mobile center">
+						<div class='row-fluid'>
+							<a href='#' class='faded pull-right font12 opacity6 opacity-full-hover' ng-click='hideAdmin = !hideAdmin'>hide details</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="row pbm">
+					<div class="span-mobile center">
+						<div class='row-fluid opacity3 opacity-full-hover'>
+							<ps-linechart label="past 7 days" height="100" values="chart.views.values" opts="chart.views.opts"></ps-linechart>
+						</div>
+					</div>
+				</div>
+
+				<div class="row pbm">
+					<div class="span-mobile center">
+						<div class='row-fluid'>
+							<div class='span12 uncenter'>
+								<h4>Totals</h4>
 							</div>
-							<div class='ptm'>
-								<small class='muted'>shareable url</small>
-								<pre ng-click="app.selectText('share-url')" class="share-url sans bold font14">http://www.positivespace.io/{{user.slug}}</pre>
+							<div class='span12 uncenter'>
+								<span class="label">Unique visitors&nbsp;&nbsp;<span class="badge badge-info">{{user.impressions_count}}</span></span>
+								<span class="label" ng-show="totalResponses">Responses to your space&nbsp;&nbsp;<span class="badge badge-info">{{totalResponses}}</span></span>
+								<span class="label" ng-show="totalInitiations">Conversations initiated by you&nbsp;&nbsp;<span class="badge badge-info">{{totalInitiations}}</span></span>
+								<a href='#' class='' ng-click='showShare = !showShare; showEmbed = !showEmbed; showEndorse = !showEndorse; showInitiate = !showInitiate'>
+									<span class="label opacity5 opacity-full-hover">Ways to get more&nbsp;&nbsp;<span class="badge badge-info">4</span></span>
+								</a>
 							</div>
 						</div>
-					</div>
-				</div>
-			</div>
-
-
-			<div ng-show='user.can_edit && showEmbed' class="row" ng-class='{ptl: showShare}'>
-				<div class="span-mobile center">
-					<div class='row-fluid'>
-						<div class="span12 alert alert-info alert-block uncenter bgw">
-							<button type="button" class="close" ng-click="showEmbed = false">&times;</button>
-							<h4>2. Embed your space</h4>
-							Let conversations come to you. Embed your space in your website or blog.
-							<a href="#" ng-click="requestEmbedCode()" class="btn btn-link btn-block">Click to get embed code</a>
+						<div class='row-fluid'>
+							<a href='#' class='btn btn-block btn-link btn-large uncenter' ng-click='showShare = !showShare; showEmbed = !showEmbed; showEndorse = !showEndorse; showInitiate = !showInitiate'>
+								<i class="icon-angle-right" ng-hide='showShare || showEmbed || showEndorse || showInitiate'></i>
+								<i class="icon-angle-down" ng-show='showShare || showEmbed || showEndorse || showInitiate'></i>
+								&nbsp;
+								Learn more
+							</a>
 						</div>
 					</div>
 				</div>
-			</div>
 
-
-			<div ng-show='user.can_edit && user.state == "unendorsed" && showEndorse' class="row" ng-class='{ptl: (showShare || showEmbed)}'>
-				<div class="span-mobile center">
-					<div class='row-fluid'>
-						<div class="span12 alert alert-info alert-block uncenter bgw">
-							<button type="button" class="close" ng-click="showEndorse = false">&times;</button>
-							<h4>3. Publish your space</h4>
-							Make you space public and discoverable to everyone who uses Positive Space. You only need one endoresment from an already published person. Don't spam strangers asking for one, but start some conversations and if you still don't get an endorsement <a href="/contact">talk with us</a>
-							<a href="#" ng-click="app.randomSpace()" class="btn btn-info btn-block">Find someone to talk with</a>
+				<div ng-show='user.state == "unendorsed" && showEndorse' class="row ptl">
+					<div class="span-mobile center">
+						<div class='row-fluid'>
+							<div class="span12 alert alert-info alert-block uncenter bgw">
+								<button type="button" class="close" ng-click="showEndorse = false">&times;</button>
+								<h4>1. Publish</h4>
+								Make you space public and discoverable to everyone who uses Positive Space. You only need one endoresment from an already published person. Don't spam strangers asking for one, but start some conversations and if you still don't get an endorsement <a href="/contact">talk with us</a>
+								<a href="#" ng-click="app.randomSpace()" class="btn btn-info btn-block">Find someone to talk with</a>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			<div ng-show='user.can_edit && user.state != "unendorsed" && showEndorse' class="row" ng-class='{ptl: (showShare || showEmbed)}'>
-				<div class="span-mobile center">
-					<div class='row-fluid'>
-						<div class="span12 alert alert-success alert-block uncenter bgw">
-							<button type="button" class="close" ng-click="showEndorse = false">&times;</button>
-							<h4>3. Publish your space - Complete</h4>
-							You have been endorsed by
-							<a href='/{{user.invitation.user.slug}}'>{{user.invitation.user.name || "Positive Space"}}</a>.
+				<div ng-show='user.state != "unendorsed" && showEndorse' class="row ptl">
+					<div class="span-mobile center">
+						<div class='row-fluid'>
+							<div class="span12 alert alert-success alert-block uncenter bgw">
+								<button type="button" class="close" ng-click="showEndorse = false">&times;</button>
+								<h4>1. Publish - Complete</h4>
+								You have been endorsed by
+								<a href='/{{user.invitation.user.slug}}'>{{user.invitation.user.name || "Positive Space"}}</a>,
+								and now your space is indexed in our public search for easy discovery.
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 
-
-			<div ng-show='user.can_edit' class="row">
-				<div class="span-mobile center ptm">
-					<a ng-href='/{{user.slug}}/edit' class='pull-right btn btn-link btn-large' title='change your space'>edit</a>
+				<div ng-show='showInitiate' class="row ptl">
+					<div class="span-mobile center">
+						<div class='row-fluid'>
+							<div class="span12 alert alert-info alert-block uncenter bgw">
+								<button type="button" class="close" ng-click="showInitiate = false">&times;</button>
+								<h4>2. Initiate</h4>
+								<ol>
+									<li>
+										<i class="icon-search"></i>
+										Search for what interesets you and start conversations with people who share your interest.
+									</li>
+									<li>
+										<i class="icon-random"></i>
+										Stumble through spaces. You may serendipitously find someone you want to talk with.
+									</li>
+								</ol>
+							</div>
+						</div>
+					</div>
 				</div>
+
+				<div ng-show='showShare' class="row ptl">
+					<div class="span-mobile center">
+						<div class='row-fluid'>
+							<div class="span12 alert alert-info alert-block uncenter bgw">
+								<button type="button" class="close" ng-click="showShare = false">&times;</button>
+								<h4>3. Share</h4>
+								Invite your fiends. Share your space with the people you want to have a conversation with.
+								<div class='font48 ptm'>
+									<a class="color-pinterest" href="#"
+										title='share on pinterest'
+										share="pinterest"
+										share-url="http://www.positivespace.io/{{user.slug}}"
+										share-name="Let’s talk about --- {{user.body}} --- on Positive Space"
+										share-image="<%= asset_path 'ps_logo_padded@2x.jpg' %>"
+									><i class="share icon-pinterest"></i></a>
+									<a class="color-facebook" href="#"
+										title='send to a friend'
+										share="facebook send"
+										share-url="http://www.positivespace.io/{{user.slug}}"
+										share-name="Have a conversation with me about ..."
+										share-desc="{{user.body}}"
+										share-image="<%= asset_path 'ps_logo_padded@2x.jpg' %>"
+									><i class="share icon-facebook-sign"></i></a>
+									<a class="color-twitter" href="#"
+										title='share on twitter'
+										share="twitter"
+										share-url="http://www.positivespace.io/{{user.slug}}"
+										share-name="Talk with me about ..."
+									><i class="share icon-twitter"></i></a>
+									<a class="color-tumblr" href="#"
+										title='share on tumblr'
+										share="tumblr"
+										share-url="http://www.positivespace.io/{{user.slug}}"
+										share-name="Have a conversation with me about ..."
+										share-desc="{{user.body}}"
+										share-image="<%= asset_path 'ps_logo_padded@2x.jpg' %>"
+									><img src="<%= asset_path 'tumblr64.png' %>" alt='tumblr' style='width: 42px; height: 42px; margin-top: -10px;'></a>
+								</div>
+								<div class='ptm'>
+									<small class='muted'>shareable url</small>
+									<pre ng-click="app.selectText('share-url')" class="share-url sans bold font14">http://www.positivespace.io/{{user.slug}}</pre>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div ng-show='showEmbed' class="row ptl">
+					<div class="span-mobile center">
+						<div class='row-fluid'>
+							<div class="span12 alert alert-info alert-block uncenter bgw">
+								<button type="button" class="close" ng-click="showEmbed = false">&times;</button>
+								<h4>4. Embed</h4>
+								Let conversations come to you. Embed your space in any website or blog.
+								<a href="#" ng-click="requestEmbedCode()" class="btn btn-link btn-block">Click to get embed code</a>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row ptl pbl">
+					<div class="span-mobile center">
+						<div class='row-fluid'>
+							<hr/>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="span-mobile center ptm">
+						<a ng-href='/{{user.slug}}/edit' class='pull-right btn btn-link btn-large' title='change your space'>edit</a>
+					</div>
+				</div>
+
 			</div>
 
 
-			<div class="row ptm">
+
+
+
+			<div class="row">
 				<div class="span-mobile center pos-rel">
 					<!-- <div class='lbl ptx'>To:</div> -->
 
@@ -144,7 +214,7 @@
 						<ps-img ng-hide='true' src="{{user.avatar.big_thumb_url}}" alt="{{user.name}}" img-class="img-circle img-border img-big-thumb"></ps-img>
 
 						<div class='animated fadeInDown'>
-							<h3 class='pts pbs ghost'>{{user.name}}</h3>
+							<h3 class='pbs ghost'>{{user.name}}</h3>
 
 							<div class="prompt-wrapper" ng-class="{clicked: show.form, 'not-clicked': !show.form}">
 								<p ng-bind-html-unsafe="user.body | linebreaks" class='prompt'>{{user.body}}</p>
