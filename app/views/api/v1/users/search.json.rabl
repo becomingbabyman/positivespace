@@ -27,7 +27,7 @@ child @users => :collection do
 				html << "</div>"
 				html << "<div class='z7'>"
 					html << u.personal_url_root.truncate(20) if u.personal_url_root
-				html << "</div>"
+				html << "&nbsp;</div>"
 			html << "</div>"
 		html
 	end
