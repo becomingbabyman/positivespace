@@ -23,10 +23,10 @@ child @users => :collection do
 					html << u.body
 				html << "</div>"
 				html << "<div class='z6'>"
-					html << u.location.truncate(20)
+					html << u.location.truncate(20) if u.location
 				html << "</div>"
 				html << "<div class='z7'>"
-					html << u.personal_url_root.truncate(20)
+					html << u.personal_url_root.truncate(20) if u.personal_url_root
 				html << "</div>"
 			html << "</div>"
 		html
