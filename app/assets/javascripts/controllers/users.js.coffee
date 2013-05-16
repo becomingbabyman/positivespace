@@ -120,8 +120,8 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 			if $scope.user.id == currentUser.id
 				User.metrics {metrics: "views,responses,initiations"}, (metrics) ->
 					$scope.chart.views.values.x = [0..metrics.views.length-1]
-					$scope.chart.views.values.y = [metrics.views, metrics.responses, metrics.initiations]
-					$scope.chart.views.values.labels = ['views', 'responses', 'initiations']
+					$scope.chart.views.values.y = [metrics.views, metrics.initiations, metrics.responses]
+					$scope.chart.views.values.labels = ['views', 'initiations', 'responses']
 					$scope.chart.views.opts = {}
 				User.metrics {metrics: "responses,initiations", days_range:10000, intervals: 1}, (metrics) ->
 					$scope.totalResponses = metrics.responses[0]

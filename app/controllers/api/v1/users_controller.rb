@@ -36,6 +36,16 @@ class Api::V1::UsersController < InheritedResources::Base
 
 	before_filter :pick_params, :only => [:update]
 
+	def index
+		if params[:q]
+			params[:per] = 12
+			@users = User.search(params)
+			render "search"
+		else
+			index!
+		end
+	end
+
 	def show
 		@user = (params[:id] == 'me' ? current_user : User.find(params[:id]))
 		impressionist @user if @user != current_user
@@ -50,12 +60,7 @@ class Api::V1::UsersController < InheritedResources::Base
 protected
 
 	def collection
-		# Consider unifying this into just .search and replacing some scopes by using the search string
-		if params[:q]
-			@users ||= end_of_association_chain.search(params)
-		else
-			@users ||= apply_scopes(end_of_association_chain)
-		end
+		@users ||= apply_scopes(end_of_association_chain) unless params[:q]
 	end
 
 	def pick_params

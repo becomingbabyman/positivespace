@@ -29,12 +29,16 @@ class User < ActiveRecord::Base
 				indexes :state,         type: 'string',  analyzer: 'keyword'
 				indexes :name,          type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball'
 				indexes :body,          type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball' #, :boost => 2.0
-				# indexes :content_size, :as       => 'content.size'
 				indexes :username,      type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball'
 				indexes :location,      type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball'
 				indexes :personal_url,  type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball'
+				indexes :gender,  		type: 'string',  analyzer: 'keyword'
+				indexes :locale,  		type: 'string',  analyzer: 'keyword'
+				indexes :timezone,		type: 'string',  analyzer: 'keyword'
 				indexes :update_at,     type: 'date'
 				indexes :created_at,    type: 'date'
+				indexes :avatar_thumb_url, type: 'string', index:  :not_analyzed
+				indexes :personal_url_root, type: 'string', index:  :not_analyzed
 			end
 		end
 	end
@@ -174,8 +178,7 @@ class User < ActiveRecord::Base
 	end
 
 	def self.search(params)
-		# TODO: disable load true by caching errthang you need
-		tire.search(load: true, page: params[:page], per_page: params[:per]) do
+		tire.search(load: false, page: params[:page], per_page: params[:per]) do
 			query do
 				match [:name, :username, :body, :location, :personal_url], params[:q]
 				# TODO: try to set default_operator, maybe it can't be set on a match
@@ -183,6 +186,27 @@ class User < ActiveRecord::Base
 			end
 			# filter :not => { :term => { :state => :unendorsed } }
 		end
+	end
+
+	self.include_root_in_json = false
+	def to_indexed_json
+		{
+			id: id,
+			slug: slug,
+			state: state,
+			name: name,
+			body: body,
+			username: username,
+			location: location,
+			personal_url: personal_url,
+			gender: gender,
+			locale: locale,
+			timezone: timezone,
+			update_at: updated_at,
+			created_at: created_at,
+			avatar_thumb_url: avatar.try(:image).try(:thumb).try(:url),
+			personal_url_root: personal_url_root,
+		}.to_json
 	end
 
 
@@ -312,6 +336,16 @@ class User < ActiveRecord::Base
 			current_time = next_time
 		end
 		response
+	end
+
+	def personal_url_root
+		if url = personal_url
+			url = url.split("//")[1] if url.split("//").length > 1
+			url = url.split("/")[0] if url.split("/").length > 1
+			url = url.split("?")[0] if url.split("?").length > 1
+			url = url.split("#")[0] if url.split("#").length > 1
+		end
+		url
 	end
 
 private

@@ -8,11 +8,13 @@
 				</a>
 			</li> -->
 
-			<li ng-controller="SearchsHeaderCtrl" class="hidden-phone">
-				<form class="form-search pts uncenter" name="searchHeaderForm" ng-submit="" novalidate style='position: relative;'>
-					<input type="text" name="query" ng-model="query" id='search_header_query' class="input-xlarge search-query opacity5 opacity-full-hover" placeholder="Search" typeahead="user as user.typeahead for user in search($viewValue)" autocomplete="off" autofocus>
+			<li ng-controller="SearchsHeaderCtrl" class="hidden-phone primary-search">
+				<form class="form-search pts uncenter" name="searchHeaderForm" ng-submit="" novalidate>
+					<label for="search_header_query"><i class="icon-search"></i></label>
 
-					<img ng-show="loading" src="<%= asset_path('ajax-loader-black-dots.gif') %>" alt="loading dots" style='position: absolute; right: 10px; top: 18px;'>
+					<input type="text" name="query" ng-model="query" id='search_header_query' class="input-xlarge search-query opacity5 opacity-full-hover" placeholder="Search" typeahead="user as user.typeahead for user in search($viewValue)" ui-event="{keyup: 'updateScroll($event)'}" autocomplete="off" autofocus>
+
+					<img ng-show="loading" src="<%= asset_path('ajax-loader-black-dots.gif') %>" alt="loading dots" class='loading'>
 				</form>
 			</li>
 			<li ng-show='app.loggedIn()'>
@@ -91,8 +93,8 @@
 		</ul> -->
 	</div>
 
-	<div ng-controller="SearchsHeaderCtrl" class="container visible-phone">
-		<form class="form-search pts" name="searchHeaderForm" ng-submit="" novalidate style='position: relative;'>
+	<div ng-controller="SearchsHeaderCtrl" class="primary-search container visible-phone">
+		<form class="form-search pts" name="searchHeaderForm" ng-submit="" novalidate>
 			<div class="row">
 				<input type="text" name="query" ng-model="query" id='search_header_query' class="span12 search-query opacity5 opacity-full-hover" placeholder="Search" typeahead="user as user.typeahead for user in search($viewValue)" autocomplete="off" autofocus>
 
