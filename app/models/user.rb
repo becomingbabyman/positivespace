@@ -181,7 +181,7 @@ class User < ActiveRecord::Base
 		tire.search(load: false, page: params[:page], per_page: params[:per]) do
 			query do
 				match [:name, :username, :body, :location, :personal_url], params[:q]
-				# TODO: try to set default_operator, maybe it can't be set on a match
+				## TODO: try to set default_operator, maybe it can't be set on a match
 				# default_operator: "AND"
 			end
 			# filter :not => { :term => { :state => :unendorsed } }
