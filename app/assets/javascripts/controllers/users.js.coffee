@@ -165,15 +165,16 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 				routeId: $routeParams.id
 
 	$scope.respond = ->
-		$scope.show.form = true
-		analytics.track 'click respond',
-			href: window.location.href
-			routeId: $routeParams.user_id
-			userId: $scope.user.id
-			userName: $scope.user.name
-			userBody: $scope.user.body
-			currentId: $scope.app.currentUser.id
-			currentName: $scope.app.currentUser.name
+		unless $scope.show.form
+			$scope.show.form = true
+			analytics.track 'click respond',
+				href: window.location.href
+				routeId: $routeParams.user_id
+				userId: $scope.user.id
+				userName: $scope.user.name
+				userBody: $scope.user.body
+				currentId: $scope.app.currentUser.id
+				currentName: $scope.app.currentUser.name
 
 	$scope.requestEmbedCode = ->
 		analytics.track 'request embed code'

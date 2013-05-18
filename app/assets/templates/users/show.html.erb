@@ -5,7 +5,7 @@
 			<div class="row pbm" ng-show='user.can_edit && hideAdmin'>
 				<div class="span-mobile center">
 					<div class='row-fluid'>
-						<a href='#' class='faded pull-right font12 opacity1 opacity-full-hover' ng-click='hideAdmin = !hideAdmin'><i class="icon-angle-right"></i> show owner details</a>
+						<a href='#' class='faded pull-right font14 opacity1 opacity-full-hover' ng-click='hideAdmin = !hideAdmin'><i class="icon-angle-right"></i> show dashboard</a>
 					</div>
 				</div>
 			</div>
@@ -15,7 +15,8 @@
 				<div class="row pbm">
 					<div class="span-mobile center">
 						<div class='row-fluid'>
-							<a href='#' class='faded pull-right font12 opacity6 opacity-full-hover' ng-click='hideAdmin = !hideAdmin'><i class="icon-angle-down"></i> hide owner details</a>
+							<a href='#' class='faded pull-right font14 opacity6 opacity-full-hover' ng-click='hideAdmin = !hideAdmin'><i class="icon-angle-down"></i> hide dashboard</a>
+							<h4 class="uncenter">Dashboard</h4>
 						</div>
 					</div>
 				</div>
@@ -32,7 +33,7 @@
 					<div class="span-mobile center">
 						<div class='row-fluid'>
 							<div class='span12 uncenter'>
-								<h4>Totals</h4>
+								<h5>Totals</h5>
 							</div>
 							<div class='span12 uncenter'>
 								<span class="label">Unique visitors&nbsp;&nbsp;<span class="badge badge-info">{{user.impressions_count}}</span></span>
@@ -169,9 +170,10 @@
 					</div>
 				</div>
 
-				<div class="row">
-					<div class="span-mobile center ptm">
-						<a ng-href='/{{user.slug}}/edit' class='pull-right btn btn-link btn-large' title='change your space'>edit</a>
+				<div class="row pts pbl">
+					<div class="span-mobile center">
+						<a ng-href='/{{user.slug}}/edit' class='pull-right' title='change your space'>edit</a>
+						<h4 class="uncenter">Space</h4>
 					</div>
 				</div>
 
@@ -216,12 +218,10 @@
 						<div class='animated fadeInDown uncenter'>
 							<h3 class='pbs ghost'>{{user.name}}</h3>
 
-							<div class="prompt-wrapper" ng-class="{clicked: show.form, 'not-clicked': !show.form}">
+							<div class="prompt-wrapper" ng-class="{clicked: show.form, 'not-clicked': !show.form}" ng-click='respond()'>
 								<p ng-bind-html-unsafe="user.body | linebreaks" class='prompt'>{{user.body}}</p>
-								<a href="#" ng-click='respond()' class="respond-button btn">Respond</a>
+								<a href="/{{user.slug}}/edit" class="hoverable btnf" ng-show='user.id && user.id == app.currentUser.id'>Change</a>
 							</div>
-
-							<a href="#" ng-click='respond()' class="btn btn-info btn-block mtl opacity7 opacity-full-hover" ng-hide='show.form' ng-class="{'hidden-desktop': !show.form}">Respond</a>
 
 							<a href="#" class='ptl prs pull-right unfancy-link opacity5 opacity-full-hover' ng-hide="showShareMini" ng-click="showShareMini = !showShareMini">share</a>
 							<div class='font24 ptl uncenter animated fadeInLeft' ng-show="showShareMini">
@@ -257,7 +257,7 @@
 									share-desc="{{user.body}}"
 									share-image="<%= asset_path 'ps_logo_padded@2x.jpg' %>"
 								><img src="<%= asset_path 'tumblr24.png' %>" alt='tumblr' style='width: 20px; height: 20px; margin-top: -5px;'></a>
-								<span class="opacity5 opacity-full-hover" title="share link">
+								<span class="opacity5 opacity-full-hover" title="share link for {{user.name | possessive}} space">
 									<i class="font20 icon-link muted" ng-click="app.selectText('share-url-mini')"></i>
 									<pre ng-click="app.selectText('share-url-mini')" class="share-url-mini sans bold font12" style="padding:2px 4px; max-width: 150px; overflow: hidden; white-space:nowrap; display: inline-block; vertical-align: top;">http://www.positivespace.io/{{user.slug}}</pre>
 								</span>
@@ -282,6 +282,7 @@
 								<i class='icon-google-plus faded'></i>
 							</div> -->
 
+
 						</div>
 					</div>
 
@@ -298,6 +299,15 @@
 				</div>
 			</div>
 
+			<div class='row animated fadeInUp ptl' ng-hide='show.form'>
+				<div class="span-mobile center">
+					<div class='row-fluid'>
+						<div class='span12 uncenter'>
+							<a href="#" ng-click='respond()' class="btnf btnf-respond">Respond</a>
+						</div>
+					</div>
+				</div>
+			</div>
 
 			<div class='row animated fadeInDown ptl' ng-hide="!show.form || (conversation && conversation.prompt == user.body)">
 				<div class="span-mobile center pos-rel">

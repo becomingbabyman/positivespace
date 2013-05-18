@@ -34,36 +34,23 @@ div.prompt-wrapper
 		visibility: hidden
 	.prompt
 		height: 100%
-	.respond-button
+	.hoverable
 		visibility: hidden
 		opacity: 0
 		position: absolute
 		top: 50%
 		left: 50%
-		width: 140px
-		height: 42px
-		padding: 0
 		margin-left: -70px
 		margin-top: -21px
-		text-align: center
-		background: $color-blue
-		color: white
-		font-size: 20px
-		line-height: 42px
-		letter-spacing: 1px
 		z-index: 6
-		@include text-shadow(#bbb 1px -1px 0)
 		@include transition-property(visibility, opacity, color, background)
 		@include transition-duration(0.3s)
-		&:hover
-			@include transition-duration(0.2s)
-			background: lighten($color-blue, 10%)
 	&:hover.not-clicked
 		&:after
 			@include transition-duration(0.2s)
 			opacity: 0.5
 			visibility: visible
-		.respond-button
+		.hoverable
 			visibility: visible
 			opacity: 1
 
@@ -107,6 +94,46 @@ div.prompt-wrapper
 	&:hover
 		background-color: lighten(#3B5998, 10%)
 		color: white
+
+
+// Button Flip
+.btnf
+	position: relative
+	color: black
+	background: white
+	border: 3px solid black
+	padding: 10px 20px
+	font-weight: bold
+	// letter-spacing: 0.1em
+	@include transition-property(color, background)
+	@include transition-duration(0.3s)
+	@include border-radius(3px)
+	&:hover
+		color: white
+		background: black
+	&:after
+		display: none
+		position: absolute
+		content: ""
+		bottom: -19px
+		left: 10px
+		height: 0
+		width: 0
+		border: solid transparent
+		border-color: rgba(0, 0, 0, 0)
+		border-top-color: #000000
+		border-width: 8px
+
+.btnf-respond
+	color: $color-blue
+	border-color: $color-blue
+	&:hover
+		background: $color-blue
+	&:after
+		display: block
+		border-color: rgba(0, 192, 255, 0)
+		border-top-color: $color-blue
+
 
 .center
 	float: none
