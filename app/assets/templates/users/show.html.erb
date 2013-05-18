@@ -213,7 +213,7 @@
 
 						<ps-img ng-hide='true' src="{{user.avatar.big_thumb_url}}" alt="{{user.name}}" img-class="img-circle img-border img-big-thumb"></ps-img>
 
-						<div class='animated fadeInDown'>
+						<div class='animated fadeInDown uncenter'>
 							<h3 class='pbs ghost'>{{user.name}}</h3>
 
 							<div class="prompt-wrapper" ng-class="{clicked: show.form, 'not-clicked': !show.form}">
@@ -263,9 +263,9 @@
 								</span>
 							</div>
 
-							<i ng-show='!showShareMini && user.location.length > 0' class='icon-map-marker faded uncenter pls ptl prl font20' tooltip='{{user.location}}'></i>
-							<a ng-show='!showShareMini && user.personal_url.length > 0' href='{{user.personal_url}}' target='_blank' class='faded uncenter ptl font20'>
-								<i class="icon-link" tooltip="{{user.personal_url}}"></i>
+							<i ng-show='!showShareMini && user.location.length > 0' class='icon-map-marker ghost uncenter mls mtl mrl font20' tooltip='{{user.location}}'></i>
+							<a ng-show='!showShareMini && user.personal_url.length > 0' href='{{user.personal_url}}' target='_blank' class='ghost uncenter mtl font20' tooltip="{{user.personal_url}}">
+								<i class="icon-link"></i>
 							</a>
 
 							<!-- <div class='ptl'>
