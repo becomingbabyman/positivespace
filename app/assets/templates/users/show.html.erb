@@ -5,7 +5,7 @@
 			<div class="row pbm" ng-show='user.can_edit && hideAdmin'>
 				<div class="span-mobile center">
 					<div class='row-fluid'>
-						<a href='#' class='faded pull-right font12 opacity1 opacity-full-hover' ng-click='hideAdmin = !hideAdmin'>show details</a>
+						<a href='#' class='faded pull-right font12 opacity1 opacity-full-hover' ng-click='hideAdmin = !hideAdmin'><i class="icon-angle-right"></i> show owner details</a>
 					</div>
 				</div>
 			</div>
@@ -15,7 +15,7 @@
 				<div class="row pbm">
 					<div class="span-mobile center">
 						<div class='row-fluid'>
-							<a href='#' class='faded pull-right font12 opacity6 opacity-full-hover' ng-click='hideAdmin = !hideAdmin'>hide details</a>
+							<a href='#' class='faded pull-right font12 opacity6 opacity-full-hover' ng-click='hideAdmin = !hideAdmin'><i class="icon-angle-down"></i> hide owner details</a>
 						</div>
 					</div>
 				</div>
@@ -74,7 +74,7 @@
 								<h4>1. Publish - Complete</h4>
 								You have been endorsed by
 								<a href='/{{user.invitation.user.slug}}'>{{user.invitation.user.name || "Positive Space"}}</a>,
-								and now your space is indexed in our public search for easy discovery.
+								and now your space is indexed in public search for easy discovery.
 							</div>
 						</div>
 					</div>
