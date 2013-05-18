@@ -1,25 +1,22 @@
 ps.controller "ConversationsIndexCtrl", ["$scope", "$routeParams", "$location", "$timeout", "Message", "Conversation", ($scope, $routeParams, $location, $timeout, Message, Conversation) ->
 	$scope.conversations = {collection: []}
 	$scope.app.meta.title = "My Conversations"
-	$scope.selectedFilter = 'ready'
+	$scope.selectedFilter = $location.search().filter or 'ready'
+	$location.search({filter: $scope.selectedFilter})
 	$scope.busy = true
 
 	# Initialize
-	$scope.app.show.loading = true
 	$scope.app.dcu.promise.then (user) ->
-		$scope.query = {user_id: user.id, state: 'in_progress', turn_id: user.id, order: "updated_at ASC", page: 1}
-		$scope.conversations = Conversation.query $scope.query, ->
-			$scope.busy = false
-			$scope.app.show.loading = false
-			analytics.track 'view conversations success',
-				user_id: user.id
-				user_name: user.name
-				readyConversationsCount   : user.ready_conversations_count
-				endedConversationsCount   : user.ended_conversations_count
-				waitingConversationsCount : user.waiting_conversations_count
+		$scope.query = {user_id: user.id}
+		$scope.filter($scope.selectedFilter)
+		analytics.track 'view conversations success',
+			user_id: user.id
+			user_name: user.name
+			readyConversationsCount   : user.ready_conversations_count
+			endedConversationsCount   : user.ended_conversations_count
+			waitingConversationsCount : user.waiting_conversations_count
 	, (error) ->
 		# user must log in to view conversations
-		$scope.app.show.loading = false
 		$location.search('path', window.location.pathname)
 		$location.search('search', window.location.search)
 		$location.path('/login')
@@ -31,22 +28,19 @@ ps.controller "ConversationsIndexCtrl", ["$scope", "$routeParams", "$location", 
 		delete $scope.query["state"]
 		delete $scope.query["turn_id"]
 		delete $scope.query["not_turn_id"]
-		if option != $scope.selectedFilter
-			switch option
-				when 'ready' then $scope.conversations = _.extend($scope.query, {state: 'in_progress', turn_id: $scope.query.user_id, order: "updated_at ASC", page: 1})
-				when 'waiting' then $scope.conversations = _.extend($scope.query, {state: 'in_progress', not_turn_id: $scope.query.user_id, order: "updated_at DESC", page: 1})
-				when 'ended' then $scope.conversations = _.extend($scope.query, {state: 'ended', order: "updated_at DESC", page: 1})
-			$scope.selectedFilter = option
-		else
-			_.extend($scope.query, {order: "updated_at DESC", page: 1})
-			$scope.selectedFilter = null
+		switch option
+			when 'all' then _.extend($scope.query, {order: "updated_at DESC", page: 1})
+			when 'ready' then _.extend($scope.query, {state: 'in_progress', turn_id: $scope.query.user_id, order: "updated_at ASC", page: 1})
+			when 'waiting' then _.extend($scope.query, {state: 'in_progress', not_turn_id: $scope.query.user_id, order: "updated_at DESC", page: 1})
+			when 'ended' then _.extend($scope.query, {state: 'ended', order: "updated_at DESC", page: 1})
+		$scope.selectedFilter = option
 		$scope.busy = true
 		$scope.app.show.loading = true
 		$scope.conversations = Conversation.query $scope.query, ->
 			$scope.busy = false
 			$scope.app.show.loading = false
-			filter = $scope.selectedFilter or 'all'
-			analytics.track "conversations filter by #{filter}"
+			$location.search({filter: $scope.selectedFilter})
+			analytics.track "conversations filter by #{$scope.selectedFilter}"
 
 	$scope.loadMoreConversations = ->
 		if $scope.query and $scope.query.page < $scope.conversations.total_pages

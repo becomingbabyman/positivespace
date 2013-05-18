@@ -2,11 +2,6 @@
 	<div class="container">
 
 		<ul class="nav user-nav pull-right">
-			<!-- <li class='opacity4 opacity-full-hover' ng-hide='app.loggedIn()'>
-				<a href="/login">
-					<i class="icon-signin"></i>
-				</a>
-			</li> -->
 
 			<li ng-controller="SearchsHeaderCtrl" class="hidden-phone primary-search">
 				<form class="form-search pts uncenter" name="searchHeaderForm" ng-submit="" novalidate>
@@ -17,6 +12,14 @@
 					<img ng-show="loading" src="<%= asset_path('ajax-loader-black-dots.gif') %>" alt="loading dots" class='loading'>
 				</form>
 			</li>
+
+			<li class='opacity5 opacity-full-hover' ng-hide='app.loggedIn()'>
+				<a href="/login">
+					Log in
+					<!-- <i class="icon-signin"></i> -->
+				</a>
+			</li>
+
 			<li ng-show='app.loggedIn()'>
 				<a href="/{{app.currentUser.slug}}" title="{{app.currentUser.username | possessive}} space">
 					<img ng-src="{{app.currentUser.avatar.big_thumb_url}}" alt='{{app.currentUser.username}}' class='img-circle img-border avatar'>
@@ -62,8 +65,8 @@
 
 			<div class="brand-dropdown-menu">
 				<div ng-hide='app.loggedIn()' style='height: 45px;'></div>
-				<a href="/login" class="color-blue font18" ng-hide='app.loggedIn()'>
-					Log in
+				<a href="/register" class="color-blue font18" ng-hide='app.loggedIn()'>
+					Sign up
 				</a>
 				<a href="#" class='muted' ng-click='app.randomSpace()' ng-show='app.loggedIn()' title='click to see a new space'>
 					<i class="icon-random"></i>

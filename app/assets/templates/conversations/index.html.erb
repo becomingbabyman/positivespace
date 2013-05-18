@@ -2,31 +2,24 @@
 
 	<div class="row ptl">
 		<div class="span-mobile center">
-			<div class="row-fluid faded">
-				<div class="span12">
-					conversations
+
+			<div class="row-fluid filter" ng-class="selectedFilter">
+				<div class="title">
+					<a href="#" ng-click="filter('all')" title='all'>Conversations</a>
 				</div>
-			</div>
-			<div class="row-fluid">
-				<div class="span4" tooltip="{{selectedFilter != 'ready' && ' Show Only Ready' || 'Show All'}}">
-					<a href="#" ng-click='filter("ready")' class='faded'>
-						<i class="icon-circle-blank color-green prs" ng-class="{faded: (selectedFilter && selectedFilter != 'ready')}"></i>
+				<div class="selections">
+					<a href="#" ng-click='filter("ready")' class='ready' ng-class="{active: (selectedFilter == 'ready' || selectedFilter == 'all')}" title='ready'>
 						{{app.currentUser.ready_conversations_count}}
 					</a>
-				</div>
-				<div class="span4" tooltip="{{selectedFilter != 'waiting' && 'Show Only Waiting' || 'Show All'}}">
-					<a href="#" ng-click='filter("waiting")' class='faded'>
-						<i class="icon-time color-yellow prs" ng-class="{faded: (selectedFilter && selectedFilter != 'waiting')}"></i>
+					<a href="#" ng-click='filter("waiting")' class='waiting' ng-class="{active: (selectedFilter == 'waiting' || selectedFilter == 'all')}" title='waiting'>
 						{{app.currentUser.waiting_conversations_count}}
 					</a>
-				</div>
-				<div class="span4" tooltip="{{selectedFilter != 'ended' && 'Show Only Ended' || 'Show All'}}">
-					<a href="#" ng-click='filter("ended")' class='faded'>
-						<i class="icon-remove-circle color-red prs" ng-class="{faded: (selectedFilter && selectedFilter != 'ended')}"></i>
+					<a href="#" ng-click='filter("ended")' class='ended' ng-class="{active: (selectedFilter == 'ended' || selectedFilter == 'all')}" title='ended'>
 						{{app.currentUser.ended_conversations_count}}
 					</a>
 				</div>
 			</div>
+
 			<div class="row-fluid">
 				<div class="span12" ng-show='conversations.collection.length == 0'>
 					<h3 class='faded'>You should start one.</h3>
@@ -67,16 +60,22 @@
 								</div>
 							</div>
 							<div class="row-fluid ptl">
-								<div class="span1">
-									-
+								<div class="span12 uncenter">
+									<h5 class="faded">Last message</h5>
 								</div>
-								<div class="span11">
-									<p class='font18 uncenter' ng-bind-html-unsafe="conversation.last_message_body | linebreaks">{{conversation.last_message_body}}</p>
+							</div>
+							<div class="row-fluid font18">
+								<div class="span2">
+									<img ng-src="{{conversation.from.avatar.thumb_url}}" alt="{{conversation.from.name}}" class="img-circle img-border img-mini" ng-show='conversation.last_message_from_id == conversation.from.id'>
+									<img ng-src="{{conversation.to.avatar.thumb_url}}" alt="{{conversation.to.name}}" class="img-circle img-border img-mini" ng-show='conversation.last_message_from_id == conversation.to.id'>
+								</div>
+								<div class="span10">
+									<p class='uncenter' ng-bind-html-unsafe="conversation.last_message_body | linebreaks">{{conversation.last_message_body}}</p>
 								</div>
 							</div>
 							<div class="row-fluid" ng-show="conversation.state != 'ended' && conversation.last_message_from_id != app.currentUser.id">
-								<div class="span12">
-									<div class='btn btn-link btn-block' ng-click='selectConversation(conversation)'>reply</div>
+								<div class="span12 ptm pbl">
+									<div class='btnf btnf-respond' ng-click='selectConversation(conversation)'>Reply</div>
 								</div>
 							</div>
 						</a>

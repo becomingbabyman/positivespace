@@ -108,10 +108,7 @@ div.prompt-wrapper
 	@include transition-property(color, background)
 	@include transition-duration(0.3s)
 	@include border-radius(3px)
-	&:hover
-		color: white
-		background: black
-	&:after
+	&:before
 		display: none
 		position: absolute
 		content: ""
@@ -123,16 +120,41 @@ div.prompt-wrapper
 		border-color: rgba(0, 0, 0, 0)
 		border-top-color: #000000
 		border-width: 8px
+	&:after
+		@include transition-property(border-color, border-top-color)
+		@include transition-duration(0.3s)
+		display: none
+		position: absolute
+		content: ""
+		bottom: -12px
+		left: 12px
+		height: 0
+		width: 0
+		border: solid transparent
+		border-color: rgba(255, 255, 255, 0)
+		border-top-color: #ffffff
+		border-width: 6px
+	&:hover
+		color: white
+		background: black
+		&:after
+			border-color: rgba(255, 255, 255, 0)
+			border-top-color: #ffffff
 
 .btnf-respond
 	color: $color-blue
 	border-color: $color-blue
-	&:hover
-		background: $color-blue
-	&:after
+	&:before
 		display: block
 		border-color: rgba(0, 192, 255, 0)
 		border-top-color: $color-blue
+	&:after
+		display: block
+	&:hover
+		background: $color-blue
+		&:after
+			border-color: rgba(0, 192, 255, 0)
+			border-top-color: $color-blue
 
 
 .center

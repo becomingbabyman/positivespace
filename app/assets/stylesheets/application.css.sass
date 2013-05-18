@@ -640,7 +640,114 @@ input, textarea
 //////////////////////////////////////////////////////
 /**                   inbox style                  **/
 //////////////////////////////////////////////////////
-#inbox
+#conversations
+	.filter
+		.title
+			a
+				position: relative
+				display: inline-block
+				color: #ccc
+				background: white
+				border: 3px solid #ccc
+				padding: 10px 40px
+				font-weight: bold
+				margin-bottom: 9px
+				@include transition-property(color, background)
+				@include transition-duration(0.3s)
+				@include border-radius(3px)
+				&:before
+					display: none
+					position: absolute
+					content: ""
+					bottom: -19px
+					left: 10px
+					height: 0
+					width: 0
+					border: solid transparent
+					border-color: rgba(204, 204, 204, 0)
+					border-top-color: #ccc
+					border-width: 8px
+				&:after
+					@include transition-property(border-color, border-top-color)
+					@include transition-duration(0.3s)
+					display: none
+					position: absolute
+					content: ""
+					bottom: -12px
+					left: 12px
+					height: 0
+					width: 0
+					border: solid transparent
+					border-color: rgba(255, 255, 255, 0)
+					border-top-color: #ffffff
+					border-width: 6px
+				&:hover
+					color: white
+					background: #ccc
+					&:after
+						border-color: rgba(204, 204, 204, 0)
+						border-top-color: #ccc
+
+		.selections
+			a
+				color: #999
+				display: inline-block
+				width: 40px
+				height: 40px
+				line-height: 40px
+				border: 3px solid #ddd
+				@include border-radius(500px)
+				@include transition-property(color, background)
+				@include transition-duration(0.3s)
+				&:hover
+					color: white
+					background: #ddd
+				&.ready
+					margin-right: 15px
+					color: $green
+					border-color: $green
+					&:hover, &.active
+						color: white
+						background: $green
+				&.waiting
+					margin-right: 15px
+					color: $yellow
+					border-color: $yellow
+					&:hover, &.active
+						color: white
+						background: $yellow
+				&.ended
+					color: $red
+					border-color: $red
+					&:hover, &.active
+						color: white
+						background: $red
+
+		&.ready
+			.title a
+				&:before
+					display: block
+					left: 21px
+				&:after
+					display: block
+					left: 23px
+		&.waiting
+			.title a
+				&:before
+					display: block
+					left: 87px
+				&:after
+					display: block
+					left: 89px
+		&.ended
+			.title a
+				&:before
+					display: block
+					left: 152px
+				&:after
+					display: block
+					left: 154px
+
 	.message
 		// color: lighten($color-text, 50%)
 		// &.active
@@ -648,7 +755,7 @@ input, textarea
 
 
 //////////////////////////////////////////////////////
-/**                   inbox style                  **/
+/**               conversation style               **/
 //////////////////////////////////////////////////////
 #conversation
 	.message
