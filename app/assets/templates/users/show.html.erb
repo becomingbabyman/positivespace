@@ -329,8 +329,8 @@
 
 						<div class='control-group'>
 							<div class='controls'>
-								<a href='#' class='muted' ng-click='show.embedInput = true' ng-hide='show.embedInput'><i class='icon-link pts font20' tooltip='Attach a link. We will magically find and embed picture, video, audio, and more in your response.' tooltip-placement='right'></i></a>
-								<a href='#' class='muted' ng-click='show.embedInput = false' ng-show='show.embedInput'><i class='icon-link pts font20'></i></a>
+								<a href='#' class='muted pts pull-left' ng-click='show.embedInput = true' ng-hide='show.embedInput'><i class='icon-link font20' tooltip='Attach a link. We will magically find and embed picture, video, audio, and more in your response.' tooltip-placement='right'></i></a>
+								<a href='#' class='muted pts pull-left' ng-click='show.embedInput = false' ng-show='show.embedInput'><i class='icon-link font20'></i></a>
 
 								<button ng-hide='app.loggedIn()' type='submit' class='btn btn-success pull-right' ng-disabled="messageForm.body.$invalid">Continue</button>
 								<button ng-show='app.loggedIn() && !message.id' type='submit' class='btn btn-success pull-right' ng-disabled="messageForm.body.$invalid">Send</button>

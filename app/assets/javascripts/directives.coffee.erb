@@ -186,7 +186,7 @@ psDirectives.directive "psA", [() ->
 
 
 ####################################################
-# <ps-a>
+# <ps-linechart>
 psDirectives.directive "psLinechart", [() ->
     restrict: "E"
     template: "<div class='chart chart-line'></div>"
@@ -220,15 +220,15 @@ psDirectives.directive "psLinechart", [() ->
             # chart
             linechart = r.linechart(0, 0, element.width(), attrs.height-20, scope.values.x, scope.values.y, {smooth: true, colors: colors, symbol: '', shade: false, nostroke: false});
 
-            # tooltips
-            # linechart.hoverColumn ->
-            #   @tags = r.set()
-            #   for i in [0..@y.length-1]
-            #       label = @values[i] + " " + (if @values[i] == 1 then scope.values.labels[i].slice(0,-1) else scope.values.labels[i])
-            #       angle = if @axis < scope.values.x.length/2 then 0 else 180
-            #       @tags.push r.flag(@x, @y[i], label, angle).insertBefore(@).attr([{ fill: "#fff", stroke: "#ddd", 'stroke-width': 1 }, { fill: "#333" }])
-            # , ->
-            #   @tags and @tags.remove()
+        # tooltips
+            linechart.hoverColumn ->
+              @tags = r.set()
+              for i in [0..@y.length-1]
+                  label = @values[i] + " " + (if @values[i] == 1 then scope.values.labels[i].slice(0,-1) else scope.values.labels[i])
+                  angle = if @axis < scope.values.x.length/2 then 0 else 180
+                  @tags.push r.flag(@x, @y[i], label, angle).insertBefore(@).attr([{ fill: "#fff", stroke: "#ddd", 'stroke-width': 1 }, { fill: "#333" }])
+            , ->
+              @tags and @tags.remove()
 
             # key
             w = element.width()
