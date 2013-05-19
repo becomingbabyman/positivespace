@@ -131,18 +131,21 @@ psDirectives.directive 'editResource', ->
 
 
 ####################################################
+# To center something on the page
 # <div centerish>
+# or
+# To center within its parent element
+# <div centerish='parent'>
 psDirectives.directive "centerish", ["$timeout", ($timeout) ->
     restrict: "A"
-    template: "<div ng-transclude></div>"
-    transclude: true
 
     link: (scope, element, attrs) ->
+
         center = (animate = false) ->
-            height = $(document).height()
+            height = if attrs.centerish == 'parent' then element.parent().height() else $(document).height()
             height -= element.height()
-            height -= $('#header').height()
-            height -= $('#footer').height()
+            height -= $('#header').height() unless attrs.centerish == 'parent'
+            height -= $('#footer').height() unless attrs.centerish == 'parent'
             if height > 0
                 if animate
                     element.transition { 'margin-top': (height/3) }
@@ -152,8 +155,12 @@ psDirectives.directive "centerish", ["$timeout", ($timeout) ->
         element.resize ->
             center()
 
-        $(window).resize ->
-            center()
+        if attrs.centerish == 'parent'
+            element.parent().resize ->
+                center()
+        else
+            $(window).resize ->
+                center()
 
         _.each [80, 500, 1000, 2000], (time) ->
             $timeout ->

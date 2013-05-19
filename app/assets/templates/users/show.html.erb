@@ -2,20 +2,20 @@
 	<div class="row">
 		<div class="span12">
 
-			<div class="row pbm" ng-show='user.can_edit && hideAdmin'>
+			<div class="row pbm" ng-show='user.can_edit && !showAdmin'>
 				<div class="span-mobile center">
 					<div class='row-fluid'>
-						<a href='#' class='faded pull-right font14 opacity1 opacity-full-hover' ng-click='hideAdmin = !hideAdmin'><i class="icon-angle-right"></i> show dashboard</a>
+						<a href='#' class='faded pull-right font14 opacity8 opacity-full-hover' ng-click='showAdmin = !showAdmin'><i class="icon-angle-right"></i> show dashboard</a>
 					</div>
 				</div>
 			</div>
 
-			<div ng-show='user.can_edit && !hideAdmin'>
+			<div ng-show='user.can_edit && showAdmin'>
 
 				<div class="row pbm">
 					<div class="span-mobile center">
 						<div class='row-fluid'>
-							<a href='#' class='faded pull-right font14 opacity6 opacity-full-hover' ng-click='hideAdmin = !hideAdmin'><i class="icon-angle-down"></i> hide dashboard</a>
+							<a href='#' class='faded pull-right font14 opacity6 opacity-full-hover' ng-click='showAdmin = !showAdmin'><i class="icon-angle-down"></i> hide dashboard</a>
 							<h4 class="uncenter">Dashboard</h4>
 						</div>
 					</div>
@@ -185,11 +185,10 @@
 
 			<div class="row">
 				<div class="span-mobile center pos-rel">
-					<!-- <div class='lbl ptx'>To:</div> -->
 
-					<div class="center animated fadeInDown">
+					<div class="row-fluid center animated fadeInDown">
 
-						<div class='uncenter row-fluid font22' ng-hide='true'>
+						<!-- <div class='uncenter row-fluid font22' ng-hide='true'>
 							<a href="#" class='faded plm pull-right opacity6 opacity-full-hover' title='save for later' ng-hide='user.has_follow' ng-click='social("follow")'>
 								<i class='icon-bookmark-empty'></i>
 							</a>
@@ -210,20 +209,32 @@
 							<a href="/{{user.invitation.user.slug}}" class='prm pull-left opacity6 opacity-full-hover' title='Endorsed by {{user.invitation.user.name || "Positive Space"}}' ui-if='user.state != "unendorsed"'>
 								<i class='icon-heart color-purple'></i>
 							</a>
-							<!-- <i class='icon-bolt faded prm pull-left' title=''></i> -->
-						</div>
+							<i class='icon-bolt faded prm pull-left' title=''></i>
+						</div> -->
 
-						<ps-img ng-hide='true' src="{{user.avatar.big_thumb_url}}" alt="{{user.name}}" img-class="img-circle img-border img-big-thumb"></ps-img>
+						<!-- <ps-img ng-hide='true' src="{{user.avatar.big_thumb_url}}" alt="{{user.name}}" img-class="img-circle img-border img-big-thumb"></ps-img> -->
 
-						<div class='animated fadeInDown uncenter'>
+						<div class='span12 animated fadeInDown uncenter'>
 							<h3 class='pbs ghost'>{{user.name}}</h3>
 
-							<div class="prompt-wrapper" ng-class="{clicked: show.form, 'not-clicked': !show.form}" ng-click='respond()'>
+							<div class="prompt-wrapper">
 								<p ng-bind-html-unsafe="user.body | linebreaks" class='prompt'>{{user.body}}</p>
-								<a href="/{{user.slug}}/edit" class="hoverable btnf" ng-show='user.id && user.id == app.currentUser.id'>Change</a>
+
+								<div class="hoverable center" ng-show='user.id && user.id == app.currentUser.id'>
+									<a centerish='parent' href="/{{user.slug}}/edit" class="btnf display-inline-block">Change</a>
+								</div>
+
+								<div class="hoverable center" ng-hide='user.id && user.id == app.currentUser.id'>
+									<a centerish='parent' href="#" class='btnf btnf-follow display-inline-block' title='follow' ng-hide='user.has_follow' ng-click='social("follow")'>
+										Follow
+									</a>
+									<a centerish='parent' href="#" class='btnf btnf-follow active display-inline-block' title="unfollow" ng-show='user.has_follow' ng-click='social("unfollow")'>
+										Unfollow
+									</a>
+								</div>
 							</div>
 
-							<a href="#" class='ptl prs pull-right unfancy-link opacity5 opacity-full-hover' ng-hide="showShareMini" ng-click="showShareMini = !showShareMini">share</a>
+							<a href="#" class='ptl pull-right unfancy-link opacity5 opacity-full-hover' ng-hide="showShareMini" ng-click="showShareMini = !showShareMini">share</a>
 							<div class='font24 ptl uncenter animated fadeInLeft' ng-show="showShareMini">
 								<a href="#" class='font18 unfancy-link opacity5 opacity-full-hover prm vac' ng-click="showShareMini = !showShareMini" title="close">
 									<i class="icon-remove-circle"></i>
@@ -282,7 +293,6 @@
 								<i class='icon-google-plus faded'></i>
 							</div> -->
 
-
 						</div>
 					</div>
 
@@ -313,7 +323,6 @@
 				<div class="span-mobile center pos-rel">
 					<form name='messageForm' class='form-vertical uncenter' ng-submit='submitMessage()' novalidate style='width: 100%;'>
 
-						<!-- <div class='lbl ptx'>From:</div> -->
 
 						<control-group>
 							<textarea name='body' id='msg_body' title='message body' placeholder="your response ..." class='input-block-level' ng-model='message.body' rows=5 required ng-disabled='message.id' autofocus></textarea>
