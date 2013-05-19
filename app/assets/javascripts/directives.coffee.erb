@@ -213,14 +213,14 @@ psDirectives.directive "psLinechart", [() ->
         # TODO: if the trend is up the color should be green, down should be red.
         # TODO: animate
         # TODO: aggregate meta/trend info below like segment.io
-        # TODO: put a subtle key at the to show time frame
-
+        # TODO: reveal different tooltips for the same column based on the vertical position of the cursor
+        # TODO: clicking the key should toggle the respective line on and off like highcharts
 
         draw = ->
             # chart
             linechart = r.linechart(0, 0, element.width(), attrs.height-20, scope.values.x, scope.values.y, {smooth: true, colors: colors, symbol: '', shade: false, nostroke: false});
 
-        # tooltips
+            # tooltips
             linechart.hoverColumn ->
               @tags = r.set()
               for i in [0..@y.length-1]
