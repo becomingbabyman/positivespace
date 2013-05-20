@@ -141,6 +141,11 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
         #     $scope.htmlReady()
         # , 8888
 
+    # $rootScope.$on '$routeChangeSuccess', (event, current, previous) ->
+
+    $rootScope.$on '$routeChangeError', (event, current, previous, rejection) ->
+        $location.path("/404")
+
     #
     # End Initialization
     #####################

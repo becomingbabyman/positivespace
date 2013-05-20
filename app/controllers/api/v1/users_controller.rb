@@ -18,7 +18,7 @@ class Api::V1::UsersController < InheritedResources::Base
 		scope.where("body IS NOT NULL")
 	end
 	has_scope :order, :only => :index do |controller, scope, value|
-		scope.order(value)
+		scope.order(ActiveRecord::Base::sanitize(value).gsub("'", ""))
 	end
 	has_scope :page, :only => :index, :default => 1 do |controller, scope, value|
 		value.to_i > 0 ? scope.page(value.to_i) : scope.page(1)
@@ -38,7 +38,7 @@ class Api::V1::UsersController < InheritedResources::Base
 
 	def index
 		if params[:q]
-			params[:per] = 12
+			params[:per] = 10
 			@users = User.search(params)
 			render "search"
 		else
