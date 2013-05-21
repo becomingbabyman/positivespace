@@ -71,6 +71,8 @@ ps.controller "UsersEditCtrl", ["$scope", "$routeParams", "$timeout", "$location
 		$scope.app.meta.title = "Edit #{$scope.user.name}"
 		$scope.app.meta.description = "Configure your space just the way you want it."
 		$scope.app.meta.imageUrl = $scope.user.avatar.big_thumb_url
+		$scope.originalUsername = angular.copy $scope.user.username
+		if parseInt($scope.originalUsername) == $scope.user.id then $scope.user.username = null
 		analytics.track 'view edit space success',
 			href: window.location.href
 			routeId: $routeParams.user_id
@@ -84,6 +86,9 @@ ps.controller "UsersEditCtrl", ["$scope", "$routeParams", "$timeout", "$location
 
 	$scope.$watch 'user.body', (value) ->
 		$scope.userBodyRemaining = 250 - (if value? then value.length else 0)
+
+	$scope.usernameIsUnset = ->
+		if $scope.user then parseInt($scope.originalUsername) == $scope.user.id else false
 
 	# TODO: revert to original profile if close is clicked instead of save
 	$scope.saveSpace = ->
@@ -99,6 +104,7 @@ ps.controller "UsersEditCtrl", ["$scope", "$routeParams", "$timeout", "$location
 					userName: $scope.user.name
 					userBody: $scope.user.body
 					firstSave: $scope.space.cantCloseEdit
+				$scope.app.loadCurrentUser()
 				$location.path("/#{$scope.user.slug}")
 			error = (error) ->
 				$scope.app.show.loading = false
@@ -130,6 +136,8 @@ root.usersShowCtrl = ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "
 	$scope.app.meta.title = "#{$scope.user.name}"
 	$scope.app.meta.description = "#{$scope.user.body}"
 	$scope.app.meta.imageUrl = $scope.user.avatar.big_thumb_url
+
+	$scope.show.form = if $routeParams['respond'] == 'true' then true else false
 
 	if !$scope.user.body? or $scope.user.body.length == 0
 		$scope.app.dcu.promise.then (currentUser) ->

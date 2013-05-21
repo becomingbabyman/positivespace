@@ -215,7 +215,7 @@ psDirectives.directive "psLinechart", [() ->
         scope.$watch 'values', (values) ->
             if _.isArray(values.x) and _.isArray(values.y)
                 draw()
-        , true
+        # , true
 
         # TODO: if the trend is up the color should be green, down should be red.
         # TODO: animate

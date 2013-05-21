@@ -23,6 +23,13 @@
 
 					<form class='ptm uncenter animated fadeInUp' name='user_profile' class='form-vertical uncenter ptl' ng-submit='saveSpace()' novalidate style='width: 100%;'>
 
+						<div ng-show='usernameIsUnset()'>
+							<control-group label='Username aka URL'>
+								<input name='username' id='user_username' title='your username (aka the link to your space)' placeholder="username" class='input-block-level' ng-model='user.username' ng-minlength='3' ng-maxlength='18' required></input>
+								<small class='faded'>http://positivespace.io/{{user.username}}</small>
+							</control-group>
+						</div>
+
 						<control-group label='Full name'>
 							<input name='name' id='user_name' title='your real name (not your username)' placeholder="your full name" class='input-block-level' ng-model='user.name' required></input>
 						</control-group>

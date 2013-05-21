@@ -1,9 +1,23 @@
-<div id='users' class="container" centerish>
-	<div class="row">
-		<div class="span12">
-			<div class='cols' ng-repeat='user in users.collection'>
-				<ps-space app='app' user='user'></ps-space>
+<div id='users' class="masonry center">
+	<br/>
+	<br/>
+	<br/>
+	<br/>
+	<ul class='cols'>
+		<li class='col' ng-repeat='user in users.collection'>
+
+			<ps-space app='app' user='user'></ps-space>
+
+			<div class='row ptl respond'>
+				<div class="span-mobile center">
+					<div class='row-fluid'>
+						<div class='span12 uncenter'>
+							<a ng-href="/{{user.slug}}?respond=true" class="btnf btnf-respond">Respond</a>
+						</div>
+					</div>
+				</div>
 			</div>
-		</div>
-	</div>
+
+		</li>
+	</ul>
 </div>
