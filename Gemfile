@@ -109,6 +109,7 @@ group :assets do
   gem 'coffee-rails', '~> 3.2.1'
   gem 'compass-rails'
   gem 'compass-h5bp'
+  gem 'animation'
   gem 'sass-rails',   '~> 3.2.3'
   gem 'therubyracer'
   gem 'uglifier', '>= 1.0.3'

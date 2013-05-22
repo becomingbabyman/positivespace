@@ -118,6 +118,7 @@ div.prompt-wrapper
 	padding: 10px 20px
 	font-weight: bold
 	// letter-spacing: 0.1em
+	white-space: nowrap
 	@include transition-property(color, background)
 	@include transition-duration(0.3s)
 	@include border-radius(3px)
@@ -179,6 +180,20 @@ div.prompt-wrapper
 		color: $color-purple
 		background: white
 
+.btnf-success
+	color: $green
+	border-color: $green
+	&:hover, &.active
+		color: white
+		background: $green
+	&:hover.active
+		color: $green
+		background: white
+
+.btnf-huge
+	font-size: 30px
+	line-height: 30px
+	padding: 15px 30px
 
 .center
 	float: none

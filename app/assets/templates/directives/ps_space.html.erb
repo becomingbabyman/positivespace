@@ -33,7 +33,7 @@
 						<i class="icon-bookmark-empty pull-right" title='follow'></i>
 					</a>
 					<a href="#" class='ghost' title="unfollow" ng-show='user.has_follow' ng-click='social("unfollow")'>
-						<i class="icon-bookmark pull-right" title='following'></i>
+						<i class="icon-bookmark pull-right" title='unfollow'></i>
 					</a>
 					{{user.name}}
 				</h3>
@@ -50,10 +50,10 @@
 					</div>
 
 					<div class="hoverable center" ng-hide='user.id && user.id == app.currentUser.id'>
-						<a centerish='parent' href="#" class='btnf btnf-follow display-inline-block' title='follow' ng-hide='user.has_follow' ng-click='social("follow")'>
+						<a centerish='parent' href="#" class='btnf btnf-follow display-inline-block' ng-hide='user.has_follow' ng-click='social("follow")'>
 							Follow
 						</a>
-						<a centerish='parent' href="#" class='btnf btnf-follow active display-inline-block' title="unfollow" ng-show='user.has_follow' ng-click='social("unfollow")'>
+						<a centerish='parent' href="#" class='btnf btnf-follow active display-inline-block' ng-show='user.has_follow' ng-click='social("unfollow")'>
 							Unfollow
 						</a>
 					</div>
