@@ -1,88 +1,102 @@
 <div id='users'>
-	<br/>
-	<br/>
-	<br/>
-	<div class="container" ng-hid='app.loggedIn()'>
-		<div class="row pbm">
-			<div class="span12 center">
-				<h1 class='font48'>Know more people</h1>
+
+	<div class='bgg' ng-hide='app.loggedIn()'>
+		<br/>
+		<br/>
+		<br/>
+		<div class="container">
+			<div class="row pbm">
+				<div class="span12 center">
+					<h1 class='font48 text-inset'>Really get to know people</h1>
+				</div>
 			</div>
+			<div class="row pbl">
+				<div class="span12">
+					<div class='animated-header muted text-inset'>
+						<span>Give the world permission to know you and your love of</span>
+						<span class='rw-words person'>
+							<span>conversation</span>
+							<span>startups</span>
+							<span>music</span>
+							<span>teaching</span>
+							<span>design</span>
+							<span>cooking</span>
+							<span>adventure</span>
+							<span>programming</span>
+							<span>playing</span>
+						</span>
+					</div>
+				</div>
+			</div>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<!-- <div class="row ptm">
+				<div class="span12 center">
+					<div class="font18 text-inset">Tell the world what you want to talk about</div>
+				</div>
+			</div>
+			<div class="row ptm pbl">
+				<div class="span12 center">
+					<div class="font20 text-inset">Join the community</div>
+				</div>
+			</div> -->
+			<div class="row ptl pbm">
+				<div class="span12 center">
+					<a href="/register" class="btnf btnf-success btnf-huge">Claim your space</a>
+				</div>
+			</div>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
 		</div>
+	</div>
+
+	<br/>
+	<br/>
+	<br/>
+
+	<div class="container">
 		<div class="row pbl">
 			<div class="span12">
-				<div class='animated-header'>
-					<span>Meet</span>
-					<span class='rw-words person'>
-						<span>anyone</span>
-						<span>artists</span>
-						<span>hackers</span>
-						<span>students</span>
-						<span>mothers</span>
-						<span>husbands</span>
-						<span>pilots</span>
-						<span>designers</span>
-						<span>teachers</span>
-						<!-- <span>neighbors</span>
-						<span>scientists</span>
-						<span>entrepreneurs</span>
-						<span>musicians</span>
-						<span>astronauts</span>
-						<span>people</span>
-						<span>strangers</span>
-						<span>foreigners</span>
-						<span>weirdos</span> -->
-					</span>
-					<!-- <br/> -->
-					<span>and talk about</span>
-					<span class='rw-words topic'>
-						<span>anything</span>
-						<span>art</span>
-						<span>programming</span>
-						<span>history</span>
-						<span>parenting</span>
-						<span>marriage</span>
-						<span>aviation</span>
-						<span>design</span>
-						<span>education</span>
-						<!-- <span>civics</span>
-						<span>science</span>
-						<span>startups</span>
-						<span>music</span>
-						<span>space</span>
-						<span>life</span>
-						<span>uncertainty</span>
-						<span>culture</span>
-						<span>differences</span> -->
-					</span>
+				<div class='row' ng-hide='app.loggedIn()'>
+					<div class="span-mobile center">
+						<div class='uncenter font28'>Explore spaces</div>
+					</div>
+				</div>
+				<div class='row' ng-show='app.loggedIn()'>
+					<div class="span-mobile center">
+						<div class='uncenter font28'>Feed</div>
+					</div>
+				</div>
+				<div class='row ptm' ng-show='app.loggedIn()'>
+					<div class="span-mobile center">
+						<div class='uncenter font20'>Of recently updated spaces</div>
+					</div>
 				</div>
 			</div>
 		</div>
-		<div class="row ptl pbl">
-			<div class="span12 center">
-				<div class="font20">Claim your space</div>
-			</div>
-		</div>
-		<div class="row ptl pbl">
-			<div class="span12 center">
-				<a href="/register" class="btnf btnf-success btnf-huge">Join the community</a>
-			</div>
-		</div>
-	</div>
 
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<div class="container">
-		<div class="row pbm">
+		<div class="row pbl ptl" ng-repeat='user in users.collection'>
 			<div class="span12">
-				<h2>Browse spaces</h2>
+				<ps-space app='app' user='user'></ps-space>
+
+				<div class='row ptl respond'>
+					<div class="span-mobile center">
+						<div class='row-fluid'>
+							<div class='span12 uncenter'>
+								<a ng-href="/{{user.slug}}?respond=true" class="btnf btnf-respond">Respond</a>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="masonry center">
+	<!-- <div class="masonry center">
 		<ul class='cols'>
 			<li class='col' ng-repeat='user in users.collection'>
 
@@ -100,5 +114,6 @@
 
 			</li>
 		</ul>
-	</div>
+	</div> -->
+
 </div>

@@ -4,34 +4,6 @@ root = global ? window
 # Index
 root.usersIndexCtrl = ps.controller "UsersIndexCtrl", ["$scope", "$routeParams", "$timeout", "$location", "User", "users", ($scope, $routeParams, $timeout, $location, User, users) ->
     $scope.users = users
-    # $scope.header = {person: 'anyone', topic: 'anything'}
-    # $scope.people = ['artists', 'hackers', 'students', 'mothers', 'fathers', 'pilots', 'designers', 'teachers', 'neighbors', 'scientists', 'entrepreneurs', 'musicians', 'astronauts', 'people', 'strangers', 'foreigners', 'weirdos']
-    # $scope.topics = ['art', 'programming', 'history', 'parenting', 'aviation', 'design', 'education', 'civics', 'science', 'startups', 'music', 'space', 'life', 'uncertainty', 'culture', 'differences']
-
-    # changeHeaderPerson = (index = 0) ->
-    #     $("#animated-header .person").transition({opacity: '0'}).transition({opacity: '1'})
-    #     $timeout ->
-    #         $scope.header.person = $scope.people[index]
-    #     , 300
-    #     i = Math.floor(Math.random() * $scope.people.length)
-    #     $timeout ->
-    #         changeHeaderPerson(i) #unless $scope.app.loggedIn()
-    #     , 8000
-    # changeHeaderTopic = (index = 0) ->
-    #     $("#animated-header .topic").transition({opacity: '0'}).transition({opacity: '1'})
-    #     $timeout ->
-    #         $scope.header.topic = $scope.topics[index]
-    #     , 300
-    #     i = Math.floor(Math.random() * $scope.topics.length)
-    #     $timeout ->
-    #         changeHeaderTopic(i) #unless $scope.app.loggedIn()
-    #     , 8000
-    # $timeout ->
-    #     changeHeaderPerson()
-    #     $timeout ->
-    #         changeHeaderTopic()
-    #     , 0
-    # , 4000
 ]
 root.usersIndexCtrl.loadUsers = ["$q", "User", ($q, User) ->
     defered = $q.defer()
