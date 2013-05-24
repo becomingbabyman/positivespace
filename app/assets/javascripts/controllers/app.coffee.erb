@@ -141,6 +141,11 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
         #     $scope.htmlReady()
         # , 8888
 
+    # $rootScope.$on '$routeChangeSuccess', (event, current, previous) ->
+
+    $rootScope.$on '$routeChangeError', (event, current, previous, rejection) ->
+        $location.path("/404")
+
     #
     # End Initialization
     #####################
@@ -234,7 +239,7 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
     ################
     $scope.app.randomSpace = ->
         $scope.app.show.loading = true
-        User.query {per: 1, order: 'RANDOM()', has_space: true}, (users) ->
+        User.query {per: 1, order: 'RANDOM()'}, (users) ->
             $scope.app.show.loading = false
             $location.path("/#{users.collection[0].slug}")
 

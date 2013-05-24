@@ -1,4 +1,4 @@
-<div class="navbar-inner" ng-class='{opacity0: !app.show.header}'>
+<div class="navbar-inner" ng-class='{opacity0: !app.show.header}' ng-show='app.show.header'>
 	<div class="container">
 
 		<ul class="nav user-nav pull-right">
@@ -59,8 +59,8 @@
 
 		<div class="brand-dropdown" ng-class='{open: app.show.headerDropdown}'>
 			<a href="/" class="brand" ng-class='{"logged-in": app.loggedIn()}'>
-				<img src="<%= asset_path('ps_logo_inset.png') %>" alt='Positive Space' class='inset'>
-				<img src="<%= asset_path('ps_logo.png') %>" alt='Positive Space' class='colored'>
+				<img src="<%= asset_path('ps_logo_inset@2x.png') %>" alt='Positive Space' class='inset'>
+				<img src="<%= asset_path('ps_logo@2x.png') %>" alt='Positive Space' class='colored'>
 			</a>
 
 			<div class="brand-dropdown-menu">

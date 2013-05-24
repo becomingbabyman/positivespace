@@ -9,6 +9,13 @@ ps.config ['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvid
 	$locationProvider.html5Mode true
 
 	$routeProvider
+
+	.when "/",
+		controller: "UsersIndexCtrl"
+		templateUrl: "<%= asset_path('users/index.html') %>"
+		resolve:
+			users: root.usersIndexCtrl.loadUsers
+
 	# Pages
 	# .when "/",
 	#	controller: "PagesCtrl"
@@ -61,6 +68,8 @@ ps.config ['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvid
 	.when "/:user_id",
 		controller: "UsersShowCtrl"
 		templateUrl: "<%= asset_path('users/show.html') %>"
+		resolve:
+			user: root.usersShowCtrl.loadUser
 	.otherwise redirectTo: "/404"
 ]
 
