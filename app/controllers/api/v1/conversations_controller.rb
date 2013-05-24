@@ -21,10 +21,10 @@ class Api::V1::ConversationsController < InheritedResources::Base
 		scope.where(state: value)
 	end
 	has_scope :turn_id, :only => :index do |controller, scope, value|
-		scope.turn(value.to_i)
+		value == 'me' ? scope.turn(controller.current_user.id) : scope.turn(value.to_i)
 	end
 	has_scope :not_turn_id, :only => :index do |controller, scope, value|
-		scope.not_turn(value.to_i)
+		value == 'me' ? scope.not_turn(controller.current_user.id) : scope.not_turn(value.to_i)
 	end
 	has_scope :order, :only => :index do |controller, scope, value|
 		scope.order(ActiveRecord::Base::sanitize(value).gsub("'", ""))
@@ -41,10 +41,24 @@ class Api::V1::ConversationsController < InheritedResources::Base
 
 	before_filter :pick_params, :only => [:update]
 
+	def index
+		@conversations = apply_scopes(current_user.try(:conversations))
+		index!
+	end
+
 protected
 
+	def begin_of_association_chain
+		if params[:user_id] == 'me'
+			@user = current_user
+		else
+			@user = User.find(params[:user_id])
+		end
+		@user.conversations
+	end
+
 	def collection
-		@conversations = apply_scopes(end_of_association_chain)
+		@conversations ||= apply_scopes(end_of_association_chain)
 	end
 
 	def pick_params

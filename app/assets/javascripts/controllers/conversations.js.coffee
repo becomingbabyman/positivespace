@@ -1,57 +1,51 @@
-ps.controller "ConversationsIndexCtrl", ["$scope", "$routeParams", "$location", "$timeout", "Message", "Conversation", ($scope, $routeParams, $location, $timeout, Message, Conversation) ->
-	$scope.conversations = {collection: []}
+root = global ? window
+
+root.conversationsIndexCtrl = ps.controller "ConversationsIndexCtrl", ["$scope", "$location", "$timeout", "Conversation", "conversations", ($scope, $location, $timeout, Conversation, conversations) ->
+	$scope.conversations = conversations
 	$scope.app.meta.title = "My Conversations"
 	$scope.selectedFilter = $location.search().filter or 'ready'
-	$location.search({filter: $scope.selectedFilter})
 	$scope.busy = true
+	$timeout ->
+		$scope.busy = false
+	, 1500
 
-	# Initialize
-	$scope.app.dcu.promise.then (user) ->
-		$scope.query = {user_id: user.id}
-		$scope.filter($scope.selectedFilter)
-		analytics.track 'view conversations success',
-			user_id: user.id
-			user_name: user.name
-			readyConversationsCount   : user.ready_conversations_count
-			endedConversationsCount   : user.ended_conversations_count
-			waitingConversationsCount : user.waiting_conversations_count
+	$scope.filter = (filter) ->
+		$location.search({filter: filter})
+		analytics.track "filter conversations",
+			filter: filter
+
+	$scope.loadMoreConversations = ->
+		if $scope.conversations.query and $scope.conversations.query.page < $scope.conversations.total_pages
+			$scope.conversations.query.page += 1
+			$scope.busy = true
+			$scope.app.show.loading = true
+			Conversation.query $scope.conversations.query, (response) ->
+				$scope.conversations.collection = $scope.conversations.collection.concat response.collection
+				$scope.app.show.loading = false
+				$scope.busy = false unless $scope.conversations.query.page >= $scope.conversations.total_pages
+
+]
+root.conversationsIndexCtrl.loadConversations = ["$q", "$location", "Conversation", ($q, $location, Conversation) ->
+	defered = $q.defer()
+	query = {user_id: 'me', per: 5, page: 1}
+	filter = $location.search().filter or 'ready'
+	switch filter
+		when 'all' then _.extend(query, {order: "updated_at DESC"})
+		when 'ready' then _.extend(query, {state: 'in_progress', turn_id: 'me', order: "updated_at ASC"})
+		when 'waiting' then _.extend(query, {state: 'in_progress', not_turn_id: 'me', order: "updated_at DESC"})
+		when 'ended' then _.extend(query, {state: 'ended', order: "updated_at DESC"})
+	Conversation.query query, (conversations) ->
+		defered.resolve(conversations)
+		analytics.track 'view conversations success'
 	, (error) ->
-		# user must log in to view conversations
 		$location.search('path', window.location.pathname)
 		$location.search('search', window.location.search)
 		$location.path('/login')
-		$scope.app.flash 'info', "Sorry, we don't know whose conversations to show you. Please log in."
+		# $scope.app.flash 'info', "Sorry, we don't know whose conversations to show you. Please log in."
 		analytics.track 'view conversations error',
 			error: 'not logged in'
-
-	$scope.filter = (option) ->
-		delete $scope.query["state"]
-		delete $scope.query["turn_id"]
-		delete $scope.query["not_turn_id"]
-		switch option
-			when 'all' then _.extend($scope.query, {order: "updated_at DESC", page: 1})
-			when 'ready' then _.extend($scope.query, {state: 'in_progress', turn_id: $scope.query.user_id, order: "updated_at ASC", page: 1})
-			when 'waiting' then _.extend($scope.query, {state: 'in_progress', not_turn_id: $scope.query.user_id, order: "updated_at DESC", page: 1})
-			when 'ended' then _.extend($scope.query, {state: 'ended', order: "updated_at DESC", page: 1})
-		$scope.selectedFilter = option
-		$scope.busy = true
-		$scope.app.show.loading = true
-		$scope.conversations = Conversation.query $scope.query, ->
-			$scope.busy = false
-			$scope.app.show.loading = false
-			$location.search({filter: $scope.selectedFilter})
-			analytics.track "conversations filter by #{$scope.selectedFilter}"
-
-	$scope.loadMoreConversations = ->
-		if $scope.query and $scope.query.page < $scope.conversations.total_pages
-			$scope.query.page += 1
-			$scope.busy = true
-			$scope.app.show.loading = true
-			Conversation.query $scope.query, (response) ->
-				$scope.conversations.collection = $scope.conversations.collection.concat response.collection
-				$scope.app.show.loading = false
-				$scope.busy = false unless $scope.query.page >= $scope.conversations.total_pages
-
+		# defered.reject(error)
+	defered.promise
 ]
 
 

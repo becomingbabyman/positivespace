@@ -45,6 +45,9 @@ ps.config ['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvid
 	.when "/conversations",
 		controller: "ConversationsIndexCtrl"
 		templateUrl: "<%= asset_path('conversations/index.html') %>"
+		# reloadOnSearch: false
+		resolve:
+			conversations: root.conversationsIndexCtrl.loadConversations
 	.when "/conversations/:id",
 		controller: "ConversationsShowCtrl"
 		templateUrl: "<%= asset_path('conversations/show.html') %>"
