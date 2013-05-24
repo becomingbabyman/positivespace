@@ -2,9 +2,11 @@
 	<div class="span-mobile center pos-rel">
 
 		<div class="row-fluid center hidden-desktop">
-			<div class='span12 uncenter'>
-				<img ng-src="{{user.avatar.thumb_url}}" alt="{{user.name}}" class="img-circle img-border img-thumb uncenter"></img>
-			</div>
+			<a href="/{{user.slug}}">
+				<div class='span12 uncenter'>
+					<img ng-src="{{user.avatar.thumb_url}}" alt="{{user.name}}" class="img-circle img-border img-thumb uncenter"></img>
+				</div>
+			</a>
 		</div>
 
 		<div class="row-fluid center">
@@ -35,25 +37,23 @@
 					<a href="#" class='ghost' title="unfollow" ng-show='user.has_follow' ng-click='social("unfollow")'>
 						<i class="icon-bookmark pull-right" title='unfollow'></i>
 					</a>
-					{{user.name}}
+					<a href="/{{user.slug}}" class='ghost ghost-hover'>{{user.name}}</a>
 				</h3>
 
 				<div class="prompt-wrapper">
 					<p ng-bind-html-unsafe="user.body | linebreaks" class='prompt'>{{user.body}}</p>
 
-					<div class="hoverable visible-desktop">
-						<img ng-src="{{user.avatar.thumb_url}}" alt="{{user.name}}" class="img-circle img-border img-thumb" style='position: absolute; left: 10px; top: 10px;'></img>
-					</div>
+					<div class="hoverable center">
+						<a href="/{{user.slug}}" style='position: absolute; left: 10px; top: 10px;' class='visible-desktop'>
+							<img ng-src="{{user.avatar.thumb_url}}" alt="{{user.name}}" class="img-circle img-border img-thumb"></img>
+						</a>
 
-					<div class="hoverable center" ng-show='user.id && user.id == app.currentUser.id'>
-						<a centerish='parent' href="/{{user.slug}}/edit" class="btnf display-inline-block">Change</a>
-					</div>
+						<a centerish='parent' href="/{{user.slug}}/edit" class="btnf display-inline-block" ng-show="user.id == app.currentUser.id">Change</a>
 
-					<div class="hoverable center" ng-hide='user.id && user.id == app.currentUser.id'>
-						<a centerish='parent' href="#" class='btnf btnf-follow display-inline-block' ng-hide='user.has_follow' ng-click='social("follow")'>
+						<a centerish='parent' href="#" class='btnf btnf-follow display-inline-block' ng-show='user.id != app.currentUser.id && !user.has_follow' ng-click='social("follow")'>
 							Follow
 						</a>
-						<a centerish='parent' href="#" class='btnf btnf-follow active display-inline-block' ng-show='user.has_follow' ng-click='social("unfollow")'>
+						<a centerish='parent' href="#" class='btnf btnf-follow active display-inline-block' ng-show='user.id != app.currentUser.id && user.has_follow' ng-click='social("unfollow")'>
 							Unfollow
 						</a>
 					</div>

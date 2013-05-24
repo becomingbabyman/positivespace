@@ -5,17 +5,20 @@ root = global ? window
 root.usersIndexCtrl = ps.controller "UsersIndexCtrl", ["$scope", "$routeParams", "$timeout", "$location", "User", "users", ($scope, $routeParams, $timeout, $location, User, users) ->
     $scope.users = users
     $scope.filter = 'recent'
-    $scope.busy = false
+    $scope.busy = true
+    $timeout ->
+        $scope.busy = false
+    , 1500
 
     $scope.updateFilter = ->
         $scope.app.show.loading = true
         switch $scope.filter
             when 'recent'
-                query = { order: 'updated_at DESC' }
+                query = { order: 'updated_at DESC', per: 5 }
             when 'following'
-                query = { following: $scope.app.currentUser.id }
+                query = { following: $scope.app.currentUser.id, per: 5 }
             when 'followers'
-                query = { followers: $scope.app.currentUser.id }
+                query = { followers: $scope.app.currentUser.id, per: 5 }
         $scope.users = User.query query, ->
             $scope.app.show.loading = false
         , ->
@@ -37,7 +40,7 @@ root.usersIndexCtrl = ps.controller "UsersIndexCtrl", ["$scope", "$routeParams",
 ]
 root.usersIndexCtrl.loadUsers = ["$q", "User", ($q, User) ->
     defered = $q.defer()
-    User.query { order: 'updated_at DESC' }, (users) ->
+    User.query { order: 'updated_at DESC', per: 5 }, (users) ->
         defered.resolve(users)
     , (error) ->
         defered.reject(error)
