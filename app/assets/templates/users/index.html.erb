@@ -54,11 +54,24 @@
 		</div>
 	</div>
 
-	<br/>
-	<br/>
-	<br/>
-
 	<div class="container">
+		<div ng-show='app.loggedIn() && !app.currentUser.body' class="row ptl pbl">
+			<div class="span-mobile center">
+				<div class='row-fluid'>
+					<a href='/{{app.currentUser.slug}}/edit'>
+						<div class="span12 alert alert-info alert-block uncenter bgw opacity8 opacity-full-hover">
+							<h4>Want to see your space here?</h4>
+							Just fill it in. Click here to get started.
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<br/>
+		<br/>
+		<br/>
+
 		<div class="row pbl">
 			<div class="span12">
 				<div class='row' ng-hide='app.loggedIn()'>
@@ -66,28 +79,36 @@
 						<div class='uncenter font28'>Explore spaces</div>
 					</div>
 				</div>
+
 				<div class='row' ng-show='app.loggedIn()'>
 					<div class="span-mobile center">
-						<div class='uncenter font28'>Feed</div>
+						<a href='/{{app.currentUser.slug}}' class='pull-right font20'>{{app.currentUser.username}}&nbsp;&nbsp;<i class='icon-angle-right'></i></a>
+						<div class='uncenter font28'>Spaces</div>
 					</div>
 				</div>
-				<div class='row ptm' ng-show='app.loggedIn()'>
+				<div class='row ptl' ng-show='app.loggedIn()'>
 					<div class="span-mobile center">
-						<div class='uncenter font20'>Of recently updated spaces</div>
+						<div class="btn-group" ng-model="filter" ps-buttons-radio style='width: 100%' ng-click='updateFilter()'>
+							<button type="button" class="btn" value="recent" style='width: 38%'>Recently updated</button>
+							<button type="button" class="btn" value="following" style='width: 31%'>Following</button>
+							<button type="button" class="btn" value="followers" style='width: 31%'>Followers</button>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<div class="row pbl ptl" ng-repeat='user in users.collection'>
-			<div class="span12">
-				<ps-space app='app' user='user'></ps-space>
+		<div infinite-scroll='loadMoreUsers()' infinite-scroll-disabled='busy' infinite-scroll-distance='1'>
+			<div class="row pbl ptl" ng-repeat='user in users.collection'>
+				<div class="span12">
+					<ps-space app='app' user='user'></ps-space>
 
-				<div class='row ptl respond'>
-					<div class="span-mobile center">
-						<div class='row-fluid'>
-							<div class='span12 uncenter'>
-								<a ng-href="/{{user.slug}}?respond=true" class="btnf btnf-respond">Respond</a>
+					<div class='row ptl respond'>
+						<div class="span-mobile center">
+							<div class='row-fluid'>
+								<div class='span12 uncenter'>
+									<a ng-href="/{{user.slug}}?respond=true" class="btnf btnf-respond">Respond</a>
+								</div>
 							</div>
 						</div>
 					</div>

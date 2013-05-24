@@ -101,10 +101,14 @@
 					</a>
 				</div>
 
-				<i ng-show='!showShareMini && user.location.length > 0' class='icon-map-marker ghost uncenter mls mtl mrl font20' tooltip='{{user.location}}'></i>
-				<a ng-show='!showShareMini && user.personal_url.length > 0' href='{{user.personal_url}}' target='_blank' class='ghost uncenter mtl font20' tooltip="{{user.personal_url}}">
+				<a href="/{{user.invitation.user.slug || 'space'}}" class='ghost uncenter mtl mrl font20' tooltip='Endorsed by {{user.invitation.user.name || "+_"}}' ui-if='!showShareMini && user.state != "unendorsed"'>
+					<i class='icon-certificate'></i>
+				</a>
+				<i ng-show='!showShareMini && user.location.length > 0' class='icon-map-marker ghost uncenter mtl mrl font20' tooltip='{{user.location}}'></i>
+				<a ng-show='!showShareMini && user.personal_url.length > 0' href='{{user.personal_url}}' target='_blank' class='ghost uncenter mtl mrl font20' tooltip="{{user.personal_url}}">
 					<i class="icon-link"></i>
 				</a>
+				<!-- <i ng-show='!showShareMini && user.body.length > 0' class='icon-book ghost uncenter mtl mrl font20' tooltip=''></i> -->
 
 				<!-- <div class='ptl'>
 					<i class='icon-certificate faded prm' title='verified account'></i>

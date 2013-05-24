@@ -8,6 +8,8 @@ node :query do |i|
 		per: @users.size,
 	}
 	q[:order] = params[:order] if params[:order]
+	q[:following] = params[:following] if params[:following]
+	q[:followers] = params[:followers] if params[:followers]
 	q
 end
 

@@ -19,25 +19,25 @@ psDirectives = angular.module 'psDirectives', []
 # title:        String - default name
 # id:           String - default name + random number
 fieldDirectiveDefinitionObject =
-    restrict: 'E'
-    link: (scope, element, attrs) ->
-        if element.prop("tagName") == 'INPUT' and !attrs.type?
-            attrs.$set 'type', (attrs.type or 'text')
-        unless attrs.placeholder? then attrs.$set 'placeholder', attrs.name
-        unless attrs.title? then attrs.$set 'title', (attrs.placeholder or attrs.name)
-        unless attrs.id? then attrs.$set 'id', _.uniqueId("#{attrs.name}_")
-        # attrs.$set 'name', (attrs.name or attrs.placeholder.replace(///^\s+|\s+$///g, '').split(' ').join('-'))
-        # Placeholder pollyfill
-        if element.prop("tagName") == 'INPUT' or element.prop("tagName") == 'TEXTAREA' then element.placeholder()
+	restrict: 'E'
+	link: (scope, element, attrs) ->
+		if element.prop("tagName") == 'INPUT' and !attrs.type?
+			attrs.$set 'type', (attrs.type or 'text')
+		unless attrs.placeholder? then attrs.$set 'placeholder', attrs.name
+		unless attrs.title? then attrs.$set 'title', (attrs.placeholder or attrs.name)
+		unless attrs.id? then attrs.$set 'id', _.uniqueId("#{attrs.name}_")
+		# attrs.$set 'name', (attrs.name or attrs.placeholder.replace(///^\s+|\s+$///g, '').split(' ').join('-'))
+		# Placeholder pollyfill
+		if element.prop("tagName") == 'INPUT' or element.prop("tagName") == 'TEXTAREA' then element.placeholder()
 
 psDirectives.directive 'input', () ->
-    return fieldDirectiveDefinitionObject
+	return fieldDirectiveDefinitionObject
 
 psDirectives.directive 'select', () ->
-    return fieldDirectiveDefinitionObject
+	return fieldDirectiveDefinitionObject
 
 psDirectives.directive 'textarea', () ->
-    return fieldDirectiveDefinitionObject
+	return fieldDirectiveDefinitionObject
 
 
 ##########################
@@ -47,87 +47,87 @@ psDirectives.directive 'textarea', () ->
 # helpBlock:    String - default null
 psDirectives.directive 'controlGroup', () ->
 
-    findInputEl = (element) ->
-        e = element.find('input')
-        if e.length < 1 then e = element.find('select')
-        if e.length < 1 then e = element.find('textarea')
-        e
+	findInputEl = (element) ->
+		e = element.find('input')
+		if e.length < 1 then e = element.find('select')
+		if e.length < 1 then e = element.find('textarea')
+		e
 
-    directiveDefinitionObject =
-        restrict: 'E'
-        scope:
-            label: '@'
-            helpInline: '@'
-            helpBlock: '@'
-        templateUrl: "<%= asset_path('directives/control_group.html') %>"
-        transclude: true
-        replace: true
-        require: '?^form'
+	directiveDefinitionObject =
+		restrict: 'E'
+		scope:
+			label: '@'
+			helpInline: '@'
+			helpBlock: '@'
+		templateUrl: "<%= asset_path('directives/control_group.html') %>"
+		transclude: true
+		replace: true
+		require: '?^form'
 
-        compile: (element, attrs) ->
-            inputEl = findInputEl(element)
-            type = inputEl.attr('type')
-            element.find('.control-group').addClass(type)
+		compile: (element, attrs) ->
+			inputEl = findInputEl(element)
+			type = inputEl.attr('type')
+			element.find('.control-group').addClass(type)
 
-            # link
-            return (scope, element, attrs, formController) ->
-                inputEl = findInputEl(element)
+			# link
+			return (scope, element, attrs, formController) ->
+				inputEl = findInputEl(element)
 
-                scope.input or= {}
-                scope.input.id = inputEl.attr('id')
-                scope.input.name = inputEl.attr('name')
-                scope.input.title = inputEl.attr('title')
+				scope.input or= {}
+				scope.input.id = inputEl.attr('id')
+				scope.input.name = inputEl.attr('name')
+				scope.input.title = inputEl.attr('title')
 
-                scope.field = formController[scope.input.name]
+				scope.field = formController[scope.input.name]
 
-                buildErrorMsg = ->
-                    errors = []
-                    if scope.field.$error.required  then errors.push "Oops, #{scope.input.title} can't be blank"
-                    if scope.field.$error.email     then errors.push "Please enter a valid email address"
-                    if scope.field.$error.url       then errors.push "Please enter a valid url, kind of like \"http://example.com\""
-                    if scope.field.$error.minlength then errors.push "Keep typing, #{scope.input.title} is too short"
-                    if scope.field.$error.maxlength then errors.push "Whoa, #{scope.input.title} is too long"
-                    if scope.field.$error.pattern   then errors.push "Whoops, #{scope.input.title} is in the wrong format"
-                    if scope.field.$error.usernameTaken   then errors.push "Sorry, this #{scope.input.title} is taken"
-                    scope.field.errorMessage = errors.join('. ')
+				buildErrorMsg = ->
+					errors = []
+					if scope.field.$error.required  then errors.push "Oops, #{scope.input.title} can't be blank"
+					if scope.field.$error.email     then errors.push "Please enter a valid email address"
+					if scope.field.$error.url       then errors.push "Please enter a valid url, kind of like \"http://example.com\""
+					if scope.field.$error.minlength then errors.push "Keep typing, #{scope.input.title} is too short"
+					if scope.field.$error.maxlength then errors.push "Whoa, #{scope.input.title} is too long"
+					if scope.field.$error.pattern   then errors.push "Whoops, #{scope.input.title} is in the wrong format"
+					if scope.field.$error.usernameTaken   then errors.push "Sorry, this #{scope.input.title} is taken"
+					scope.field.errorMessage = errors.join('. ')
 
-                if scope.field?
-                    buildErrorMsg()
-                    scope.$watch 'field.$error', (() -> buildErrorMsg()), true
+				if scope.field?
+					buildErrorMsg()
+					scope.$watch 'field.$error', (() -> buildErrorMsg()), true
 
-                # set 'focused' class on control-group
-                scope.hasFocus = false
-                inputEl.bind 'focusin', ->
-                    scope.$apply () ->
-                        scope.hasFocus = true
-                inputEl.bind 'focusout', ->
-                    scope.$apply () ->
-                        scope.hasFocus = false
+				# set 'focused' class on control-group
+				scope.hasFocus = false
+				inputEl.bind 'focusin', ->
+					scope.$apply () ->
+						scope.hasFocus = true
+				inputEl.bind 'focusout', ->
+					scope.$apply () ->
+						scope.hasFocus = false
 
-    return directiveDefinitionObject
+	return directiveDefinitionObject
 
 
 ####################################################
 ####################################################
 # <edit-resource>
 psDirectives.directive 'editResource', ->
-    directiveDefinitionObject =
-        restrict: 'E'
-        scope:
-            app: '='
-            toggle: '='
-            resource: '='
-        templateUrl: "<%= asset_path('directives/edit_resource.html') %>"
+	directiveDefinitionObject =
+		restrict: 'E'
+		scope:
+			app: '='
+			toggle: '='
+			resource: '='
+		templateUrl: "<%= asset_path('directives/edit_resource.html') %>"
 
-        link: (scope, element, attrs) ->
-            scope.resourceCopy = angular.copy scope.resource
-            scope.submitForm = ->
-                success = (data) ->
-                    scope.app.flash 'success', 'Bam, saved!'
-                    scope.resource = angular.copy scope.resourceCopy
-                error = (error) ->
-                    scope.app.flash 'error', error.data.errors
-                scope.resourceCopy.save(success, error)
+		link: (scope, element, attrs) ->
+			scope.resourceCopy = angular.copy scope.resource
+			scope.submitForm = ->
+				success = (data) ->
+					scope.app.flash 'success', 'Bam, saved!'
+					scope.resource = angular.copy scope.resourceCopy
+				error = (error) ->
+					scope.app.flash 'error', error.data.errors
+				scope.resourceCopy.save(success, error)
 
 
 ####################################################
@@ -137,35 +137,35 @@ psDirectives.directive 'editResource', ->
 # To center within its parent element
 # <div centerish='parent'>
 psDirectives.directive "centerish", ["$timeout", ($timeout) ->
-    restrict: "A"
+	restrict: "A"
 
-    link: (scope, element, attrs) ->
+	link: (scope, element, attrs) ->
 
-        center = (animate = false) ->
-            height = if attrs.centerish == 'parent' then element.parent().height() else $(document).height()
-            height -= element.height()
-            height -= $('#header').height() unless attrs.centerish == 'parent'
-            height -= $('#footer').height() unless attrs.centerish == 'parent'
-            if height > 0
-                if animate
-                    element.transition { 'margin-top': (height/3) }
-                else
-                    element.css { 'margin-top': (height/3) }
+		center = (animate = false) ->
+			height = if attrs.centerish == 'parent' then element.parent().height() else $(document).height()
+			height -= element.height()
+			height -= $('#header').height() unless attrs.centerish == 'parent'
+			height -= $('#footer').height() unless attrs.centerish == 'parent'
+			if height > 0
+				if animate
+					element.transition { 'margin-top': (height/3) }
+				else
+					element.css { 'margin-top': (height/3) }
 
-        element.resize ->
-            center()
+		element.resize ->
+			center()
 
-        if attrs.centerish == 'parent'
-            element.parent().resize ->
-                center()
-        else
-            $(window).resize ->
-                center()
+		if attrs.centerish == 'parent'
+			element.parent().resize ->
+				center()
+		else
+			$(window).resize ->
+				center()
 
-        _.each [80, 500, 1000, 2000], (time) ->
-            $timeout ->
-                center(true)
-            , time
+		_.each [80, 500, 1000, 2000], (time) ->
+			$timeout ->
+				center(true)
+			, time
 
 ]
 
@@ -173,21 +173,21 @@ psDirectives.directive "centerish", ["$timeout", ($timeout) ->
 ####################################################
 # <ps-a>
 psDirectives.directive "psA", [() ->
-    restrict: "E"
-    template: "<a ng-href='{{href}}'>{{prettyHref}}</a>"
-    replace: true
-    scope:
-        href: '@'
-        target: '@'
+	restrict: "E"
+	template: "<a ng-href='{{href}}'>{{prettyHref}}</a>"
+	replace: true
+	scope:
+		href: '@'
+		target: '@'
 
-    link: (scope, element, attrs) ->
-        element.find('a').attr 'target', scope.target
+	link: (scope, element, attrs) ->
+		element.find('a').attr 'target', scope.target
 
-        scope.$watch 'href', (href) ->
-            if href? and (splitHref = href.split("//")) and splitHref.length > 1
-                scope.prettyHref = splitHref[1]
-            else
-                scope.href = "http://#{scope.href}"
+		scope.$watch 'href', (href) ->
+			if href? and (splitHref = href.split("//")) and splitHref.length > 1
+				scope.prettyHref = splitHref[1]
+			else
+				scope.href = "http://#{scope.href}"
 
 ]
 
@@ -195,63 +195,72 @@ psDirectives.directive "psA", [() ->
 ####################################################
 # <ps-linechart>
 psDirectives.directive "psLinechart", [() ->
-    restrict: "E"
-    template: "<div class='chart chart-line'></div>"
-    replace: true
-    scope:
-        # height: '@'  # use attrs
-        values: '='    # { x: Array, y: Array of arrays, labels: Array the length of y }
-        # label: '@'   # use attrs
-        # opts: '@'
+	restrict: "E"
+	template: "<div class='chart chart-line'></div>"
+	replace: true
+	scope:
+		# height: '@'  # use attrs
+		values: '='    # { x: Array, y: Array of arrays, labels: Array the length of y, opts: {} }
+		label: '@'   # use attrs
+		increment: '@'
 
-    link: (scope, element, attrs) ->
-        attrs.$set 'id', _.uniqueId("linechart_")
-        element.css("height", attrs.height)
-        r = Raphael(attrs.id)
-        colors = ['#8e44ad', '#00C0FF', '#46a546', '#e67e22', '#9d261d']
+	link: (scope, element, attrs) ->
+		attrs.$set 'id', _.uniqueId("linechart_")
+		element.css("height", attrs.height)
+		r = Raphael(attrs.id)
+		colors = ['#8e44ad', '#00C0FF', '#46a546', '#e67e22', '#9d261d']
 
-        r.text(10, 10, attrs.label).attr({font: "16px sans-serif", 'text-anchor': 'start', fill: '#ccc'}) if attrs.label?
+		# Either defered or not can be used for now
+		scope.$watch 'values', (values) ->
+			if values?.promise?
+				values.promise.then (v) ->
+					draw(v)
+			else if _.isArray(values.x) and _.isArray(values.y)
+				draw(values)
+		, true
 
-        scope.$watch 'values', (values) ->
-            if _.isArray(values.x) and _.isArray(values.y)
-                draw()
-        # , true
+		# TODO: if the trend is up the color should be green, down should be red.
+		# TODO: animate
+		# TODO: aggregate meta/trend info below like segment.io
+		# TODO: reveal different tooltips for the same column based on the vertical position of the cursor
+		# TODO: clicking the key should toggle the respective line on and off like highcharts
 
-        # TODO: if the trend is up the color should be green, down should be red.
-        # TODO: animate
-        # TODO: aggregate meta/trend info below like segment.io
-        # TODO: reveal different tooltips for the same column based on the vertical position of the cursor
-        # TODO: clicking the key should toggle the respective line on and off like highcharts
+		draw = (values) ->
+			# chart
+			linechart = r.linechart(0, 0, element.parent().width(), attrs.height-20, values.x, values.y, {smooth: values.opts?.smooth, colors: colors, symbol: '', shade: values.opts?.shade, nostroke: values.opts?.nostroke});
 
-        draw = ->
-            # chart
-            linechart = r.linechart(0, 0, element.width(), attrs.height-20, scope.values.x, scope.values.y, {smooth: true, colors: colors, symbol: '', shade: false, nostroke: false});
+			# label
+			r.text(10, 10, attrs.label).attr({font: "16px sans-serif", 'text-anchor': 'start', fill: '#ccc'}) if attrs.label?
 
-            # tooltips
-            linechart.hoverColumn ->
-              @tags = r.set()
-              for i in [0..@y.length-1]
-                  label = @values[i] + " " + (if @values[i] == 1 then scope.values.labels[i].slice(0,-1) else scope.values.labels[i])
-                  angle = if @axis < scope.values.x.length/2 then 0 else 180
-                  @tags.push r.flag(@x, @y[i], label, angle).insertBefore(@).attr([{ fill: "#fff", stroke: "#ddd", 'stroke-width': 1 }, { fill: "#333" }])
-            , ->
-              @tags and @tags.remove()
+			# tooltips
+			linechart.hoverColumn ->
+			  @tags = r.set()
+			  for i in [0..@y.length-1]
+				  label = @values[i] + " " + (if @values[i] == 1 then values.labels[i].slice(0,-1) else values.labels[i])
+				  angle = if @axis < values.x.length/2 then 0 else 180
+				  @tags.push r.flag(@x, @y[i], label, angle).insertBefore(@).attr([{ fill: "#fff", stroke: "#ddd", 'stroke-width': 1 }, { fill: "#333" }])
+			, ->
+			  @tags and @tags.remove()
 
-            # key
-            w = element.width()
-            h = attrs.height
-            l = scope.values.labels.length
-            m = 8
-            for i in [0..l-1]
-                r.path("M#{(i*w/l)+10} #{h-m}L#{(i*w/l)+26} #{h-m}").attr({"stroke-width": 2, stroke: colors[i]})
-                r.circle((i*w/l)+18, h-m, 2).attr({"stroke-width": 2, stroke: colors[i]})
-                r.text((i*w/l)+30, h-m, scope.values.labels[i]).attr({font: "12px sans-serif", 'text-anchor': 'start', fill: '#ccc'})
-            l = scope.values.x.length
-            v = angular.copy scope.values.x
-            v.reverse()
-            for i in [0..l-1]
-                r.text((i*w/l)+30, h-m-12, v[i]+1).attr({font: "10px sans-serif", 'text-anchor': 'start', fill: '#ccc'})
+			# key
+			w = element.parent().width()
+			h = attrs.height
+			l = values.labels.length
+			m = 8
+			for i in [0..l-1]
+			    r.path("M#{(i*w/l)+10} #{h-m}L#{(i*w/l)+26} #{h-m}").attr({"stroke-width": 2, stroke: colors[i]})
+			    r.circle((i*w/l)+18, h-m, 2).attr({"stroke-width": 2, stroke: colors[i]})
+			    r.text((i*w/l)+30, h-m, values.labels[i]).attr({font: "12px sans-serif", 'text-anchor': 'start', fill: '#ccc'})
+			l = values.x.length
+			v = angular.copy values.x
+			v.reverse()
 
+			inc = scope.increment
+			y = values.opts?.key?.y or (h-m-12)
+			r.text(10, y, "#{_.first(v)+1} #{(if _.first(v)+1 == 1 then inc.slice(0,-1) else inc)} ago").attr({font: "10px sans-serif", 'text-anchor': 'start', fill: '#ccc'})
+			r.text(w-10, y, "#{_.last(v)+1} #{(if _.last(v)+1 == 1 then inc.slice(0,-1) else inc)} ago").attr({font: "10px sans-serif", 'text-anchor': 'end', fill: '#ccc'})
+			# for i in [0..l-1]
+			#     r.text((i*w/l)+30, (h-m-8)/2, v[i]).attr({font: "10px sans-serif", 'text-anchor': 'start', fill: '#ccc'})
 
 ]
 
@@ -259,76 +268,76 @@ psDirectives.directive "psLinechart", [() ->
 ####################################################
 # <ps-img>
 psDirectives.directive "psImg", ["$timeout", ($timeout) ->
-    restrict: "E"
-    scope:
-        src: '@'
-        alt: '@'
-        imgClass: '@'
-        canEdit: '@'
-        attachableType: '@'
-        attachableId: '@'
-        imageType: '@'
-        imageUrl: '@'
-    templateUrl: "<%= asset_path('directives/ps_img.html') %>"
+	restrict: "E"
+	scope:
+		src: '@'
+		alt: '@'
+		imgClass: '@'
+		canEdit: '@'
+		attachableType: '@'
+		attachableId: '@'
+		imageType: '@'
+		imageUrl: '@'
+	templateUrl: "<%= asset_path('directives/ps_img.html') %>"
 
-    link: (scope, element, attrs) ->
+	link: (scope, element, attrs) ->
 
-        initDropzone = ->
-            prompt = "Click to change #{scope.imageType} (or drag one in)"
-            tooltip = new Opentip element.find('img'), prompt
-            element.find('img').addClass 'ps-img-dropzone'
+		initDropzone = ->
+			prompt = "Click to change #{scope.imageType} (or drag one in)"
+			tooltip = new Opentip element.find('img'), prompt
+			element.find('img').addClass 'ps-img-dropzone'
 
-            imgDropzone = new Dropzone element.find('img', {escapeContent: true}),
-                url: '/api/images'
-                maxFilesize: 5
-                maxThumbnailFilesize: 0.5
-                paramName: 'image'
-                # previewsContainer: element.find('.dropzone-preview')
+			imgDropzone = new Dropzone element.find('img', {escapeContent: true}),
+				url: '/api/images'
+				maxFilesize: 5
+				maxThumbnailFilesize: 0.5
+				paramName: 'image'
+				# previewsContainer: element.find('.dropzone-preview')
 
-            imgDropzone.on "sending", (file, xhr, formData) ->
-                tooltip.setContent """
-                    <div class="progress progress-striped active" style="width:140px;">
-                        <div class="bar" style="width: 20%;"></div>
-                    </div>
-                    """
-                tooltip.show()
+			imgDropzone.on "sending", (file, xhr, formData) ->
+				tooltip.setContent """
+					<div class="progress progress-striped active" style="width:140px;">
+						<div class="bar" style="width: 20%;"></div>
+					</div>
+					"""
+				tooltip.show()
 
-                formData.append 'image_type', scope.imageType
-                formData.append 'attachable_type', scope.attachableType
-                formData.append 'attachable_id', scope.attachableId
-                $.rails.CSRFProtection(xhr)
+				formData.append 'image_type', scope.imageType
+				formData.append 'attachable_type', scope.attachableType
+				formData.append 'attachable_id', scope.attachableId
+				$.rails.CSRFProtection(xhr)
 
-                analytics.track 'image upload sending',
-                    attachableType: scope.attachableType
-                    attachableId: scope.attachableId
-                    imageType: scope.imageType
-                    imageUrl: scope.imageUrl
+				analytics.track 'image upload sending',
+					attachableType: scope.attachableType
+					attachableId: scope.attachableId
+					imageType: scope.imageType
+					imageUrl: scope.imageUrl
 
-            imgDropzone.on "uploadprogress", (file, progress) ->
-                tooltip.setContent """
-                    <div class="progress progress-striped active" style="width:140px;">
-                        <div class="bar" style="width: #{progress}%;"></div>
-                    </div>
-                    """
-                tooltip.show()
+			imgDropzone.on "uploadprogress", (file, progress) ->
+				tooltip.setContent """
+					<div class="progress progress-striped active" style="width:140px;">
+						<div class="bar" style="width: #{progress}%;"></div>
+					</div>
+					"""
+				tooltip.show()
 
-            imgDropzone.on "success", (file, data) ->
-                $img = element.find('img')
-                $img.attr 'src', data.url
-                tooltip.setContent("Nice, #{scope.imageType} successfully changed. This is just a preview. Refresh the page in a few seconds to see the final version of your image.")
-                $timeout ->
-                    tooltip.hide()
-                    tooltip.setContent prompt
-                , 20000
-                analytics.track 'image upload success',
-                    attachableType: scope.attachableType
-                    attachableId: scope.attachableId
-                    imageType: scope.imageType
-                    imageUrl: scope.imageUrl
+			imgDropzone.on "success", (file, data) ->
+				$img = element.find('img')
+				$img.attr 'src', data.url
+				tooltip.setContent("Nice, #{scope.imageType} successfully changed. This is just a preview. Refresh the page in a few seconds to see the final version of your image.")
+				$timeout ->
+					tooltip.hide()
+					tooltip.setContent prompt
+				, 20000
+				analytics.track 'image upload success',
+					attachableType: scope.attachableType
+					attachableId: scope.attachableId
+					imageType: scope.imageType
+					imageUrl: scope.imageUrl
 
-        # TODO: refactor all can methods. Maybe return a models editors in its json.
-        scope.$watch 'canEdit', (value) ->
-            if value == 'true' then initDropzone()
+		# TODO: refactor all can methods. Maybe return a models editors in its json.
+		scope.$watch 'canEdit', (value) ->
+			if value == 'true' then initDropzone()
 ]
 
 
@@ -337,80 +346,80 @@ psDirectives.directive "psImg", ["$timeout", ($timeout) ->
 # must be 'a' tag
 #
 psDirectives.directive "share", ["$location", ($location) ->
-    restrict: "A"
-    scope:
-        shareName:"@"
-        shareDesc:"@"
-        shareUrl:"@"
-        shareImage:"@"
-    link: (scope, element, attrs) ->
+	restrict: "A"
+	scope:
+		shareName:"@"
+		shareDesc:"@"
+		shareUrl:"@"
+		shareImage:"@"
+	link: (scope, element, attrs) ->
 
-        element.bind 'click', ->
-            scope.generateShareTarget()
-            analytics.track 'click share button',
-                service: attrs.share
-                url: scope.shareUrl
-                name: scope.shareName
-                description: scope.shareDesc
-                image: scope.shareImage
-                href: window.location.href
-                path: window.location.pathname
+		element.bind 'click', ->
+			scope.generateShareTarget()
+			analytics.track 'click share button',
+				service: attrs.share
+				url: scope.shareUrl
+				name: scope.shareName
+				description: scope.shareDesc
+				image: scope.shareImage
+				href: window.location.href
+				path: window.location.pathname
 
-        scope.generateShareTarget = ->
-            scope.shareImage = scope.shareImage.addHttp() if scope.shareImage
-            scope.shareUrl ||= $location.absUrl()
+		scope.generateShareTarget = ->
+			scope.shareImage = scope.shareImage.addHttp() if scope.shareImage
+			scope.shareUrl ||= $location.absUrl()
 
-            fbShare = (method) ->
-                callback = (response) ->
-                    if response and response.post_id
-                        analytics.track 'share success',
-                            service: "facebook - #{method}"
-                    else
-                        analytics.track 'share error',
-                            service: "facebook - #{method}"
-                share = ->
-                    fbObject =
-                        method: method
-                        caption: "Positive Space"
-                    fbObject.link =        scope.shareUrl   if scope.shareUrl?
-                    fbObject.name =        scope.shareName  if scope.shareName?
-                    fbObject.description = scope.shareDesc  if scope.shareDesc?
-                    fbObject.picture =     scope.shareImage if scope.shareImage?
+			fbShare = (method) ->
+				callback = (response) ->
+					if response and response.post_id
+						analytics.track 'share success',
+							service: "facebook - #{method}"
+					else
+						analytics.track 'share error',
+							service: "facebook - #{method}"
+				share = ->
+					fbObject =
+						method: method
+						caption: "Positive Space"
+					fbObject.link =        scope.shareUrl   if scope.shareUrl?
+					fbObject.name =        scope.shareName  if scope.shareName?
+					fbObject.description = scope.shareDesc  if scope.shareDesc?
+					fbObject.picture =     scope.shareImage if scope.shareImage?
 
-                    FB.ui fbObject, callback
+					FB.ui fbObject, callback
 
-                share()
-                false
+				share()
+				false
 
-            switch attrs.share
-                when 'facebook'
-                    fbShare('feed')
+			switch attrs.share
+				when 'facebook'
+					fbShare('feed')
 
-                when 'facebook send'
-                    fbShare('send')
+				when 'facebook send'
+					fbShare('send')
 
-                when 'pinterest'
-                    url = 'http://pinterest.com/pin/create/button/?' +
-                        if !scope.shareUrl?   then '' else "url=#{encodeURIComponent(scope.shareUrl)}" +
-                        if !scope.shareName?  then '' else "&description=#{encodeURIComponent(scope.shareName)}" +
-                        if !scope.shareImage? then '' else "&media=#{encodeURIComponent(scope.shareImage)}"
-                    pinWindow = window.openCenter url, 'Post to Pinterest', 700, 300
-                    false
+				when 'pinterest'
+					url = 'http://pinterest.com/pin/create/button/?' +
+						if !scope.shareUrl?   then '' else "url=#{encodeURIComponent(scope.shareUrl)}" +
+						if !scope.shareName?  then '' else "&description=#{encodeURIComponent(scope.shareName)}" +
+						if !scope.shareImage? then '' else "&media=#{encodeURIComponent(scope.shareImage)}"
+					pinWindow = window.openCenter url, 'Post to Pinterest', 700, 300
+					false
 
 
-                when 'twitter'
-                    element.attr 'target', '_blank'
-                    element.attr 'href', "https://twitter.com/intent/tweet?hashtags=positivespace" +
-                        if !scope.shareUrl?   then '' else "&url=#{encodeURIComponent(scope.shareUrl)}" +
-                        if !scope.shareName?  then '' else "&text=#{encodeURIComponent(scope.shareName)}%20via%20%40positivespaceny"
+				when 'twitter'
+					element.attr 'target', '_blank'
+					element.attr 'href', "https://twitter.com/intent/tweet?hashtags=positivespace" +
+						if !scope.shareUrl?   then '' else "&url=#{encodeURIComponent(scope.shareUrl)}" +
+						if !scope.shareName?  then '' else "&text=#{encodeURIComponent(scope.shareName)}%20via%20%40positivespaceny"
 
-                when 'tumblr'
-                    url = "http://www.tumblr.com/share/link?" +
-                        if !scope.shareUrl?   then '' else "url=#{encodeURIComponent(scope.shareUrl)}" +
-                        if !scope.shareName?  then '' else "&name=#{encodeURIComponent(scope.shareName)}" +
-                        if !scope.shareDesc?  then '' else "&description=#{encodeURIComponent(scope.shareDesc)}"
-                    tumblrWindow = window.openCenter url, 'Post to Tumblr', 450, 450
-                    false
+				when 'tumblr'
+					url = "http://www.tumblr.com/share/link?" +
+						if !scope.shareUrl?   then '' else "url=#{encodeURIComponent(scope.shareUrl)}" +
+						if !scope.shareName?  then '' else "&name=#{encodeURIComponent(scope.shareName)}" +
+						if !scope.shareDesc?  then '' else "&description=#{encodeURIComponent(scope.shareDesc)}"
+					tumblrWindow = window.openCenter url, 'Post to Tumblr', 450, 450
+					false
 ]
 
 
@@ -418,87 +427,87 @@ psDirectives.directive "share", ["$location", ($location) ->
 ####################################################
 # <ps-space>
 psDirectives.directive "psSpace", ["$location", "User", ($location, User) ->
-    restrict: "E"
-    templateUrl: "<%= asset_path('directives/ps_space.html') %>"
-    replace: true
-    scope:
-        app: '='
-        user: '='
+	restrict: "E"
+	templateUrl: "<%= asset_path('directives/ps_space.html') %>"
+	replace: true
+	scope:
+		app: '='
+		user: '='
 
-    link: (scope, element, attrs) ->
-        scope.endorse = ->
-            if window.confirm("\nPlease note. This action cannot be undone. \n\nEndorsing this space will make it discoverable to the Positive Space community! And this space will forever link to yours. Do you want to endorse #{scope.user.name}?")
-                if scope.app.loggedIn()
-                    scope.user.state = 'endorsed'
-                    scope.user.invitation = {user: scope.app.currentUser}
-                    User.update
-                        id: scope.app.currentUser.id
-                        endorse_user: scope.user.id
-                    , (user) ->
-                        scope.app.flash 'success', "Awesome, #{scope.user.name} is now officially part of the Positive Space community. #{scope.user.first_name} will be notified and #{window.possessive(scope.user.first_name)} space is now linked to your space."
-                        analytics.track "endorse space success",
-                            href: window.location.href
-                            routeId: $routeParams.user_id
-                            userId: scope.user.id
-                            userName: scope.user.name
-                            userBody: scope.user.body
-                            currentId: scope.app.currentUser.id
-                            currentName: scope.app.currentUser.name
-                    , (error) ->
-                        scope.user.state = 'unendorsed'
-                        scope.user.invitation = null
-                        scope.app.flash 'error', error.data.errors
-                        analytics.track "endorse space error",
-                            href: window.location.href
-                            routeId: $routeParams.user_id
-                            userId: scope.user.id
-                            userName: scope.user.name
-                            userBody: scope.user.body
-                            currentId: scope.app.currentUser.id
-                            currentName: scope.app.currentUser.name
-                            error: JSON.stringify(error)
-                else
-                    scope.app.flash 'info', "Log in to endorse #{window.possessive(scope.user.first_name)} space"
-                    $location.search('path', "/#{scope.user.slug}")
-                    $location.path('/login')
+	link: (scope, element, attrs) ->
+		scope.endorse = ->
+			if window.confirm("\nPlease note. This action cannot be undone. \n\nEndorsing this space will make it discoverable to the Positive Space community! And this space will forever link to yours. Do you want to endorse #{scope.user.name}?")
+				if scope.app.loggedIn()
+					scope.user.state = 'endorsed'
+					scope.user.invitation = {user: scope.app.currentUser}
+					User.update
+						id: scope.app.currentUser.id
+						endorse_user: scope.user.id
+					, (user) ->
+						scope.app.flash 'success', "Awesome, #{scope.user.name} is now officially part of the Positive Space community. #{scope.user.first_name} will be notified and #{window.possessive(scope.user.first_name)} space is now linked to your space."
+						analytics.track "endorse space success",
+							href: window.location.href
+							routeId: $routeParams.user_id
+							userId: scope.user.id
+							userName: scope.user.name
+							userBody: scope.user.body
+							currentId: scope.app.currentUser.id
+							currentName: scope.app.currentUser.name
+					, (error) ->
+						scope.user.state = 'unendorsed'
+						scope.user.invitation = null
+						scope.app.flash 'error', error.data.errors
+						analytics.track "endorse space error",
+							href: window.location.href
+							routeId: $routeParams.user_id
+							userId: scope.user.id
+							userName: scope.user.name
+							userBody: scope.user.body
+							currentId: scope.app.currentUser.id
+							currentName: scope.app.currentUser.name
+							error: JSON.stringify(error)
+				else
+					scope.app.flash 'info', "Log in to endorse #{window.possessive(scope.user.first_name)} space"
+					$location.search('path', "/#{scope.user.slug}")
+					$location.path('/login')
 
-        scope.social = (action) ->
-            has = "has_#{action.replace(/^un/, '')}"
-            if scope.app.loggedIn()
-                unless scope.user.id == scope.app.currentUser.id
-                    scope.user[has] = !scope.user[has]
-                    User.update
-                        id: scope.app.currentUser.id
-                        socialable_type: 'User'
-                        socialable_id: scope.user.id
-                        socialable_action: action
-                    , (user) ->
-                        analytics.track "#{action} space success",
-                            href: window.location.href
-                            routeId: $routeParams.user_id
-                            userId: scope.user.id
-                            userName: scope.user.name
-                            userBody: scope.user.body
-                            currentId: scope.app.currentUser.id
-                            currentName: scope.app.currentUser.name
-                    , (error) ->
-                        scope.user[has] = !scope.user[has]
-                        scope.app.flash 'error', error.data.errors
-                        analytics.track "#{action} space error",
-                            href: window.location.href
-                            routeId: $routeParams.user_id
-                            userId: scope.user.id
-                            userName: scope.user.name
-                            userBody: scope.user.body
-                            currentId: scope.app.currentUser.id
-                            currentName: scope.app.currentUser.name
-                            error: JSON.stringify(error)
-                else
-                    scope.app.flash 'notice', "Sorry, you cannot #{action} yourself"
-            else
-                scope.app.flash 'info', "Log in to #{action} #{window.possessive(scope.user.first_name)} space"
-                $location.search('path', "/#{scope.user.slug}")
-                $location.path('/login')
+		scope.social = (action) ->
+			has = "has_#{action.replace(/^un/, '')}"
+			if scope.app.loggedIn()
+				unless scope.user.id == scope.app.currentUser.id
+					scope.user[has] = !scope.user[has]
+					User.update
+						id: scope.app.currentUser.id
+						socialable_type: 'User'
+						socialable_id: scope.user.id
+						socialable_action: action
+					, (user) ->
+						analytics.track "#{action} space success",
+							href: window.location.href
+							routeId: $routeParams.user_id
+							userId: scope.user.id
+							userName: scope.user.name
+							userBody: scope.user.body
+							currentId: scope.app.currentUser.id
+							currentName: scope.app.currentUser.name
+					, (error) ->
+						scope.user[has] = !scope.user[has]
+						scope.app.flash 'error', error.data.errors
+						analytics.track "#{action} space error",
+							href: window.location.href
+							routeId: $routeParams.user_id
+							userId: scope.user.id
+							userName: scope.user.name
+							userBody: scope.user.body
+							currentId: scope.app.currentUser.id
+							currentName: scope.app.currentUser.name
+							error: JSON.stringify(error)
+				else
+					scope.app.flash 'notice', "Sorry, you cannot #{action} yourself"
+			else
+				scope.app.flash 'info', "Log in to #{action} #{window.possessive(scope.user.first_name)} space"
+				$location.search('path', "/#{scope.user.slug}")
+				$location.path('/login')
 
 ]
 
@@ -508,140 +517,144 @@ psDirectives.directive "psSpace", ["$location", "User", ($location, User) ->
 # <ps-subtle-login>
 # TODO: REFACTOR: there is some overlap between this and ps-login directive. see if it can be refactored.
 psDirectives.directive 'psSubtleLogin', ["$timeout", "$location", "User", ($timeout, $location, User) ->
-    directiveDefinitionObject =
-        restrict: 'E'
-        scope:
-            app: '='
-        templateUrl: "<%= asset_path('directives/ps_subtle_login.html') %>"
+	directiveDefinitionObject =
+		restrict: 'E'
+		scope:
+			app: '='
+		templateUrl: "<%= asset_path('directives/ps_subtle_login.html') %>"
 
-        link: (scope, element, attrs) ->
-            scope.credentials = {loginType: ''}
-            scope.usernameTaken = true
-            scope.mousedownHappened = false
+		link: (scope, element, attrs) ->
+			scope.credentials = {loginType: ''}
+			scope.usernameTaken = true
+			scope.mousedownHappened = false
 
-            $('a').mousedown ->
-                scope.mousedownHappened = true
-                $timeout () ->
-                    scope.mousedownHappened = false
-                , 2000
+			$('a').mousedown ->
+				scope.mousedownHappened = true
+				$timeout () ->
+					scope.mousedownHappened = false
+				, 2000
 
-            scope.checkLogin = () ->
-                login = element.find("#sbtl_lgn_email").val()
-                User.query
-                    login: login
-                    (data) ->
-                        if data.collection.length > 0
-                            scope.credentials.loginType = 'login'
-                            # scope.app.flash 'info', "Looks like you already have an account. Go ahead and log in."
-                            $timeout () ->
-                                element.find('#lgn_password').focus()
-                            , 100
-                            analytics.track 'sign up expand',
-                                type: 'subtle'
-                                href: window.location.href
-                        else if data.collection.length == 0
-                            scope.credentials.loginType = 'register'
-                            # scope.app.flash 'info', "Looks like you need an account. Go ahead and start one."
-                            $timeout () ->
-                                element.find('#reg_password').focus()
-                            , 100
-                            analytics.track 'sign in expand',
-                                type: 'subtle'
-                                href: window.location.href
+			scope.checkLogin = () ->
+				login = element.find("#sbtl_lgn_email").val()
+				User.query
+					login: login
+					publishable: false
+					endorsed: false
+					(data) ->
+						if data.collection.length > 0
+							scope.credentials.loginType = 'login'
+							# scope.app.flash 'info', "Looks like you already have an account. Go ahead and log in."
+							$timeout () ->
+								element.find('#lgn_password').focus()
+							, 100
+							analytics.track 'sign up expand',
+								type: 'subtle'
+								href: window.location.href
+						else if data.collection.length == 0
+							scope.credentials.loginType = 'register'
+							# scope.app.flash 'info', "Looks like you need an account. Go ahead and start one."
+							$timeout () ->
+								element.find('#reg_password').focus()
+							, 100
+							analytics.track 'sign in expand',
+								type: 'subtle'
+								href: window.location.href
 
-            scope.checkUsername = (username = scope.credentials.username) ->
-                if scope.credentials.loginType == 'register'
-                    User.query
-                        username: username
-                        (data) ->
-                            if data.collection.length > 0 and scope.credentials.loginType == 'register'
-                                scope.usernameTaken = false
-                            else
-                                scope.usernameTaken = true
-                else
-                    scope.usernameTaken = true
+			scope.checkUsername = (username = scope.credentials.username) ->
+				if scope.credentials.loginType == 'register'
+					User.query
+						username: username
+						publishable: false
+						endorsed: false
+						(data) ->
+							if data.collection.length > 0 and scope.credentials.loginType == 'register'
+								scope.usernameTaken = false
+							else
+								scope.usernameTaken = true
+				else
+					scope.usernameTaken = true
 
-            scope.login = () ->
-                unless scope.app.loggedIn() or scope.mousedownHappened
-                    if scope.credentials.loginType == 'register'
-                        scope.app.show.loading = true
-                        User.register
-                            user:
-                                email: element.find("#sbtl_lgn_email").val()
-                                password: element.find("#reg_password").val()
-                                username: element.find("#reg_username").val()
-                            (data) ->
-                                scope.app.show.loading = false
-                                scope.app.loadCurrentUser data
-                                scope.credentials = {loginType: ''}
-                                # scope.app.flash 'success', "Welcome! Go ahead and start a conversation."
-                                analytics.track 'sign up success',
-                                    type: 'subtle'
-                                    href: window.location.href
-                            (error) ->
-                                scope.app.show.loading = false
-                                scope.app.flash 'error', error.data.errors
-                                analytics.track 'sign up error',
-                                    type: 'subtle'
-                                    href: window.location.href
-                                    error: JSON.stringify(error)
-                    else
-                        scope.app.show.loading = true
-                        User.login
-                            user:
-                                login: element.find("#sbtl_lgn_email").val()
-                                password: element.find("#lgn_password").val()
-                                # remember_me: rememberMe
-                            (data) ->
-                                scope.app.show.loading = false
-                                scope.app.loadCurrentUser data
-                                scope.credentials = {loginType: ''}
-                                # scope.app.flash 'success', "Welcome back!"
-                                analytics.track 'sign in success',
-                                    type: 'subtle'
-                                    href: window.location.href
-                            (error) ->
-                                scope.app.show.loading = false
-                                # TODO: put error on input field
-                                scope.app.flash 'error', "Oops, that's the wrong password."
-                                $input = element.find('#lgn_password')
-                                # $input.focus()
-                                $input.addClass('animated shake')
-                                $timeout () ->
-                                    $input.removeClass('shake')
-                                ,1000
-                                analytics.track 'sign in error',
-                                    type: 'subtle'
-                                    href: window.location.href
-                                    error: JSON.stringify(error)
+			scope.login = () ->
+				unless scope.app.loggedIn() or scope.mousedownHappened
+					if scope.credentials.loginType == 'register'
+						scope.app.show.loading = true
+						User.register
+							user:
+								email: element.find("#sbtl_lgn_email").val()
+								password: element.find("#reg_password").val()
+								username: element.find("#reg_username").val()
+							(data) ->
+								scope.app.show.loading = false
+								scope.app.loadCurrentUser data
+								scope.credentials = {loginType: ''}
+								# scope.app.flash 'success', "Welcome! Go ahead and start a conversation."
+								analytics.track 'sign up success',
+									type: 'subtle'
+									href: window.location.href
+							(error) ->
+								scope.app.show.loading = false
+								scope.app.flash 'error', error.data.errors
+								analytics.track 'sign up error',
+									type: 'subtle'
+									href: window.location.href
+									error: JSON.stringify(error)
+					else
+						scope.app.show.loading = true
+						User.login
+							user:
+								login: element.find("#sbtl_lgn_email").val()
+								password: element.find("#lgn_password").val()
+								# remember_me: rememberMe
+							(data) ->
+								scope.app.show.loading = false
+								scope.app.loadCurrentUser data
+								scope.credentials = {loginType: ''}
+								# scope.app.flash 'success', "Welcome back!"
+								analytics.track 'sign in success',
+									type: 'subtle'
+									href: window.location.href
+							(error) ->
+								scope.app.show.loading = false
+								# TODO: put error on input field
+								scope.app.flash 'error', "Oops, that's the wrong password."
+								$input = element.find('#lgn_password')
+								# $input.focus()
+								$input.addClass('animated shake')
+								$timeout () ->
+									$input.removeClass('shake')
+								,1000
+								analytics.track 'sign in error',
+									type: 'subtle'
+									href: window.location.href
+									error: JSON.stringify(error)
 
-            scope.enterLogin = (e) ->
-                if e.which == 13
-                    e.preventDefault()
-                    scope.login()
+			scope.enterLogin = (e) ->
+				if e.which == 13
+					e.preventDefault()
+					scope.login()
 
-            scope.fbLogin = () ->
-                scope.app.show.loading = true
-                FB.login ((response) ->
-                    if response.authResponse
-                        $.get '/users/auth/facebook/callback', { signed_request: response.authResponse.signedRequest }, (data) ->
-                            scope.app.show.loading = false
-                            scope.app.loadCurrentUser data
-                            scope.app.flash 'success', "Welcome!"
-                            analytics.track 'connect with facebook success',
-                                type: 'subtle'
-                                href: window.location.href
-                    else
-                        scope.app.show.loading = false
-                        scope.app.flash 'error', "Sorry, we had trouble contacting facebook. Please try again."
-                        analytics.track 'connect with facebook error',
-                            type: 'subtle'
-                            href: window.location.href
-                ),
-                    scope: "email"
+			scope.fbLogin = () ->
+				scope.app.show.loading = true
+				FB.login ((response) ->
+					if response.authResponse
+						$.get '/users/auth/facebook/callback', { signed_request: response.authResponse.signedRequest }, (data) ->
+							scope.app.show.loading = false
+							scope.app.loadCurrentUser data
+							scope.app.flash 'success', "Welcome!"
+							analytics.track 'connect with facebook success',
+								type: 'subtle'
+								href: window.location.href
+					else
+						scope.app.show.loading = false
+						scope.app.flash 'error', "Sorry, we had trouble contacting facebook. Please try again."
+						analytics.track 'connect with facebook error',
+							type: 'subtle'
+							href: window.location.href
+				),
+					scope: "email"
 
-            scope.forgot = ->
-                scope.app.resetPassword(element.find("#sbtl_lgn_email").val())
+			scope.forgot = ->
+				scope.app.resetPassword(element.find("#sbtl_lgn_email").val())
 
 ]
 
@@ -649,161 +662,165 @@ psDirectives.directive 'psSubtleLogin', ["$timeout", "$location", "User", ($time
 ####################################################
 # <ps-login>
 psDirectives.directive 'psLogin', ["$timeout", "$routeParams", "$location", "User", ($timeout, $routeParams, $location, User) ->
-    directiveDefinitionObject =
-        restrict: 'E'
-        scope:
-            app: '='
-        templateUrl: "<%= asset_path('directives/ps_login.html') %>"
+	directiveDefinitionObject =
+		restrict: 'E'
+		scope:
+			app: '='
+		templateUrl: "<%= asset_path('directives/ps_login.html') %>"
 
-        link: (scope, element, attrs) ->
-            scope.credentials = {loginType: attrs.loginType}
-            scope.usernameTaken = true
+		link: (scope, element, attrs) ->
+			scope.credentials = {loginType: attrs.loginType}
+			scope.usernameTaken = true
 
 
-            scope.$watch 'credentials.loginType', (value) ->
-                el = element.find(".#{value} input")[0]
-                if el? then el.focus()
+			scope.$watch 'credentials.loginType', (value) ->
+				el = element.find(".#{value} input")[0]
+				if el? then el.focus()
 
-            scope.$watch 'credentials.login', (value) ->
-                if value? and value.match(///^[a-zA-Z][a-zA-Z0-9-]*$///)?
-                    scope.credentials.username = value
-                    scope.credentials.email = ''
-                else
-                    scope.credentials.email = value
-                    scope.credentials.username = ''
+			scope.$watch 'credentials.login', (value) ->
+				if value? and value.match(///^[a-zA-Z][a-zA-Z0-9-]*$///)?
+					scope.credentials.username = value
+					scope.credentials.email = ''
+				else
+					scope.credentials.email = value
+					scope.credentials.username = ''
 
-            scope.checkLogin = () ->
-                # TODO: make the loginType change less eratic, maybe don't auto change the form at all. See tumblr
-                # TODO: prompt user to input email or username on forgot? failure to find account
-                if registering = scope.credentials.loginType == 'register'
-                    login = scope.credentials.email
-                else
-                    login = scope.credentials.login
-                User.query
-                    login: login
-                    (data) ->
-                        if data.collection.length > 0 and registering
-                            scope.credentials.loginType = 'login'
-                            scope.credentials.login = login
-                            scope.app.flash 'info', "Looks like you already have an account. Go ahead and log in."
-                            $timeout () ->
-                                if _.isEmpty(scope.credentials.login)
-                                    element.find('#login').focus()
-                                else
-                                    element.find('#lgn_password').focus()
-                            , 100
-                        else if data.collection.length == 0 and !registering
-                            scope.credentials.loginType = 'register'
-                            scope.app.flash 'info', "Looks like you need an account. Go ahead and start one."
-                            $timeout () ->
-                                if _.isEmpty(scope.credentials.email)
-                                    element.find('#reg_email').focus()
-                                else
-                                    element.find('#reg_password').focus()
-                            , 100
+			scope.checkLogin = () ->
+				# TODO: make the loginType change less eratic, maybe don't auto change the form at all. See tumblr
+				# TODO: prompt user to input email or username on forgot? failure to find account
+				if registering = scope.credentials.loginType == 'register'
+					login = scope.credentials.email
+				else
+					login = scope.credentials.login
+				User.query
+					login: login
+					publishable: false
+					endorsed: false
+					(data) ->
+						if data.collection.length > 0 and registering
+							scope.credentials.loginType = 'login'
+							scope.credentials.login = login
+							scope.app.flash 'info', "Looks like you already have an account. Go ahead and log in."
+							$timeout () ->
+								if _.isEmpty(scope.credentials.login)
+									element.find('#login').focus()
+								else
+									element.find('#lgn_password').focus()
+							, 100
+						else if data.collection.length == 0 and !registering
+							scope.credentials.loginType = 'register'
+							scope.app.flash 'info', "Looks like you need an account. Go ahead and start one."
+							$timeout () ->
+								if _.isEmpty(scope.credentials.email)
+									element.find('#reg_email').focus()
+								else
+									element.find('#reg_password').focus()
+							, 100
 
-            scope.checkUsername = (username = scope.credentials.username) ->
-                if scope.credentials.loginType == 'register'
-                    User.query
-                        username: username
-                        (data) ->
-                            if data.collection.length > 0 and scope.credentials.loginType == 'register'
-                                scope.usernameTaken = false
-                            else
-                                scope.usernameTaken = true
-                else
-                    scope.usernameTaken = true
+			scope.checkUsername = (username = scope.credentials.username) ->
+				if scope.credentials.loginType == 'register'
+					User.query
+						username: username
+						publishable: false
+						endorsed: false
+						(data) ->
+							if data.collection.length > 0 and scope.credentials.loginType == 'register'
+								scope.usernameTaken = false
+							else
+								scope.usernameTaken = true
+				else
+					scope.usernameTaken = true
 
-            scope.login = () ->
-                # TODO: why does ngModel only update on the scope when the field is valid?
-                if scope.credentials.loginType == 'register'
-                    scope.app.show.loading = true
-                    User.register
-                        user:
-                            email: element.find("#reg_email").val()
-                            password: element.find("#reg_password").val()
-                            username: element.find("#reg_username").val()
-                        (data) ->
-                            scope.app.show.loading = false
-                            scope.app.loadCurrentUser data
-                            scope.credentials = {loginType: 'login'}
-                            scope.app.flash 'success', "Welcome. Let's create your Positive Space! What do you want to talk about?"
-                            if $routeParams.path?
-                                $location.search(unescape($routeParams.search or '').replace('?', ''))
-                                $location.path($routeParams.path)
-                            else
-                                $location.path("/#{data.username}")
-                            analytics.track 'sign up success',
-                                type: 'form'
-                                href: window.location.href
-                        (error) ->
-                            scope.app.show.loading = false
-                            scope.app.flash 'error', error.data.errors
-                            analytics.track 'sign up error',
-                                type: 'form'
-                                href: window.location.href
-                                error: JSON.stringify(error)
-                else
-                    scope.app.show.loading = true
-                    User.login
-                        user:
-                            login: element.find("#lgn_login").val()
-                            password: element.find("#lgn_password").val()
-                            # remember_me: rememberMe
-                        (data) ->
-                            scope.app.show.loading = false
-                            scope.app.loadCurrentUser data
-                            scope.credentials = {loginType: 'login'}
-                            scope.app.flash 'success', "Welcome back!"
-                            if $routeParams.path?
-                                $location.search(unescape($routeParams.search or '').replace('?', ''))
-                                $location.path($routeParams.path)
-                            else
-                                $location.path("/#{data.username}")
-                            analytics.track 'sign in success',
-                                type: 'form'
-                                href: window.location.href
-                        (error) ->
-                            scope.app.show.loading = false
-                            # TODO: put error on input field
-                            scope.app.flash 'error', "Oops, that's the wrong password."
-                            $input = element.find('#lgn_password')
-                            $input.focus()
-                            $input.addClass('animated shake')
-                            $timeout () ->
-                                $input.removeClass('shake')
-                            ,1000
-                            analytics.track 'sign in error',
-                                type: 'form'
-                                href: window.location.href
-                                error: JSON.stringify(error)
+			scope.login = () ->
+				# TODO: why does ngModel only update on the scope when the field is valid?
+				if scope.credentials.loginType == 'register'
+					scope.app.show.loading = true
+					User.register
+						user:
+							email: element.find("#reg_email").val()
+							password: element.find("#reg_password").val()
+							username: element.find("#reg_username").val()
+						(data) ->
+							scope.app.show.loading = false
+							scope.app.loadCurrentUser data
+							scope.credentials = {loginType: 'login'}
+							scope.app.flash 'success', "Welcome. Let's create your Positive Space! What do you want to talk about?"
+							if $routeParams.path?
+								$location.search(unescape($routeParams.search or '').replace('?', ''))
+								$location.path($routeParams.path)
+							else
+								$location.path("/#{data.slug}")
+							analytics.track 'sign up success',
+								type: 'form'
+								href: window.location.href
+						(error) ->
+							scope.app.show.loading = false
+							scope.app.flash 'error', error.data.errors
+							analytics.track 'sign up error',
+								type: 'form'
+								href: window.location.href
+								error: JSON.stringify(error)
+				else
+					scope.app.show.loading = true
+					User.login
+						user:
+							login: element.find("#lgn_login").val()
+							password: element.find("#lgn_password").val()
+							# remember_me: rememberMe
+						(data) ->
+							scope.app.show.loading = false
+							scope.app.loadCurrentUser data
+							scope.credentials = {loginType: 'login'}
+							scope.app.flash 'success', "Welcome back!"
+							if $routeParams.path?
+								$location.search(unescape($routeParams.search or '').replace('?', ''))
+								$location.path($routeParams.path)
+							else
+								$location.path("/")
+							analytics.track 'sign in success',
+								type: 'form'
+								href: window.location.href
+						(error) ->
+							scope.app.show.loading = false
+							# TODO: put error on input field
+							scope.app.flash 'error', "Oops, that's the wrong password."
+							$input = element.find('#lgn_password')
+							$input.focus()
+							$input.addClass('animated shake')
+							$timeout () ->
+								$input.removeClass('shake')
+							,1000
+							analytics.track 'sign in error',
+								type: 'form'
+								href: window.location.href
+								error: JSON.stringify(error)
 
-            scope.fbLogin = () ->
-                scope.app.show.loading = true
-                FB.login ((response) ->
-                    if response.authResponse
-                        $.get '/users/auth/facebook/callback', { signed_request: response.authResponse.signedRequest }, (data) ->
-                            scope.app.show.loading = false
-                            scope.app.loadCurrentUser data
-                            scope.app.flash 'success', "Welcome!"
-                            if $routeParams.path?
-                                $location.search(unescape($routeParams.search or '').replace('?', ''))
-                                $location.path($routeParams.path)
-                            else
-                                $location.path("/#{data.username}")
-                            analytics.track 'connect with facebook success',
-                                type: 'form'
-                                href: window.location.href
-                    else
-                        scope.app.show.loading = false
-                        scope.app.flash 'error', "Sorry, we had trouble contacting facebook. Please try again."
-                        analytics.track 'connect with facebook error',
-                            type: 'form'
-                            href: window.location.href
-                ),
-                    scope: "email"
+			scope.fbLogin = () ->
+				scope.app.show.loading = true
+				FB.login ((response) ->
+					if response.authResponse
+						$.get '/users/auth/facebook/callback', { signed_request: response.authResponse.signedRequest }, (data) ->
+							scope.app.show.loading = false
+							scope.app.loadCurrentUser data
+							scope.app.flash 'success', "Welcome!"
+							if $routeParams.path?
+								$location.search(unescape($routeParams.search or '').replace('?', ''))
+								$location.path($routeParams.path)
+							else
+								$location.path("/#{data.username}")
+							analytics.track 'connect with facebook success',
+								type: 'form'
+								href: window.location.href
+					else
+						scope.app.show.loading = false
+						scope.app.flash 'error', "Sorry, we had trouble contacting facebook. Please try again."
+						analytics.track 'connect with facebook error',
+							type: 'form'
+							href: window.location.href
+				),
+					scope: "email"
 
-    return directiveDefinitionObject
+	return directiveDefinitionObject
 ]
 
 
@@ -829,78 +846,78 @@ psDirectives.directive 'psLogin', ["$timeout", "$routeParams", "$location", "Use
 #   <button type="button" class="btn" ng-model="radio.right">...</button>
 # </div>
 psDirectives.directive("psButton", ["$parse", "$timeout", ($parse, $timeout) ->
-    "use strict"
-    restrict: "A"
-    require: "?ngModel"
-    link: postLink = (scope, element, attrs, controller) ->
-        if controller
-            element.attr "data-toggle", "button"  unless element.parent("[data-toggle=\"buttons-checkbox\"], [data-toggle=\"buttons-radio\"]").length
-            startValue = !!scope.$eval(attrs.ngModel)
-            element.addClass "active"  if startValue
-            scope.$watch attrs.ngModel, (newValue, oldValue) ->
-                bNew = !!newValue
-                bOld = !!oldValue
-                if bNew isnt bOld
-                    $.fn.button.Constructor::toggle.call button
-                else element.addClass "active"  if bNew and not startValue
+	"use strict"
+	restrict: "A"
+	require: "?ngModel"
+	link: postLink = (scope, element, attrs, controller) ->
+		if controller
+			element.attr "data-toggle", "button"  unless element.parent("[data-toggle=\"buttons-checkbox\"], [data-toggle=\"buttons-radio\"]").length
+			startValue = !!scope.$eval(attrs.ngModel)
+			element.addClass "active"  if startValue
+			scope.$watch attrs.ngModel, (newValue, oldValue) ->
+				bNew = !!newValue
+				bOld = !!oldValue
+				if bNew isnt bOld
+					$.fn.button.Constructor::toggle.call button
+				else element.addClass "active"  if bNew and not startValue
 
-        unless element.hasClass("btn")
-            element.on "click.button.data-api", (e) ->
-                element.button "toggle"
+		unless element.hasClass("btn")
+			element.on "click.button.data-api", (e) ->
+				element.button "toggle"
 
-        element.button()
-        button = element.data("button")
-        button.toggle = ->
-            return $.fn.button.Constructor::toggle.call(this)  unless controller
-            $parent = element.parent("[data-toggle=\"buttons-radio\"]")
-            if $parent.length
-                element.siblings("[ng-model]").each (k, v) ->
-                    $parse($(v).attr("ng-model")).assign scope, false
+		element.button()
+		button = element.data("button")
+		button.toggle = ->
+			return $.fn.button.Constructor::toggle.call(this)  unless controller
+			$parent = element.parent("[data-toggle=\"buttons-radio\"]")
+			if $parent.length
+				element.siblings("[ng-model]").each (k, v) ->
+					$parse($(v).attr("ng-model")).assign scope, false
 
-                scope.$digest()
-                unless controller.$modelValue
-                    controller.$setViewValue not controller.$modelValue
-                    scope.$digest()
-            else
-                scope.$apply ->
-                    controller.$setViewValue not controller.$modelValue
+				scope.$digest()
+				unless controller.$modelValue
+					controller.$setViewValue not controller.$modelValue
+					scope.$digest()
+			else
+				scope.$apply ->
+					controller.$setViewValue not controller.$modelValue
 
 ]).directive("psButtonsCheckbox", ["$parse", ($parse) ->
-    "use strict"
-    restrict: "A"
-    require: "?ngModel"
-    compile: compile = (tElement, tAttrs, transclude) ->
-        tElement.attr("data-toggle", "buttons-checkbox").find("a, button").each (k, v) ->
-            $(v).attr "ps-button", ""
+	"use strict"
+	restrict: "A"
+	require: "?ngModel"
+	compile: compile = (tElement, tAttrs, transclude) ->
+		tElement.attr("data-toggle", "buttons-checkbox").find("a, button").each (k, v) ->
+			$(v).attr "ps-button", ""
 
 ]).directive "psButtonsRadio", ["$parse", ($parse) ->
-    "use strict"
-    restrict: "A"
-    require: "?ngModel"
-    compile: compile = (tElement, tAttrs, transclude) ->
-        tElement.attr "data-toggle", "buttons-radio"
+	"use strict"
+	restrict: "A"
+	require: "?ngModel"
+	compile: compile = (tElement, tAttrs, transclude) ->
+		tElement.attr "data-toggle", "buttons-radio"
 
-        # Delegate to children ngModel
-        unless tAttrs.ngModel
-            tElement.find("a, button").each (k, v) ->
-                $(v).attr "ps-button", ""
+		# Delegate to children ngModel
+		unless tAttrs.ngModel
+			tElement.find("a, button").each (k, v) ->
+				$(v).attr "ps-button", ""
 
-        postLink = (scope, iElement, iAttrs, controller) ->
+		postLink = (scope, iElement, iAttrs, controller) ->
 
-            # If we have a controller (i.e. ngModelController) then wire it up
-            if controller
-                iElement.find("[value]").button().filter("[value=\"" + scope.$eval(iAttrs.ngModel) + "\"]").addClass "active"
-                iElement.on "click.button.data-api", (ev) ->
-                    scope.$apply ->
-                        controller.$setViewValue $(ev.target).closest("button").attr("value")
+			# If we have a controller (i.e. ngModelController) then wire it up
+			if controller
+				iElement.find("[value]").button().filter("[value=\"" + scope.$eval(iAttrs.ngModel) + "\"]").addClass "active"
+				iElement.on "click.button.data-api", (ev) ->
+					scope.$apply ->
+						controller.$setViewValue $(ev.target).closest("button").attr("value")
 
 
 
-                # Watch model for changes
-                scope.$watch iAttrs.ngModel, (newValue, oldValue) ->
-                    if newValue isnt oldValue
-                        $btn = iElement.find("[value=\"" + scope.$eval(iAttrs.ngModel) + "\"]")
-                        $.fn.button.Constructor::toggle.call $btn.data("button")  if $btn.length
+				# Watch model for changes
+				scope.$watch iAttrs.ngModel, (newValue, oldValue) ->
+					if newValue isnt oldValue
+						$btn = iElement.find("[value=\"" + scope.$eval(iAttrs.ngModel) + "\"]")
+						$.fn.button.Constructor::toggle.call $btn.data("button")  if $btn.length
 
 ]
 

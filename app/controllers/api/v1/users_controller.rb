@@ -3,22 +3,34 @@ class Api::V1::UsersController < InheritedResources::Base
 	actions :index, :show, :update, :metrics
 
 	has_scope :login, :only => :index do |controller, scope, value|
-		scope.where("email = ? OR username = ?", value.downcase, value.downcase)
+		scope.where("users.email = ? OR users.username = ?", value.downcase, value.downcase)
 	end
 	has_scope :email, :only => :index do |controller, scope, value|
-		scope.where("email = ?", value.downcase)
+		scope.where("users.email = ?", value.downcase)
 	end
 	has_scope :username, :only => :index do |controller, scope, value|
-		scope.where("username = ?", value.downcase)
+		scope.where("users.username = ?", value.downcase)
 	end
 	has_scope :id, :only => :index do |controller, scope, value|
-		scope.where("id = ?", value.downcase)
+		scope.where("users.id = ?", value.downcase)
 	end
-	has_scope :has_space, :only => :index, type: :boolean do |controller, scope, value|
-		scope.where("body IS NOT NULL")
+	has_scope :following, :only => :index do |controller, scope, value|
+		scope.joins("INNER JOIN follows ON follows.followable_id = users.id AND follows.followable_type = 'User'").where("follows.follower_type = 'User' AND follows.follower_id = ?", value.to_i)
+	end
+	has_scope :followers, :only => :index do |controller, scope, value|
+		scope.joins(:follows).where("follows.followable_id = ? AND follows.followable_type = 'User' AND follows.follower_type = 'User'", value.to_i)
+	end
+	has_scope :publishable, :only => :index, type: :boolean, default: true do |controller, scope, value|
+		scope.where("users.body IS NOT NULL")
+	end
+	has_scope :complete, :only => :index, type: :boolean do |controller, scope, value|
+		scope.where("users.body IS NOT NULL AND users.location IS NOT NULL AND users.personal_url IS NOT NULL")
+	end
+	has_scope :endorsed, :only => :index, type: :boolean, default: true do |controller, scope, value|
+		scope.endorsed
 	end
 	has_scope :order, :only => :index do |controller, scope, value|
-		scope.order(ActiveRecord::Base::sanitize(value).gsub("'", ""))
+		scope.order("users.#{ActiveRecord::Base::sanitize(value).gsub("'", "")}")
 	end
 	has_scope :page, :only => :index, :default => 1 do |controller, scope, value|
 		value.to_i > 0 ? scope.page(value.to_i) : scope.page(1)

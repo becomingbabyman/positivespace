@@ -4,6 +4,36 @@ root = global ? window
 # Index
 root.usersIndexCtrl = ps.controller "UsersIndexCtrl", ["$scope", "$routeParams", "$timeout", "$location", "User", "users", ($scope, $routeParams, $timeout, $location, User, users) ->
     $scope.users = users
+    $scope.filter = 'recent'
+    $scope.busy = false
+
+    $scope.updateFilter = ->
+        $scope.app.show.loading = true
+        switch $scope.filter
+            when 'recent'
+                query = { order: 'updated_at DESC' }
+            when 'following'
+                query = { following: $scope.app.currentUser.id }
+            when 'followers'
+                query = { followers: $scope.app.currentUser.id }
+        $scope.users = User.query query, ->
+            $scope.app.show.loading = false
+        , ->
+            $scope.app.show.loading = false
+        analytics.track 'filter users',
+            filter: $scope.filter
+
+    $scope.loadMoreUsers = ->
+        if $scope.users.query.page < $scope.users.total_pages
+            $scope.users.query.page += 1
+            $scope.busy = true
+            $scope.app.show.loading = true
+            User.query $scope.users.query, (response) ->
+                $scope.users.collection = $scope.users.collection.concat response.collection
+                $scope.app.show.loading = false
+                $scope.busy = false unless $scope.users.query.page >= $scope.users.total_pages
+
+
 ]
 root.usersIndexCtrl.loadUsers = ["$q", "User", ($q, User) ->
     defered = $q.defer()
@@ -68,11 +98,14 @@ ps.controller "UsersEditCtrl", ["$scope", "$routeParams", "$timeout", "$location
         # Can the user close the edit form?
         if !$scope.user.body? or $scope.user.body.length == 0
             $scope.space.cantCloseEdit = true
+
         $scope.app.meta.title = "Edit #{$scope.user.name}"
         $scope.app.meta.description = "Configure your space just the way you want it."
         $scope.app.meta.imageUrl = $scope.user.avatar.big_thumb_url
         $scope.originalUsername = angular.copy $scope.user.username
         if parseInt($scope.originalUsername) == $scope.user.id then $scope.user.username = null
+        if $scope.user.username == $scope.user.name then $scope.user.name = null
+
         analytics.track 'view edit space success',
             href: window.location.href
             routeId: $routeParams.user_id
@@ -126,12 +159,12 @@ ps.controller "UsersEditCtrl", ["$scope", "$routeParams", "$timeout", "$location
 
 
 # Show
-root.usersShowCtrl = ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location", "User", "Message", "Conversation", "user", ($scope, $routeParams, $timeout, $location, User, Message, Conversation, user) ->
+root.usersShowCtrl = ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location", "$q", "User", "Message", "Conversation", "user", ($scope, $routeParams, $timeout, $location, $q, User, Message, Conversation, user) ->
     $scope.user = user
 
     $scope.space = {fadeCount: 0}
     $scope.show = {embedInput: false, form: false}
-    $scope.chart = { views: { values: {} } }
+    $scope.chart = { values: $q.defer() }
 
     $scope.app.meta.title = "#{$scope.user.name}"
     $scope.app.meta.description = "#{$scope.user.body}"
@@ -149,12 +182,15 @@ root.usersShowCtrl = ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "
 
     $scope.app.dcu.promise.then (currentUser) ->
         if $scope.user.id == currentUser.id
-            $scope.showAdmin = if $scope.user.sign_in_count > 1 then true else false
+            # TODO: figure out why the raphael graph is 1/4 the width when showAdmin is false and it starts off hidden. It probably has something to do with the width of a hidden div
+            $scope.showAdmin = true #if $scope.user.sign_in_count == 3 then true else false
             User.metrics {metrics: "views,responses,initiations"}, (metrics) ->
-                $scope.chart.views.values.x = [0..metrics.views.length-1]
-                $scope.chart.views.values.y = [metrics.views, metrics.initiations, metrics.responses]
-                $scope.chart.views.values.labels = ['views', 'initiations', 'responses']
-                $scope.chart.views.opts = {}
+                values = {}
+                values.x = [0..metrics.views.length-1]
+                values.y = [metrics.views, metrics.initiations, metrics.responses]
+                values.labels = ['views', 'initiations', 'responses']
+                values.opts = {smooth: true}
+                $scope.chart.values.resolve values
             User.metrics {metrics: "responses,initiations", days_range:10000, intervals: 1}, (metrics) ->
                 $scope.totalResponses = metrics.responses[0]
                 $scope.totalInitiations = metrics.initiations[0]
