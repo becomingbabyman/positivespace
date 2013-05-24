@@ -1,0 +1,131 @@
+<div class="row space">
+	<div class="span-mobile center pos-rel">
+
+		<div class="row-fluid center hidden-desktop">
+			<div class='span12 uncenter'>
+				<img ng-src="{{user.avatar.thumb_url}}" alt="{{user.name}}" class="img-circle img-border img-thumb uncenter"></img>
+			</div>
+		</div>
+
+		<div class="row-fluid center">
+
+			<!-- <div class='uncenter row-fluid font22' ng-hide='true'>
+				<a href="#" class='faded plm pull-right opacity6 opacity-full-hover' title='like' ng-hide='user.has_like' ng-click='social("like")'>
+					<i class='icon-star-empty'></i>
+				</a>
+				<a href="#" class='plm pull-right opacity6 opacity-full-hover' title='unlike' ng-show='user.has_like' ng-click='social("unlike")'>
+					<i class='icon-star color-yellow'></i>
+				</a>
+
+				<a href="#" class='faded prm pull-left opacity6 opacity-full-hover' ng-show='user.state == "unendorsed"' tooltip='Endorse this space - you have ( {{app.currentUser.remaining_invitations_count}} ) remaining' ng-show='user.state == "unendorsed"' tooltip-placement='right' ng-click='endorse()'>
+					<i class='icon-heart-empty'></i>
+				</a>
+				<a href="/{{user.invitation.user.slug}}" class='prm pull-left opacity6 opacity-full-hover' title='Endorsed by {{user.invitation.user.name || "Positive Space"}}' ui-if='user.state != "unendorsed"'>
+					<i class='icon-heart color-purple'></i>
+				</a>
+				<i class='icon-bolt faded prm pull-left' title=''></i>
+			</div> -->
+
+
+			<div class='span12 uncenter'>
+				<h3 class='pbs ghost' title='@{{user.username}}'>
+					<a href="#" class='ghost' title='follow' ng-hide='user.has_follow || user.id == app.currentUser.id' ng-class="{'hidden-desktop': (!user.has_follow && user.id != app.currentUser.id)}" ng-click='social("follow")'>
+						<i class="icon-bookmark-empty pull-right" title='follow'></i>
+					</a>
+					<a href="#" class='ghost' title="unfollow" ng-show='user.has_follow' ng-click='social("unfollow")'>
+						<i class="icon-bookmark pull-right" title='unfollow'></i>
+					</a>
+					{{user.name}}
+				</h3>
+
+				<div class="prompt-wrapper">
+					<p ng-bind-html-unsafe="user.body | linebreaks" class='prompt'>{{user.body}}</p>
+
+					<div class="hoverable visible-desktop">
+						<img ng-src="{{user.avatar.thumb_url}}" alt="{{user.name}}" class="img-circle img-border img-thumb" style='position: absolute; left: 10px; top: 10px;'></img>
+					</div>
+
+					<div class="hoverable center" ng-show='user.id && user.id == app.currentUser.id'>
+						<a centerish='parent' href="/{{user.slug}}/edit" class="btnf display-inline-block">Change</a>
+					</div>
+
+					<div class="hoverable center" ng-hide='user.id && user.id == app.currentUser.id'>
+						<a centerish='parent' href="#" class='btnf btnf-follow display-inline-block' ng-hide='user.has_follow' ng-click='social("follow")'>
+							Follow
+						</a>
+						<a centerish='parent' href="#" class='btnf btnf-follow active display-inline-block' ng-show='user.has_follow' ng-click='social("unfollow")'>
+							Unfollow
+						</a>
+					</div>
+				</div>
+
+				<a href="#" class='ptl pull-right unfancy-link opacity5 opacity-full-hover' ng-hide="showShareMini" ng-click="showShareMini = !showShareMini">share</a>
+				<div class='font24 ptl uncenter animated fadeInLeft' ng-show="showShareMini">
+					<a class="color-pinterest prs opacity5 opacity-full-hover" href="#"
+						title='share on pinterest'
+						share="pinterest"
+						share-url="http://www.positivespace.io/{{user.slug}}"
+						share-name="Let’s talk about --- {{user.body}} --- on Positive Space"
+						share-image="<%= asset_path 'ps_logo_padded@2x.jpg' %>"
+					><i class="share icon-pinterest"></i> <span class='font16'>Pin</span></a>
+					<a class="color-facebook prs opacity5 opacity-full-hover" href="#"
+						title='send to a friend'
+						share="facebook send"
+						share-url="http://www.positivespace.io/{{user.slug}}"
+						share-name="Have a conversation with me about ..."
+						share-desc="{{user.body}}"
+						share-image="<%= asset_path 'ps_logo_padded@2x.jpg' %>"
+					><i class="share icon-facebook-sign"></i> <span class='font16'>Send</span></a>
+					<a class="color-twitter prs opacity5 opacity-full-hover" href="#"
+						title='share on twitter'
+						share="twitter"
+						share-url="http://www.positivespace.io/{{user.slug}}"
+						share-name="Talk with me about ..."
+					><i class="share icon-twitter"></i> <span class='font16'>Tweet</span></a>
+					<a class="color-tumblr prs opacity5 opacity-full-hover" href="#"
+						title='share on tumblr'
+						share="tumblr"
+						share-url="http://www.positivespace.io/{{user.slug}}"
+						share-name="Have a conversation with me about ..."
+						share-desc="{{user.body}}"
+						share-image="<%= asset_path 'ps_logo_padded@2x.jpg' %>"
+					><img src="<%= asset_path 'tumblr24.png' %>" alt='tumblr' style='width: 20px; height: 20px; margin-top: -5px;'> <span class='font16'>Post</span></a>
+					<br/>
+					<br/>
+					<span class="opacity5 opacity-full-hover" title="share link to {{user.name | possessive}} space">
+						<i class="font20 icon-link muted" ng-click="app.selectText('share-url-mini')"></i>
+						<pre ng-click="app.selectText('share-url-mini')" class="share-url-mini sans bold font12" style="padding:2px 4px; max-width: 150px; overflow: hidden; white-space:nowrap; display: inline-block; vertical-align: top;">http://www.positivespace.io/{{user.slug}}</pre> <span class='font16'>Link</span>
+					</span>
+					<a href="#" class='font18 unfancy-link opacity5 opacity-full-hover pll vac' ng-click="showShareMini = !showShareMini" title="close">
+						<i class="icon-remove-circle"></i>
+					</a>
+				</div>
+
+				<a href="/{{user.invitation.user.slug || 'space'}}" class='ghost uncenter mtl mrl font20' tooltip='Endorsed by {{user.invitation.user.name || "+_"}}' ui-if='!showShareMini && user.state != "unendorsed"'>
+					<i class='icon-certificate'></i>
+				</a>
+				<i ng-show='!showShareMini && user.location.length > 0' class='icon-map-marker ghost uncenter mtl mrl font20' tooltip='{{user.location}}'></i>
+				<a ng-show='!showShareMini && user.personal_url.length > 0' href='{{user.personal_url}}' target='_blank' class='ghost uncenter mtl mrl font20' tooltip="{{user.personal_url}}">
+					<i class="icon-link"></i>
+				</a>
+				<!-- <i ng-show='!showShareMini && user.body.length > 0' class='icon-book ghost uncenter mtl mrl font20' tooltip=''></i> -->
+
+				<!-- <div class='ptl'>
+					<i class='icon-certificate faded prm' title='verified account'></i>
+					<i class='icon-rss faded prm'></i>
+					<i class='icon-trophy faded prm'></i>
+					<i class='icon-money faded prm'></i>
+					<i class='icon-group faded prm'></i>
+					<i class='icon-facebook faded prm'></i>
+					<i class='icon-twitter faded prm'></i>
+					<i class='icon-github faded prm'></i>
+					<i class='icon-linkedin faded prm'></i>
+					<i class='icon-pinterest faded prm'></i>
+					<i class='icon-google-plus faded'></i>
+				</div> -->
+
+			</div>
+		</div>
+
+	</div>
+</div>

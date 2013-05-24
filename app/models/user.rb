@@ -117,7 +117,7 @@ class User < ActiveRecord::Base
 	accepts_nested_attributes_for :images, :avatars
 
 	validates :username, :uniqueness => {:case_sensitive => false}, :length => 3..18, :allow_blank => true, :if => Proc.new { |user| user.username != user.id.to_s }
-	validates :body, length: 1..250, allow_blank: true
+	validates :body, length: 25..250, allow_blank: true
 	validates :positive_response, length: 1..250, allow_blank: true
 	validates :negative_response, length: 1..250, allow_blank: true
 	validate  :validate_username_format
@@ -306,15 +306,15 @@ class User < ActiveRecord::Base
 		# lets not go too crazy just yet
 		if intervals < 60
 			if metrics.include? 'views'
-				query = lambda {|range| impressions.where(created_at: range).count}
+				query = lambda {|range| impressions.where(created_at: range).size.to_i}
 				response[:views] = metrics_for_range query, start_time, end_time, intervals
 			end
 			if metrics.include? 'responses'
-				query = lambda {|range| recieved_conversations.where(created_at: range).count}
+				query = lambda {|range| recieved_conversations.where(created_at: range).size.to_i}
 				response[:responses] = metrics_for_range query, start_time, end_time, intervals
 			end
 			if metrics.include? 'initiations'
-				query = lambda {|range| sent_conversations.where(created_at: range).count}
+				query = lambda {|range| sent_conversations.where(created_at: range).size.to_i}
 				response[:initiations] = metrics_for_range query, start_time, end_time, intervals
 			end
 		end
