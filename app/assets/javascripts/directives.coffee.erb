@@ -257,8 +257,8 @@ psDirectives.directive "psLinechart", [() ->
 
 			inc = scope.increment
 			y = values.opts?.key?.y or (h-m-12)
-			r.text(10, y, "#{_.first(v)+1} #{(if _.first(v)+1 == 1 then inc.slice(0,-1) else inc)} ago").attr({font: "10px sans-serif", 'text-anchor': 'start', fill: '#ccc'})
-			r.text(w-10, y, "#{_.last(v)+1} #{(if _.last(v)+1 == 1 then inc.slice(0,-1) else inc)} ago").attr({font: "10px sans-serif", 'text-anchor': 'end', fill: '#ccc'})
+			r.text(10, y, "#{_.first(v)} #{(if _.first(v) == 1 then inc.slice(0,-1) else inc)} ago").attr({font: "10px sans-serif", 'text-anchor': 'start', fill: '#ccc'})
+			r.text(w-10, y, "#{_.last(v)} #{(if _.last(v) == 1 then inc.slice(0,-1) else inc)} ago").attr({font: "10px sans-serif", 'text-anchor': 'end', fill: '#ccc'})
 			# for i in [0..l-1]
 			#     r.text((i*w/l)+30, (h-m-8)/2, v[i]).attr({font: "10px sans-serif", 'text-anchor': 'start', fill: '#ccc'})
 

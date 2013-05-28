@@ -184,7 +184,9 @@ class User < ActiveRecord::Base
 				## TODO: try to set default_operator, maybe it can't be set on a match
 				# default_operator: "AND"
 			end
-			# filter :not => { :term => { :state => :unendorsed } }
+			filter :exists, { field: :body }
+			filter :not, { term: { body: '' } }
+			filter :not, { term: { state: :unendorsed } }
 		end
 	end
 
