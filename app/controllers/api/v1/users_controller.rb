@@ -30,7 +30,11 @@ class Api::V1::UsersController < InheritedResources::Base
 		scope.endorsed
 	end
 	has_scope :order, :only => :index do |controller, scope, value|
-		scope.order("users.#{ActiveRecord::Base::sanitize(value).gsub("'", "")}")
+		if value == "RANDOM()"
+			scope.order("RANDOM()")
+		else
+			scope.order("users.#{ActiveRecord::Base::sanitize(value).gsub("'", "")}")
+		end
 	end
 	has_scope :page, :only => :index, :default => 1 do |controller, scope, value|
 		value.to_i > 0 ? scope.page(value.to_i) : scope.page(1)
