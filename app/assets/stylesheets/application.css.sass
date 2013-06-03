@@ -177,6 +177,13 @@ input, textarea
                     @include transition-delay(0s)
                     @include transition-duration(0.4s)
                     height: 40px
+        @media (max-width: 479px)
+            &:hover
+                .brand-dropdown-menu
+                    opacity: 0
+                    visibility: hidden
+                    a
+                        height: 0px
         .brand
             position: relative
             width: 138px
@@ -184,12 +191,25 @@ input, textarea
             img
                 width: 100px
                 height: 64px
+            i
+                position: absolute
+                left: 80px
+                top: 30px
+                font-size: 30px
+                color: #e3e3e3
+            .colored
+                opacity: 0
+                visibility: hidden
             @media (max-width: 479px)
                 width: 50px
                 height: 32px
                 img
                     width: 50px
                     height: 32px
+                i
+                    left: 50px
+                    top: 20px
+                    font-size: 16px
                 // &:after
                 //     font-size: 10px
                 //     left: 45px
@@ -203,9 +223,6 @@ input, textarea
                 @include transition-duration(0.4s)
                 @include transition-delay(0s)
                 position: absolute
-            .colored
-                opacity: 0
-                visibility: hidden
             &:before, &:after
                 opacity: 0
                 visibility: hidden
@@ -454,7 +471,7 @@ input, textarea
     .container-fluid
         padding-top: 25px
     .watermark
-        position: absolute
+        position: fixed
         bottom: 0
         right: 20px
         width: 111px
@@ -482,8 +499,9 @@ input, textarea
             float: right
             font-size: 18px
         .learn-more
-            // float: right
-            font-size: 16px
+            float: right
+            font-size: 12px
+            color: #ccc
 
 
 .help-block

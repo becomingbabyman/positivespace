@@ -2,7 +2,7 @@ class PagesController < ApplicationController
 
 	def home
 		# TODO: LAUNCH: REMOVE: the redirect
-		if current_user
+		if current_user or session[:show_angular]
 			render :layout => 'angular', :template => 'pages/home'
 		else
 			redirect_to "http://signup.positivespace.io"
@@ -10,6 +10,7 @@ class PagesController < ApplicationController
 	end
 
 	def wildcard
+		session[:show_angular] = true
 		render :layout => 'angular', :template => 'pages/home'
 	end
 

@@ -61,6 +61,7 @@
 			<a href="/" class="brand" ng-class='{"logged-in": app.loggedIn()}'>
 				<img src="<%= asset_path('ps_logo_inset@2x.png') %>" alt='Positive Space' class='inset'>
 				<img src="<%= asset_path('ps_logo@2x.png') %>" alt='Positive Space' class='colored'>
+				<i class="icon-home" ng-show='app.loggedIn()'></i>
 			</a>
 
 			<div class="brand-dropdown-menu">

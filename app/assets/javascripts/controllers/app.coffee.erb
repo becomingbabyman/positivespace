@@ -144,7 +144,9 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
     # $rootScope.$on '$routeChangeSuccess', (event, current, previous) ->
 
     $rootScope.$on '$routeChangeError', (event, current, previous, rejection) ->
-        $location.path("/404")
+        # $location.path("/404")
+        $location.path("/")
+        $scope.app.flash("warning", "<b>404</b> &middot; The page you were looking for could not be found. You are welcome to try searching for what you were looking for. If you belive you recieved this message in error please contact us at <a class='unfancy-link' href='mailto:support@positivespace.io?Subject=404%20Error'>support@positivespace.io</a>")
 
     #
     # End Initialization
@@ -251,6 +253,7 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
         $scope.app.show.headerDropdownToggle = !$scope.app.show.headerDropdown
         $scope.app.show.headerDropdown = !$scope.app.show.headerDropdown
         $.scrollTo(0, 200)
+        $location.path("/")
         analytics.track "click powered by"
 
     $scope.app.selectText = (className) ->
