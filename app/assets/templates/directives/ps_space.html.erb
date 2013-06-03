@@ -90,6 +90,14 @@
 						share-desc="{{user.body}}"
 						share-image="<%= asset_path 'ps_logo_padded@2x.jpg' %>"
 					><img src="<%= asset_path 'tumblr24.png' %>" alt='tumblr' style='width: 20px; height: 20px; margin-top: -5px;'> <span class='font16'>Post</span></a>
+					<a class="color-stumbleupon prs opacity5 opacity-full-hover" href="#"
+						title='share on stumbleupon'
+						share="stumbleupon"
+						share-url="http://www.positivespace.io/{{user.slug}}"
+						share-name="Have a conversation with {{user.username}} about ..."
+						share-desc="{{user.body}}"
+						share-image="<%= asset_path 'ps_logo_padded@2x.jpg' %>"
+					><img src="<%= asset_path 'stumbleupon128.png' %>" alt='stumbleupon' style='width: 20px; height: 20px; margin-top: -5px;'> <span class='font16'>Stumble</span></a>
 					<br/>
 					<br/>
 					<span class="opacity5 opacity-full-hover" title="share link to {{user.name | possessive}} space">
