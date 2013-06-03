@@ -39,6 +39,7 @@
 #= require raphael-min
 #= require g.raphael-min
 #= require g.line-min
+#= require moment.min
 #
 # Not Currently Required
 # require jquery.jlabel

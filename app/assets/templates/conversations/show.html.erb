@@ -4,7 +4,11 @@
 		<div class="span-mobile center">
 			<div class="row-fluid pbl ptl">
 				<div class="span12">
-					<small class='pull-right faded'>{{conversation.created_at | date:"MMMM d, yyyy"}}</small>
+					<small class='pull-right faded'>
+						<time datetime="{{conversation.created_at}}">
+							{{conversation.created_at | fromNow}}
+						</time>
+					</small>
 					<a href="/conversations" class="pull-left">
 						<i class="icon-arrow-left font20 color-blue"></i>
 					</a>
@@ -38,7 +42,11 @@
 				<div class="span12 message pbs ptm" ng-show='show.conversation || msg.id == message.id'>
 					<div class="row-fluid">
 						<div class="span12 uncenter">
-							<small ui-if="msg.id == lastMsg.id" class='pull-right faded'>{{msg.created_at | date:"MMMM d"}}</small>
+							<small ui-if="msg.id == lastMsg.id" class='pull-right faded'>
+								<time datetime="{{msg.created_at}}">
+									{{msg.created_at | fromNow}}
+								</time>
+							</small>
 							<a ng-href="/{{msg.from.slug}}" title='{{msg.from.name}}' class='unfancy-link'>
 								<img ng-src="{{msg.from.avatar.thumb_url}}" alt="{{msg.from.name}}" class="img-circle img-border img-mini">
 								<small class='from-name faded'>{{msg.from.name}}</small>

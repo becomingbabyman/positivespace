@@ -49,3 +49,7 @@ window.possessive = (text) ->
 psFilters.filter 'possessive', ->
 	(text) ->
 		window.possessive text
+
+psFilters.filter 'fromNow', ->
+	(date) ->
+		moment(date).fromNow()
