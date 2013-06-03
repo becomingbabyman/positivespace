@@ -114,38 +114,35 @@
 										title='share on pinterest'
 										share="pinterest"
 										share-url="http://www.positivespace.io/{{user.slug}}"
-										share-name="Let’s talk about --- {{user.body}} --- on Positive Space"
-										share-image="<%= asset_path 'ps_logo_padded@2x.jpg' %>"
+										share-name="Let’s talk about - {{user.body}} - on Positive Space"
+										share-image="{{user.avatar.large_url}}"
 									><i class="share icon-pinterest"></i></a>
 									<a class="color-facebook" href="#"
 										title='send to a friend'
 										share="facebook send"
 										share-url="http://www.positivespace.io/{{user.slug}}"
-										share-name="Have a conversation with me about ..."
+										share-name="Have a conversation with {{user.name}}"
 										share-desc="{{user.body}}"
-										share-image="<%= asset_path 'ps_logo_padded@2x.jpg' %>"
+										share-image="{{user.avatar.large_url}}"
 									><i class="share icon-facebook-sign"></i></a>
 									<a class="color-twitter" href="#"
 										title='share on twitter'
 										share="twitter"
 										share-url="http://www.positivespace.io/{{user.slug}}"
-										share-name="Talk with me about ..."
+										share-name="Talk with {{user.name}} about {{user.body}}"
 									><i class="share icon-twitter"></i></a>
 									<a class="color-tumblr" href="#"
 										title='share on tumblr'
 										share="tumblr"
 										share-url="http://www.positivespace.io/{{user.slug}}"
-										share-name="Have a conversation with me about ..."
+										share-name="Have a conversation with {{user.name}}"
 										share-desc="{{user.body}}"
-										share-image="<%= asset_path 'ps_logo_padded@2x.jpg' %>"
+										share-image="{{user.avatar.large_url}}"
 									><img src="<%= asset_path 'tumblr64.png' %>" alt='tumblr' style='width: 42px; height: 42px; margin-top: -10px;'></a>
-									<a class="color-tumblr" href="#"
+									<a class="color-stumbleupon" href="#"
 										title='share on stumbleupon'
 										share="stumbleupon"
 										share-url="http://www.positivespace.io/{{user.slug}}"
-										share-name="Have a conversation with {{user.username}} about ..."
-										share-desc="{{user.body}}"
-										share-image="<%= asset_path 'ps_logo_padded@2x.jpg' %>"
 									><img src="<%= asset_path 'stumbleupon128.png' %>" alt='tumblr' style='width: 42px; height: 42px; margin-top: -10px;'></a>
 								</div>
 								<div class='ptm'>
