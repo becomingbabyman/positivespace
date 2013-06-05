@@ -110,6 +110,9 @@
 					<i class='icon-certificate'></i>
 				</a>
 				<i ng-show='!showShareMini && user.location.length > 0' class='icon-map-marker ghost uncenter mtl mrl font20' tooltip='{{user.location}}'></i>
+				<a ng-show='!showShareMini && user.facebook_id.length > 0' href='http://facebook.com/{{user.facebook_id}}' target='_blank' class='ghost uncenter mtl mrl font20'>
+					<i class="icon-facebook"></i>
+				</a>
 				<a ng-show='!showShareMini && user.personal_url.length > 0' href='{{user.personal_url}}' target='_blank' class='ghost uncenter mtl mrl font20' tooltip="{{user.personal_url}}">
 					<i class="icon-link"></i>
 				</a>
