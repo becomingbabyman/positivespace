@@ -123,6 +123,21 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
         # Make sure the chrome is visible
         $scope.app.show.allChrome()
 
+        # Autosize all textareas
+        # $timeout (() -> $('textarea').autosize()), 1000
+
+        # SEO - say the page is ready after a reasonable amount of time
+        # $timeout ->
+        #     $scope.htmlReady()
+        # , 8888
+
+        # Start loading animation
+        if $("#progress").length is 0
+            $("body").append $("<div><dt/><dd/></div>").attr("id", "progress")
+            progress = 70 + Math.random() * 20
+            $("#progress").width (progress) + "%"
+
+    $rootScope.$on '$routeChangeSuccess', (event, current, previous) ->
         # Identify the user
         $scope.app.dcu.promise.then (user) ->
             $scope.app.identify user
@@ -133,15 +148,9 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
             href: window.location.href
             page: $location.path()
 
-        # Autosize all textareas
-        # $timeout (() -> $('textarea').autosize()), 1000
-
-        # SEO - say the page is ready after a reasonable amount of time
-        # $timeout ->
-        #     $scope.htmlReady()
-        # , 8888
-
-    # $rootScope.$on '$routeChangeSuccess', (event, current, previous) ->
+        #End loading animation
+        $("#progress").width("101%").delay(200).fadeOut 400, ->
+            $(@).remove()
 
     $rootScope.$on '$routeChangeError', (event, current, previous, rejection) ->
         # $location.path("/404")

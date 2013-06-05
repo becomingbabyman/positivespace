@@ -20,7 +20,7 @@ ps.controller "SearchsHeaderCtrl", ["$scope", "$http", "$location", "$q", ($scop
                     results = response.data.collection
                 else
                     results = [{typeahead: "No results for #{query}"}, {typeahead: "Search spaces by name, prompt, and location"}]
-                defered.resolve(results.concat [{typeahead: "Return to your space"}])
+                defered.resolve(results)
             , (error) ->
                 $scope.loading = false
         , 300
