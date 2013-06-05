@@ -25,7 +25,7 @@
 	</div>
 </div> -->
 
-<a href='#' class='watermark' ng-show='app.show.footer && !app.loggedIn()' ng-click='app.clickPoweredBy()'>
+<a href='#' class='watermark' ng-class="{'hidden-phone': (app.show.footer && !app.loggedIn()), hidden: (!app.show.footer || app.loggedIn())}" ng-click='app.clickPoweredBy()'>
 	<div class='powered-by'>powered&nbsp;by</div>
 	<div class='positive-space'>Positive&nbsp;Space</div>
 	<!-- <div class='learn-more'>learn&nbsp;more</div> -->
