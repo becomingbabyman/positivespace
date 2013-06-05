@@ -1,9 +1,9 @@
 <div class="navbar-inner" ng-class='{opacity0: !app.show.header}' ng-show='app.show.header'>
-	<div class="container">
+	<div class="container primary-nav">
 
 		<ul class="nav user-nav pull-right">
 
-			<li ng-controller="SearchsHeaderCtrl" class="hidden-phone primary-search">
+			<li ng-controller="SearchsHeaderCtrl" class="hidden-phone primary-search prm">
 				<form class="form-search pts uncenter" name="searchHeaderForm" ng-submit="" novalidate>
 					<label for="search_header_query"><i class="icon-search"></i></label>
 
@@ -50,7 +50,7 @@
 				</ul>
 			</li> -->
 
-			<li ng-class="{'hidden-desktop': !app.show.headerDropdownToggle}">
+			<li class='brand-dropdown-toggle' ng-class="{'hidden-desktop': !app.show.headerDropdownToggle}">
 				<a href="#" ng-click="app.show.headerDropdown = !app.show.headerDropdown">
 					<i class="icon-reorder font20 color-blue"></i>
 				</a>
@@ -69,6 +69,13 @@
 				<a href="/register" class="color-blue font18" ng-hide='app.loggedIn()'>
 					Sign up
 				</a>
+				<a href="/{{app.currentUser.slug}}" ui-scrollfix="50" class='profile' ng-show='app.loggedIn()' title="{{app.currentUser.username | possessive}} space">
+					<img ng-src="{{app.currentUser.avatar.big_thumb_url}}" alt='{{app.currentUser.username}}' class='img-circle img-border avatar'>
+				</a>
+				<a href="/conversations" ui-scrollfix="50" class='inbox' ng-show='app.loggedIn()' title='{{app.currentUser.username | possessive}}  conversations'>
+					<i class='icon-envelope-alt'></i>
+					<div ng-show="app.anyMessages()" class='count'>{{app.currentUser.ready_conversations_count}}</div>
+				</a>
 				<a href="#" class='muted' ng-click='app.randomSpace()' ng-show='app.loggedIn()' title='click to see a new space'>
 					<i class="icon-random"></i>
 				</a>
@@ -76,7 +83,7 @@
 					<i class="icon-cog"></i>
 				</a>
 				<a href="/purpose" class='muted'>purpose</a>
-				<a href="#" class='muted' onclick="_bugHerd.win.bugherd.applicationView.anonymousbar.toggleOptions()">feedback</a>
+				<a href="#" class='muted hidden-phone' onclick="_bugHerd.win.bugherd.applicationView.anonymousbar.toggleOptions()">feedback</a>
 				<a href="/contact" class='muted'>contact</a>
 				<a href="/jobs" class='muted'>jobs</a>
 				<a href="/terms" class='muted'>terms</a>

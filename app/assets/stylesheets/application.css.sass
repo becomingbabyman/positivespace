@@ -144,11 +144,14 @@ input, textarea
     margin: 0
 
     .brand-dropdown
+        position: fixed
+        top: 5px
+        left: 15px
         z-index: 9999
         @include transition-property(visibility, opacity, height)
         @include transition-delay(3.0s)
         @include transition-duration(3.0s)
-        &:hover, &.open
+        @mixin brand-dropdown-hover-and-open
             .brand
                 .inset
                     opacity: 0
@@ -177,13 +180,17 @@ input, textarea
                     @include transition-delay(0s)
                     @include transition-duration(0.4s)
                     height: 40px
-        @media (max-width: 479px)
+        &:hover, &.open
+            @include brand-dropdown-hover-and-open
+        @media (max-width: 767px)
             &:hover
                 .brand-dropdown-menu
                     opacity: 0
                     visibility: hidden
                     a
                         height: 0px
+            &:hover.open
+                @include brand-dropdown-hover-and-open
         .brand
             position: relative
             width: 138px
@@ -200,7 +207,7 @@ input, textarea
             .colored
                 opacity: 0
                 visibility: hidden
-            @media (max-width: 479px)
+            @media (max-width: 767px)
                 width: 50px
                 height: 32px
                 img
@@ -269,13 +276,13 @@ input, textarea
             top: 83px
             left: 0px
             width: 120px
-            padding: 7px 30px 40px 10px
+            padding: 7px 30px 40px 0px
             background: #fff
             z-index: 9998
-            @media (max-width: 479px)
-                top: 53px
+            @media (max-width: 767px)
+                top: 52px
                 background-color: white
-                padding: 5px 10px 20px 10px
+                padding: 5px 10px 20px 0px
                 @include border-radius(3px)
             // @media (max-width: 979px)
             a
@@ -295,6 +302,11 @@ input, textarea
                 line-height: 38px
                 &:hover
                     background: #ddd
+                &.profile, &.inbox
+                    display: none
+                    &.ui-scrollfix
+                        @media (min-width: 767px)
+                            display: block
                 img
                     height: 90%
                     margin-top: -1px
@@ -349,6 +361,8 @@ input, textarea
         >li
             &.open >a
                 color: darken($color-blue, 5%)
+        // >li.brand-dropdown-toggle >a
+        //     // position: fixed
 
         .dropdown-menu
             @include border-radius(3px)
@@ -366,6 +380,8 @@ input, textarea
 
     .primary-search
         position: relative
+        &.visible-phone
+            margin-top: 51px
         label i
             position: absolute
             top: 11px
@@ -465,6 +481,16 @@ input, textarea
     // @include box-shadow(rgba(0, 0, 0, 0.075) 0 2px 0)
     @media (max-width: 767px)
         margin: 0 -20px
+
+        >.container.primary-nav
+            position: fixed
+            width: 100%
+            left: 0
+            background: white
+            z-index: 99
+            top: 0
+            padding-top: 10px
+            border-bottom: 1px solid #f3f3f3
 
 
 #footer

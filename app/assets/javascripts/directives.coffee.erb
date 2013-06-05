@@ -162,11 +162,8 @@ psDirectives.directive "centerish", ["$timeout", ($timeout) ->
 			$(window).resize ->
 				center()
 
-		_.each [80, 500, 1000, 2000], (time) ->
-			$timeout ->
-				center(true)
-			, time
-
+		_.defer ->
+			center(true)
 ]
 
 
@@ -423,9 +420,8 @@ psDirectives.directive "share", ["$location", ($location) ->
 
 				when 'stumbleupon'
 					url = "https://www.stumbleupon.com/submit?" +
-						if !scope.shareUrl?   then '' else "url=#{encodeURIComponent(scope.shareUrl)}" +
-						"&comment='lolololol'"
-					tumblrWindow = window.openCenter url, 'Post to StumbleUpon', 800, 600
+						if !scope.shareUrl?   then '' else "url=#{encodeURIComponent(scope.shareUrl)}"
+					stumbleuponWindow = window.openCenter url, 'Post to StumbleUpon', 800, 600
 					false
 
 				# <a href="http://www.linkedin.com/shareArticle?mini=true&url=URL GOES HERE&title=TITLE GOES HERE&summary=TEXT SUMMARY HERE&source=SITE'S NAME HERE" target="_blank">Linkedin</a>
