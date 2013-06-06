@@ -151,6 +151,7 @@ input, textarea
         @include transition-property(visibility, opacity, height)
         @include transition-delay(3.0s)
         @include transition-duration(3.0s)
+
         @mixin brand-dropdown-hover-and-open
             .brand
                 .inset
@@ -160,6 +161,8 @@ input, textarea
                     // @include transition-duration(1s)
                     opacity: 1
                     visibility: visible
+                .icon-home
+                    color: #ccc
                 &:before
                     @include transition-delay(0.1s)
                     @include transition-duration(0.7s)
@@ -180,6 +183,7 @@ input, textarea
                     @include transition-delay(0s)
                     @include transition-duration(0.4s)
                     height: 40px
+
         &:hover, &.open
             @include brand-dropdown-hover-and-open
         @media (max-width: 767px)
@@ -204,6 +208,9 @@ input, textarea
                 top: 30px
                 font-size: 30px
                 color: #e3e3e3
+                @include transition-property(color)
+                @include transition-duration(0.4s)
+                @include transition-delay(0s)
             .colored
                 opacity: 0
                 visibility: hidden

@@ -6,6 +6,10 @@ node :user_id do |conversation|
 	conversation.to.id
 end
 
+node :max_char_count do |conversation|
+	conversation.messages.last.max_char_count
+end
+
 # child from: :from do
 #	extends 'api/v1/users/base'
 # end

@@ -216,7 +216,7 @@
 
 
 						<control-group>
-							<textarea name='body' id='msg_body' title='message body' placeholder="your response ..." class='input-block-level' ng-model='message.body' rows=5 required ng-disabled='message.id' autofocus></textarea>
+							<textarea name='body' id='msg_body' title='message body' placeholder="your response ..." class='input-block-level' ng-model='message.body' cols="30" rows="4" required ng-disabled='message.id' autofocus></textarea>
 						</control-group>
 
 						<ps-subtle-login app='app'></ps-subtle-login>
@@ -229,8 +229,8 @@
 
 						<div class='control-group'>
 							<div class='controls'>
-								<a href='#' class='muted pts pull-left' ng-click='show.embedInput = true' ng-hide='show.embedInput'><i class='icon-link font20' tooltip='Attach a link. We will magically find and embed picture, video, audio, and more in your response.' tooltip-placement='right'></i></a>
-								<a href='#' class='muted pts pull-left' ng-click='show.embedInput = false' ng-show='show.embedInput'><i class='icon-link font20'></i></a>
+								<a href='#' class='muted pts pull-left' ng-click='show.embedInput = true' ng-hide='show.embedInput' tooltip='Attach a link. We will magically find and embed picture, video, audio, and more in your response.' tooltip-placement='right'><i class='icon-paper-clip font20'></i> Attach 1 link</a>
+								<a href='#' class='muted pts pull-left' ng-click='show.embedInput = false' ng-show='show.embedInput'><i class='icon-unlink font20'></i></a>
 
 								<button ng-hide='app.loggedIn()' type='submit' class='btn btn-success pull-right' ng-disabled="messageForm.body.$invalid">Continue</button>
 								<button ng-show='app.loggedIn() && !message.id' type='submit' class='btn btn-success pull-right' ng-disabled="messageForm.body.$invalid">Send</button>

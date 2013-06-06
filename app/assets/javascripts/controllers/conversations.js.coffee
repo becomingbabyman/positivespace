@@ -49,48 +49,19 @@ root.conversationsIndexCtrl.loadConversations = ["$q", "$location", "Conversatio
 ]
 
 
-ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "$timeout", "Message", "Conversation", ($scope, $routeParams, $location, $timeout, Message, Conversation) ->
-	# $scope.conversations = []
-	$scope.conversation = {}
-	$scope.message = {}
-	$scope.messages = {collection: []}
-	$scope.myMessage = {}
-	$scope.lastMsg = {}
+root.conversationsShowCtrl = ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "$timeout", "Message", "Conversation", "conversation", "messages", ($scope, $routeParams, $location, $timeout, Message, Conversation, conversation, messages) ->
+	$scope.conversation = conversation
+	$scope.messages = messages
+	$scope.lastMsg = _.last(messages.collection)
+	$scope.message = _.findWhere(messages.collection, {id: $routeParams.message_id}) if $routeParams.message_id
+	$scope.message or= $scope.lastMsg
+	$scope.myMessage = new Message {user_id: conversation.partners_id, conversation_id: $routeParams.id}
 	$scope.show = {conversation: false, embedInput: false}
-
-	# Initialize
-	$scope.app.dcu.promise.then (user) ->
-		$scope.conversation = Conversation.get {user_id: user.id, id: $routeParams.id}, (conversation) ->
-			$scope.show.conversation = true if conversation.state == 'ended'
-			$scope.myMessage = new Message {user_id: conversation.partners_id, conversation_id: $routeParams.id}
-			$scope.app.meta.title = "Conversation · #{conversation.from.name} -> #{conversation.to.name}"
-			analytics.track 'view conversation success',
-				href: window.location.href
-				routeId: $routeParams.id
-				conversationId: conversation.id
-				conversationPrompt: $scope.conversation.prompt
-				toId: conversation.to.id
-				toName: conversation.to.name
-				fromId: conversation.from.id
-				fromName: conversation.from.name
-		$scope.message = Message.get {user_id: user.id, id: $routeParams.message_id} if $routeParams.message_id
-		$scope.query = {user_id: user.id, conversation_id: $routeParams.id, page: 1}
-		$scope.messages = Message.query $scope.query, (messages) ->
-			$scope.lastMsg = _.last(messages.collection)
-			$scope.message = $scope.lastMsg unless $routeParams.message_id
-	, (error) ->
-		# user must log in to view a conversation
-		$location.search('path', window.location.pathname)
-		$location.search('search', window.location.search)
-		$location.path('/login')
-		$scope.app.flash 'info', "Please log in to view this conversation."
-		analytics.track 'view conversation error',
-			routeId: $routeParams.id
-			error: 'not logged in'
-
+	$scope.show.conversation = true if conversation.state == 'ended'
+	$scope.app.meta.title = "Conversation · #{conversation.from.name} -> #{conversation.to.name}"
 
 	$scope.$watch 'myMessage.body', (value) ->
-		$scope.remainingChars = 250 - (if value? then value.length else 0)
+		$scope.remainingChars = $scope.conversation.max_char_count - (if value? then value.length else 0)
 
 
 	$scope.$watch 'show.embedInput', (value) ->
@@ -192,4 +163,27 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 		delete $scope.myMessage['embed_url'] unless $scope.show.embedInput
 		$scope.myMessage.save success, error
 
+]
+root.conversationsShowCtrl.loadConversation = ["$q", "$route", "$location", "Conversation", ($q, $route, $location, Conversation) ->
+	defered = $q.defer()
+	query = {user_id: 'me', id: $route.current.params.id}
+	Conversation.get query, (conversation) ->
+		defered.resolve(conversation)
+		analytics.track 'view conversation success'
+	, (error) ->
+		$location.search('path', window.location.pathname)
+		$location.search('search', window.location.search)
+		$location.path('/login')
+		# $scope.app.flash 'info', "Please log in first."
+		analytics.track 'view conversation error',
+			error: 'not logged in'
+		# defered.reject(error)
+	defered.promise
+]
+root.conversationsShowCtrl.loadMessages = ["$q", "$route", "Message", ($q, $route, Message) ->
+	defered = $q.defer()
+	query = {user_id: 'me', conversation_id: $route.current.params.id}
+	Message.query query, (messages) ->
+		defered.resolve(messages)
+	defered.promise
 ]

@@ -123,6 +123,11 @@ div.prompt-wrapper
 	@include transition-property(color, background)
 	@include transition-duration(0.3s)
 	@include border-radius(3px)
+	&:visited
+		background: white
+		&:after
+			border-color: rgba(255, 255, 255, 0)
+			border-top-color: #ffffff
 	&:before
 		display: none
 		position: absolute

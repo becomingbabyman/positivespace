@@ -43,6 +43,15 @@ class Api::V1::MessagesController < InheritedResources::Base
 
 protected
 
+	def begin_of_association_chain
+		if params[:user_id] == 'me'
+			@user = current_user
+		else
+			@user = User.find(params[:user_id])
+		end
+		@user.messages
+	end
+
 	def collection
 		@messages = apply_scopes(end_of_association_chain)
 	end

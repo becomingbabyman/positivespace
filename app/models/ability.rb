@@ -15,14 +15,14 @@ class Ability
 			end
 
 			can [:read], Conversation do
-				params[:user_id].to_i == user.id
+				params[:user_id] == 'me' or params[:user_id].to_i == user.id
 			end
 			can [:update], Conversation do |c|
 				user.editor?(c)
 			end
 
 			can [:read], Message do
-				params[:user_id].to_i == user.id
+				params[:user_id] == 'me' or params[:user_id].to_i == user.id
 			end
 
 			can [:update], User do |u|

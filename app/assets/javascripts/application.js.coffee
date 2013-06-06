@@ -16,7 +16,7 @@
 #= require jquery_ujs
 #= require angularjs/angular-1.0.6.min
 #= require_tree ../../../vendor/assets/javascripts/angularjs/
-#= require underscore
+#= require underscore-min
 #= require bootstrap-button
 #
 # App JS

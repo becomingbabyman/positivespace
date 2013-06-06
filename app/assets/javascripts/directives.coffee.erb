@@ -29,6 +29,7 @@ fieldDirectiveDefinitionObject =
 		# attrs.$set 'name', (attrs.name or attrs.placeholder.replace(///^\s+|\s+$///g, '').split(' ').join('-'))
 		# Placeholder pollyfill
 		if element.prop("tagName") == 'INPUT' or element.prop("tagName") == 'TEXTAREA' then element.placeholder()
+		if element.prop("tagName") == 'TEXTAREA' then element.autosize()
 
 psDirectives.directive 'input', () ->
 	return fieldDirectiveDefinitionObject

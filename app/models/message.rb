@@ -25,13 +25,14 @@ class Message < ActiveRecord::Base
 	belongs_to :from, :class_name => 'User'
 	belongs_to :conversation
 
-	validates :body, presence: true, length: {maximum: 250}
+	validates :body, presence: true#, length: {maximum: 250}
 	validates :to_id, presence: true
 	validates :from_id, presence: true
 	validate :validate_not_to_self
 	validate :validate_take_turns, on: :create
 	validate :validate_not_ended, on: :create
 	validate :validate_from_is_in_conversation
+	validate :validate_length
 
 	# default_scope :order => 'created_at asc'
 
@@ -57,6 +58,15 @@ class Message < ActiveRecord::Base
 		[self.from]
 	end
 
+	def max_char_count
+		base_char_count = 250
+		if c = self.conversation
+			c.messages.size * 50 + base_char_count
+		else
+			base_char_count
+		end
+	end
+
 private
 
 	def validate_not_to_self
@@ -73,6 +83,10 @@ private
 
 	def validate_from_is_in_conversation
 		errors.add(:you, "must be a member of this conversation to reply to it") unless self.from_id == self.conversation.from_id or self.from_id == self.conversation.to_id
+	end
+
+	def validate_length
+		errors.add(:body, "is too long. #{self.max_char_count} characters max.") if self.body.size > self.max_char_count
 	end
 
 	def after_send
