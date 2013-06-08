@@ -350,6 +350,17 @@ class User < ActiveRecord::Base
 		url
 	end
 
+	def relationship user
+		rel = :none
+		if self.id == user.try(:id)
+			rel = :self
+		elsif cons = self.conversations.with(user) and cons.size > 0
+			rel = :spoken
+			rel = :speaking if cons.in_progress.size > 0
+		end
+		rel
+	end
+
 private
 
 	def validate_username_reserved

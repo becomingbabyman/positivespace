@@ -2,6 +2,15 @@ ps.controller "SearchsHeaderCtrl", ["$scope", "$http", "$location", "$q", ($scop
     $scope.lastQuery = null
     t = null
 
+    $scope.showInput = (e) ->
+        $scope.showSearch = true
+        window.setTimeout ->
+            $('#search_header_query').focus()
+        , 50
+    $scope.hideInput = (e) ->
+        log 'wat'
+        $scope.showSearch = false unless ($scope.query and $scope.query.length > 0) or $('#search_header_query').is(':focus')
+
     $scope.updateScroll = (e) ->
         if e.keyCode in [38, 40]
             # $(".nav ul.typeahead").scrollTo(".active", 200)

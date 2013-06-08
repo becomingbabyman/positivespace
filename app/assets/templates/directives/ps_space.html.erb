@@ -37,6 +37,12 @@
 					<a href="#" class='ghost' title="unfollow" ng-show='user.has_follow' ng-click='social("unfollow")'>
 						<i class="icon-bookmark pull-right" title='unfollow'></i>
 					</a>
+					<a href="/{{user.slug}}">
+						<i class="icon-user ghost pull-right" ng-show='user.relationship == "self"' title='You are yourself.'></i>
+						<i class="icon-heart-empty ghost pull-right" ng-show='user.relationship == "none"' title='You and {{user.name}} have never spoken.'></i>
+						<i class="icon-heart color-yellow opacity5 pull-right" ng-show='user.relationship == "spoken"' title='You and {{user.name}} have spoken in the past.'></i>
+						<i class="icon-heart color-yellow pull-right" ng-show='user.relationship == "speaking"' title='You and {{user.name}} are in the middle of a conversation.'></i>
+					</a>
 					<a href="/{{user.slug}}" class='ghost ghost-hover'>{{user.name}}</a>
 				</h3>
 

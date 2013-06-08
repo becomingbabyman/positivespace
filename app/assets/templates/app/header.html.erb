@@ -4,10 +4,10 @@
 		<ul class="nav user-nav pull-right">
 
 			<li ng-controller="SearchsHeaderCtrl" class="hidden-phone primary-search prm">
-				<form class="form-search pts uncenter" name="searchHeaderForm" ng-submit="" novalidate>
+				<form class="form-search pts uncenter" name="searchHeaderForm" ui-event="{mouseover: showInput, mouseout: hideInput}" ng-submit="" novalidate>
 					<label for="search_header_query"><i class="icon-search"></i></label>
 
-					<input type="text" name="query" ng-model="query" id='search_header_query' class="input-xlarge search-query opacity5 opacity-full-hover" placeholder="Search" typeahead="user as user.typeahead for user in search($viewValue)" ui-event="{keyup: 'updateScroll($event)'}" autocomplete="off" autofocus>
+					<input type="text" name="query" ng-model="query" ng-show='showSearch' id='search_header_query' class="input-xlarge search-query opacity5 opacity-full-hover" placeholder="Search" typeahead="user as user.typeahead for user in search($viewValue)" ui-event="{keyup: 'updateScroll($event)', blur: hideInput}" autocomplete="off" autofocus>
 
 					<img ng-show="loading" src="<%= asset_path('ajax-loader-black-dots.gif') %>" alt="loading dots" class='loading'>
 				</form>
@@ -61,7 +61,7 @@
 			<a href="/" class="brand" ng-class='{"logged-in": app.loggedIn()}'>
 				<img src="<%= asset_path('ps_logo_inset@2x.png') %>" alt='Positive Space' class='inset'>
 				<img src="<%= asset_path('ps_logo@2x.png') %>" alt='Positive Space' class='colored'>
-				<i class="icon-home" ng-show='app.loggedIn()'></i>
+				<i class="icon-home" ng-show='app.loggedIn() && app.currentUser.sign_in_count < 5'></i>
 			</a>
 
 			<div class="brand-dropdown-menu">
