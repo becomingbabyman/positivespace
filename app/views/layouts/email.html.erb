@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	 "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="initial-scale=1.0">
+		<meta name="format-detection" content="telephone=no">
+
+		<title>Positive Space</title>
+		<style type="text/css">
+			/* Constrain email width for small screens */
+			@media screen and (max-width: 600px) {
+				table[class="container"] {
+					width: 95% !important;
+				}
+			}
+
+			/* Give content more room on mobile */
+			@media screen and (max-width: 480px) {
+				td[class="container-padding"] {
+					padding-left: 1em !important;
+					padding-right: 1em !important;
+				}
+			}
+		</style>
+	</head>
+
+
+	<body bgcolor="#f9f9f8" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+
+		<br>
+
+		<table border="0" width="100%" height="100%" cellpadding="0" cellspacing="0" bgcolor="#f9f9f8">
+			<tr>
+				<td align="center" valign="middle" bgcolor="#f9f9f8" style="background-color: #f9f9f8;">
+
+					<table border="0" width="600" cellpadding="0" cellspacing="0" class="container" bgcolor="#ffffff">
+						<tr>
+							<td class="container-padding" bgcolor="#ffffff">
+
+								<br>
+								<%= yield %>
+
+							</td>
+						</tr>
+					</table>
+
+					<table border="0" width="600" cellpadding="0" cellspacing="0" class="footer" bgcolor="#f9f9f8">
+						<tr>
+							<td class="footer-padding" bgcolor="#f9f9f8">
+
+								<br>
+								Don't want to revceive notificaitons like this?
+								<%= link_to "Unsubscribe", "#{root_url}settings", class: 'unsubscribe' %>.
+
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+
+
+		</table>
+		<br>
+		<br>
+
+	</body>
+</html>

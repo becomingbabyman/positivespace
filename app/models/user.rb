@@ -65,6 +65,7 @@ class User < ActiveRecord::Base
 	before_create do
 		# initialize_profile
 		initialize_permissions
+		initialize_settings
 	end
 	after_create :add_gravatar
 	# TODO: BETA: REMOVE: don't auto endorse people on create
@@ -90,10 +91,11 @@ class User < ActiveRecord::Base
 
 	attr_accessor :login, :invitation_code, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :endorse_user_id
 	attr_accessible :username, :login, :email, :password, :password_confirmation, :remember_me
-	attr_accessible :body, :location, :name, :personal_url, :socialable_type, :socialable_id, :socialable_action, :endorse_user #, :positive_response, :negative_response
+	attr_accessible :body, :location, :name, :personal_url, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :settings #, :positive_response, :negative_response
 	attr_protected :none, as: :admin
 
 	serialize :achievements
+	serialize :settings
 
 	has_paper_trail
 	extend FriendlyId
@@ -392,6 +394,20 @@ private
 
 	def initialize_permissions
 		self.permissions = 2
+	end
+
+	def initialize_settings
+		self.settings[:notifications] = {}
+		self.settings[:notifications][:email] = {}
+		self.settings[:notifications][:email][:every_new_message] = true
+		self.settings[:notifications][:email][:daily_new_messages_digest] = false
+		self.settings[:notifications][:email][:weekly_new_messages_digest] = true
+		self.settings[:notifications][:email][:daily_pending_messages_reminder] = true
+		self.settings[:notifications][:email][:weekly_pending_messages_reminder] = false
+		self.settings[:notifications][:email][:new_followers] = true
+		self.settings[:notifications][:email][:spaces_you_might_like] = true
+		self.settings[:notifications][:email][:new_spaces] = true
+		self.settings[:notifications][:email][:popular_spaces] = true
 	end
 
 	def update_achievements

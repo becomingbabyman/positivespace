@@ -97,3 +97,13 @@ window.openCenter = (url, title, w, h) ->
 	top = (screen.height/2)-(h/2)
 	window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left)
 
+# Call it on input checkbox elements to turn them into on off switchs
+$.fn.onoffswitch = ->
+	$(@).addClass "onoffswitch-checkbox"
+	$(@).wrap "<div class='onoffswitch'></div>"
+	$(@).after """
+		<label class="onoffswitch-label" for="#{$(@).attr('id')}">
+			<div class="onoffswitch-inner"></div>
+			<div class="onoffswitch-switch"></div>
+		</label>
+	"""

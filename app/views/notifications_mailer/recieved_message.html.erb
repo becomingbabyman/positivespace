@@ -1,17 +1,23 @@
-<style type="text/css">
-	.btn{ background-color: #3498db; }
-	.btn:hover{ background-color: #2F89C5 !important; }
-</style>
+<div id='notifications_recieved_message'>
+	<div class="greeting">
+		<div class="top">YOU'VE</div>
+		<div class="middle"><del>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</del>&nbsp;&nbsp;&nbsp;got a new&nbsp;&nbsp;&nbsp;<del>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</del></div>
+		<div class="bottom">RESPONSE</div>
+	</div>
 
-<div style='width: 100%; height: 100%; background-color: #eeeeee; display: inline-block'>
-	<div style='margin: 80px auto; text-align: center; padding: 50px; width: 400px; background-color: white; border: 1px solid #dddddd; border-radius: 3px;'>
-		<div style='font-family: serif; font-size: 18px; letter-spacing: 0.1em; color: #444444;'>
-			<%= @message.body %>
-		</div>
+	<div class='salutation'>
+		<%# image_tag @message.from.avatar.image.thumb.url, class: "avatar" %>
+		<span class="date"><%= @message.created_at.strftime("%B %e") %></span>
+		<span class="at">@</span><%= @message.from.username %>
+		<span class="said">said:</span>
+	</div>
 
-		<div style='margin-top: 66px;'>
-			<%= link_to "Reply to #{@message.from.name}", "#{root_url}#{@reply_path}", class: 'btn', style: 'padding: 10px 20px; color: white; background-color: #3498db; text-decoration: none; font-size: 13px; letter-spacing: 0.1em; border-radius: 3px; border: 1px solid #2A7AAF; font-family: sans-serif;' %>
-			<%# image_tag @message.from.avatar.image.thumb.url, style: "vertical-align: middle; height: 34px; width: 34px; border-radius: 500px; border: 1px solid #ddd;" %>
-		</div>
+	<div class='body'>
+		<%= @message.body %>
+	</div>
+
+	<div class='link'>
+		<%= link_to "Reply to #{@message.from.name}", "#{root_url}#{@reply_path}", class: 'btn' %>
 	</div>
 </div>
+

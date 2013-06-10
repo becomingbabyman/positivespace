@@ -8,7 +8,6 @@ ps.controller "SearchsHeaderCtrl", ["$scope", "$http", "$location", "$q", ($scop
             $('#search_header_query').focus()
         , 50
     $scope.hideInput = (e) ->
-        log 'wat'
         $scope.showSearch = false unless ($scope.query and $scope.query.length > 0) or $('#search_header_query').is(':focus')
 
     $scope.updateScroll = (e) ->

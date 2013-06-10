@@ -1,0 +1,31 @@
+<div id='notifications_daily_new_messages_digest'>
+	<div class="greeting">
+		<div class="top">YOU'VE</div>
+		<div class="middle"><del>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</del>&nbsp;&nbsp;&nbsp;&nbsp;got&nbsp;&nbsp;&nbsp;&nbsp;<del>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</del></div>
+		<div class="bottom">RESPONSES</div>
+	</div>
+
+	<% @messages.each do |message| %>
+		<div class='salutation'>
+			<%# image_tag message.from.avatar.image.thumb.url, class: "avatar" %>
+			<span class="date"><%= message.created_at.strftime("%B %e") %></span>
+			<span class="at">@</span><%= message.from.username %>
+			<span class="said">said:</span>
+		</div>
+
+		<div class='body'>
+			<%= message.body %>
+		</div>
+
+		<div class='link'>
+			<table>
+				<tr>
+					<td>
+						<%= link_to "Reply to #{message.from.name}", "#{root_url}conversations/#{message.conversation_id}?message_id=#{message.id}", class: 'btn', align: 'right' %>
+					</td>
+				</tr>
+			</table>
+		</div>
+	<% end %>
+</div>
+

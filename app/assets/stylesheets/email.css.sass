@@ -1,0 +1,172 @@
+//
+// Various CSS Resets
+// https://github.com/InterNations/antwort/blob/master/templates/reset.css
+// ----------------
+// Standard CSS resets to troubleshoot common problems. Use directly in your HTML.
+// This separate file is for reference only.
+// Source: Mailchimp Email Blueprints https://github.com/mailchimp/Email-Blueprints
+
+// Force Hotmail to display emails at full width
+.ReadMsgBody, .ExternalClass
+	width: 100%
+
+// Forces Hotmail to display normal line spacing.
+.ExternalClass
+	line-height: 100%
+	p, span, font, td, div
+		line-height: 100%
+
+// Prevents Webkit and Windows Mobile platforms from changing default font sizes.
+// Resets all body margins and padding to "0" for good measure.
+body
+	-webkit-text-size-adjust: none
+	-ms-text-size-adjust: none
+	margin: 0
+	padding: 0
+
+
+// Resolves webkit padding issue.
+table
+	border-spacing: 0
+	td
+		border-collapse: collapse
+
+// Resolves the Outlook 2007, 2010, and Gmail td padding issue.
+
+// Weird Yahoo links and border bottom
+.yshortcuts a
+	border-bottom: none !important
+
+
+
+
+
+///////////////
+// +_ Email  //
+///////////////
+
+html
+	-webkit-font-smoothing: antialiased
+
+body
+	margin: 0
+	padding: 10px 0
+
+a
+	color: #D67A6D
+	text-decoration: none
+
+.container
+	border: 1px solid #dddddd
+	// border-radius: 3px
+	width: 600px
+
+.container-padding
+	background-color: #ffffff
+	padding-left: 3em
+	padding-right: 3em
+	font-size: 14px
+	line-height: 20px
+	font-family: Helvetica, sans-serif
+	color: #333
+
+.footer
+	text-align: center
+	font-size: 12px
+	color: #666
+
+
+// Notificaitons - Recieved Message
+// Notificaitons - Daily New Messages Digest
+#notifications_recieved_message, #notifications_daily_new_messages_digest
+	.greeting
+		padding-top: 1em
+		padding-bottom: 2em
+		border-bottom: 1px solid #eeeeee
+		color: #666
+		.top
+			// padding-bottom: 1em
+			text-align: center
+			font-size: 30px
+			letter-spacing: 0.1em
+			font-family: "Gotham", "Futura", Helvetica, sans-serif
+		.middle
+			padding-top: 1em
+			padding-bottom: 1em
+			text-align: center
+			font-size: 16px
+			font-family: serif
+			font-style: italic
+			color: #999
+		.bottom
+			// padding-top: 1em
+			text-align: center
+			font-size: 30px
+			letter-spacing: 0.1em
+			font-family: "Gotham", "Futura", Helvetica, sans-serif
+
+	.salutation
+		// font-family: "Gotham", "Futura", Helvetica, sans-serif
+		padding-top: 1em
+		color: #D67A6D
+		// font-family: serif
+		font-size: 18px
+		line-height: 26px
+		.at
+			font-size: 16px
+			line-height: 22px
+			vertical-align: bottom
+		.said
+			color: #bbb
+		.date
+			float: right
+			color: #bbb
+			font-size: 14px
+
+	.body
+		padding-top: 1em
+		padding-bottom: 3em
+		border-bottom: 1px solid #eeeeee
+		text-align: center
+		font-family: serif
+		font-size: 18px
+		line-height: 26px
+
+
+	.link
+		padding-top: 2em
+		padding-bottom: 2em
+		width: 100%
+	.btn
+		text-align: center
+		margin: 0 auto
+		display: block
+		padding: 1em 2em
+		color: white
+		// background-color: #3498db
+		background-color: #92CA73
+		text-decoration: none
+		font-size: 20px
+		line-height: 20px
+		border-radius: 100px
+		// border: 1px solid darken(#3498db, 2%)
+		font-family: serif
+	.avatar
+		vertical-align: middle
+		height: 34px
+		width: 34px
+		border-radius: 500px
+		border: 1px solid #ddd
+
+#notifications_daily_new_messages_digest
+	.body
+		border-bottom: none
+		padding-bottom: 1em
+	.link
+		border-bottom: 1px double #dddddd
+		table
+			width: 100%
+	.btn
+		float: right
+		display: inline-block
+		padding: 0.5em 1em

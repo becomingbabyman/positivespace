@@ -12,10 +12,25 @@
 						</control-group>
 						<div class='muted pbl'>http://positivespace.io/{{app.currentUser.username}}</div>
 
-						<control-group label='Email'>
+						<control-group class='pbl' label='Email'>
 							<input type='email' name='email' id='user_email' title='your email address' placeholder="your email address" class='input-block-level' ng-model='app.currentUser.email' required></input>
 						</control-group>
 
+						<accordion close-others="true">
+							<accordion-group heading="Email notifications">
+								<control-group class='pbs' label='Notify me of every new message'>
+									<input type="checkbox" ng-model='app.currentUser.settings.notifications.email.every_new_message' name="every_new_message" onoffswitch>
+								</control-group>
+
+								<control-group class='pbs' label='Send me a daily digest of my new messages'>
+									<input type="checkbox" ng-model='app.currentUser.settings.notifications.email.daily_new_messages_digest' name="daily_new_messages_digest" onoffswitch>
+								</control-group>
+
+								<control-group class='pbs' label='Send me a weekly digest of my new messages'>
+									<input type="checkbox" ng-model='app.currentUser.settings.notifications.email.weekly_new_messages_digest' name="weekly_new_messages_digest" onoffswitch>
+								</control-group>
+							</accordion-group>
+						</accordion>
 
 						<div class='control-group'>
 							<div class='controls'>

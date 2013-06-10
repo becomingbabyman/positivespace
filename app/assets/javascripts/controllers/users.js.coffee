@@ -116,7 +116,10 @@ ps.controller "UsersEditCtrl", ["$scope", "$routeParams", "$timeout", "$location
             userName: $scope.user.name
             userBody: $scope.user.body
     , (error) ->
-        $location.path('/404')
+        $scope.app.flash('info', 'Log in to edit your profile')
+        $location.search('path', window.location.pathname)
+        $location.search('search', window.location.search)
+        $location.path('/login')
         analytics.track 'view edit space error',
             routeId: $routeParams.user_id
 
@@ -300,8 +303,16 @@ root.usersShowCtrl.loadUser = ["$q", "$route", "User", ($q, $route, User) ->
 
 
 # Settings
-ps.controller "UsersSettingsCtrl", ["$scope", "User", ($scope, User) ->
+ps.controller "UsersSettingsCtrl", ["$scope", "$location", "User", ($scope, $location, User) ->
     $scope.app.meta.title = "Settings"
+
+    $scope.app.dcu.promise.then (currentUser) ->
+        return true
+    , (error) ->
+        $scope.app.flash('info', 'Log in to change your settings')
+        $location.search('path', window.location.pathname)
+        $location.search('search', window.location.search)
+        $location.path('/login')
 
     $scope.saveSettings = ->
         $scope.app.show.loading = true

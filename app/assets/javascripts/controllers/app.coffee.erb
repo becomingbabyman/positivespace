@@ -63,6 +63,7 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
             signInCount               : user.sign_in_count
             personalUrl               : user.personal_url
             lastSignInAt              : user.last_sign_in_at
+            settings                  : JSON.stringify(user.settings)
             achievements              : JSON.stringify(user.achievements)
             readyConversationsCount   : user.ready_conversations_count
             endedConversationsCount   : user.ended_conversations_count

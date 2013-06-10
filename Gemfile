@@ -63,6 +63,9 @@ gem 'oj'
 # Sync Assets to CDN
 gem 'asset_sync'
 
+# Email
+gem 'roadie'
+
 # Uploads and Images
 gem 'carrierwave'
 gem 'carrierwave_backgrounder'

@@ -3,7 +3,7 @@ object @user
 extends 'api/v1/users/base'
 
 attributes :body, :location, :personal_url, :created_at, :impressions_count, :state, :likers_count, :followers_count, :mentioners_count
-attributes :achievements, :sign_in_count, :last_sign_in_at, :updated_at, :gender, :birthday, :locale, :timezone, :remaining_invitations_count, :if => lambda { |u| can?(:update, u) }
+attributes :achievements, :settings, :sign_in_count, :last_sign_in_at, :updated_at, :gender, :birthday, :locale, :timezone, :remaining_invitations_count, :if => lambda { |u| can?(:update, u) }
 
 node :first_name do |user|
 	user.first_name

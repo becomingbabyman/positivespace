@@ -29,7 +29,10 @@ fieldDirectiveDefinitionObject =
 		# attrs.$set 'name', (attrs.name or attrs.placeholder.replace(///^\s+|\s+$///g, '').split(' ').join('-'))
 		# Placeholder pollyfill
 		if element.prop("tagName") == 'INPUT' or element.prop("tagName") == 'TEXTAREA' then element.placeholder()
+		# Autosize
 		if element.prop("tagName") == 'TEXTAREA' then element.autosize()
+		# On Off Switch
+		if element.prop("tagName") == 'INPUT' and attrs.type == 'checkbox' and attrs.onoffswitch? then element.onoffswitch()
 
 psDirectives.directive 'input', () ->
 	return fieldDirectiveDefinitionObject
@@ -99,10 +102,10 @@ psDirectives.directive 'controlGroup', () ->
 				# set 'focused' class on control-group
 				scope.hasFocus = false
 				inputEl.bind 'focusin', ->
-					scope.$apply () ->
+					scope.$apply ->
 						scope.hasFocus = true
 				inputEl.bind 'focusout', ->
-					scope.$apply () ->
+					scope.$apply ->
 						scope.hasFocus = false
 
 	return directiveDefinitionObject
