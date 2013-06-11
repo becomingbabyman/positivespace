@@ -6,8 +6,10 @@
 	</div>
 
 	<div class='salutation'>
-		<%# image_tag @message.from.avatar.image.thumb.url, class: "avatar" %>
 		<span class="date"><%= @message.created_at.strftime("%B %e") %></span>
+		<% url = @message.from.avatar.image.thumb.url %>
+		<% url =~ /^\// ? url : url=root_url+url[1..-1] %>
+		<%= image_tag url, class: "avatar" %>
 		<span class="at">@</span><%= @message.from.username %>
 		<span class="said">said:</span>
 	</div>

@@ -23,7 +23,7 @@ class NotificationsMailer < ActionMailer::Base
 
   def daily_new_messages_digest user_id
     @user = User.find user_id
-    @messages = @user.recieved_messages.order("created_at")
+    @messages = @user.recieved_messages.where("messages.created_at < ? AND messages.created_at > ?", DateTime.now, DateTime.now - 1.week).order("messages.created_at ASC")
 
     to = Mail::Address.new @user.email
     to.display_name = @user.name
