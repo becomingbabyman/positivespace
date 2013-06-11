@@ -284,6 +284,11 @@ class User < ActiveRecord::Base
 		end
 	end
 
+	def settings= dict
+		self.initialize_settings unless self.settings.any?
+		self.settings = self.settings.merge dict
+	end
+
 	def track_achievement achievement_name
 		self.achievements[achievement_name]=true
 		self.save
@@ -363,6 +368,20 @@ class User < ActiveRecord::Base
 		rel
 	end
 
+	def initialize_settings
+		self.settings[:notifications] = {}
+		self.settings[:notifications][:email] = {}
+		self.settings[:notifications][:email][:every_new_message] = true
+		self.settings[:notifications][:email][:daily_new_messages_digest] = false
+		self.settings[:notifications][:email][:weekly_new_messages_digest] = true
+		self.settings[:notifications][:email][:daily_pending_messages_reminder] = true
+		self.settings[:notifications][:email][:weekly_pending_messages_reminder] = false
+		self.settings[:notifications][:email][:new_followers] = true
+		self.settings[:notifications][:email][:spaces_you_might_like] = true
+		self.settings[:notifications][:email][:new_spaces] = true
+		self.settings[:notifications][:email][:popular_spaces] = true
+	end
+
 private
 
 	def validate_username_reserved
@@ -394,20 +413,6 @@ private
 
 	def initialize_permissions
 		self.permissions = 2
-	end
-
-	def initialize_settings
-		self.settings[:notifications] = {}
-		self.settings[:notifications][:email] = {}
-		self.settings[:notifications][:email][:every_new_message] = true
-		self.settings[:notifications][:email][:daily_new_messages_digest] = false
-		self.settings[:notifications][:email][:weekly_new_messages_digest] = true
-		self.settings[:notifications][:email][:daily_pending_messages_reminder] = true
-		self.settings[:notifications][:email][:weekly_pending_messages_reminder] = false
-		self.settings[:notifications][:email][:new_followers] = true
-		self.settings[:notifications][:email][:spaces_you_might_like] = true
-		self.settings[:notifications][:email][:new_spaces] = true
-		self.settings[:notifications][:email][:popular_spaces] = true
 	end
 
 	def update_achievements

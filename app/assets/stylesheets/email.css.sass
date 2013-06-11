@@ -95,7 +95,7 @@ a
 
 // Notificaitons - Recieved Message
 // Notificaitons - Daily New Messages Digest
-#notifications_recieved_message, #notifications_daily_new_messages_digest
+#notifications_recieved_message
 	.greeting
 		padding-top: 2em
 		padding-bottom: 2em
@@ -180,6 +180,7 @@ a
 		border: 1px solid #ddd
 
 #notifications_daily_new_messages_digest
+	@extend #notifications_recieved_message
 	.body
 		border-bottom: none
 		padding-bottom: 1em
@@ -192,3 +193,7 @@ a
 		display: inline-block
 		padding: 0.5em 1em
 		font-size: 16px
+
+#notifications_weekly_new_messages_digest
+	@extend #notifications_daily_new_messages_digest
+

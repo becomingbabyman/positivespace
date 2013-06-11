@@ -1,0 +1,33 @@
+<div id='notifications_weekly_new_messages_digest'>
+	<div class="greeting">
+		<div class="top">YOU'VE</div>
+		<div class="middle"><del>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</del>&nbsp;&nbsp;&nbsp;&nbsp;got&nbsp;&nbsp;&nbsp;&nbsp;<del>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</del></div>
+		<div class="bottom">RESPONSES</div>
+	</div>
+
+	<% @messages.each do |message| %>
+		<div class='salutation'>
+			<span class="date"><%= message.created_at.strftime("%B %e") %></span>
+			<% url = message.from.avatar.image.thumb.url %>
+			<% url =~ /^\// ? url : url=root_url+url[1..-1] %>
+			<%= image_tag url, class: "avatar" %>
+			<span class="at">@</span><%= message.from.username %>
+			<span class="said">said:</span>
+		</div>
+
+		<div class='body'>
+			<%= message.body %>
+		</div>
+
+		<div class='link'>
+			<table>
+				<tr>
+					<td>
+						<%= link_to "Reply to #{message.from.name}", "#{root_url}conversations/#{message.conversation_id}?message_id=#{message.id}", class: 'btn', align: 'right' %>
+					</td>
+				</tr>
+			</table>
+		</div>
+	<% end %>
+</div>
+
