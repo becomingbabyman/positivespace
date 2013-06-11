@@ -9,7 +9,7 @@ namespace :email do
 	desc "Send weekly emails"
 	task :weekly => :environment do
 		User.all.each do |user|
-			NotificationsMailer.delay.weekly_new_messages_digest(user.id) if user.settings.try(:[], :notifications).try(:[], :email).try(:[], :weekly_new_messages_digest)
+			NotificationsMailer.delay.weekly_new_messages_digest(user.id) if user.settings.try(:[], :notifications).try(:[], :email).try(:[], :weekly_new_messages_digest) and DateTime.now.strftime("%w") == 6 # only fire on Saturday
 		end
 	end
 end

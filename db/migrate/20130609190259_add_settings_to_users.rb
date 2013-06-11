@@ -7,7 +7,7 @@ class AddSettingsToUsers < ActiveRecord::Migration
 		say_with_time "Add basic email toggles to users" do
 			User.all.each do |user|
 				user.initialize_settings
-				user.save
+				user.save(:validate=>false)
 			end
 		end
 	end
