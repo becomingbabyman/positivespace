@@ -284,11 +284,6 @@ class User < ActiveRecord::Base
 		end
 	end
 
-	def settings= dict
-		self.initialize_settings unless self.settings.any?
-		self.settings = self.settings.merge dict
-	end
-
 	def track_achievement achievement_name
 		self.achievements[achievement_name]=true
 		self.save
