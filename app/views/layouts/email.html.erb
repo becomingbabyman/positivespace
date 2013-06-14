@@ -79,14 +79,19 @@
 							<tr>
 								<td class="footer-padding" bgcolor="#f9f9f8">
 									<div>
-										Don't want to revceive notificaitons like this?
-										<%= link_to "Unsubscribe", "#{root_url}settings", class: 'unsubscribe' %>.
+										Don't want to receive notifications like this?
+										<%= link_to "Unsubscribe", "#{root_url}settings", class: 'unsubscribe' %>
 									</div>
 									<div>
 										Like us on <%= link_to "Facebook", "https://www.facebook.com/positivespaceny" %> &middot; Follow us on <%= link_to "Twitter", "https://twitter.com/positivespaceny" %>
 									</div>
 									<div>
-										<%= image_tag "ps_logo_inset@2x.png", class: "logo" %>
+										Learn about our <%= link_to "philosophy", "#{root_url}purpose" %>
+									</div>
+									<div>
+										<%= link_to "#{root_url}" do %>
+											<%= image_tag "ps_logo_inset@2x.png", class: "logo" %>
+										<% end %>
 									</div>
 								</td>
 							</tr>
