@@ -16,18 +16,49 @@
 							<input type='email' name='email' id='user_email' title='your email address' placeholder="your email address" class='input-block-level' ng-model='app.currentUser.email' required></input>
 						</control-group>
 
+						<h5>Email notifications</h5>
 						<accordion close-others="true">
-							<accordion-group heading="Email notifications">
+							<accordion-group heading="New messages">
 								<control-group class='pbs' label='Notify me of every new message'>
 									<input type="checkbox" ng-model='app.currentUser.settings.notifications.email.every_new_message' name="every_new_message" onoffswitch>
 								</control-group>
 
-								<control-group class='pbs' label='Send me a daily digest of my new messages'>
+								<control-group class='pbs' label='Daily digest of my new messages'>
 									<input type="checkbox" ng-model='app.currentUser.settings.notifications.email.daily_new_messages_digest' name="daily_new_messages_digest" onoffswitch>
 								</control-group>
 
-								<control-group class='pbs' label='Send me a weekly digest of my new messages'>
+								<control-group class='pbs' label='Weekly digest of my new messages'>
 									<input type="checkbox" ng-model='app.currentUser.settings.notifications.email.weekly_new_messages_digest' name="weekly_new_messages_digest" onoffswitch>
+								</control-group>
+
+							</accordion-group>
+							<accordion-group heading="Reminders">
+
+								<control-group class='pbs' label='Daily digest of messages awaiting my response'>
+									<input type="checkbox" ng-model='app.currentUser.settings.notifications.email.daily_pending_messages_reminder' name="daily_pending_messages_reminder" onoffswitch>
+								</control-group>
+
+								<control-group class='pbs' label='Weekly digest of messages awaiting my response'>
+									<input type="checkbox" ng-model='app.currentUser.settings.notifications.email.weekly_pending_messages_reminder' name="weekly_pending_messages_reminder" onoffswitch>
+								</control-group>
+
+							</accordion-group>
+							<accordion-group heading="News and updates">
+
+								<control-group class='pbs' label='Infrequent digest of my new followers'>
+									<input type="checkbox" ng-model='app.currentUser.settings.notifications.email.new_followers' name="new_followers" onoffswitch>
+								</control-group>
+
+								<control-group class='pbs' label='Reccommend spaces I might like'>
+									<input type="checkbox" ng-model='app.currentUser.settings.notifications.email.spaces_you_might_like' name="spaces_you_might_like" onoffswitch>
+								</control-group>
+
+								<control-group class='pbs' label='Infrequent digest of new spaces'>
+									<input type="checkbox" ng-model='app.currentUser.settings.notifications.email.new_spaces' name="new_spaces" onoffswitch>
+								</control-group>
+
+								<control-group class='pbs' label='Infrequent digest of popular spaces'>
+									<input type="checkbox" ng-model='app.currentUser.settings.notifications.email.popular_spaces' name="popular_spaces" onoffswitch>
 								</control-group>
 							</accordion-group>
 						</accordion>

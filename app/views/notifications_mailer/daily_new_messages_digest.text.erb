@@ -1,0 +1,15 @@
+Hi @<%= @messages.first.to.username %>,
+
+You've got responses!
+<% @messages.each do |message| %>
+
+----------------------------
+
+@<%= message.from.username %> said:
+
+<%= message.body %>
+
+on: <%= message.created_at.strftime("%B %e") %>
+
+Reply to <%= message.from.name %>: <%= "#{root_url}conversations/#{message.conversation_id}?message_id=#{message.id}" %>
+<% end %>

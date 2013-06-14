@@ -1,4 +1,11 @@
+Hi @<%= @message.to.username %>,
+
+You just got a response!
+
+----------------------------
+
+@<%= @message.from.username %> said:
+
 <%= @message.body %>
 
-
-reply to <%= @message.from.name %>: <%= "#{root_url}#{@reply_path}" %>
+Reply to <%= @message.from.name %>: <%= "#{root_url}#{@reply_path}" %>

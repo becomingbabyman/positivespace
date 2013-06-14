@@ -187,6 +187,7 @@ input, textarea
         &:hover, &.open
             @include brand-dropdown-hover-and-open
         @media (max-width: 767px)
+            position: absolute
             &:hover
                 .brand-dropdown-menu
                     opacity: 0
@@ -490,7 +491,7 @@ input, textarea
         margin: 0 -20px
 
         >.container.primary-nav
-            position: fixed
+            position: absolute
             height: 46px
             width: 100%
             left: 0

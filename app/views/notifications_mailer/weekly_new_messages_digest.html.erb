@@ -1,4 +1,13 @@
 <div id='notifications_weekly_new_messages_digest'>
+	<div class="intro">
+		Hi
+		<%= link_to "#{root_url}conversations/#{@messages.first.conversation_id}?message_id=#{@messages.first.id}" do %>
+			<span class="username">
+				<span class="at">@</span><%= @messages.first.to.username %>
+			</span>
+		<% end %>
+	</div>
+
 	<div class="greeting">
 		<div class="top">YOU'VE</div>
 		<div class="middle"><del>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</del>&nbsp;&nbsp;&nbsp;&nbsp;got&nbsp;&nbsp;&nbsp;&nbsp;<del>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</del></div>
@@ -11,7 +20,9 @@
 			<% url = message.from.avatar.image.thumb.url %>
 			<% url =~ /^\// ? url : url=root_url+url[1..-1] %>
 			<%= image_tag url, class: "avatar" %>
-			<span class="at">@</span><%= message.from.username %>
+			<%= link_to "#{root_url}conversations/#{message.conversation_id}?message_id=#{message.id}" do %>
+				<span class="at">@</span><%= message.from.username %>
+			<% end %>
 			<span class="said">said:</span>
 		</div>
 
@@ -23,7 +34,11 @@
 			<table>
 				<tr>
 					<td>
-						<%= link_to "Reply to #{message.from.name}", "#{root_url}conversations/#{message.conversation_id}?message_id=#{message.id}", class: 'btn', align: 'right' %>
+						<% if message.conversation.last_message_from_id == message.to_id %>
+							<%= link_to "View conversation", "#{root_url}conversations/#{message.conversation_id}?message_id=#{message.id}", class: 'btn', align: 'right' %>
+						<% else %>
+							<%= link_to "Reply to #{message.from.name}", "#{root_url}conversations/#{message.conversation_id}?message_id=#{message.id}", class: 'btn btn-success', align: 'right' %>
+						<% end %>
 					</td>
 				</tr>
 			</table>
