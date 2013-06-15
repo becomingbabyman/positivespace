@@ -113,7 +113,7 @@ a
 	.greeting
 		padding-top: 2em
 		padding-bottom: 2em
-		border-bottom: 1px solid #eeeeee
+		// border-bottom: 1px solid #eeeeee
 		color: #666
 		.top
 			// padding-bottom: 1em
@@ -139,6 +139,7 @@ a
 	.salutation
 		// font-family: "Gotham", "Futura", Helvetica, sans-serif
 		padding-top: 1em
+		border-top: 1px solid #eeeeee
 		color: #D67A6D
 		// font-family: serif
 		font-size: 18px
@@ -161,7 +162,6 @@ a
 	.body
 		padding-top: 1em
 		padding-bottom: 2em
-		border-bottom: 1px solid #eeeeee
 		text-align: left
 		font-family: serif
 		font-size: 18px
@@ -204,7 +204,7 @@ a
 		border-bottom: none
 		padding-bottom: 1em
 	.link
-		border-bottom: 1px double #dddddd
+		// border-bottom: 1px double #dddddd
 		table
 			width: 100%
 	.btn
@@ -216,3 +216,8 @@ a
 #notifications_weekly_new_messages_digest
 	@extend #notifications_daily_new_messages_digest
 
+#notifications_daily_pending_messages_reminder
+	@extend #notifications_daily_new_messages_digest
+
+#notifications_weekly_pending_messages_reminder
+	@extend #notifications_daily_new_messages_digest

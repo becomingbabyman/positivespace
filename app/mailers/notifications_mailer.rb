@@ -38,4 +38,22 @@ class NotificationsMailer < ActionMailer::Base
     to.display_name = @user.name
     mail to: to.format, subject: "Last week's new Positive Space messages" if @messages.any?
   end
+
+  def daily_pending_messages_reminder user_id
+    @user = User.find user_id
+    @conversations = @user.conversations.in_progress.turn(@user.id).order("conversations.updated_at ASC")
+
+    to = Mail::Address.new @user.email
+    to.display_name = @user.name
+    mail to: to.format, subject: "Conversations awaiting your reply on Positive Space" if @conversations.any?
+  end
+
+  def weekly_pending_messages_reminder user_id
+    @user = User.find user_id
+    @conversations = @user.conversations.in_progress.turn(@user.id).order("conversations.updated_at ASC")
+
+    to = Mail::Address.new @user.email
+    to.display_name = @user.name
+    mail to: to.format, subject: "Conversations awaiting your reply on Positive Space" if @conversations.any?
+  end
 end

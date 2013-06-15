@@ -1,0 +1,43 @@
+<div id='notifications_weekly_pending_messages_reminder'>
+	<div class="intro">
+		Hi
+		<%= link_to "#{root_url}conversations/#{@conversations.first.id}" do %>
+			<span class="username">
+				<span class="at">@</span><%= @user.username %>
+			</span>
+		<% end %>
+	</div>
+
+	<div class="greeting">
+		<div class="top">RESPOND</div>
+		<div class="middle"><del>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</del>&nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;&nbsp;&nbsp;&nbsp;<del>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</del></div>
+		<div class="bottom">CONVERSATIONS</div>
+	</div>
+
+	<% @conversations.each do |conversation| %>
+		<div class='salutation'>
+			<span class="date"><%= conversation.last_message.created_at.strftime("%B %e") %></span>
+			<% url = conversation.last_message_from.avatar.image.thumb.url %>
+			<% url =~ /^\// ? url : url=root_url+url[1..-1] %>
+			<%= image_tag url, class: "avatar" %>
+			<%= link_to "#{root_url}conversations/#{conversation.id}" do %>
+				<span class="at">@</span><%= conversation.last_message_from.username %>
+			<% end %>
+			<span class="said">said:</span>
+		</div>
+
+		<div class='body'>
+			<%= conversation.last_message.body %>
+		</div>
+
+		<div class='link'>
+			<table>
+				<tr>
+					<td>
+						<%= link_to "Reply to #{conversation.last_message_from.name}", "#{root_url}conversations/#{conversation.id}", class: 'btn btn-success', align: 'right' %>
+					</td>
+				</tr>
+			</table>
+		</div>
+	<% end %>
+</div>

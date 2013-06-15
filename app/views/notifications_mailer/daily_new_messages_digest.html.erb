@@ -3,7 +3,7 @@
 		Hi
 		<%= link_to "#{root_url}conversations/#{@messages.first.conversation_id}?message_id=#{@messages.first.id}" do %>
 			<span class="username">
-				<span class="at">@</span><%= @messages.first.to.username %>
+				<span class="at">@</span><%= @user.username %>
 			</span>
 		<% end %>
 	</div>
