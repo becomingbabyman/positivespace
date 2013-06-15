@@ -19,8 +19,8 @@ class Conversation < ActiveRecord::Base
 
 	# default_scope :order => 'updated_at ASC'
 
-	scope :in_progress, where(state: :in_progress)
-	scope :ended, where(state: :ended)
+	scope :in_progress, where(state: 'in_progress')
+	scope :ended, where(state: 'ended')
 	scope :turn, lambda { |user_id| joins(:last_message).where("messages.to_id = ?", user_id) }
 	scope :not_turn, lambda { |user_id| joins(:last_message).where("messages.from_id = ?", user_id) }
 	scope :to, lambda { |user_id| where("conversations.to_id = ?", user_id) }

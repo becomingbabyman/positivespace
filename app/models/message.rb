@@ -36,9 +36,9 @@ class Message < ActiveRecord::Base
 
 	# default_scope :order => 'created_at asc'
 
-	scope :draft, where(state: :draft)
-	scope :sent, where(state: :sent)
-	scope :replied, where(state: :replied)
+	scope :draft, where(state: 'draft')
+	scope :sent, where(state: 'sent')
+	scope :replied, where(state: 'replied')
 	scope :in_progress, joins(:conversation).where("conversations.state = ?", :in_progress)
 	scope :ended, joins(:conversation).where("conversations.state = ?", :ended)
 	scope :with, lambda { |user_id| where("messages.from_id = ? OR messages.to_id = ?", user_id, user_id) }

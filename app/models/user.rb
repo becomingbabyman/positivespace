@@ -127,8 +127,8 @@ class User < ActiveRecord::Base
 	# validate  :validate_invitation, on: :create
 
 
-	scope :unendorsed, where(state: :unendorsed)
-	scope :endorsed, where(state: :endorsed)
+	scope :unendorsed, where(state: 'unendorsed')
+	scope :endorsed, where(state: 'endorsed')
 
 
 	# Authenticate with email or username

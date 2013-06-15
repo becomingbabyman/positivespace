@@ -20,6 +20,7 @@ gem 'sidekiq-failures'
 
 # Search
 gem 'tire'
+gem 'squeel'
 
 # Memcached
 gem 'memcachier'

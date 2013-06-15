@@ -1,0 +1,46 @@
+<div id='notifications_new_followers'>
+	<div class="intro">
+		Hi
+		<%= link_to "#{root_url}#{@user.slug}" do %>
+			<span class="username">
+				<span class="at">@</span><%= @user.username %>
+			</span>
+		<% end %>
+	</div>
+
+	<div class="greeting">
+		<div class="top">YOU'VE</div>
+		<div class="middle"><del>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</del>&nbsp;&nbsp;&nbsp;&nbsp;got&nbsp;&nbsp;&nbsp;&nbsp;<del>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</del></div>
+		<div class="bottom">FOLLOWERS</div>
+	</div>
+
+	<% @follows.each do |follow| %>
+		<div class='salutation'>
+			<span class="date"><%= follow.created_at.strftime("%B %e") %></span>
+			<% url = follow.follower.avatar.image.thumb.url %>
+			<% url =~ /^\// ? url : url=root_url+url[1..-1] %>
+			<%= link_to "#{root_url}#{follow.follower.slug}" do %>
+				<%= image_tag url, class: "avatar" %>
+			<% end %>
+			<%= link_to "#{root_url}#{follow.follower.slug}" do %>
+				<span class="at">@</span><%= follow.follower.username %>
+			<% end %>
+		</div>
+
+		<% if follow.follower.body and follow.follower.body.size > 0 %>
+			<div class='body'>
+				<%= follow.follower.body %>
+			</div>
+
+			<div class='link'>
+				<table>
+					<tr>
+						<td>
+							<%= link_to "Check out #{follow.follower.name.possessive} space", "#{root_url}#{follow.follower.slug}", class: 'btn btn-primary'%>
+						</td>
+					</tr>
+				</table>
+			</div>
+		<% end %>
+	<% end %>
+</div>

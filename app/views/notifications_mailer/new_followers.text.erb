@@ -1,0 +1,11 @@
+Hi @<%= @user.username %>,
+
+You've got new followers!
+<% @follows.each do |follow| %>
+
+----------------------------
+
+@<%= follow.follower.username %>
+
+Check out <%= follow.follower.name.possessive %> space: <%= "#{root_url}#{follow.follower.slug}" %>
+<% end %>

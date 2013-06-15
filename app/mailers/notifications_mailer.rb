@@ -56,4 +56,13 @@ class NotificationsMailer < ActionMailer::Base
     to.display_name = @user.name
     mail to: to.format, subject: "Conversations awaiting your reply on Positive Space" if @conversations.any?
   end
+
+  def new_followers user_id
+    @user = User.find user_id
+    @follows = Follow.where { (followable_type == 'User') & (followable_id == user_id) & (created_at < DateTime.now) & (created_at > DateTime.now - 1.week) }
+
+    to = Mail::Address.new @user.email
+    to.display_name = @user.name
+    mail to: to.format, subject: "You have new followers on Positive Space" if @follows.any?
+  end
 end

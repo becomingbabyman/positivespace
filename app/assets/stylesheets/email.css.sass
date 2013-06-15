@@ -139,6 +139,7 @@ a
 	.salutation
 		// font-family: "Gotham", "Futura", Helvetica, sans-serif
 		padding-top: 1em
+		padding-bottom: 1em
 		border-top: 1px solid #eeeeee
 		color: #D67A6D
 		// font-family: serif
@@ -147,7 +148,7 @@ a
 		.avatar
 			height: 20px
 			width: 20px
-			border-radius: 20px
+			border-radius: 50%
 		.at
 			font-size: 16px
 			line-height: 22px
@@ -160,7 +161,6 @@ a
 			font-size: 14px
 
 	.body
-		padding-top: 1em
 		padding-bottom: 2em
 		text-align: left
 		font-family: serif
@@ -191,6 +191,9 @@ a
 	.btn-success
 		background-color: #92CA73
 
+	.btn-primary
+		background-color: #00C0FF
+
 	.avatar
 		vertical-align: middle
 		height: 34px
@@ -201,7 +204,7 @@ a
 #notifications_daily_new_messages_digest
 	@extend #notifications_recieved_message
 	.body
-		border-bottom: none
+		// border-bottom: none
 		padding-bottom: 1em
 	.link
 		// border-bottom: 1px double #dddddd
@@ -221,3 +224,13 @@ a
 
 #notifications_weekly_pending_messages_reminder
 	@extend #notifications_daily_new_messages_digest
+
+#notifications_new_followers
+	@extend #notifications_daily_new_messages_digest
+	.salutation
+		.avatar
+			width: 50px
+			height: 50px
+		.at
+			vertical-align: middle
+
