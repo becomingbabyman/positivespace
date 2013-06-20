@@ -52,4 +52,4 @@ psFilters.filter 'possessive', ->
 
 psFilters.filter 'fromNow', ->
 	(date) ->
-		moment(date).fromNow()
+		moment(date).fromNow() if date?

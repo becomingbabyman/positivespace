@@ -76,6 +76,7 @@ root.conversationsShowCtrl = ps.controller "ConversationsShowCtrl", ["$scope", "
 			$scope.conversation.save (conversation) ->
 				$scope.app.currentUser.ready_conversations_count -= 1
 				$scope.app.currentUser.ended_conversations_count += 1
+				$location.path("/conversations")
 				analytics.track 'end conversation success',
 					href: window.location.href
 					routeId: $routeParams.id
@@ -120,7 +121,7 @@ root.conversationsShowCtrl = ps.controller "ConversationsShowCtrl", ["$scope", "
 				$scope.app.currentUser.ready_conversations_count -= 1
 				$scope.app.currentUser.waiting_conversations_count += 1
 				$scope.conversation = new Conversation data.conversation
-
+				$location.path("/conversations")
 				analytics.track 'message conversation success',
 					href: window.location.href
 					routeId: $routeParams.id
