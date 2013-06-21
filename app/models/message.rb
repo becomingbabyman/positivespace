@@ -112,7 +112,7 @@ private
 	end
 
 	def notify_recipient
-		NotificationsMailer.delay.recieved_message(self.id) if self.to.settings[:notifications][:email][:every_new_message]
+		NotificationsMailer.delay_for(9.seconds).recieved_message(self.id) if self.to.settings[:notifications][:email][:every_new_message]
 	end
 
 	def parse_embed_url
