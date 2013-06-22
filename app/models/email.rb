@@ -41,7 +41,8 @@ private
 		self.error_messages << "could not find a message to reply to" unless m_id and message = Message.find(m_id)
 		if message
 			self.error_messages << "authorization token is invalid" unless message.authentication_token == m_auth_token
-			self.error_messages << "your email address is not authorized to reply to this message" unless message.to.email == sender
+			# TODO: This does not work when you forward your email to another address. Think about alternatives.
+			# self.error_messages << "your email address is not authorized to reply to this message" unless message.to.email == sender
 			self.error_messages << "this message has already been replied to" unless message.conversation.last_message_id == message.id
 			self.error_messages << "reply is too long, it contained #{self.stripped_text.size} characters but #{message.max_char_count} characters is the max" if self.stripped_text.size > (message.max_char_count + Message::CHAR_COUNT_PADDING)
 		end
