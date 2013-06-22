@@ -1,6 +1,6 @@
 require 'mail'
 class NotificationsMailer < ActionMailer::Base
-  from = Mail::Address.new "notifications@positivespace.io"
+  from = Mail::Address.new "notifications@positivespace.mailgun.org"
   from.display_name = "+_ Notifications"
   default css: :email, from: from.format
   layout 'email'
@@ -15,9 +15,9 @@ class NotificationsMailer < ActionMailer::Base
     @message = Message.find message_id
     @reply_path = "conversations/#{@message.conversation_id}?message_id=#{@message.id}"
 
-    from = Mail::Address.new "notifications@positivespace.mailgun.com"
+    from = Mail::Address.new "notifications@positivespace.mailgun.org"
     from.display_name = @message.from.name.tr(EMAIl_CHARS, '')
-    reply_to = Mail::Address.new "notifications+message_#{@message.id}_#{@message.authentication_token}@positivespace.mailgun.com"
+    reply_to = Mail::Address.new "notifications+message_#{@message.id}_#{@message.authentication_token}@positivespace.mailgun.org"
     reply_to.display_name = @message.from.name.tr(EMAIl_CHARS, '')
     to = Mail::Address.new @message.to.email
     to.display_name = @message.to.name.tr(EMAIl_CHARS, '')
