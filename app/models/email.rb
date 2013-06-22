@@ -43,7 +43,7 @@ private
 			self.error_messages << "authorization token is invalid" unless message.authentication_token == m_auth_token
 			self.error_messages << "your email address is not authorized to reply to this message" unless message.to.email == sender
 			self.error_messages << "this message has already been replied to" unless message.conversation.last_message_id == message.id
-			self.error_messages << "reply is too long, it contained #{self.stripped_text.size} characters but #{message.max_char_count} characters is the max" unless self.stripped_text.size > (message.max_char_count + Message.CHAR_COUNT_PADDING)
+			self.error_messages << "reply is too long, it contained #{self.stripped_text.size} characters but #{message.max_char_count} characters is the max" unless self.stripped_text.size > (message.max_char_count + Message::CHAR_COUNT_PADDING)
 		end
 
 		if self.error_messages.any?
