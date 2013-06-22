@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130609190259) do
+ActiveRecord::Schema.define(:version => 20130622143625) do
 
   create_table "administrators", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -49,6 +49,39 @@ ActiveRecord::Schema.define(:version => 20130609190259) do
   add_index "conversations", ["prompt"], :name => "index_conversations_on_prompt"
   add_index "conversations", ["state"], :name => "index_conversations_on_state"
   add_index "conversations", ["to_id"], :name => "index_conversations_on_to_id"
+
+  create_table "emails", :force => true do |t|
+    t.string   "state"
+    t.string   "action"
+    t.text     "rejection_message",  :default => ""
+    t.text     "error_messages",     :default => "--- []\n"
+    t.string   "recipient"
+    t.string   "sender"
+    t.string   "from"
+    t.string   "subject"
+    t.text     "body_plain"
+    t.text     "stripped_text"
+    t.text     "stripped_signature"
+    t.text     "body_html"
+    t.text     "stripped_html"
+    t.integer  "attachment_count"
+    t.integer  "timestamp"
+    t.string   "token"
+    t.string   "signature"
+    t.text     "message_headers"
+    t.text     "content_id_map"
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
+  end
+
+  add_index "emails", ["action"], :name => "index_emails_on_action"
+  add_index "emails", ["from"], :name => "index_emails_on_from"
+  add_index "emails", ["recipient"], :name => "index_emails_on_recipient"
+  add_index "emails", ["sender"], :name => "index_emails_on_sender"
+  add_index "emails", ["signature"], :name => "index_emails_on_signature"
+  add_index "emails", ["state"], :name => "index_emails_on_state"
+  add_index "emails", ["subject"], :name => "index_emails_on_subject"
+  add_index "emails", ["token"], :name => "index_emails_on_token"
 
   create_table "follows", :force => true do |t|
     t.string   "follower_type"
@@ -148,11 +181,12 @@ ActiveRecord::Schema.define(:version => 20130609190259) do
     t.string   "embed_url"
     t.text     "embed_data"
     t.text     "body"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
     t.integer  "session_id"
     t.string   "state"
     t.integer  "conversation_id"
+    t.string   "authentication_token"
   end
 
   add_index "messages", ["conversation_id"], :name => "index_messages_on_conversation_id"

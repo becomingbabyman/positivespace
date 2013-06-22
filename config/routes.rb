@@ -53,6 +53,14 @@ Positivespace::Application.routes.draw do
 	end
 
 
+	# Mailgun email posting urls
+	resources :emails, only: :none do
+		collection do
+			post :message
+		end
+	end
+
+
 	# Static pages
 	resources :pages, path: '', only: :none do
 		collection do

@@ -1,5 +1,8 @@
 class Message < ActiveRecord::Base
 
+	BASE_CHAR_COUNT = 250
+	CHAR_COUNT_PADDING = 50
+
 	state_machine :initial => :draft do
 		event :send do
 			transition :draft => :sent
@@ -13,8 +16,10 @@ class Message < ActiveRecord::Base
 	end
 
 	before_validation :continue_conversation, on: :create
+	before_create :generate_auth_token
 	after_create :parse_embed_url
 
+	attr_accessor :relax_constraints
 	attr_accessible :body, :embed_url, :from_email, :state_event, :conversation_id
 	attr_protected :none, as: :admin
 
@@ -59,11 +64,18 @@ class Message < ActiveRecord::Base
 	end
 
 	def max_char_count
-		base_char_count = 250
-		if c = self.conversation
-			c.messages.size * 50 + base_char_count
-		else
-			base_char_count
+		char_count = BASE_CHAR_COUNT
+		char_count += CHAR_COUNT_PADDING if self.relax_constraints
+		char_count = self.conversation.messages.size * 50 + char_count if self.conversation
+		char_count
+	end
+
+	def email_reply text, auth_token
+		if self.authentication_token == auth_token
+			reply = self.to.messages.new(body: text, conversation_id: self.conversation_id, state_event: :send, to: self.from, from: self.to)
+			reply.relax_constraints = true
+			reply.save
+			reply
 		end
 	end
 
@@ -78,7 +90,7 @@ private
 	end
 
 	def validate_not_ended
-		errors.add(:you, "have already had a conversation with #{self.to.name} about this topic") if self.conversation.ended?
+		errors.add(:you, "have already had a conversation with #{self.to.name} about this topic and the conversation is now over") if self.conversation.ended?
 	end
 
 	def validate_from_is_in_conversation
@@ -101,6 +113,10 @@ private
 			c ||= Conversation.new(from_id: self.from_id, to_id: self.to_id, prompt: self.to.body)
 			self.conversation = c
 		end
+	end
+
+	def generate_auth_token
+		self.authentication_token = SecureRandom.hex(20)
 	end
 
 	def append_message_to_conversation
