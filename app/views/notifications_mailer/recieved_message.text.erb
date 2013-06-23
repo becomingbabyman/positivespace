@@ -1,11 +1,26 @@
+--------------------------------------------------------
+Reply to @<%= @message.from.username %> above -- <%= @max_char_count %> character limit
+--------------------------------------------------------
+
+
 Hi @<%= @message.to.username %>,
 
 You just got a response!
 
+
+<% @message.conversation.messages.order("created_at DESC").each do |message| %>
 ----------------------------
 
-@<%= @message.from.username %> said:
+@<%= message.from.username %> said:
 
-<%= @message.body %>
+<%= message.body %>
 
-Reply to <%= @message.from.name %>: <%= "#{root_url}#{@reply_path}" %>
+<% end %>
+----------------------------
+
+@<%= @message.conversation.to.username %> prompted:
+
+<%= @message.conversation.prompt %>
+
+
+View conversation: <%= "#{root_url}#{@reply_path}" %>

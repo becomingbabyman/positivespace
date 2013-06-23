@@ -56,9 +56,36 @@ a
 	color: #D67A6D
 	text-decoration: none
 
+#wrapper
+	position: relative
+
+#reply_header
+	position: absolute
+	top: 0
+	left: 0
+
+#reply_cell
+	background-color: #333
+	border-bottom: 1px solid #fff
+	padding: 10px 0
+	height: 40px
+
+.reply-container
+	width: 600px
+
+.reply-container-padding
+	padding-left: 1em
+	padding-right: 1em
+	font-size: 16px
+	line-height: 20px
+	font-family: Helvetica, sans-serif
+	color: whitesmoke
+	.char-count
+		float: right
+
 #body_cell
 	background-color: #f9f9f8
-	padding-top: 30px
+	padding-top: 50px
 
 .container
 	border: 1px solid #dddddd
@@ -73,6 +100,7 @@ a
 	line-height: 20px
 	font-family: Helvetica, sans-serif
 	color: #333
+	margin-bottom: -40px
 
 .footer
 	width: 600px
@@ -161,12 +189,22 @@ a
 			font-size: 14px
 
 	.body
-		padding-bottom: 2em
+		margin-bottom: 2em
 		text-align: left
 		font-family: serif
 		font-size: 18px
 		line-height: 28px
 		color: #333
+
+	.message-0
+		.body
+			color: rgb(29, 118, 42)
+			border: 1px solid #7bcf83
+			//#92ca73
+			background: #fafefa
+			//#E8F4E1
+			border-radius: 2px
+			padding: 4px 10px
 
 
 	.link

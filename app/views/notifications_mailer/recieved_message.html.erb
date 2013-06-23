@@ -14,23 +14,41 @@
 		<div class="bottom">RESPONSE</div>
 	</div>
 
+	<% @message.conversation.messages.order("created_at DESC").each_with_index do |message, i| %>
+		<div class='message-<%= i %>'>
+			<div class='salutation'>
+				<span class="date"><%= time_ago_in_words message.created_at %> ago</span>
+				<% url = message.from.avatar.image.thumb.url %>
+				<% url =~ /^\// ? url : url=root_url+url[1..-1] %>
+				<%= image_tag url, class: "avatar" %>
+				<%= link_to "#{root_url}#{@reply_path}" do %>
+					<span class="at">@</span><%= message.from.username %>
+				<% end %>
+				<span class="said">said:</span>
+			</div>
+
+			<div class='body'>
+				<%= message.body %>
+			</div>
+		</div>
+	<% end %>
+
 	<div class='salutation'>
-		<span class="date"><%= @message.created_at.strftime("%B %e") %></span>
-		<% url = @message.from.avatar.image.thumb.url %>
+		<% url = @message.conversation.to.avatar.image.thumb.url %>
 		<% url =~ /^\// ? url : url=root_url+url[1..-1] %>
 		<%= image_tag url, class: "avatar" %>
 		<%= link_to "#{root_url}#{@reply_path}" do %>
-			<span class="at">@</span><%= @message.from.username %>
+			<span class="at">@</span><%= @message.conversation.to.username %>
 		<% end %>
-		<span class="said">said:</span>
+		<span class="said">prompted:</span>
 	</div>
 
 	<div class='body'>
-		<%= @message.body %>
+		<%= @message.conversation.prompt %>
 	</div>
 
 	<div class='link'>
-		<%= link_to "Reply to #{@message.from.name}", "#{root_url}#{@reply_path}", class: 'btn btn-success' %>
+		<%= link_to "View conversation", "#{root_url}#{@reply_path}", class: 'btn btn-success' %>
 	</div>
 </div>
 

@@ -15,6 +15,9 @@ class NotificationsMailer < ActionMailer::Base
     @message = Message.find message_id
     @reply_path = "conversations/#{@message.conversation_id}?message_id=#{@message.id}"
 
+    @direct_reply_message = "Reply to <b>@#{@message.from.username}</b> above"
+    @max_char_count = @message.max_char_count
+
     from = Mail::Address.new "notifications@positivespace.io"
     from.display_name = @message.from.name.tr(EMAIl_CHARS, '')
     reply_to = Mail::Address.new "notifications+message_#{@message.id}_#{@message.authentication_token}@positivespace.mailgun.org"
@@ -67,5 +70,11 @@ class NotificationsMailer < ActionMailer::Base
     to = Mail::Address.new @user.email
     to.display_name = @user.name.tr(EMAIl_CHARS, '')
     mail to: to.format, subject: "You have new followers on Positive Space" if @follows.any?
+  end
+
+  def email_rejected email_id
+    @email = Email.find email_id
+
+    mail to: @email.from, subject: "Oh no! Your reply via email to a message on Positive Space did not succeed"
   end
 end

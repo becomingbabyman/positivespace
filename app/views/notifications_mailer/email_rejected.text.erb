@@ -1,0 +1,30 @@
+Hi <%= @email.sender %>,
+
+
+<%= @email.rejection_message %>
+
+See more detailed error messages below.
+
+
+Copy of Your Reply:
+-----------------------------------
+<%= @email.stripped_text %>
+-----------------------------------
+
+
+Error Messages:
+-----------------------------------
+-----------------------------------
+<% @email.error_messages.each do |message| %>
+
+* <%= message %>
+<% end %>
+
+-----------------------------------
+-----------------------------------
+
+
+We are sorry for the inconvenience. Contact support@positivespace.io if you have any questions.
+
+
+DO NOT REPLY TO THIS EMAIL

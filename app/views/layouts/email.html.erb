@@ -31,6 +31,9 @@
 
 			/* Constrain email width for small screens */
 			@media only screen and (max-width: 600px) {
+				table[class="reply-container"] {
+					width: 95% !important;
+				}
 				table[class="container"] {
 					width: 95% !important;
 				}
@@ -59,7 +62,32 @@
 
 
 	<body bgcolor="#f9f9f8" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" offset="0">
-		<center>
+		<center id='wrapper'>
+
+			<% if @direct_reply_message %>
+				<table border="0" width="100%" cellpadding="0" cellspacing="0" id="reply_header">
+					<tr>
+						<td align="center" valign="middle" id="reply_cell">
+
+							<table border="0" cellpadding="0" cellspacing="0" class="reply-container">
+								<tr>
+									<td class="reply-container-padding">
+
+										<% if @max_char_count %>
+											<div class='char-count'>
+												<%= @max_char_count %> character limit
+											</div>
+										<% end %>
+										<div><%= raw @direct_reply_message %></div>
+
+									</td>
+								</tr>
+							</table>
+
+						</td>
+					</tr>
+				</table>
+			<% end %>
 
 			<table border="0" width="100%" height="100%" cellpadding="0" cellspacing="0" bgcolor="#f9f9f8" id="body_table">
 				<tr>
