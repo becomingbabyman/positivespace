@@ -28,7 +28,7 @@
 			</div>
 
 			<div class='body'>
-				<%= message.body %>
+				<%= raw h(message.body).gsub(/\n/, '<br/>') %>
 			</div>
 		</div>
 	<% end %>
@@ -44,7 +44,7 @@
 	</div>
 
 	<div class='body'>
-		<%= @message.conversation.prompt %>
+		<%= raw h(@message.conversation.prompt).gsub(/\n/, '<br/>') %>
 	</div>
 
 	<div class='link'>

@@ -27,7 +27,7 @@
 		</div>
 
 		<div class='body'>
-			<%= message.body %>
+			<%= raw h(message.body).gsub(/\n/, '<br/>') %>
 		</div>
 
 		<div class='link'>

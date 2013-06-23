@@ -29,7 +29,7 @@
 
 		<% if follow.follower.body and follow.follower.body.size > 0 %>
 			<div class='body'>
-				<%= follow.follower.body %>
+				<%= raw h(follow.follower.body).gsub(/\n/, '<br/>') %>
 			</div>
 
 			<div class='link'>

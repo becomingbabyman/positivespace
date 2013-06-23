@@ -27,7 +27,7 @@
 		</div>
 
 		<div class='body'>
-			<%= conversation.last_message.body %>
+			<%= raw h(conversation.last_message.body).gsub(/\n/, '<br/>') %>
 		</div>
 
 		<div class='link'>

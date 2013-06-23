@@ -15,7 +15,7 @@ class NotificationsMailer < ActionMailer::Base
     @message = Message.find message_id
     @reply_path = "conversations/#{@message.conversation_id}?message_id=#{@message.id}"
 
-    @direct_reply_message = "Reply to <b>@#{@message.from.username}</b> above"
+    @direct_reply_message = "Reply via email to <b>@#{@message.from.username}</b>"
     @max_char_count = @message.max_char_count
 
     headers['X-Character-Limit'] = @message.max_char_count - Message::CHAR_COUNT_PADDING
