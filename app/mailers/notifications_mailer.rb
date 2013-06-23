@@ -18,6 +18,9 @@ class NotificationsMailer < ActionMailer::Base
     @direct_reply_message = "Reply to <b>@#{@message.from.username}</b> above"
     @max_char_count = @message.max_char_count
 
+    headers['X-Character-Limit'] = @message.max_char_count - Message::CHAR_COUNT_PADDING
+    headers['X-Reply-Character-Limit'] = @message.max_char_count
+
     from = Mail::Address.new "notifications@positivespace.io"
     from.display_name = @message.from.name.tr(EMAIl_CHARS, '')
     reply_to = Mail::Address.new "notifications+message_#{@message.id}_#{@message.authentication_token}@positivespace.mailgun.org"
