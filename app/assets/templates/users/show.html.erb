@@ -114,7 +114,7 @@
 										title='share on pinterest'
 										share="pinterest"
 										share-url="http://www.positivespace.io/{{user.slug}}"
-										share-name="Let’s talk about - {{user.body}} - on Positive Space"
+										share-name="Let’s talk about - {{user.space.prompt}} - on Positive Space"
 										share-image="{{user.avatar.large_url}}"
 									><i class="share icon-pinterest"></i></a>
 									<a class="color-facebook" href="#"
@@ -122,21 +122,21 @@
 										share="facebook send"
 										share-url="http://www.positivespace.io/{{user.slug}}"
 										share-name="Have a conversation with {{user.name}}"
-										share-desc="{{user.body}}"
+										share-desc="{{user.space.prompt}}"
 										share-image="{{user.avatar.large_url}}"
 									><i class="share icon-facebook-sign"></i></a>
 									<a class="color-twitter" href="#"
 										title='share on twitter'
 										share="twitter"
 										share-url="http://www.positivespace.io/{{user.slug}}"
-										share-name="Talk with {{user.name}} about {{user.body}}"
+										share-name="Talk with {{user.name}} about {{user.space.prompt}}"
 									><i class="share icon-twitter"></i></a>
 									<a class="color-tumblr" href="#"
 										title='share on tumblr'
 										share="tumblr"
 										share-url="http://www.positivespace.io/{{user.slug}}"
 										share-name="Have a conversation with {{user.name}}"
-										share-desc="{{user.body}}"
+										share-desc="{{user.space.prompt}}"
 										share-image="{{user.avatar.large_url}}"
 									><img src="<%= asset_path 'tumblr64.png' %>" alt='tumblr' style='width: 42px; height: 42px; margin-top: -10px;'></a>
 									<a class="color-stumbleupon" href="#"
@@ -192,7 +192,7 @@
 
 			<br/>
 
-			<div class='row animated fadeInUp ptl' ng-show="!user.body || user.body.length == 0">
+			<div class='row animated fadeInUp ptl' ng-show="!user.space.prompt || user.space.prompt.length == 0">
 				<div class="span-mobile center">
 					<div class='well well-small'>
 						This space is empty. Tell {{user.name}} to fill it in.
@@ -210,7 +210,7 @@
 				</div>
 			</div>
 
-			<div class='row animated fadeInDown ptl' ng-hide="!show.form || (conversation && conversation.prompt == user.body)">
+			<div class='row animated fadeInDown ptl' ng-hide="!show.form || (conversation && conversation.prompt == user.space.prompt)">
 				<div class="span-mobile center pos-rel">
 					<form name='messageForm' class='form-vertical uncenter' ng-submit='submitMessage()' novalidate style='width: 100%;'>
 
@@ -245,7 +245,7 @@
 			</div>
 
 
-			<div class='row animated fadeInUp ptl' ng-show="conversation && conversation.prompt == user.body">
+			<div class='row animated fadeInUp ptl' ng-show="conversation && conversation.prompt == user.space.prompt">
 				<div class="span-mobile center">
 					<div class='well'>
 						You are already engaged in a conversation about this exact topic

@@ -99,7 +99,7 @@ ps.controller "UsersEditCtrl", ["$scope", "$routeParams", "$timeout", "$location
             $location.path("/#{$scope.user.slug}")
 
         # Can the user close the edit form?
-        if !$scope.user.body? or $scope.user.body.length == 0
+        if !$scope.user.space.prompt? or $scope.user.space.prompt.length == 0
             $scope.space.cantCloseEdit = true
 
         $scope.app.meta.title = "Edit #{$scope.user.name}"
@@ -114,7 +114,7 @@ ps.controller "UsersEditCtrl", ["$scope", "$routeParams", "$timeout", "$location
             routeId: $routeParams.user_id
             userId: $scope.user.id
             userName: $scope.user.name
-            userBody: $scope.user.body
+            userPrompt: $scope.user.space.prompt
     , (error) ->
         $scope.app.flash('info', 'Log in to edit your profile')
         $location.search('path', window.location.pathname)
@@ -123,15 +123,15 @@ ps.controller "UsersEditCtrl", ["$scope", "$routeParams", "$timeout", "$location
         analytics.track 'view edit space error',
             routeId: $routeParams.user_id
 
-    $scope.$watch 'user.body', (value) ->
-        $scope.userBodyRemaining = 250 - (if value? then value.length else 0)
+    $scope.$watch 'user.space.prompt', (value) ->
+        $scope.userPromptRemaining = 250 - (if value? then value.length else 0)
 
     $scope.usernameIsUnset = ->
         if $scope.user then parseInt($scope.originalUsername) == $scope.user.id else false
 
     # TODO: revert to original profile if close is clicked instead of save
     $scope.saveSpace = ->
-        if $scope.user.body? and $scope.user.body.length > 0
+        if $scope.user.space.prompt? and $scope.user.space.prompt.length > 0
             $scope.app.show.loading = true
             success = (data) ->
                 $scope.app.show.loading = false
@@ -141,7 +141,7 @@ ps.controller "UsersEditCtrl", ["$scope", "$routeParams", "$timeout", "$location
                     routeId: $routeParams.user_id
                     userId: $scope.user.id
                     userName: $scope.user.name
-                    userBody: $scope.user.body
+                    userPrompt: $scope.user.space.prompt
                     firstSave: $scope.space.cantCloseEdit
                 $scope.app.loadCurrentUser()
                 $location.path("/#{$scope.user.slug}")
@@ -153,12 +153,12 @@ ps.controller "UsersEditCtrl", ["$scope", "$routeParams", "$timeout", "$location
                     routeId: $routeParams.user_id
                     userId: $scope.user.id
                     userName: $scope.user.name
-                    userBody: $scope.user.body
+                    userPrompt: $scope.user.space.prompt
                     firstSave: $scope.space.cantCloseEdit
                     error: JSON.stringify(error)
             $scope.user.save success, error
         else
-            angular.element('textarea#user_body').focus()
+            angular.element('textarea#user_space_prompt').focus()
             $scope.app.flash 'info', "Please share what you want to talk about. Then you can see your space."
 
 ]
@@ -173,12 +173,12 @@ root.usersShowCtrl = ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "
     $scope.chart = { values: $q.defer() }
 
     $scope.app.meta.title = "#{$scope.user.name}"
-    $scope.app.meta.description = "#{$scope.user.body}"
+    $scope.app.meta.description = "#{$scope.user.space.prompt}"
     $scope.app.meta.imageUrl = $scope.user.avatar.big_thumb_url
 
     $scope.show.form = if $routeParams['respond'] == 'true' then true else false
 
-    if !$scope.user.body? or $scope.user.body.length == 0
+    if !$scope.user.space.prompt? or $scope.user.space.prompt.length == 0
         $scope.app.dcu.promise.then (currentUser) ->
             if $scope.user.id == currentUser.id
                 $location.path("/#{currentUser.slug}/edit")
@@ -233,7 +233,7 @@ root.usersShowCtrl = ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "
                 routeId: $routeParams.user_id
                 userId: $scope.user.id
                 userName: $scope.user.name
-                userBody: $scope.user.body
+                userPrompt: $scope.user.space.prompt
                 currentId: $scope.app.currentUser.id
                 currentName: $scope.app.currentUser.name
 
@@ -253,7 +253,7 @@ root.usersShowCtrl = ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "
                     routeId: $routeParams.user_id
                     userId: $scope.user.id
                     userName: $scope.user.name
-                    userBody: $scope.user.body
+                    userPrompt: $scope.user.space.prompt
                     fromId: $scope.app.currentUser.id
                     fromName: $scope.app.currentUser.name
                     hasEmbedUrl: $scope.message.embed_url?
@@ -265,7 +265,7 @@ root.usersShowCtrl = ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "
                     routeId: $routeParams.user_id
                     userId: $scope.user.id
                     userName: $scope.user.name
-                    userBody: $scope.user.body
+                    userPrompt: $scope.user.space.prompt
                     fromId: $scope.app.currentUser.id
                     fromName: $scope.app.currentUser.name
                     hasEmbedUrl: $scope.message.embed_url?
@@ -280,7 +280,7 @@ root.usersShowCtrl = ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "
                 routeId: $routeParams.user_id
                 userId: $scope.user.id
                 userName: $scope.user.name
-                userBody: $scope.user.body
+                userPrompt: $scope.user.space.prompt
                 error: 'not logged in'
 ]
 root.usersShowCtrl.loadUser = ["$q", "$route", "User", ($q, $route, User) ->
@@ -292,7 +292,7 @@ root.usersShowCtrl.loadUser = ["$q", "$route", "User", ($q, $route, User) ->
             routeId: $route.current.params.user_id
             userId: user.id
             userName: user.name
-            userBody: user.body
+            userPrompt: user.space.prompt
     , (error) ->
         defered.reject(error)
         analytics.track 'view space error',

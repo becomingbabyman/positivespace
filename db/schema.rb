@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130622143625) do
+ActiveRecord::Schema.define(:version => 20130623211833) do
 
   create_table "administrators", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -235,6 +235,21 @@ ActiveRecord::Schema.define(:version => 20130622143625) do
   add_index "shortened_urls", ["unique_key"], :name => "index_shortened_urls_on_unique_key", :unique => true
   add_index "shortened_urls", ["url"], :name => "index_shortened_urls_on_url"
 
+  create_table "spaces", :force => true do |t|
+    t.integer  "user_id"
+    t.text     "prompt"
+    t.text     "state"
+    t.text     "embed_url"
+    t.text     "embed_data"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "spaces", ["embed_url"], :name => "index_spaces_on_embed_url"
+  add_index "spaces", ["prompt"], :name => "index_spaces_on_prompt"
+  add_index "spaces", ["state"], :name => "index_spaces_on_state"
+  add_index "spaces", ["user_id"], :name => "index_spaces_on_user_id"
+
   create_table "users", :force => true do |t|
     t.string   "email",                       :default => "",                         :null => false
     t.string   "encrypted_password",          :default => "",                         :null => false
@@ -281,6 +296,7 @@ ActiveRecord::Schema.define(:version => 20130622143625) do
     t.integer  "mentioners_count",            :default => 0
     t.integer  "remaining_invitations_count", :default => 0
     t.text     "settings",                    :default => "--- {}\n"
+    t.text     "bio"
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true

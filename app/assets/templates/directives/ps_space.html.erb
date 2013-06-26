@@ -47,7 +47,7 @@
 				</h3>
 
 				<div class="prompt-wrapper">
-					<p ng-bind-html-unsafe="user.body | linebreaks" class='prompt'>{{user.body}}</p>
+					<p ng-bind-html-unsafe="user.space.prompt | linebreaks" class='prompt'>{{user.space.prompt}}</p>
 
 					<div class="hoverable center">
 						<a href="/{{user.slug}}" style='position: absolute; left: 10px; top: 10px;' class='visible-desktop'>
@@ -71,7 +71,7 @@
 						title='share on pinterest'
 						share="pinterest"
 						share-url="http://www.positivespace.io/{{user.slug}}"
-						share-name="Let’s talk about - {{user.body}} - on Positive Space"
+						share-name="Let’s talk about - {{user.space.prompt}} - on Positive Space"
 						share-image="{{user.avatar.large_url}}"
 					><i class="share icon-pinterest"></i> <span class='font16'>Pin</span></a>
 					<a class="color-facebook prs opacity5 opacity-full-hover" href="#"
@@ -79,21 +79,21 @@
 						share="facebook send"
 						share-url="http://www.positivespace.io/{{user.slug}}"
 						share-name="Have a conversation with {{user.name}}"
-						share-desc="{{user.body}}"
+						share-desc="{{user.space.prompt}}"
 						share-image="{{user.avatar.large_url}}"
 					><i class="share icon-facebook-sign"></i> <span class='font16'>Send</span></a>
 					<a class="color-twitter prs opacity5 opacity-full-hover" href="#"
 						title='share on twitter'
 						share="twitter"
 						share-url="http://www.positivespace.io/{{user.slug}}"
-						share-name="Talk with {{user.name}} about {{user.body}}"
+						share-name="Talk with {{user.name}} about {{user.space.prompt}}"
 					><i class="share icon-twitter"></i> <span class='font16'>Tweet</span></a>
 					<a class="color-tumblr prs opacity5 opacity-full-hover" href="#"
 						title='share on tumblr'
 						share="tumblr"
 						share-url="http://www.positivespace.io/{{user.slug}}"
 						share-name="Have a conversation with {{user.name}}"
-						share-desc="{{user.body}}"
+						share-desc="{{user.space.prompt}}"
 						share-image="{{user.avatar.large_url}}"
 					><img src="<%= asset_path 'tumblr24.png' %>" alt='tumblr' style='width: 20px; height: 20px; margin-top: -5px;'> <span class='font16'>Post</span></a>
 					<a class="color-stumbleupon prs opacity5 opacity-full-hover" href="#"
@@ -122,7 +122,7 @@
 				<a ng-show='!showShareMini && user.personal_url.length > 0' href='{{user.personal_url}}' target='_blank' class='ghost uncenter mtl mrl font20' tooltip="{{user.personal_url}}">
 					<i class="icon-link"></i>
 				</a>
-				<!-- <i ng-show='!showShareMini && user.body.length > 0' class='icon-book ghost uncenter mtl mrl font20' tooltip=''></i> -->
+				<!-- <i ng-show='!showShareMini && user.space.prompt.length > 0' class='icon-book ghost uncenter mtl mrl font20' tooltip=''></i> -->
 
 				<!-- <div class='ptl'>
 					<i class='icon-certificate faded prm' title='verified account'></i>

@@ -60,7 +60,7 @@
 	</div>
 
 	<div class="container">
-		<div ng-show='app.loggedIn() && !app.currentUser.body' class="row ptl pbl">
+		<div ng-show='app.loggedIn() && !app.currentUser.space.prompt' class="row ptl pbl">
 			<div class="span-mobile center">
 				<div class='row-fluid'>
 					<a href='/{{app.currentUser.slug}}/edit'>

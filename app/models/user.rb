@@ -27,11 +27,11 @@ class User < ActiveRecord::Base
 				indexes :id,            type: 'integer', index:    :not_analyzed
 				indexes :slug,          type: 'string',  analyzer: 'keyword'
 				indexes :state,         type: 'string',  analyzer: 'keyword'
-				indexes :name,          type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball'
-				indexes :body,          type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball' #, :boost => 2.0
-				indexes :username,      type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball'
-				indexes :location,      type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball'
-				indexes :personal_url,  type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball'
+				indexes :name,          type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball', :boost => 10.0
+				indexes :bio,           type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball', :boost => 10.0
+				indexes :username,      type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball', :boost => 10.0
+				indexes :location,      type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball', :boost => 10.0
+				indexes :personal_url,  type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball', :boost => 5.0
 				indexes :gender,  		type: 'string',  analyzer: 'keyword'
 				indexes :locale,  		type: 'string',  analyzer: 'keyword'
 				indexes :timezone,		type: 'string',  analyzer: 'keyword'
@@ -39,6 +39,8 @@ class User < ActiveRecord::Base
 				indexes :created_at,    type: 'date'
 				indexes :avatar_thumb_url, type: 'string', index:  :not_analyzed
 				indexes :personal_url_root, type: 'string', index:  :not_analyzed
+				indexes :current_space_prompt,  type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball', :boost => 10.0
+				indexes :current_space_embed_url,  type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball', :boost => 5.0
 			end
 		end
 	end
@@ -91,7 +93,7 @@ class User < ActiveRecord::Base
 
 	attr_accessor :login, :invitation_code, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :endorse_user_id
 	attr_accessible :username, :login, :email, :password, :password_confirmation, :remember_me
-	attr_accessible :body, :location, :name, :personal_url, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :settings #, :positive_response, :negative_response
+	attr_accessible :bio, :location, :name, :personal_url, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :settings #, :positive_response, :negative_response
 	attr_protected :none, as: :admin
 
 	serialize :achievements
@@ -107,6 +109,7 @@ class User < ActiveRecord::Base
 	acts_as_liker
 	acts_as_likeable
 	acts_as_mentionable
+	has_many :spaces, :order => 'created_at desc'
 	has_many :images, :as => :attachable
 	has_many :avatars, :as => :attachable, :source => :images, :class_name => "Image", :conditions => {image_type: "avatar"}, :order => 'created_at desc'
 	has_many :sent_messages, :foreign_key => :from_id, :class_name => 'Message', :order => 'created_at desc'
@@ -119,7 +122,7 @@ class User < ActiveRecord::Base
 	accepts_nested_attributes_for :images, :avatars
 
 	validates :username, :uniqueness => {:case_sensitive => false}, :length => 3..18, :allow_blank => true, :if => Proc.new { |user| user.username != user.id.to_s }
-	validates :body, length: 25..250, allow_blank: true
+	validates :bio, length: 1..250, allow_blank: true
 	validates :positive_response, length: 1..250, allow_blank: true
 	validates :negative_response, length: 1..250, allow_blank: true
 	validate  :validate_username_format
@@ -182,12 +185,12 @@ class User < ActiveRecord::Base
 	def self.search(params)
 		tire.search(load: false, page: params[:page], per_page: params[:per]) do
 			query do
-				match [:name, :username, :body, :location, :personal_url], params[:q]
+				match [:name, :username, :bio, :location, :personal_url, :current_space_prompt, :current_space_embed_url], params[:q]
 				## TODO: try to set default_operator, maybe it can't be set on a match
 				# default_operator: "AND"
 			end
-			filter :exists, { field: :body }
-			filter :not, { term: { body: '' } }
+			filter :exists, { field: :current_space_prompt }
+			filter :not, { term: { current_space_prompt: '' } }
 			filter :not, { term: { state: :unendorsed } }
 		end
 	end
@@ -199,7 +202,7 @@ class User < ActiveRecord::Base
 			slug: slug,
 			state: state,
 			name: name,
-			body: body,
+			bio: bio,
 			username: username,
 			location: location,
 			personal_url: personal_url,
@@ -210,6 +213,9 @@ class User < ActiveRecord::Base
 			created_at: created_at,
 			avatar_thumb_url: avatar.try(:image).try(:thumb).try(:url),
 			personal_url_root: personal_url_root,
+
+			current_space_prompt: space.try(:prompt),
+			current_space_embed_url: space.try(:embed_url),
 		}.to_json
 	end
 
@@ -258,6 +264,10 @@ class User < ActiveRecord::Base
 
 	def conversations
 		Conversation.with(self.id)
+	end
+
+	def space
+		self.spaces.first
 	end
 
 	def avatar
@@ -368,9 +378,9 @@ class User < ActiveRecord::Base
 		self.settings[:notifications][:email] = {}
 		self.settings[:notifications][:email][:every_new_message] = true
 		self.settings[:notifications][:email][:daily_new_messages_digest] = false
-		self.settings[:notifications][:email][:weekly_new_messages_digest] = true
-		self.settings[:notifications][:email][:daily_pending_messages_reminder] = true
-		self.settings[:notifications][:email][:weekly_pending_messages_reminder] = false
+		self.settings[:notifications][:email][:weekly_new_messages_digest] = false
+		self.settings[:notifications][:email][:daily_pending_messages_reminder] = false
+		self.settings[:notifications][:email][:weekly_pending_messages_reminder] = true
 		self.settings[:notifications][:email][:new_followers] = true
 		self.settings[:notifications][:email][:spaces_you_might_like] = true
 		self.settings[:notifications][:email][:new_spaces] = true

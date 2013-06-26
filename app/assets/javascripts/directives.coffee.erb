@@ -461,7 +461,7 @@ psDirectives.directive "psSpace", ["$location", "User", ($location, User) ->
 							routeId: $routeParams.user_id
 							userId: scope.user.id
 							userName: scope.user.name
-							userBody: scope.user.body
+							userPrompt: scope.user.space.prompt
 							currentId: scope.app.currentUser.id
 							currentName: scope.app.currentUser.name
 					, (error) ->
@@ -473,7 +473,7 @@ psDirectives.directive "psSpace", ["$location", "User", ($location, User) ->
 							routeId: $routeParams.user_id
 							userId: scope.user.id
 							userName: scope.user.name
-							userBody: scope.user.body
+							userPrompt: scope.user.space.prompt
 							currentId: scope.app.currentUser.id
 							currentName: scope.app.currentUser.name
 							error: JSON.stringify(error)
@@ -498,7 +498,7 @@ psDirectives.directive "psSpace", ["$location", "User", ($location, User) ->
 							routeId: $routeParams.user_id
 							userId: scope.user.id
 							userName: scope.user.name
-							userBody: scope.user.body
+							userPrompt: scope.user.space.prompt
 							currentId: scope.app.currentUser.id
 							currentName: scope.app.currentUser.name
 					, (error) ->
@@ -509,7 +509,7 @@ psDirectives.directive "psSpace", ["$location", "User", ($location, User) ->
 							routeId: $routeParams.user_id
 							userId: scope.user.id
 							userName: scope.user.name
-							userBody: scope.user.body
+							userPrompt: scope.user.space.prompt
 							currentId: scope.app.currentUser.id
 							currentName: scope.app.currentUser.name
 							error: JSON.stringify(error)
