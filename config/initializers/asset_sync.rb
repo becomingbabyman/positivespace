@@ -5,10 +5,10 @@ AssetSync.configure do |config|
   config.fog_directory = ENV['FOG_DIRECTORY']
 
   # Increase upload performance by configuring your region
-  # config.fog_region = 'eu-west-1'
-  #.
-  # Don't delete files from the store
-  # config.existing_remote_files = "keep"
+  config.fog_region = 'us-east-1'
+  #
+  # Delete files from the store
+  config.existing_remote_files = "delete"
   #
   # Automatically replace files with their equivalent gzip compressed version
   config.gzip_compression = true
@@ -18,5 +18,5 @@ AssetSync.configure do |config|
   config.manifest = true
   #
   # Fail silently.  Useful for environments such as Heroku
-  # config.fail_silently = true
+  config.fail_silently = false
 end
