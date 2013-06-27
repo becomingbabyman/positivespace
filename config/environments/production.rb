@@ -81,11 +81,11 @@ Positivespace::Application.configure do
 
   # config.static_cache_control = "public, max-age=2592000"
 
-  # config.action_controller.asset_host = Proc.new do |source, request=nil|
-  #   # Serves HTML and Fonts Locally
-  #   /.html$/.match(source) ? '//www.positivespace.io' : ENV['FOG_HOST_SSL']
-  # end
-  config.action_controller.asset_host = ENV['FOG_HOST_SSL']
+  config.action_controller.asset_host = Proc.new do |source, request=nil|
+    # Serves HTML and Fonts Locally
+    /.html$/.match(source) ? '//www.positivespace.io' : ENV['FOG_HOST_SSL']
+  end
+  # config.action_controller.asset_host = ENV['FOG_HOST_SSL']
   # config.action_controller.asset_host = Proc.new do |source, request=nil|
   #   if request and request.ssl?
   #     ENV['FOG_HOST_SSL']
