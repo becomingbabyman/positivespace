@@ -82,7 +82,7 @@ Positivespace::Application.configure do
   # config.static_cache_control = "public, max-age=2592000"
 
   config.action_controller.asset_host = Proc.new do |source, request=nil|
-    # Serves HTML and Fonts Locally
+    # Serves HTML and Fonts Locally(fonts for firefox support)
     /.html$|.eot$|.ttf$|.woff$|.otf$/.match(source) ? '//www.positivespace.io' : ENV['FOG_HOST_SSL']
   end
   # config.action_controller.asset_host = ENV['FOG_HOST_SSL']
