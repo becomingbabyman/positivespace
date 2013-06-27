@@ -103,9 +103,17 @@
 					><img src="<%= asset_path 'stumbleupon128.png' %>" alt='stumbleupon' style='width: 20px; height: 20px; margin-top: -5px;'> <span class='font16'>Stumble</span></a>
 					<br/>
 					<br/>
+					<a class="color-email prs opacity5 opacity-full-hover" href="#"
+						title='share via email'
+						share="email"
+						share-name="You should have a conversation with {{user.name}}"
+						share-desc="{{user.name}} said:
+						{{user.body}}"
+						share-url="Learn more: http://www.positivespace.io/{{user.slug}}"
+					><i class="share icon-envelope"></i> <span class='font16'>Email</span></a>
 					<span class="opacity5 opacity-full-hover" title="share link to {{user.name | possessive}} space">
 						<i class="font20 icon-link muted" ng-click="app.selectText('share-url-mini')"></i>
-						<pre ng-click="app.selectText('share-url-mini')" class="share-url-mini sans bold font12" style="padding:2px 4px; max-width: 150px; overflow: hidden; white-space:nowrap; display: inline-block; vertical-align: top;">http://www.positivespace.io/{{user.slug}}</pre> <span class='font16'>Link</span>
+						<pre ng-click="app.selectText('share-url-mini')" class="share-url-mini sans bold font12" style="padding:2px 4px; max-width: 150px; overflow: hidden; white-space:nowrap; display: inline-block; vertical-align: top;">http://www.positivespace.io/{{user.slug}}</pre> <span ng-click="app.selectText('share-url-mini')" class='font16'>Link</span>
 					</span>
 					<a href="#" class='font18 unfancy-link opacity5 opacity-full-hover pll vac' ng-click="showShareMini = !showShareMini" title="close">
 						<i class="icon-remove-circle"></i>
