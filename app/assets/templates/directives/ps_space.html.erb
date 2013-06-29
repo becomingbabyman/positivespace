@@ -30,24 +30,28 @@
 
 
 			<div class='span12 uncenter'>
-				<h3 class='pbs ghost' title='@{{user.username}}'>
+				<h3 class='mbx ghost' title='@{{user.username}}'>
 					<a href="#" class='ghost' title='follow' ng-hide='user.has_follow || user.id == app.currentUser.id' ng-class="{'hidden-desktop': (!user.has_follow && user.id != app.currentUser.id)}" ng-click='social("follow")'>
 						<i class="icon-bookmark-empty pull-right" title='follow'></i>
 					</a>
 					<a href="#" class='color-purple' title="unfollow" ng-show='user.has_follow' ng-click='social("unfollow")'>
 						<i class="icon-bookmark pull-right" title='unfollow'></i>
 					</a>
-					<a href="/{{user.slug}}">
-						<i class="icon-user color-blue pull-right" ng-show='user.relationship == "self"' title='You are yourself.'></i>
-						<i class="icon-retweet ghost pull-right" ng-show='user.relationship == "none"' title='You and {{user.name}} have never spoken.'></i>
-						<i class="icon-retweet color-yellow opacity5 pull-right" ng-show='user.relationship == "spoken"' title='You and {{user.name}} have spoken in the past.'></i>
-						<i class="icon-retweet color-yellow pull-right" ng-show='user.relationship == "speaking"' title='You and {{user.name}} are in the middle of a conversation.'></i>
+					<a href="/{{user.slug}}" ng-show='user.relationship != "self"'>
+						<i class="mts icon-retweet ghost pull-right" ng-show='user.relationship == "none"' title='You and {{user.name}} have never spoken.'></i>
+						<i class="mts icon-retweet color-yellow opacity5 pull-right" ng-show='user.relationship == "spoken"' title='You and {{user.name}} have spoken in the past.'></i>
+						<i class="mts icon-retweet color-yellow pull-right" ng-show='user.relationship == "speaking"' title='You and {{user.name}} are in the middle of a conversation.'></i>
 					</a>
+					<a ng-href='/{{user.slug}}/edit' class='pull-right font16 font-normal mrm' title='change your space' ng-show='user.relationship == "self"'>edit</a>
 					<a href="/{{user.slug}}" class='ghost ghost-hover'>{{user.name}}</a>
 				</h3>
 
+				<div ng-show='user.bio && user.bio.length > 0' class='pbl font14 faded'>
+					{{user.bio}}
+				</div>
+
 				<div class="prompt-wrapper">
-					<p ng-bind-html-unsafe="user.body | linebreaks" class='prompt'>{{user.body}}</p>
+					<p ng-bind-html-unsafe="user.space.prompt | linebreaks" class='prompt'>{{user.space.prompt}}</p>
 
 					<div class="hoverable center">
 						<a href="/{{user.slug}}" style='position: absolute; left: 10px; top: 10px;' class='visible-desktop'>
@@ -71,7 +75,7 @@
 						title='share on pinterest'
 						share="pinterest"
 						share-url="http://www.positivespace.io/{{user.slug}}"
-						share-name="Let’s talk about - {{user.body}} - on Positive Space"
+						share-name="Let’s talk about - {{user.space.prompt}} - on Positive Space"
 						share-image="{{user.avatar.large_url}}"
 					><i class="share icon-pinterest"></i> <span class='font16'>Pin</span></a>
 					<a class="color-facebook prs opacity5 opacity-full-hover" href="#"
@@ -79,21 +83,21 @@
 						share="facebook send"
 						share-url="http://www.positivespace.io/{{user.slug}}"
 						share-name="Have a conversation with {{user.name}}"
-						share-desc="{{user.body}}"
+						share-desc="{{user.space.prompt}}"
 						share-image="{{user.avatar.large_url}}"
 					><i class="share icon-facebook-sign"></i> <span class='font16'>Send</span></a>
 					<a class="color-twitter prs opacity5 opacity-full-hover" href="#"
 						title='share on twitter'
 						share="twitter"
 						share-url="http://www.positivespace.io/{{user.slug}}"
-						share-name="Talk with {{user.name}} about {{user.body}}"
+						share-name="Talk with {{user.name}} about {{user.space.prompt}}"
 					><i class="share icon-twitter"></i> <span class='font16'>Tweet</span></a>
 					<a class="color-tumblr prs opacity5 opacity-full-hover" href="#"
 						title='share on tumblr'
 						share="tumblr"
 						share-url="http://www.positivespace.io/{{user.slug}}"
 						share-name="Have a conversation with {{user.name}}"
-						share-desc="{{user.body}}"
+						share-desc="{{user.space.prompt}}"
 						share-image="{{user.avatar.large_url}}"
 					><img src="<%= asset_path 'tumblr24.png' %>" alt='tumblr' style='width: 20px; height: 20px; margin-top: -5px;'> <span class='font16'>Post</span></a>
 					<a class="color-stumbleupon prs opacity5 opacity-full-hover" href="#"
@@ -130,7 +134,7 @@
 				<a ng-show='!showShareMini && user.personal_url.length > 0' href='{{user.personal_url}}' target='_blank' class='ghost uncenter mtl mrl font20' tooltip="{{user.personal_url}}">
 					<i class="icon-link"></i>
 				</a>
-				<!-- <i ng-show='!showShareMini && user.body.length > 0' class='icon-book ghost uncenter mtl mrl font20' tooltip=''></i> -->
+				<!-- <i ng-show='!showShareMini && user.space.prompt.length > 0' class='icon-book ghost uncenter mtl mrl font20' tooltip=''></i> -->
 
 				<!-- <div class='ptl'>
 					<i class='icon-certificate faded prm' title='verified account'></i>

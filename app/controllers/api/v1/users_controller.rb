@@ -48,6 +48,7 @@ class Api::V1::UsersController < InheritedResources::Base
 
 	before_filter :authenticate_user!, only: [:show], :if => lambda { params[:id] == 'me' }
 	before_filter :authenticate_user!, only: [:metrics]
+	after_filter :track_impression
 	load_and_authorize_resource :only => [:update]
 
 	before_filter :pick_params, :only => [:update]
@@ -64,7 +65,6 @@ class Api::V1::UsersController < InheritedResources::Base
 
 	def show
 		@user = (params[:id] == 'me' ? current_user : User.find(params[:id]))
-		impressionist @user if @user != current_user
 		show!
 	end
 
@@ -83,5 +83,9 @@ protected
 		if user = params[:user]
 			params[:user] = pick(user, User.accessible_attributes.to_a)
 		end
+	end
+
+	def track_impression
+		impressionist @user if @user and @user != current_user
 	end
 end

@@ -45,7 +45,8 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
         analytics.identify user.id,
             name                      : user.name
             slug                      : user.slug
-            body                      : user.body
+            prompt                    : user.space?.prompt
+            embed_url                 : user.space?.embed_url
             email                     : user.email
             locale                    : user.locale
             gender                    : user.gender

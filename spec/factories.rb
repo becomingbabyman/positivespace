@@ -41,7 +41,12 @@ FactoryGirl.define do
         password '12345678'
         personal_url { generate :url }
         location { Faker::Address.city }
-        body { generate :paragraph }
+        bio { generate :paragraph }
+        after(:create) { |u| FactoryGirl.create(:space, user_id: u.id) }
+    end
+
+    factory :space do
+        prompt { generate :paragraph }
     end
 
 end

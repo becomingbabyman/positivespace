@@ -19,8 +19,13 @@ child @users => :collection do
 						html << "<div class='z3z3'>#{u.name}</div>" if u.name and u.name != u.username
 					html << "</div>"
 				html << "</div>"
+				if u.bio and u.bio.size > 0
+					html << "<div class='z4z4'>"
+						html << u.bio if u.bio
+					html << "&nbsp;</div>"
+				end
 				html << "<div class='z5'>"
-					html << u.body if u.body
+					html << u.current_space_prompt if u.current_space_prompt
 				html << "&nbsp;</div>"
 				html << "<div class='z6'>"
 					html << u.location.truncate(20) if u.location

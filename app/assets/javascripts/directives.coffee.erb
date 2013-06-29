@@ -75,6 +75,9 @@ psDirectives.directive 'controlGroup', () ->
 
 			# link
 			return (scope, element, attrs, formController) ->
+				scope.maxlength = parseInt(attrs.maxlength) if attrs.maxlength
+				scope.remainingCharCount = scope.maxlength
+
 				inputEl = findInputEl(element)
 
 				scope.input or= {}
@@ -98,6 +101,9 @@ psDirectives.directive 'controlGroup', () ->
 				if scope.field?
 					buildErrorMsg()
 					scope.$watch 'field.$error', (() -> buildErrorMsg()), true
+					if scope.maxlength?
+						scope.$watch 'field.$modelValue', (value) ->
+							scope.remainingCharCount = scope.maxlength - (if value? then value.length else 0)
 
 				# set 'focused' class on control-group
 				scope.hasFocus = false
@@ -168,6 +174,14 @@ psDirectives.directive "centerish", ["$timeout", ($timeout) ->
 
 		_.defer ->
 			center(true)
+
+		$timeout ->
+			center(true)
+		, 300
+
+		$timeout ->
+			center(true)
+		, 600
 ]
 
 
@@ -249,9 +263,9 @@ psDirectives.directive "psLinechart", [() ->
 			l = values.labels.length
 			m = 8
 			for i in [0..l-1]
-			    r.path("M#{(i*w/l)+10} #{h-m}L#{(i*w/l)+26} #{h-m}").attr({"stroke-width": 2, stroke: colors[i]})
-			    r.circle((i*w/l)+18, h-m, 2).attr({"stroke-width": 2, stroke: colors[i]})
-			    r.text((i*w/l)+30, h-m, values.labels[i]).attr({font: "12px sans-serif", 'text-anchor': 'start', fill: '#ccc'})
+				r.path("M#{(i*w/l)+10} #{h-m}L#{(i*w/l)+26} #{h-m}").attr({"stroke-width": 2, stroke: colors[i]})
+				r.circle((i*w/l)+18, h-m, 2).attr({"stroke-width": 2, stroke: colors[i]})
+				r.text((i*w/l)+30, h-m, values.labels[i]).attr({font: "12px sans-serif", 'text-anchor': 'start', fill: '#ccc'})
 			l = values.x.length
 			v = angular.copy values.x
 			v.reverse()
@@ -469,7 +483,7 @@ psDirectives.directive "psSpace", ["$location", "User", ($location, User) ->
 							routeId: $routeParams.user_id
 							userId: scope.user.id
 							userName: scope.user.name
-							userBody: scope.user.body
+							userPrompt: scope.user.space.prompt
 							currentId: scope.app.currentUser.id
 							currentName: scope.app.currentUser.name
 					, (error) ->
@@ -481,7 +495,7 @@ psDirectives.directive "psSpace", ["$location", "User", ($location, User) ->
 							routeId: $routeParams.user_id
 							userId: scope.user.id
 							userName: scope.user.name
-							userBody: scope.user.body
+							userPrompt: scope.user.space.prompt
 							currentId: scope.app.currentUser.id
 							currentName: scope.app.currentUser.name
 							error: JSON.stringify(error)
@@ -506,7 +520,7 @@ psDirectives.directive "psSpace", ["$location", "User", ($location, User) ->
 							routeId: $routeParams.user_id
 							userId: scope.user.id
 							userName: scope.user.name
-							userBody: scope.user.body
+							userPrompt: scope.user.space.prompt
 							currentId: scope.app.currentUser.id
 							currentName: scope.app.currentUser.name
 					, (error) ->
@@ -517,7 +531,7 @@ psDirectives.directive "psSpace", ["$location", "User", ($location, User) ->
 							routeId: $routeParams.user_id
 							userId: scope.user.id
 							userName: scope.user.name
-							userBody: scope.user.body
+							userPrompt: scope.user.space.prompt
 							currentId: scope.app.currentUser.id
 							currentName: scope.app.currentUser.name
 							error: JSON.stringify(error)

@@ -5,6 +5,11 @@ extends 'api/v1/users/base'
 attributes :body, :location, :personal_url, :created_at, :impressions_count, :state, :likers_count, :followers_count, :mentioners_count
 attributes :achievements, :settings, :sign_in_count, :last_sign_in_at, :updated_at, :gender, :birthday, :locale, :timezone, :remaining_invitations_count, :if => lambda { |u| can?(:update, u) }
 
+# TODO: remove this when there is a better/separate space editing UI
+node :prompt do |u|
+	u.try(:space).try(:prompt)
+end
+
 node :first_name do |user|
 	user.first_name
 end
