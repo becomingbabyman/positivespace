@@ -30,21 +30,25 @@
 
 
 			<div class='span12 uncenter'>
-				<h3 class='pbs ghost' title='@{{user.username}}'>
+				<h3 class='mbx ghost' title='@{{user.username}}'>
 					<a href="#" class='ghost' title='follow' ng-hide='user.has_follow || user.id == app.currentUser.id' ng-class="{'hidden-desktop': (!user.has_follow && user.id != app.currentUser.id)}" ng-click='social("follow")'>
 						<i class="icon-bookmark-empty pull-right" title='follow'></i>
 					</a>
 					<a href="#" class='color-purple' title="unfollow" ng-show='user.has_follow' ng-click='social("unfollow")'>
 						<i class="icon-bookmark pull-right" title='unfollow'></i>
 					</a>
-					<a href="/{{user.slug}}">
-						<i class="icon-user color-blue pull-right" ng-show='user.relationship == "self"' title='You are yourself.'></i>
-						<i class="icon-retweet ghost pull-right" ng-show='user.relationship == "none"' title='You and {{user.name}} have never spoken.'></i>
-						<i class="icon-retweet color-yellow opacity5 pull-right" ng-show='user.relationship == "spoken"' title='You and {{user.name}} have spoken in the past.'></i>
-						<i class="icon-retweet color-yellow pull-right" ng-show='user.relationship == "speaking"' title='You and {{user.name}} are in the middle of a conversation.'></i>
+					<a href="/{{user.slug}}" ng-show='user.relationship != "self"'>
+						<i class="mts icon-retweet ghost pull-right" ng-show='user.relationship == "none"' title='You and {{user.name}} have never spoken.'></i>
+						<i class="mts icon-retweet color-yellow opacity5 pull-right" ng-show='user.relationship == "spoken"' title='You and {{user.name}} have spoken in the past.'></i>
+						<i class="mts icon-retweet color-yellow pull-right" ng-show='user.relationship == "speaking"' title='You and {{user.name}} are in the middle of a conversation.'></i>
 					</a>
+					<a ng-href='/{{user.slug}}/edit' class='pull-right font16 font-normal mrm' title='change your space' ng-show='user.relationship == "self"'>edit</a>
 					<a href="/{{user.slug}}" class='ghost ghost-hover'>{{user.name}}</a>
 				</h3>
+
+				<div ng-show='user.bio && user.bio.length > 0' class='pbl font14 faded'>
+					{{user.bio}}
+				</div>
 
 				<div class="prompt-wrapper">
 					<p ng-bind-html-unsafe="user.space.prompt | linebreaks" class='prompt'>{{user.space.prompt}}</p>

@@ -10,7 +10,7 @@
 				</div>
 			</div>
 
-			<div ng-show='user.can_edit && showAdmin'>
+			<div class='overflow-hidden' ng-show='user.can_edit' ng-class="{'height0': !showAdmin}">
 
 				<div class="row pbm">
 					<div class="span-mobile center">
@@ -174,14 +174,6 @@
 						</div>
 					</div>
 				</div>
-
-				<div class="row pts pbl">
-					<div class="span-mobile center">
-						<a ng-href='/{{user.slug}}/edit' class='pull-right' title='change your space'>edit</a>
-						<h4 class="uncenter">Space</h4>
-					</div>
-				</div>
-
 			</div>
 
 

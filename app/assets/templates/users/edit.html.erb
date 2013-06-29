@@ -11,12 +11,6 @@
 			<div class="row">
 				<div class="span-mobile center pos-rel">
 
-					<div class="row">
-						<div class="span12">
-							<div class='uncenter'>Picture</div>
-						</div>
-					</div>
-
 					<div class="center animated fadeInDown">
 						<ps-img src="{{user.avatar.big_thumb_url}}" alt="{{user.name}}" img-class="img-circle img-border img-big-thumb" attachable-type='User' attachable-id='{{user.id}}' image-type='avatar' image-url='big_thumb_url' can-edit='{{user.id && user.id == app.currentUser.id}}'></ps-img>
 					</div>
@@ -34,13 +28,13 @@
 							<input name='name' id='user_name' title='your real name (not your username)' placeholder="your full name" class='input-block-level' ng-model='user.name' required></input>
 						</control-group>
 
-						<control-group label="Bio">
-							<textarea name='bio' id='user_bio' title='your brief biography' placeholder="Here are some things that I do..." class='input-block-level' ng-model='user.bio' rows=2 required maxlength=250></textarea>
+						<control-group label="Bio" maxlength=250>
+							<textarea name='bio' id='user_bio' title='your brief biography' placeholder="What have you done?" class='input-block-level' ng-model='user.bio' rows=2 required maxlength=250></textarea>
 						</control-group>
 
 						<div class="position-relative mbl mtl">
-							<control-group label="Prompt" help-block='What would you like to talk about today?'>
-								<textarea name='prompt' id='user_space_prompt' title='prompt' placeholder="Today I want to talk about..." class='input-block-level' ng-model='user.space.prompt' rows=2 required maxlength=250 ></textarea>
+							<control-group label="Prompt" maxlength=250>
+								<textarea name='prompt' id='user_space_prompt' title='prompt' placeholder="What would you like to talk about today?" class='input-block-level' ng-model='user.prompt' rows=2 required maxlength=250></textarea>
 							</control-group>
 							<i class="icon-info pull-right prm plm muted" style='position: absolute; top: 0; right: 0px;' tooltip-placement='left' tooltip-trigger='mouseenter' tooltip-html-unsafe="<span style='line-height: 1.8em; text-align: left'><ol><li>Prompt the conversation you want to have.</li><li>Everytime you change your prompt, Positive Space will update our search and discovery listings, so like-minded people will be able to easily find your space and start a 1 on 1 conversation with you.</li><li>We also use this prompt to better understand your interests and send you recomendations.</li><li><strong>Change it frequently for better recommendations.</strong></li></ol></span>"></i>
 						</div>
@@ -59,10 +53,9 @@
 							</div>
 						</div>
 
-						<div class='control-group'>
+						<div class='control-group ptl'>
 							<div class='controls'>
 								<button type='submit' class='btn btn-success pull-right'>Save your space</button>
-								<span class='pull-right pts prm' ng-class='{"muted": userBodyRemaining > 10, "text-error": userBodyRemaining <= 10}'>{{userBodyRemaining}}</span>
 							</div>
 						</div>
 

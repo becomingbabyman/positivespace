@@ -93,7 +93,7 @@ class User < ActiveRecord::Base
 
 	attr_accessor :login, :invitation_code, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :endorse_user_id
 	attr_accessible :username, :login, :email, :password, :password_confirmation, :remember_me
-	attr_accessible :bio, :location, :name, :personal_url, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :settings #, :positive_response, :negative_response
+	attr_accessible :bio, :location, :name, :personal_url, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :settings, :prompt #, :positive_response, :negative_response
 	attr_protected :none, as: :admin
 
 	serialize :achievements
@@ -276,6 +276,10 @@ class User < ActiveRecord::Base
 
 	def avatar= image
 		self.avatars.new(image: image)
+	end
+
+	def prompt= text
+		self.spaces.new(prompt: text) unless self.try(:space).try(:prompt) == text
 	end
 
 	def socialable_action= action

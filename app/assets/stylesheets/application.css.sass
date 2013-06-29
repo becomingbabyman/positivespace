@@ -467,6 +467,11 @@ input, textarea
                 @extend .img-circle
                 @extend .img-border
                 @extend .img-mini
+            .z4z4
+                font-size: 13px
+                line-height: 17px
+                color: #ccc
+                padding-bottom: 4px
             .z5
                 font-size: 14px
             .z6
@@ -657,8 +662,14 @@ input, textarea
 
     .controls
         position: relative
+        .input-wrap
+            position: relative
         input
             margin: 0
+        .remaining-char-count
+            position: absolute
+            right: 12px
+            bottom: 5px
         .error-message
             pointer-events: none
             position: absolute

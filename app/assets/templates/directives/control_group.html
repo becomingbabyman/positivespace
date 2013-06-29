@@ -5,7 +5,13 @@
     </label>
 
     <div class="controls">
-        <span ng-transclude></span>
+        <div class='input-wrap'>
+            <span ng-transclude></span>
+
+            <span ui-if='maxlength' class="remaining-char-count" ng-class='{"muted": remainingCharCount > 10, "text-error": remainingCharCount <= 10}'>
+                {{remainingCharCount}}
+            </span>
+        </div>
 
         <span ui-if='helpInline' class="help-inline">
             {{helpInline}}
