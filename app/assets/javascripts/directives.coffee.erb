@@ -30,7 +30,11 @@ fieldDirectiveDefinitionObject =
 		# Placeholder pollyfill
 		if element.prop("tagName") == 'INPUT' or element.prop("tagName") == 'TEXTAREA' then element.placeholder()
 		# Autosize
-		if element.prop("tagName") == 'TEXTAREA' then element.autosize()
+		if element.prop("tagName") == 'TEXTAREA'
+			element.autosize()
+			window.setTimeout ->
+				$(window).resize()
+			, 200
 		# On Off Switch
 		if element.prop("tagName") == 'INPUT' and attrs.type == 'checkbox' and attrs.onoffswitch? then element.onoffswitch()
 

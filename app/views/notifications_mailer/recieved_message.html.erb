@@ -29,6 +29,11 @@
 
 			<div class='body'>
 				<%= raw h(message.body).gsub(/\n/, '<br/>') %>
+				<% if message.embed_url %>
+					<div class='embed-url'>
+						<%= link_to @message.embed_url, @message.embed_url %>
+					</div>
+				<% end %>
 			</div>
 		</div>
 	<% end %>

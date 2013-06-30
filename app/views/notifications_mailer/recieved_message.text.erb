@@ -14,6 +14,10 @@ You just got a response!
 @<%= message.from.username %> said:
 
 <%= message.body %>
+<% if message.embed_url %>
+
+<%= message.embed_url %>
+<% end %>
 
 <% end %>
 ----------------------------
