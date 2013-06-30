@@ -1,7 +1,7 @@
 <div class="row space">
 	<div class="span-mobile center pos-rel">
 
-		<div class="row-fluid center hidden-desktop">
+		<div class="row-fluid center">
 			<a href="/{{user.slug}}">
 				<div class='span12 uncenter'>
 					<img ng-src="{{user.avatar.thumb_url}}" alt="{{user.name}}" class="img-circle img-border img-thumb uncenter"></img>
@@ -31,17 +31,17 @@
 
 			<div class='span12 uncenter'>
 				<h3 class='mbx ghost' title='@{{user.username}}'>
-					<a href="#" class='ghost' title='follow' ng-hide='user.has_follow || user.id == app.currentUser.id' ng-class="{'hidden-desktop': (!user.has_follow && user.id != app.currentUser.id)}" ng-click='social("follow")'>
+					<a href="#" class='ghost' title='follow' ng-hide='user.has_follow || user.id == app.currentUser.id' ng-click='social("follow")'>
 						<i class="mts icon-bookmark-empty pull-right" title='follow'></i>
 					</a>
 					<a href="#" class='color-purple' title="unfollow" ng-show='user.has_follow' ng-click='social("unfollow")'>
 						<i class="mts icon-bookmark pull-right" title='unfollow'></i>
 					</a>
-					<a href="/{{user.slug}}" ng-show='user.relationship != "self"'>
-						<i class="mts icon-retweet ghost pull-right" ng-show='user.relationship == "none"' title='You and {{user.name}} have never spoken.'></i>
+					<span ng-show='user.relationship != "self"'>
+						<i class="mts icon-retweet ghost pull-right" ng-show='user.relationship == "none"' data-ot='wat' title='You and {{user.name}} have never spoken.'></i>
 						<i class="mts icon-retweet color-yellow opacity5 pull-right" ng-show='user.relationship == "spoken"' title='You and {{user.name}} have spoken in the past.'></i>
 						<i class="mts icon-retweet color-yellow pull-right" ng-show='user.relationship == "speaking"' title='You and {{user.name}} are in the middle of a conversation.'></i>
-					</a>
+					</span>
 					<a ng-href='/{{user.slug}}/edit' class='pull-right font16 font-normal mrm' title='change your space' ng-show='user.relationship == "self"'>edit</a>
 					<a href="/{{user.slug}}" class='ghost ghost-hover'>{{user.name}}</a>
 				</h3>
@@ -53,7 +53,7 @@
 				<div class="prompt-wrapper">
 					<p ng-bind-html-unsafe="user.space.prompt | linebreaks" class='prompt'>{{user.space.prompt}}</p>
 
-					<div class="hoverable center">
+					<!-- <div class="hoverable center">
 						<a href="/{{user.slug}}" style='position: absolute; left: 10px; top: 10px;' class='visible-desktop'>
 							<img ng-src="{{user.avatar.thumb_url}}" alt="{{user.name}}" class="img-circle img-border img-thumb"></img>
 						</a>
@@ -66,7 +66,7 @@
 						<a centerish='parent' href="#" class='btnf btnf-follow active display-inline-block' ng-show='user.id != app.currentUser.id && user.has_follow' ng-click='social("unfollow")'>
 							Unfollow
 						</a>
-					</div>
+					</div> -->
 				</div>
 
 				<a href="#" class='ptl pull-right unfancy-link opacity5 opacity-full-hover' ng-hide="showShareMini" ng-click="showShareMini = !showShareMini">share</a>

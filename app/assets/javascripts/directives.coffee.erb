@@ -105,9 +105,19 @@ psDirectives.directive 'controlGroup', () ->
 				if scope.field?
 					buildErrorMsg()
 					scope.$watch 'field.$error', (() -> buildErrorMsg()), true
+
 					if scope.maxlength?
 						scope.$watch 'field.$modelValue', (value) ->
+							# Update the count
 							scope.remainingCharCount = scope.maxlength - (if value? then value.length else 0)
+							# # Fade distractions out while typing
+							# if $scope.remainingChars < scope.maxlength
+							#	if $scope.space.fadeCount == 3 then $('#msg_remaining_chars').fadeOut()
+							#	$scope.space.fadeCount += 1
+							#	$timeout ->
+							#		$scope.space.fadeCount -= 1
+							#		if $scope.space.fadeCount == 0 then $('#msg_remaining_chars').fadeIn()
+							#	, 1400
 
 				# set 'focused' class on control-group
 				scope.hasFocus = false
