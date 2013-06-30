@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
 	# before_filter :intercept_html_requests
 
 	# TODO: REMOVE: PERFORMANCE: This is killer, but I don't know a better way to bust the cache when files are updated. Maybe if we can get timestamped html served from a CDN we can remove this
-	before_filter :set_cache_buster
+	# before_filter :set_cache_buster
 
 	rescue_from CanCan::AccessDenied do |exception|
 		if request.format == Mime::HTML
