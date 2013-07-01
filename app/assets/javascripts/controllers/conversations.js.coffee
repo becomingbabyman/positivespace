@@ -71,34 +71,34 @@ root.conversationsShowCtrl = ps.controller "ConversationsShowCtrl", ["$scope", "
 				routeId: $routeParams.id
 
 	$scope.end = ->
-		if window.confirm 'This conversation is finished.'
-			$scope.conversation.state_event = 'end'
-			$scope.conversation.save (conversation) ->
-				$scope.app.currentUser.ready_conversations_count -= 1
-				$scope.app.currentUser.ended_conversations_count += 1
-				$location.path("/conversations")
-				analytics.track 'end conversation success',
-					href: window.location.href
-					routeId: $routeParams.id
-					conversationId: $scope.conversation.id
-					conversationPrompt: $scope.conversation.prompt
-					toId: $scope.conversation.to.id
-					toName: $scope.conversation.to.name
-					fromId: $scope.conversation.from.id
-					fromName: $scope.conversation.from.name
-					conversationDuration: (Date.parse(new Date) - Date.parse(new Date($scope.conversation.created_at)))
-			, (error) ->
-				analytics.track 'end conversation error',
-					href: window.location.href
-					routeId: $routeParams.id
-					conversationId: $scope.conversation.id
-					conversationPrompt: $scope.conversation.prompt
-					toId: $scope.conversation.to.id
-					toName: $scope.conversation.to.name
-					fromId: $scope.conversation.from.id
-					fromName: $scope.conversation.from.name
-					conversationDuration: (Date.parse(new Date) - Date.parse(new Date($scope.conversation.created_at)))
-					error: JSON.stringify(error)
+		# if window.confirm 'This conversation is finished.'
+		$scope.conversation.state_event = 'end'
+		$scope.conversation.save (conversation) ->
+			$scope.app.currentUser.ready_conversations_count -= 1
+			$scope.app.currentUser.ended_conversations_count += 1
+			$location.path("/conversations")
+			analytics.track 'end conversation success',
+				href: window.location.href
+				routeId: $routeParams.id
+				conversationId: $scope.conversation.id
+				conversationPrompt: $scope.conversation.prompt
+				toId: $scope.conversation.to.id
+				toName: $scope.conversation.to.name
+				fromId: $scope.conversation.from.id
+				fromName: $scope.conversation.from.name
+				conversationDuration: (Date.parse(new Date) - Date.parse(new Date($scope.conversation.created_at)))
+		, (error) ->
+			analytics.track 'end conversation error',
+				href: window.location.href
+				routeId: $routeParams.id
+				conversationId: $scope.conversation.id
+				conversationPrompt: $scope.conversation.prompt
+				toId: $scope.conversation.to.id
+				toName: $scope.conversation.to.name
+				fromId: $scope.conversation.from.id
+				fromName: $scope.conversation.from.name
+				conversationDuration: (Date.parse(new Date) - Date.parse(new Date($scope.conversation.created_at)))
+				error: JSON.stringify(error)
 
 
 	# $scope.continueConvo = ->
