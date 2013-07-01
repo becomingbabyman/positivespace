@@ -205,83 +205,16 @@ root.usersShowCtrl = ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "
             Conversation.query {user_id: currentUser.id, to: $scope.user.id, state: 'in_progress', order: 'created_at DESC'}, (conversations) ->
                 $scope.conversation = conversations.collection[0]
 
-    $scope.message = new Message {user_id: $routeParams.user_id}
-
-    $scope.$watch 'message.body', (value) ->
-        # Update the count
-        $scope.remainingChars = 250 - (if value? then value.length else 0)
-        # Fade distractions out while typing
-        if $scope.remainingChars < 250
-            if $scope.space.fadeCount == 3 then $('#msg_remaining_chars').fadeOut()
-            $scope.space.fadeCount += 1
-            $timeout ->
-                $scope.space.fadeCount -= 1
-                if $scope.space.fadeCount == 0 then $('#msg_remaining_chars').fadeIn()
-            , 1400
-
     $scope.$watch 'show.embedInput', (value) ->
         if value
             analytics.track 'click reveal embed url input',
                 href: window.location.href
                 routeId: $routeParams.id
 
-    $scope.respond = ->
-        unless $scope.show.form
-            $scope.show.form = true
-            analytics.track 'click respond',
-                href: window.location.href
-                routeId: $routeParams.user_id
-                userId: $scope.user.id
-                userName: $scope.user.name
-                userPrompt: $scope.user.space.prompt
-                currentId: $scope.app.currentUser.id
-                currentName: $scope.app.currentUser.name
-
     $scope.requestEmbedCode = ->
         analytics.track 'request embed code'
         window.alert "This feature is under development. In the meantime you can link you your space \"#{window.location.href}\" from your website or blog. And you can speak with us at \"people@positivespace.io\" and share your thoughts about embedding. We are sorry for the inconvenience."
 
-
-    $scope.submitMessage = ->
-        if $scope.app.loggedIn()
-            $scope.app.show.loading = true
-            success = (data) ->
-                $scope.app.show.loading = false
-                $scope.app.flash 'success', 'Great, your message has been sent.'
-                analytics.track 'message space success',
-                    href: window.location.href
-                    routeId: $routeParams.user_id
-                    userId: $scope.user.id
-                    userName: $scope.user.name
-                    userPrompt: $scope.user.space.prompt
-                    fromId: $scope.app.currentUser.id
-                    fromName: $scope.app.currentUser.name
-                    hasEmbedUrl: $scope.message.embed_url?
-            error = (error) ->
-                $scope.app.show.loading = false
-                $scope.app.flash 'error', error.data.errors
-                analytics.track 'message space error',
-                    href: window.location.href
-                    routeId: $routeParams.user_id
-                    userId: $scope.user.id
-                    userName: $scope.user.name
-                    userPrompt: $scope.user.space.prompt
-                    fromId: $scope.app.currentUser.id
-                    fromName: $scope.app.currentUser.name
-                    hasEmbedUrl: $scope.message.embed_url?
-                    error: JSON.stringify(error)
-            $scope.message.state_event = 'send'
-            delete $scope.message['embed_url'] unless $scope.show.embedInput
-            $scope.message.save success, error
-        else
-            $scope.app.flash 'info', 'It looks like something is missing. Please fill in all fields.'
-            analytics.track 'message space error',
-                href: window.location.href
-                routeId: $routeParams.user_id
-                userId: $scope.user.id
-                userName: $scope.user.name
-                userPrompt: $scope.user.space.prompt
-                error: 'not logged in'
 ]
 root.usersShowCtrl.loadUser = ["$q", "$route", "User", ($q, $route, User) ->
     defered = $q.defer()

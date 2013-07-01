@@ -40,9 +40,13 @@
 #= require g.raphael-min
 #= require g.line-min
 #= require moment.min
+#= require json2
+#= require amplify.core.min
+#= require amplify.store.min
 #
 # Not Currently Required
 # require jquery.jlabel
+# require sisyphus.min
 #
 
 String.prototype.addHttp = () ->

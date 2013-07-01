@@ -192,50 +192,6 @@
 				</div>
 			</div>
 
-			<div class='row animated fadeInUp ptl' ng-hide='show.form'>
-				<div class="span-mobile center">
-					<div class='row-fluid'>
-						<div class='span12 uncenter'>
-							<a href="#" ng-click='respond()' class="btnf btnf-respond">Respond</a>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class='row animated fadeInDown ptl' ng-hide="!show.form || (conversation && conversation.prompt == user.space.prompt)">
-				<div class="span-mobile center pos-rel">
-					<form name='messageForm' class='form-vertical uncenter' ng-submit='submitMessage()' novalidate style='width: 100%;'>
-
-
-						<control-group>
-							<textarea name='body' id='msg_body' title='message body' placeholder="your response ..." class='input-block-level' ng-model='message.body' cols="30" rows="4" required ng-disabled='message.id' autofocus></textarea>
-						</control-group>
-
-						<ps-subtle-login app='app'></ps-subtle-login>
-
-						<div ng-show='show.embedInput'>
-							<control-group>
-								<input type="url" name='embed_url' id='msg_embed_url' title='embed url' placeholder='http://example.com' class='input-block-level' ng-model='message.embed_url' ng-disabled='message.id'>
-							</control-group>
-						</div>
-
-						<div class='control-group'>
-							<div class='controls'>
-								<a href='#' class='muted pts pull-left' ng-click='show.embedInput = true' ng-hide='show.embedInput' tooltip='Attach a link. We will magically find and embed picture, video, audio, and more in your response.' tooltip-placement='right'><i class='icon-paper-clip font20'></i> Attach 1 link</a>
-								<a href='#' class='muted pts pull-left' ng-click='show.embedInput = false' ng-show='show.embedInput'><i class='icon-unlink font20'></i></a>
-
-								<button ng-hide='app.loggedIn()' type='submit' class='btn btn-success pull-right' ng-disabled="messageForm.body.$invalid">Continue</button>
-								<button ng-show='app.loggedIn() && !message.id' type='submit' class='btn btn-success pull-right' ng-disabled="messageForm.body.$invalid">Send</button>
-								<button ng-show='message.id' type='submit' class='btn btn-disabled pull-right' disabled>Message Sent</button>
-
-								<span class='pull-right pts prm' id='msg_remaining_chars' ng-class='{"muted": remainingChars > 10, "text-error": remainingChars <= 10}'>{{remainingChars}}</span>
-							</div>
-						</div>
-
-					</form>
-				</div>
-			</div>
-
 
 			<div class='row animated fadeInUp ptl' ng-show="conversation && conversation.prompt == user.space.prompt">
 				<div class="span-mobile center">

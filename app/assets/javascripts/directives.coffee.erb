@@ -473,7 +473,7 @@ psDirectives.directive "share", ["$location", ($location) ->
 ####################################################
 ####################################################
 # <ps-space>
-psDirectives.directive "psSpace", ["$location", "User", ($location, User) ->
+psDirectives.directive "psSpace", ["$location", "User", "Message", ($location, User, Message) ->
 	restrict: "E"
 	templateUrl: "<%= asset_path('directives/ps_space.html') %>"
 	replace: true
@@ -482,6 +482,15 @@ psDirectives.directive "psSpace", ["$location", "User", ($location, User) ->
 		user: '='
 
 	link: (scope, element, attrs) ->
+		scope.message = new Message
+
+		scope.$watch 'user.id', (id) ->
+			if id?
+				if amplify.store("message_to_#{id}")? then scope.message.body = amplify.store("message_to_#{id}")
+
+		scope.$watch 'message.body', (body) ->
+			amplify.store("message_to_#{scope.user.id}", body)
+
 		scope.endorse = ->
 			if window.confirm("\nPlease note. This action cannot be undone. \n\nEndorsing this space will make it discoverable to the Positive Space community! And this space will forever link to yours. Do you want to endorse #{scope.user.name}?")
 				if scope.app.loggedIn()
@@ -494,10 +503,9 @@ psDirectives.directive "psSpace", ["$location", "User", ($location, User) ->
 						scope.app.flash 'success', "Awesome, #{scope.user.name} is now officially part of the Positive Space community. #{scope.user.first_name} will be notified and #{window.possessive(scope.user.first_name)} space is now linked to your space."
 						analytics.track "endorse space success",
 							href: window.location.href
-							routeId: $routeParams.user_id
 							userId: scope.user.id
 							userName: scope.user.name
-							userPrompt: scope.user.space.prompt
+							userPrompt: scope.user.space?.prompt
 							currentId: scope.app.currentUser.id
 							currentName: scope.app.currentUser.name
 					, (error) ->
@@ -506,10 +514,9 @@ psDirectives.directive "psSpace", ["$location", "User", ($location, User) ->
 						scope.app.flash 'error', error.data.errors
 						analytics.track "endorse space error",
 							href: window.location.href
-							routeId: $routeParams.user_id
 							userId: scope.user.id
 							userName: scope.user.name
-							userPrompt: scope.user.space.prompt
+							userPrompt: scope.user.space?.prompt
 							currentId: scope.app.currentUser.id
 							currentName: scope.app.currentUser.name
 							error: JSON.stringify(error)
@@ -531,10 +538,9 @@ psDirectives.directive "psSpace", ["$location", "User", ($location, User) ->
 					, (user) ->
 						analytics.track "#{action} space success",
 							href: window.location.href
-							routeId: $routeParams.user_id
 							userId: scope.user.id
 							userName: scope.user.name
-							userPrompt: scope.user.space.prompt
+							userPrompt: scope.user.space?.prompt
 							currentId: scope.app.currentUser.id
 							currentName: scope.app.currentUser.name
 					, (error) ->
@@ -542,10 +548,9 @@ psDirectives.directive "psSpace", ["$location", "User", ($location, User) ->
 						scope.app.flash 'error', error.data.errors
 						analytics.track "#{action} space error",
 							href: window.location.href
-							routeId: $routeParams.user_id
 							userId: scope.user.id
 							userName: scope.user.name
-							userPrompt: scope.user.space.prompt
+							userPrompt: scope.user.space?.prompt
 							currentId: scope.app.currentUser.id
 							currentName: scope.app.currentUser.name
 							error: JSON.stringify(error)
@@ -556,6 +561,49 @@ psDirectives.directive "psSpace", ["$location", "User", ($location, User) ->
 				$location.search('path', "/#{scope.user.slug}")
 				$location.path('/login')
 
+		scope.submitMessage = ->
+			if scope.app.loggedIn()
+				scope.app.show.loading = true
+				success = (data) ->
+					scope.app.show.loading = false
+					amplify.store("message_to_#{scope.user.id}", null)
+					scope.app.flash 'success', 'Great, your message has been sent.'
+					analytics.track 'message space success',
+						href: window.location.href
+						userId: scope.user.id
+						userName: scope.user.name
+						userPrompt: scope.user.space?.prompt
+						fromId: scope.app.currentUser.id
+						fromName: scope.app.currentUser.name
+						hasEmbedUrl: scope.message.embed_url?
+				error = (error) ->
+					scope.app.show.loading = false
+					scope.app.flash 'error', error.data.errors
+					analytics.track 'message space error',
+						href: window.location.href
+						userId: scope.user.id
+						userName: scope.user.name
+						userPrompt: scope.user.space?.prompt
+						fromId: scope.app.currentUser.id
+						fromName: scope.app.currentUser.name
+						hasEmbedUrl: scope.message.embed_url?
+						error: JSON.stringify(error)
+				scope.message.user_id = scope.user.id
+				scope.message.state_event = 'send'
+				scope.message.save success, error
+			else
+				# TODO: popup login modal with prompt
+				# See copy on iPad drafts app
+				amplify.store("message_to_#{scope.user.id}", scope.message.body)
+				scope.app.flash 'info', "Log in to talk with #{scope.user.name}. Your message has been temporarily saved and you can send it after you log in."
+				$location.search('path', "/#{scope.user.slug}")
+				$location.path('/login')
+				analytics.track 'message space error',
+					href: window.location.href
+					userId: scope.user.id
+					userName: scope.user.name
+					userPrompt: scope.user.space?.prompt
+					error: 'not logged in'
 ]
 
 
