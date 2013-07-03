@@ -1,8 +1,9 @@
-<!-- <div class="container-fluid" ng-class='{opacity0: !app.show.footer, opacity4: !app.loggedIn() && app.show.footer, "opacity-full-hover": !app.loggedIn()}'>
+<div class="container-fluid opacity-full-hover" ng-class='{opacity0: !app.show.footer, opacity5: app.show.footer}'>
 	<div class="row">
 		<div class="span12 faded">
-			<a href="/about" class='muted'>about</a>
+			<a href="/purpose" class='muted'>purpose</a>
 			&middot;
+			<a href="#" class='muted hidden-phone' onclick="_bugHerd.win.bugherd.applicationView.anonymousbar.toggleOptions()">feedback &middot;</a>
 			<a href="/terms" class='muted'>terms</a>
 			&middot;
 			<a href="/privacy" class='muted'>privacy</a>
@@ -18,12 +19,7 @@
 			Positve Space &copy; {{app.year}}
 		</div>
 	</div>
-	<div class="row">
-		<div class="span12">
-			<p style='color:#ddd;'>slow down and have a conversation</p>
-		</div>
-	</div>
-</div> -->
+</div>
 
 <a href='#' class='watermark' ng-class="{'hidden-phone': (app.show.footer && !app.loggedIn()), hidden: (!app.show.footer || app.loggedIn())}" ng-click='app.clickPoweredBy()'>
 	<div class='powered-by'>powered&nbsp;by</div>

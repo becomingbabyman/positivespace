@@ -151,8 +151,9 @@ group :development do
   gem 'foreman', '0.60.2'
 
   # Profiling
-  gem 'bullet'
-  gem 'rack-mini-profiler'
+  # TODO: ALWAYS:
+  # gem 'bullet'
+  # gem 'rack-mini-profiler'
 
   # gem 'better_errors'
 

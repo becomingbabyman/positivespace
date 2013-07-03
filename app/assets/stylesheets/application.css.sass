@@ -79,7 +79,7 @@
 //        +_ SASS         //
 ////////////////////////////
 
-@include sticky-footer(80px, "#wrapper", "#layout_footer", "#footer")
+@include sticky-footer(50px, "#wrapper", "#layout_footer", "#footer")
 
 html
     // background-color: $color-background
@@ -512,7 +512,8 @@ input, textarea
 
 #footer
     .container-fluid
-        padding-top: 25px
+        @media (min-width: 520px)
+            padding-top: 15px
     .watermark
         position: fixed
         bottom: 0
