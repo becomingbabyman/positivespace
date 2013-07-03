@@ -267,7 +267,7 @@ class User < ActiveRecord::Base
 	end
 
 	def space
-		self.spaces.first
+		self.spaces.first or self.spaces.new
 	end
 
 	def avatar

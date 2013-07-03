@@ -53,7 +53,7 @@ psDirectives.directive 'textarea', () ->
 # label:        String - default null
 # helpInline:   String - default null
 # helpBlock:    String - default null
-psDirectives.directive 'controlGroup', () ->
+psDirectives.directive 'controlGroup', ["$timeout", ($timeout) ->
 
 	findInputEl = (element) ->
 		e = element.find('input')
@@ -67,6 +67,7 @@ psDirectives.directive 'controlGroup', () ->
 			label: '@'
 			helpInline: '@'
 			helpBlock: '@'
+			autosave: '@'
 		templateUrl: "<%= asset_path('directives/control_group.html') %>"
 		transclude: true
 		replace: true
@@ -82,12 +83,12 @@ psDirectives.directive 'controlGroup', () ->
 				scope.maxlength = parseInt(attrs.maxlength) if attrs.maxlength
 				scope.remainingCharCount = scope.maxlength
 
-				inputEl = findInputEl(element)
+				scope.inputEl = findInputEl(element)
 
 				scope.input or= {}
-				scope.input.id = inputEl.attr('id')
-				scope.input.name = inputEl.attr('name')
-				scope.input.title = inputEl.attr('title')
+				scope.input.id = scope.inputEl.attr('id')
+				scope.input.name = scope.inputEl.attr('name')
+				scope.input.title = scope.inputEl.attr('title')
 
 				scope.field = formController[scope.input.name]
 
@@ -106,30 +107,33 @@ psDirectives.directive 'controlGroup', () ->
 					buildErrorMsg()
 					scope.$watch 'field.$error', (() -> buildErrorMsg()), true
 
-					if scope.maxlength?
+					# TODO: REFACTOR: make this work outside of a timeout, maybe a defer
+					$timeout ->
+						if scope.autosave? and amplify.store(scope.autosave)?
+							# TODO: REFACTOR: setting the view and the model should not have to be 2 steps
+							scope.inputEl.val(amplify.store(scope.autosave))
+							scope.field.$setViewValue(amplify.store(scope.autosave))
+							$(window).resize()
+					, 200
+					if scope.maxlength? or scope.autosave?
 						scope.$watch 'field.$modelValue', (value) ->
 							# Update the count
-							scope.remainingCharCount = scope.maxlength - (if value? then value.length else 0)
-							# # Fade distractions out while typing
-							# if $scope.remainingChars < scope.maxlength
-							#	if $scope.space.fadeCount == 3 then $('#msg_remaining_chars').fadeOut()
-							#	$scope.space.fadeCount += 1
-							#	$timeout ->
-							#		$scope.space.fadeCount -= 1
-							#		if $scope.space.fadeCount == 0 then $('#msg_remaining_chars').fadeIn()
-							#	, 1400
+							if scope.maxlength? then scope.remainingCharCount = scope.maxlength - (if value? then value.length else 0)
+							# Save to local storage
+							if scope.autosave? and scope.field.$dirty
+								amplify.store(scope.autosave, value or null)
 
 				# set 'focused' class on control-group
 				scope.hasFocus = false
-				inputEl.bind 'focusin', ->
+				scope.inputEl.bind 'focusin', ->
 					scope.$apply ->
 						scope.hasFocus = true
-				inputEl.bind 'focusout', ->
+				scope.inputEl.bind 'focusout', ->
 					scope.$apply ->
 						scope.hasFocus = false
 
 	return directiveDefinitionObject
-
+]
 
 ####################################################
 ####################################################
@@ -171,10 +175,11 @@ psDirectives.directive "centerish", ["$timeout", ($timeout) ->
 			height -= $('#header').height() unless attrs.centerish == 'parent'
 			height -= $('#footer').height() unless attrs.centerish == 'parent'
 			if height > 0
+				element.css { 'position': 'relative' }
 				if animate
-					element.transition { 'margin-top': (height/3) }
+					element.transition { 'top': (height/3) }
 				else
-					element.css { 'margin-top': (height/3) }
+					element.css { 'top': (height/3) }
 
 		element.resize ->
 			center()
@@ -484,12 +489,7 @@ psDirectives.directive "psSpace", ["$location", "User", "Message", ($location, U
 	link: (scope, element, attrs) ->
 		scope.message = new Message
 
-		scope.$watch 'user.id', (id) ->
-			if id?
-				if amplify.store("message_to_#{id}")? then scope.message.body = amplify.store("message_to_#{id}")
-
-		scope.$watch 'message.body', (body) ->
-			amplify.store("message_to_#{scope.user.id}", body)
+		scope.autosave = { body: "msg_to_space_#{scope.user.space.id}" }
 
 		scope.endorse = ->
 			if window.confirm("\nPlease note. This action cannot be undone. \n\nEndorsing this space will make it discoverable to the Positive Space community! And this space will forever link to yours. Do you want to endorse #{scope.user.name}?")
@@ -566,8 +566,8 @@ psDirectives.directive "psSpace", ["$location", "User", "Message", ($location, U
 				scope.app.show.loading = true
 				success = (data) ->
 					scope.app.show.loading = false
-					amplify.store("message_to_#{scope.user.id}", null)
-					scope.app.flash 'success', 'Great, your message has been sent.'
+					amplify.store(scope.autosave.body, null)
+					# scope.app.flash 'success', 'Great, your message has been sent.'
 					analytics.track 'message space success',
 						href: window.location.href
 						userId: scope.user.id
@@ -594,7 +594,6 @@ psDirectives.directive "psSpace", ["$location", "User", "Message", ($location, U
 			else
 				# TODO: popup login modal with prompt
 				# See copy on iPad drafts app
-				amplify.store("message_to_#{scope.user.id}", scope.message.body)
 				scope.app.flash 'info', "Log in to talk with #{scope.user.name}. Your message has been temporarily saved and you can send it after you log in."
 				$location.search('path', "/#{scope.user.slug}")
 				$location.path('/login')

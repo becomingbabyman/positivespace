@@ -184,23 +184,6 @@
 
 			<br/>
 
-			<div class='row animated fadeInUp ptl' ng-show="!user.space.prompt || user.space.prompt.length == 0">
-				<div class="span-mobile center">
-					<div class='well well-small'>
-						This space is empty. Tell {{user.name}} to fill it in.
-					</div>
-				</div>
-			</div>
-
-
-			<div class='row animated fadeInUp ptl' ng-show="conversation && conversation.prompt == user.space.prompt">
-				<div class="span-mobile center">
-					<div class='well'>
-						You are already engaged in a conversation about this exact topic
-					</div>
-				</div>
-			</div>
-
 
 			<div class='row animated fadeInUp ptl' ng-show="conversation">
 				<div class="span-mobile center">

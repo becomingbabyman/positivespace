@@ -157,13 +157,13 @@ input, textarea
 
         @mixin brand-dropdown-hover-and-open
             .brand
-                .inset
-                    opacity: 0
-                    visibility: hidden
-                .colored
-                    // @include transition-duration(1s)
-                    opacity: 1
-                    visibility: visible
+                // .colored
+                //     opacity: 0
+                //     visibility: hidden
+                // .inset
+                //     // @include transition-duration(1s)
+                //     opacity: 1
+                //     visibility: visible
                 .icon-home
                     color: #ccc
                 &:before
@@ -215,7 +215,7 @@ input, textarea
                 @include transition-property(color)
                 @include transition-duration(0.4s)
                 @include transition-delay(0s)
-            .colored
+            .inset
                 opacity: 0
                 visibility: hidden
             @media (max-width: 767px)
@@ -253,7 +253,7 @@ input, textarea
                 @include transition-delay(0.7s)
                 @include transition-duration(0.7s)
                 color: #ccc
-                content: "Posi+ive Sp_ce"
+                content: "Positive Space"
                 letter-spacing: 0.1em
                 height: 40px
                 line-height: 40px
