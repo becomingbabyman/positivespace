@@ -32,9 +32,13 @@ fieldDirectiveDefinitionObject =
 		# Autosize
 		if element.prop("tagName") == 'TEXTAREA'
 			element.autosize()
+			# TODO: REFACTOR:
 			window.setTimeout ->
 				$(window).resize()
 			, 200
+			window.setTimeout ->
+				$(window).resize()
+			, 900
 		# On Off Switch
 		if element.prop("tagName") == 'INPUT' and attrs.type == 'checkbox' and attrs.onoffswitch? then element.onoffswitch()
 
