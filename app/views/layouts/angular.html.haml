@@ -6,8 +6,8 @@
 
 		#wrapper
 			#loading{"ng-include" => "app.templates.loading.url"}
-				= image_tag "ps_logo_padded.png"
-				= image_tag 'loading.gif', style: "margin-left: -132px;"
+				= image_tag "ps_logo@2x.png", style: "width: 100px; height: 64px; margin: 20px;"
+				= image_tag 'loading.gif', style: "width: 30px; position: absolute; top: 46px; left: 81px;"
 			%header#header{"ng-class" => "app.templates.header.classes", "ng-include" => "app.templates.header.url"}
 			#main{ :role => "main" }
 				#flash{"ng-include" => "app.templates.flash.url"}

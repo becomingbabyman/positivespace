@@ -31,46 +31,42 @@
 					<div ng-show="app.anyMessages()" class='count'>{{app.currentUser.ready_conversations_count}}</div>
 				</a>
 			</li>
-			<!-- <li class="dropdown">
+			<li class="dropdown" ng-show='app.loggedIn()'>
 				<a href="#" class="dropdown-toggle">
 					<i class="icon-caret-down"></i>
 				</a>
 				<ul class="dropdown-menu">
 					<li>
 						<a href="/settings">
-							<i class="icon-cogs faded prs"></i> settings
+							<i class="icon-cogs prs"></i> settings
 						</a>
 					</li>
 					<li class="divider"></li>
 					<li>
 						<a href="#" ng-click='app.logout()'>
-							<i class="icon-signout faded prs"></i> log out
+							<i class="icon-signout prs"></i> log out
 						</a>
 					</li>
 				</ul>
-			</li> -->
+			</li>
 
-			<li class='brand-dropdown-toggle' ng-class="{'hidden-desktop': !app.show.headerDropdownToggle}">
+			<!-- <li class='brand-dropdown-toggle' ng-class="{'hidden-desktop': !app.show.headerDropdownToggle}">
 				<a href="#" ng-click="app.show.headerDropdown = !app.show.headerDropdown">
 					<i class="icon-reorder font20 color-blue"></i>
 				</a>
-			</li>
+			</li> -->
 		</ul>
 
 		<div class="brand-dropdown" ng-class='{open: app.show.headerDropdown}'>
-			<a href="/" class="brand" ng-class='{"logged-in": app.loggedIn()}'>
+			<a href="#" ng-click='app.randomSpace()'  class="brand" ng-class='{"logged-in": app.loggedIn()}'>
 				<img src="<%= asset_path('ps_logo_inset@2x.png') %>" alt='Positive Space' class='inset'>
 				<img src="<%= asset_path('ps_logo@2x.png') %>" alt='Positive Space' class='colored'>
-				<i class="icon-home" ng-show='app.loggedIn() && app.currentUser.sign_in_count < 5'></i>
 			</a>
 
-			<div class="brand-dropdown-menu">
+			<!-- <div class="brand-dropdown-menu">
 				<div ng-hide='app.loggedIn()' style='height: 45px;'></div>
 				<a href="/register" class="color-blue font18" ng-hide='app.loggedIn()'>
 					Sign up
-				</a>
-				<a href="#" class='muted' ng-click='app.randomSpace()' ng-show='app.loggedIn()' title='click to see a new space'>
-					<i class="icon-random"></i>
 				</a>
 				<a href="/{{app.currentUser.slug}}" ui-scrollfix="50" class='profile' ng-show='app.loggedIn()' title="{{app.currentUser.username | possessive}} space">
 					<img ng-src="{{app.currentUser.avatar.big_thumb_url}}" alt='{{app.currentUser.username}}' class='img-circle img-border avatar'>
@@ -83,7 +79,7 @@
 					<i class="icon-cog"></i>
 				</a>
 				<a href="#" ng-click='app.logout()' class='muted' ng-show='app.loggedIn()'>log out</a>
-			</div>
+			</div> -->
 		</div>
 
 		<!-- <ul class="nav center" ng-show='app.loggedIn()'>

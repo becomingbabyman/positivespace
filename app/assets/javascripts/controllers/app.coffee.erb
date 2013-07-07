@@ -261,10 +261,10 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
     # Misc #
     ########
     $scope.app.clickPoweredBy = ->
-        $scope.app.show.headerDropdownToggle = !$scope.app.show.headerDropdown
-        $scope.app.show.headerDropdown = !$scope.app.show.headerDropdown
+        # $scope.app.show.headerDropdownToggle = !$scope.app.show.headerDropdown
+        # $scope.app.show.headerDropdown = !$scope.app.show.headerDropdown
         # $.scrollTo(0, 200)
-        $location.path("/")
+        $location.path("/purpose")
         analytics.track "click powered by"
 
     $scope.app.selectText = (className) ->

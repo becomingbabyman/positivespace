@@ -11,10 +11,11 @@ ps.config ['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvid
 	$routeProvider
 
 	.when "/",
-		controller: "UsersIndexCtrl"
-		templateUrl: "<%= asset_path('users/index.html') %>"
-		resolve:
-			users: root.usersIndexCtrl.loadUsers
+		redirectTo: '/space'
+		# controller: "UsersIndexCtrl"
+		# templateUrl: "<%= asset_path('users/index.html') %>"
+		# resolve:
+		#	users: root.usersIndexCtrl.loadUsers
 
 	# Pages
 	# .when "/",

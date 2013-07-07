@@ -152,7 +152,7 @@
 			</div>
 		</div>
 
-		<div class='row-fluid center ptl' ng-show='user.relationship != "speaking"'>
+		<div class='row-fluid center ptl'>
 			<div class="span12 uncenter">
 				<form name='messageForm' class='form-vertical uncenter' ng-submit='submitMessage()' novalidate style='width: 100%;'>
 					<control-group maxlength='250' autosave='{{autosave.body}}'>
@@ -172,13 +172,13 @@
 			</div>
 		</div>
 
-		<div class='row-fluid center ptl' ng-show='user.relationship == "speaking"'>
+		<!-- <div class='row-fluid center ptl' ng-show='user.relationship == "speaking"'>
 			<div class="span12 uncenter">
 				<a ng-href="/{{user.slug}}" class='unfancy-link'>
 					Conversation in progress
 				</a>
 			</div>
-		</div>
+		</div> -->
 
 	</div>
 </div>
