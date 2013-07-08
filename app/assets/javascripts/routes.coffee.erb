@@ -72,6 +72,8 @@ ps.config ['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvid
 	.when "/:user_id/edit",
 		controller: "UsersEditCtrl"
 		templateUrl: "<%= asset_path('users/edit.html') %>"
+		resolve:
+			user: root.usersEditCtrl.loadEditUser
 	.when "/:user_id",
 		controller: "UsersShowCtrl"
 		templateUrl: "<%= asset_path('users/show.html') %>"

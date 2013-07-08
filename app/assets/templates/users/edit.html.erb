@@ -4,7 +4,7 @@
 
 			<div ng-show='user.can_edit' class="row">
 				<div class="span-mobile center">
-					<a ng-href='/{{user.slug}}' ng-hide='space.cantCloseEdit' class='pull-right btn btn-link'>cancel</a>
+					<a ng-href='/{{user.slug}}' ng-hide='inputs.cantCloseEdit' class='pull-right btn btn-link'>cancel</a>
 				</div>
 			</div>
 
@@ -52,6 +52,14 @@
 					            </control-group>
 							</div>
 						</div>
+
+						<control-group label='Expertise' help-block='Order by skill level.' class='mtm'>
+							<input type='text' name='skills' placeholder='reading, writing, arithmetic' id='user_skills' class='input-block-level' multiple ui-select2='skillsOptions' ng-model='user.skills'></input>
+						</control-group>
+
+						<control-group label='Interests' help-block='Order by interest level.' class='mtm'>
+							<input type='text' name='interests' placeholder='walking, talking, listening' id='user_interests' class='input-block-level' multiple ui-select2='interestsOptions' ng-model='user.interests'></input>
+						</control-group>
 
 						<div class='control-group ptl'>
 							<div class='controls'>

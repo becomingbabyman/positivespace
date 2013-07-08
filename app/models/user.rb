@@ -93,7 +93,7 @@ class User < ActiveRecord::Base
 
 	attr_accessor :login, :invitation_code, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :endorse_user_id
 	attr_accessible :username, :login, :email, :password, :password_confirmation, :remember_me
-	attr_accessible :bio, :location, :name, :personal_url, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :settings, :prompt #, :positive_response, :negative_response
+	attr_accessible :bio, :location, :name, :personal_url, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :settings, :prompt, :skills, :interests #, :positive_response, :negative_response
 	attr_protected :none, as: :admin
 
 	serialize :achievements
@@ -109,6 +109,8 @@ class User < ActiveRecord::Base
 	acts_as_liker
 	acts_as_likeable
 	acts_as_mentionable
+	acts_as_ordered_taggable_on :skills, :interests
+
 	has_many :spaces, :order => 'created_at desc'
 	has_many :images, :as => :attachable
 	has_many :avatars, :as => :attachable, :source => :images, :class_name => "Image", :conditions => {image_type: "avatar"}, :order => 'created_at desc'
@@ -280,6 +282,14 @@ class User < ActiveRecord::Base
 
 	def prompt= text
 		self.spaces.new(prompt: text) unless self.try(:space).try(:prompt) == text
+	end
+
+	def skills= ids
+		self.skill_list = ids
+	end
+
+	def interests= ids
+		self.interest_list = ids
 	end
 
 	def socialable_action= action

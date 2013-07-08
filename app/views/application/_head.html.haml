@@ -31,6 +31,7 @@
     %meta{property: "og:description", content: "Positive Space is a new way to let people reach out to you. We believe that it's too hard to start a conversation with a stranger. A lot of good ideas and relationships are missed because the right people never talk."}
 
     %meta{ :name => "description", :content => "{{app.meta.description}}" }
+    %meta{ :name => "keywords", :content => "{{app.meta.keywords}}" }
     %title{ "ng-bind" => "app.currentUser.ready_conversations_count > 0 && '('+app.currentUser.ready_conversations_count+') ' + app.meta.title || app.meta.title" } Positive Space - Simply Converse
 
     = render "stylesheets"

@@ -101,6 +101,9 @@ gem 'impressionist'
 # Follow, Like, Mention
 gem 'socialization'
 
+# Tagging
+gem 'acts-as-taggable-on'
+
 # Misc
 gem 'html5-rails' # TODO: is this needed?
 gem 'possessive'

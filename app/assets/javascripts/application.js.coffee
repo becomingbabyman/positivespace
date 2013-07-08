@@ -14,6 +14,7 @@
 # TODO: deprecate jquery - for now Angular UI depends on it
 #= require jquery
 #= require jquery_ujs
+#= require select2
 #= require angularjs/angular-1.0.6.min
 #= require_tree ../../../vendor/assets/javascripts/angularjs/
 #= require underscore-min
@@ -27,7 +28,6 @@
 #= require_tree ./controllers/
 #
 # Plugins
-#= require select2
 #= require tinycon
 #= require dropzone.jquery
 #= require jquery.scrollTo-min

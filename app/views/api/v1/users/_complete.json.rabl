@@ -18,6 +18,14 @@ node :last_name do |user|
 	user.last_name
 end
 
+node :skills do |u|
+	u.skill_list
+end
+
+node :interests do |u|
+	u.interest_list
+end
+
 node :can_edit do |user|
 	can?(:update, user)
 end
