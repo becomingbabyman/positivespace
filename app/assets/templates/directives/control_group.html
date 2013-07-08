@@ -1,4 +1,4 @@
-<div class="control-group" ng-class="{error: field.$invalid && field.$dirty, success: field.$valid && field.$dirty, focused: hasFocus, unfocused: !hasFocus}">
+<div class="control-group" ng-class="{error: field.$invalid && field.$dirty && !noColor, success: field.$valid && field.$dirty && !noColor, focused: hasFocus, unfocused: !hasFocus}">
 
     <label ui-if='label' class="control-label" for="{{input.id}}">
         {{label}}

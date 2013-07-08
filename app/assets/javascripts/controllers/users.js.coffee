@@ -91,6 +91,24 @@ ps.controller "UserPasswordEditCtrl", ["$scope", "$location", "$routeParams", "U
 root.usersEditCtrl = ps.controller "UsersEditCtrl", ["$scope", "$routeParams", "$timeout", "$location", "User", "user", ($scope, $routeParams, $timeout, $location, User, user) ->
 	$scope.user = user
 	$scope.inputs = {}
+	inspirationalPeople = [
+		"Mahatma Gandhi"
+		"Mother Teresa"
+		"Martin Luther King"
+		"Albert Einstein"
+		"Leonardo da Vinci"
+		"Helen Keller"
+		"Muhammad Ali"
+		"Joan of Arc"
+		"Florence Nightingale"
+		"Anne Frank"
+		"Socrates"
+		"William Shakespeare"
+		"Eleanor Roosevelt"
+		"Rabindranath Tagore"
+		"Tenzin Gyatso"
+	]
+	$scope.inputs.namePlaceholder = inspirationalPeople[Math.floor(Math.random() * inspirationalPeople.length)]
 
 	# Can the user view the form
 	$scope.app.dcu.promise.then (currentUser) ->
@@ -136,6 +154,9 @@ root.usersEditCtrl = ps.controller "UsersEditCtrl", ["$scope", "$routeParams", "
 				# notice we return the value of more so Select2 knows if more results can be loaded
 				return {results: _.map(data.collection, ((t) -> {id: t.name, text: t.name})), more: more}
 				# return {results: _.pluck(data.collection, 'name'), more: more}
+		initSelection: (element, callback) ->
+			callback(_.map(user.skills, ((t) -> {id: t, text: t})))
+
 
 	$scope.interestsOptions =
 		tags: true
@@ -143,8 +164,23 @@ root.usersEditCtrl = ps.controller "UsersEditCtrl", ["$scope", "$routeParams", "
 		maximumInputLength: 30
 		maximumSelectionSize: 5
 		tokenSeparators: [","]
-		# TODO: search
-		# TODO: pagination
+		createSearchChoice: (term, data) ->
+			if ($(data).filter((() -> this.text.localeCompare(term) == 0)).length == 0) then {id:term, text:term}
+		ajax:
+			url: '/api/tags'
+			data: (term, page) -> # page is the one-based page number tracked by Select2
+				{
+					q: term #search term
+					per: 10 # page size
+					page: page # page number
+				}
+			results: (data, page) ->
+				more = (page * 10) < data.total # whether or not there are more results available
+				# notice we return the value of more so Select2 knows if more results can be loaded
+				return {results: _.map(data.collection, ((t) -> {id: t.name, text: t.name})), more: more}
+				# return {results: _.pluck(data.collection, 'name'), more: more}
+		initSelection: (element, callback) ->
+			callback(_.map(user.interests, ((t) -> {id: t, text: t})))
 
 
 	$scope.usernameIsUnset = ->
@@ -166,6 +202,7 @@ root.usersEditCtrl = ps.controller "UsersEditCtrl", ["$scope", "$routeParams", "
 					userId: $scope.userCopy.id
 					userName: $scope.userCopy.name
 					firstSave: $scope.inputs.cantCloseEdit
+					namePlaceholder: $scope.inputs.namePlaceholder
 				$scope.app.loadCurrentUser()
 				$location.path("/#{$scope.userCopy.slug}")
 			error = (error) ->
@@ -177,6 +214,7 @@ root.usersEditCtrl = ps.controller "UsersEditCtrl", ["$scope", "$routeParams", "
 					userId: $scope.userCopy.id
 					userName: $scope.userCopy.name
 					firstSave: $scope.inputs.cantCloseEdit
+					namePlaceholder: $scope.inputs.namePlaceholder
 					error: JSON.stringify(error)
 			$scope.userCopy.save success, error
 		else
