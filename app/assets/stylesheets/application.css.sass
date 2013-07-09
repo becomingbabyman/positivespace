@@ -826,6 +826,42 @@ input, textarea
 /**                   space style                  **/
 //////////////////////////////////////////////////////
 .space
+    .name
+        @include transition-property(color, padding-left)
+        @include transition-duration(0.3s)
+        position: relative
+        color: #ccc
+        &:hover
+            padding-left: 24px
+            color: #999
+        .icon-expand-alt, .icon-collapse-alt
+            @include transition-property(visibility, opacity, width, left)
+            @include transition-duration(0.3s)
+            position: absolute
+            left: -24px
+            bottom: 0
+            visibility: hidden
+            opacity: 0
+        &.collapsed:hover
+            .icon-expand-alt
+                left: 0
+                visibility: visible
+                opacity: 1
+        &.expanded:hover
+            .icon-collapse-alt
+                left: 0
+                visibility: visible
+                opacity: 1
+
+    .expanded-profile
+        @include box-sizing(border-box)
+        @include border-radius(3px)
+        border: 1px solid #ddd
+        padding: 10px 20px
+        .icons
+            font-size: 30px
+            line-height: 30px
+
     .prompt
         position: relative
         font-size: 18px
