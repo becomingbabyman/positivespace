@@ -18,28 +18,28 @@
 					<form class='ptm uncenter animated fadeInUp' name='user_profile' class='form-vertical uncenter ptl' ng-submit='saveSpace()' novalidate style='width: 100%;'>
 
 						<div ng-show='usernameIsUnset()'>
-							<control-group label='Username aka URL'>
+							<control-group label='Username aka URL' class='pbl'>
 								<input name='username' id='user_username' title='your username (aka the link to your space)' placeholder="username" class='input-block-level' ng-model='user.username' ng-minlength='3' ng-maxlength='18' required></input>
 								<small class='faded'>http://positivespace.io/{{user.username}}</small>
 							</control-group>
 						</div>
 
-						<control-group label='Full name'>
+						<control-group label='Full name' class='pbl'>
 							<input name='name' id='user_name' title='your real name (not your username)' placeholder="{{inputs.namePlaceholder}}" class='input-block-level' ng-model='user.name' required></input>
 						</control-group>
 
-						<control-group label="Bio" maxlength=250 help-block="We're a friendly bunch. Share a story with us." class='ptm'>
+						<control-group label="Bio" maxlength=250 help-block="List what you do... Or share a short story with us." class='pbl'>
 							<textarea name='bio' id='user_bio' title='your brief biography' placeholder="I spend a lot of time in front of screens hacking, but I love the outdoors. I used to travel and climb a lot. Now most of my activity comes from pulling plastic in a gym..." class='input-block-level' ng-model='user.bio' rows=3 required maxlength=250></textarea>
 						</control-group>
 
-						<div class="position-relative mbl mtl">
+						<div class="position-relative pbl">
 							<control-group label="Prompt" maxlength=250 help-block='Keep it short and to the point. You can and should change it later when you are ready to discuss something else.'>
-								<textarea name='prompt' id='user_space_prompt' title='prompt' placeholder="I looking to find a collaborator. My dream is to build something amazing. Let me tell you about it..." class='input-block-level' ng-model='user.prompt' rows=3 required maxlength=250></textarea>
+								<textarea name='prompt' id='user_space_prompt' title='prompt' placeholder="I'm looking to find a collaborator. My dream is to build something amazing. Let me tell you about it..." class='input-block-level' ng-model='user.prompt' rows=3 required maxlength=250></textarea>
 							</control-group>
 							<i class="icon-info pull-right prm plm muted" style='position: absolute; top: 0; right: 0px;' tooltip-placement='left' tooltip-trigger='mouseenter' tooltip-html-unsafe="<span style='line-height: 1.8em; text-align: left'><ol><li>Prompt the conversation you want to have.</li><li>Everytime you change your prompt, Positive Space will update our search and discovery listings, so like-minded people will be able to easily find your space and start a 1 on 1 conversation with you.</li><li>We also use this prompt to better understand your interests and send you recomendations.</li><li><strong>Change it frequently for better recommendations.</strong></li></ol></span>"></i>
 						</div>
 
-						<div class="row-fluid">
+						<div class="row-fluid pbl">
 							<div class="span6">
 								<control-group label='Location'>
 								    <input type='text' id='user_location' name='location' title='your current location' placeholder='City, State' class='input-block-level' ng-model='user.location' ng-maxlength='140'></input>
@@ -53,17 +53,33 @@
 							</div>
 						</div>
 
-						<control-group label='Expertise' help-block='Order by your skill level.' class='mtm' no-color='true'>
-							<input type='text' name='skills' placeholder='reading, writing, arithmetic' id='user_skills' class='input-block-level' multiple ui-select2='skillsOptions' ng-model='user.skills'></input>
+						<control-group label='Expertise' class='pbl mtm' no-color='true'>
+							<div class='pbm'>
+								<span class="muted">examples:</span>
+								<a href="#" class="label" ng-click="addTag('skills', 'Design')" ng-hide="user.skills | pluck:'text' | contains:'Design'">Design</a>
+								<a href="#" class="label" ng-click="addTag('skills', 'Development')" ng-hide="user.skills | pluck:'text' | contains:'Development'">Development</a>
+								<a href="#" class="label" ng-click="addTag('skills', 'Writing')" ng-hide="user.skills | pluck:'text' | contains:'Writing'">Writing</a>
+								<a href="#" class="label" ng-click="addTag('skills', 'Teaching')" ng-hide="user.skills | pluck:'text' | contains:'Teaching'">Teaching</a>
+								<a href="#" class="label" ng-click="addTag('skills', 'Cooking')" ng-hide="user.skills | pluck:'text' | contains:'Cooking'">Cooking</a>
+							</div>
+							<input type='text' name='skills' placeholder='...' id='user_skills' class='input-block-level' multiple ui-select2='skillsOptions' ng-model='user.skills'></input>
 						</control-group>
 
-						<control-group label='Interests' help-block='Order by your interest level.' class='mtm' no-color='true'>
-							<input type='text' name='interests' placeholder='walking, talking, listening' id='user_interests' class='input-block-level' multiple ui-select2='interestsOptions' ng-model='user.interests'></input>
+						<control-group label='Interests' class='pbl' no-color='true'>
+							<div class='pbm'>
+								<span class="muted">examples:</span>
+								<a href="#" class="label" ng-click="addTag('interests', 'Collaboration')" ng-hide="user.interests | pluck:'text' | contains:'Collaboration'">Collaboration</a>
+								<a href="#" class="label" ng-click="addTag('interests', 'Adventure')" ng-hide="user.interests | pluck:'text' | contains:'Adventure'">Adventure</a>
+								<a href="#" class="label" ng-click="addTag('interests', 'Startups')" ng-hide="user.interests | pluck:'text' | contains:'Startups'">Startups</a>
+								<a href="#" class="label" ng-click="addTag('interests', 'Art')" ng-hide="user.interests | pluck:'text' | contains:'Art'">Art</a>
+								<a href="#" class="label" ng-click="addTag('interests', 'Traveling')" ng-hide="user.interests | pluck:'text' | contains:'Traveling'">Traveling</a>
+							</div>
+							<input type='text' name='interests' placeholder='...' id='user_interests' class='input-block-level' multiple ui-select2='interestsOptions' ng-model='user.interests'></input>
 						</control-group>
 
-						<div class='control-group ptl'>
+						<div class='control-group pbl'>
 							<div class='controls'>
-								<button type='submit' class='btn btn-success pull-right'>Save your space</button>
+								<button type='submit' class='btn btn-success'>Save your space</button>
 							</div>
 						</div>
 

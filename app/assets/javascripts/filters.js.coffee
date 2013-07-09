@@ -53,3 +53,12 @@ psFilters.filter 'possessive', ->
 psFilters.filter 'fromNow', ->
 	(date) ->
 		moment(date).fromNow() if date?
+
+psFilters.filter 'contains', ->
+	(list, value) ->
+		_.contains(list, value)
+
+psFilters.filter 'pluck', ->
+	(list, value) ->
+		_.pluck(list, value)
+

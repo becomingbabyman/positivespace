@@ -99,7 +99,8 @@ root.usersEditCtrl = ps.controller "UsersEditCtrl", ["$scope", "$routeParams", "
 		"Leonardo da Vinci"
 		"Helen Keller"
 		"Muhammad Ali"
-		"Joan of Arc"
+		"John Doe"
+		"Jane Doe"
 		"Florence Nightingale"
 		"Anne Frank"
 		"Socrates"
@@ -109,6 +110,7 @@ root.usersEditCtrl = ps.controller "UsersEditCtrl", ["$scope", "$routeParams", "
 		"Tenzin Gyatso"
 	]
 	$scope.inputs.namePlaceholder = inspirationalPeople[Math.floor(Math.random() * inspirationalPeople.length)]
+	$scope.inputs.maxTagSize = 5
 
 	# Can the user view the form
 	$scope.app.dcu.promise.then (currentUser) ->
@@ -133,11 +135,11 @@ root.usersEditCtrl = ps.controller "UsersEditCtrl", ["$scope", "$routeParams", "
 	if parseInt($scope.originalUsername) == $scope.user.id then $scope.user.username = null
 	if $scope.user.username == $scope.user.name then $scope.user.name = null
 
-	$scope.skillsOptions =
+	select2Options = (tagSet) ->
 		tags: true
 		# minimumInputLength: 3
 		maximumInputLength: 30
-		maximumSelectionSize: 5
+		maximumSelectionSize: $scope.inputs.maxTagSize
 		tokenSeparators: [","]
 		createSearchChoice: (term, data) ->
 			if ($(data).filter((() -> this.text.localeCompare(term) == 0)).length == 0) then {id:term, text:term}
@@ -155,36 +157,19 @@ root.usersEditCtrl = ps.controller "UsersEditCtrl", ["$scope", "$routeParams", "
 				return {results: _.map(data.collection, ((t) -> {id: t.name, text: t.name})), more: more}
 				# return {results: _.pluck(data.collection, 'name'), more: more}
 		initSelection: (element, callback) ->
-			callback(_.map(user.skills, ((t) -> {id: t, text: t})))
-
-
-	$scope.interestsOptions =
-		tags: true
-		# minimumInputLength: 3
-		maximumInputLength: 30
-		maximumSelectionSize: 5
-		tokenSeparators: [","]
-		createSearchChoice: (term, data) ->
-			if ($(data).filter((() -> this.text.localeCompare(term) == 0)).length == 0) then {id:term, text:term}
-		ajax:
-			url: '/api/tags'
-			data: (term, page) -> # page is the one-based page number tracked by Select2
-				{
-					q: term #search term
-					per: 10 # page size
-					page: page # page number
-				}
-			results: (data, page) ->
-				more = (page * 10) < data.total # whether or not there are more results available
-				# notice we return the value of more so Select2 knows if more results can be loaded
-				return {results: _.map(data.collection, ((t) -> {id: t.name, text: t.name})), more: more}
-				# return {results: _.pluck(data.collection, 'name'), more: more}
-		initSelection: (element, callback) ->
-			callback(_.map(user.interests, ((t) -> {id: t, text: t})))
+			callback(_.map(user[tagSet], ((t) -> {id: t, text: t})))
+	$scope.skillsOptions = select2Options('skills')
+	$scope.interestsOptions = select2Options('interests')
 
 
 	$scope.usernameIsUnset = ->
 		if $scope.user then parseInt($scope.originalUsername) == $scope.user.id else false
+
+	$scope.addTag = (tagSet, tag) ->
+		if $scope.user[tagSet].length < $scope.inputs.maxTagSize
+			$scope.user[tagSet] = $scope.user[tagSet].concat([{id: tag, text: tag}])
+		else
+			$scope.app.flash 'info', "Sorry, max #{$scope.inputs.maxTagSize} #{tagSet}"
 
 	# TODO: revert to original profile if close is clicked instead of save
 	$scope.saveSpace = ->

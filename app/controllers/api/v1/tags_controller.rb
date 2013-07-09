@@ -17,7 +17,7 @@ class Api::V1::TagsController < InheritedResources::Base
 	#	end
 	# end
 	has_scope :q, :only => :index do |controller, scope, value|
-		scope.where("name LIKE ?", "%#{value}%")
+		scope.where("name ILIKE ?", "%#{value}%")
 	end
 	has_scope :page, :only => :index, :default => 1 do |controller, scope, value|
 		value.to_i > 0 ? scope.page(value.to_i) : scope.page(1)
