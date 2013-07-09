@@ -493,8 +493,14 @@ psDirectives.directive "psSpace", ["$location", "User", "Message", ($location, U
 
 	link: (scope, element, attrs) ->
 		scope.message = new Message
-
+		scope.hasFocus = false
 		scope.autosave = { body: "msg_to_space_#{scope.user.space.id}" }
+
+		scope.setFocus = (bool) ->
+			if bool
+				scope.hasFocus = true
+			else if !scope.message.body? or scope.message.body.length < 1
+				scope.hasFocus = false
 
 		scope.endorse = ->
 			if window.confirm("\nPlease note. This action cannot be undone. \n\nEndorsing this space will make it discoverable to the Positive Space community! And this space will forever link to yours. Do you want to endorse #{scope.user.name}?")

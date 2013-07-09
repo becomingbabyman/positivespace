@@ -1,4 +1,4 @@
-<div class="row space">
+<div class="row space" ng-class="{focused: hasFocus, unfocused: !hasFocus}">
 	<div class="span-mobile center pos-rel">
 
 		<div class="row-fluid center">
@@ -156,12 +156,12 @@
 			<div class="span12 uncenter">
 				<form name='messageForm' class='form-vertical uncenter' ng-submit='submitMessage()' novalidate style='width: 100%;'>
 					<control-group maxlength='250' autosave='{{autosave.body}}'>
-						<textarea name='body' id='msg_body' title='message body' placeholder="Start a conversation..." class='input-block-level' ng-model='message.body' rows="1" required ng-disabled='message.id'></textarea>
+						<textarea name='body' id='msg_body' title='message body' placeholder="Start a conversation..." class='input-block-level' ng-model='message.body' rows="1" required ng-disabled='message.id' ui-event="{focus: 'setFocus(true)', blur: 'setFocus(false)'}"></textarea>
 					</control-group>
 
 					<!-- <ps-subtle-login app='app'></ps-subtle-login> -->
 
-					<div class='control-group'>
+					<div class='control-group send-button'>
 						<div class='controls'>
 							<button ng-show='!message.id' type='submit' class='btn btn-success' ng-disabled="messageForm.body.$invalid">Send</button>
 							<button ng-show='message.id' type='submit' class='btn btn-disabled' disabled>Message Sent</button>

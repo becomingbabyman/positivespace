@@ -821,6 +821,100 @@ input, textarea
         border: none
         // border-bottom: 1px solid #eee
 
+
+//////////////////////////////////////////////////////
+/**                   space style                  **/
+//////////////////////////////////////////////////////
+.space
+    .prompt
+        position: relative
+        font-size: 18px
+        padding: 0
+        margin: 0
+        // margin-top: 20px
+        text-align: left
+        color: rgba(88,88,88,0.8)
+        text-shadow: 1px 4px 6px #fff, 0 0 0 #000, 1px 4px 6px #fff
+        // &:before
+        //  position: absolute
+        //  top: 0
+        //  left: -50px
+        //  content: ""
+        //  width: 0px
+        //  height: 100%
+        //  border-left: 3px solid $color-ghost
+
+
+    .prompt-wrapper
+        min-height: 5em
+        position: relative
+        // &:before
+        //  position: absolute
+        //  top: 0
+        //  left: -50px
+        //  content: ""
+        //  width: 0px
+        //  height: 100%
+        //  border-left: 3px solid $color-ghost
+        &:after
+            @include transition-property(visibility, opacity, color, background)
+            @include transition-duration(0.3s)
+            position: absolute
+            top: 0
+            left: 0
+            content: ""
+            width: 100%
+            height: 100%
+            background: white
+            opacity: 0
+            visibility: hidden
+            pointer-events: none
+        .prompt
+            width: 100%
+            height: 100%
+        .hoverable
+            visibility: hidden
+            opacity: 0
+            position: absolute
+            top: 0
+            left: 0
+            width: 100%
+            height: 100%
+            // top: 50%
+            // left: 50%
+            // margin-left: -70px
+            // margin-top: -21px
+            z-index: 6
+            @include transition-property(visibility, opacity, color, background)
+            @include transition-duration(0.3s)
+        // &:hover
+        //  &:after
+        //      @include transition-duration(0.2s)
+        //      opacity: 0.5
+        //      visibility: visible
+        //  .hoverable
+        //      visibility: visible
+        //      opacity: 1
+
+    #msg_body
+        @include transition-property(min-height)
+        @include transition-duration(0.1s)
+        min-height: 2em
+    .send-button
+        @include transition-property(visibility, opacity, color, background)
+        @include transition-duration(0.1s)
+        // display: none
+        visibility: hidden
+        opacity: 0
+
+    &.focused
+        #msg_body
+            min-height: 6em
+        .send-button
+            visibility: visible
+            opacity: 1
+
+
 //////////////////////////////////////////////////////
 /**                   inbox style                  **/
 //////////////////////////////////////////////////////

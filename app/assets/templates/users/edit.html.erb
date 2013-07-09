@@ -62,7 +62,7 @@
 								<a href="#" class="label" ng-click="addTag('skills', 'Teaching')" ng-hide="user.skills | pluck:'text' | contains:'Teaching'">Teaching</a>
 								<a href="#" class="label" ng-click="addTag('skills', 'Cooking')" ng-hide="user.skills | pluck:'text' | contains:'Cooking'">Cooking</a>
 							</div>
-							<input type='text' name='skills' placeholder='...' id='user_skills' class='input-block-level' multiple ui-select2='skillsOptions' ng-model='user.skills'></input>
+							<input type='text' name='skills' placeholder='add a skill' id='user_skills' class='input-block-level' multiple ui-select2='skillsOptions' ng-model='user.skills'></input>
 						</control-group>
 
 						<control-group label='Interests' class='pbl' no-color='true'>
@@ -74,7 +74,7 @@
 								<a href="#" class="label" ng-click="addTag('interests', 'Art')" ng-hide="user.interests | pluck:'text' | contains:'Art'">Art</a>
 								<a href="#" class="label" ng-click="addTag('interests', 'Traveling')" ng-hide="user.interests | pluck:'text' | contains:'Traveling'">Traveling</a>
 							</div>
-							<input type='text' name='interests' placeholder='...' id='user_interests' class='input-block-level' multiple ui-select2='interestsOptions' ng-model='user.interests'></input>
+							<input type='text' name='interests' placeholder='add an interest' id='user_interests' class='input-block-level' multiple ui-select2='interestsOptions' ng-model='user.interests'></input>
 						</control-group>
 
 						<div class='control-group pbl'>
