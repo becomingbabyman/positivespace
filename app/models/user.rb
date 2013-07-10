@@ -32,9 +32,11 @@ class User < ActiveRecord::Base
 				indexes :username,      type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball', :boost => 10.0
 				indexes :location,      type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball', :boost => 10.0
 				indexes :personal_url,  type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball', :boost => 5.0
-				indexes :gender,  		type: 'string',  analyzer: 'keyword'
-				indexes :locale,  		type: 'string',  analyzer: 'keyword'
-				indexes :timezone,		type: 'string',  analyzer: 'keyword'
+				indexes :skills,   		type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball', :boost => 10.0
+				indexes :interests,		type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball', :boost => 10.0
+				indexes :gender,   		type: 'string',  analyzer: 'keyword'
+				indexes :locale,   		type: 'string',  analyzer: 'keyword'
+				indexes :timezone, 		type: 'string',  analyzer: 'keyword'
 				indexes :update_at,     type: 'date'
 				indexes :created_at,    type: 'date'
 				indexes :avatar_thumb_url, type: 'string', index:  :not_analyzed
@@ -187,7 +189,7 @@ class User < ActiveRecord::Base
 	def self.search(params)
 		tire.search(load: false, page: params[:page], per_page: params[:per]) do
 			query do
-				match [:name, :username, :bio, :location, :personal_url, :current_space_prompt, :current_space_embed_url], params[:q]
+				match [:name, :username, :bio, :location, :personal_url, :skills, :interests, :current_space_prompt, :current_space_embed_url], params[:q]
 				## TODO: try to set default_operator, maybe it can't be set on a match
 				# default_operator: "AND"
 			end
@@ -208,6 +210,8 @@ class User < ActiveRecord::Base
 			username: username,
 			location: location,
 			personal_url: personal_url,
+			skills: skill_list.to_s,
+			interests: interest_list.to_s,
 			gender: gender,
 			locale: locale,
 			timezone: timezone,
