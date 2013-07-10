@@ -847,7 +847,8 @@ input, textarea
                 left: 0
                 visibility: visible
                 opacity: 1
-        &.expanded:hover
+        &.expanded
+            padding-left: 24px
             .icon-collapse-alt
                 left: 0
                 visibility: visible
@@ -857,7 +858,18 @@ input, textarea
         @include box-sizing(border-box)
         @include border-radius(3px)
         border: 1px solid #ddd
-        padding: 10px 20px
+        @include transition-property(visibility, opacity, max-height, padding)
+        @include transition-duration(0.3s)
+        padding: 0px 20px
+        max-height: 0px
+        visibility: hidden
+        opacity: 0
+        overflow: hidden
+        &.expanded
+            padding: 10px 20px
+            max-height: 600px
+            visibility: visible
+            opacity: 1
         .icons
             font-size: 30px
             line-height: 30px
