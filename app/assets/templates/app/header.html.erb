@@ -37,14 +37,19 @@
 				</a>
 				<ul class="dropdown-menu">
 					<li>
+						<a href="/{{app.currentUser.slug}}/edit">
+							<i class="icon-pencil prs"></i> Edit profile
+						</a>
+					</li>
+					<li>
 						<a href="/settings">
-							<i class="icon-cogs prs"></i> settings
+							<i class="icon-cogs prs"></i> Settings
 						</a>
 					</li>
 					<li class="divider"></li>
 					<li>
 						<a href="#" ng-click='app.logout()'>
-							<i class="icon-signout prs"></i> log out
+							<i class="icon-signout prs"></i> Log out
 						</a>
 					</li>
 				</ul>
