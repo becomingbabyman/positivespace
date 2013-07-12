@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130707223210) do
+ActiveRecord::Schema.define(:version => 20130710024412) do
 
   create_table "administrators", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -314,6 +314,7 @@ ActiveRecord::Schema.define(:version => 20130707223210) do
     t.integer  "remaining_invitations_count", :default => 0
     t.text     "settings",                    :default => "--- {}\n"
     t.text     "bio"
+    t.integer  "magnetism",                   :default => 0
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true
@@ -324,6 +325,7 @@ ActiveRecord::Schema.define(:version => 20130707223210) do
   add_index "users", ["impressions_count"], :name => "index_users_on_impressions_count"
   add_index "users", ["likers_count"], :name => "index_users_on_likers_count"
   add_index "users", ["location"], :name => "index_users_on_location"
+  add_index "users", ["magnetism"], :name => "index_users_on_magnetism"
   add_index "users", ["mentioners_count"], :name => "index_users_on_mentioners_count"
   add_index "users", ["name"], :name => "index_users_on_name"
   add_index "users", ["permissions"], :name => "index_users_on_permissions"

@@ -87,14 +87,18 @@
 
 						<div class='control-group'>
 							<div class='controls'>
-								<button type='submit' class='btn btn-success pull-right' ng-disabled="replyForm.body.$invalid">Send</button>
+								<button type='submit' class='btn btn-success pull-right' ng-disabled="replyForm.body.$invalid">
+									<i class="icon-reply"></i>&nbsp;&nbsp;Send
+								</button>
 
 								<span class='pull-right'>&nbsp;&nbsp;</span>
 								<!-- <a href='#' class='btn pull-right' ng-disabled='savedBody == myMessage.body' ng-click='save()'>Save Draft</a> -->
 
 								<span class='pull-right pts prm' ng-class='{"muted": remainingChars > 10, "text-error": remainingChars <= 10}'>{{remainingChars}}</span>
 
-								<a href='#' class='pull-left' ng-click='end()' tooltip="End the conversation if it's going nowhere. You can always start a new one." tooltip-placement='right'><i class="icon-remove-circle font30 color-red opacity8"></i></a>
+								<a href='#' class='pull-left' ng-click='end()' tooltip="End the conversation if it's going nowhere. You can always start a new one." tooltip-placement='right'>
+									<i class="icon-remove-circle font30 color-yellow opacity8"></i>
+								</a>
 
 								<a href='#' class='muted pts pull-left pll' ng-click='show.embedInput = true' ng-hide='show.embedInput' tooltip='Attach a link. We will magically find and embed picture, video, audio, and more in your response.' tooltip-placement='right'><i class='icon-paper-clip font20'></i> Attach 1 link</a>
 								<a href='#' class='muted pts pull-left pll' ng-click='show.embedInput = false' ng-show='show.embedInput'><i class='icon-unlink font20'></i></a>

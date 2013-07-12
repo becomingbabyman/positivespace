@@ -1,7 +1,7 @@
 <div class="row space" ng-class="{focused: hasFocus, unfocused: !hasFocus}">
 	<div class="span-mobile center pos-rel">
 
-		<div class="row-fluid center animated fadeInLeft" ng-show="showShareMini">
+		<div class="row-fluid center expanded-share" ng-class="{expanded: showShareMini}">
 			<div class='span12 uncenter font24 mrs'>
 				<a class="color-pinterest prs opacity5 opacity-full-hover" href="#"
 					title='share on pinterest'
@@ -89,7 +89,9 @@
 					<i class="mts pls icon-retweet faded pull-right" ng-show='user.relationship == "spoken"' title='You and {{user.name}} have spoken in the past.'></i>
 					<i class="mts pls icon-retweet color-yellow opacity7 pull-right" ng-show='user.relationship == "speaking"' title='You and {{user.name}} are in the middle of a conversation.'></i>
 				</span>
-				<a ng-href='/{{user.slug}}/edit' class='pull-right font16 font-normal prs plm' title='change your space' ng-show='user.relationship == "self"'>edit</a>
+				<a ng-href='/{{user.slug}}/edit' class='color-blue' title='edit' ng-show='user.relationship == "self"'>
+					<i class="mts pls icon-pencil pull-right"></i>
+				</a>
 				<a href="#" ng-click="expanded = !expanded">
 					<img ng-src="{{user.avatar.thumb_url}}" alt="{{user.name}}" class="img-circle img-border img-thumb uncenter"></img>
 				</a>
@@ -114,17 +116,19 @@
 				<div class='row-fluid expanded-profile' ng-class="{expanded: expanded}">
 					<div class='span12'>
 						<div class='row-fluid'>
-							<div class='span12 faded mts mbm icons'>
+							<div class='span12 faded icons'>
 								<!-- <a href="/{{user.invitation.user.slug || 'space'}}" class='ghost uncenter mtl mrl font20' tooltip='Endorsed by {{user.invitation.user.name || "+_"}}' ui-if='!showShareMini && user.state != "unendorsed"'>
 									<i class='icon-certificate'></i>
 								</a> -->
-								<i ng-show='!showShareMini && user.location.length > 0' class='icon-map-marker faded uncenter mrl' tooltip='{{user.location}}'></i>
+								<i ng-show='!showShareMini && user.location.length > 0' class='icon-map-marker faded mrm' tooltip='{{user.location}}'></i>
 								<!-- <a ng-show='!showShareMini && user.facebook_id.length > 0' href='http://facebook.com/{{user.facebook_id}}' target='_blank' class='ghost uncenter mtl mrl font20'>
 									<i class="icon-facebook"></i>
 								</a> -->
-								<a ng-show='!showShareMini && user.personal_url.length > 0' href='{{user.personal_url}}' target='_blank' class='faded uncenter mrl' tooltip="{{user.personal_url}}">
+								<a ng-show='!showShareMini && user.personal_url.length > 0' href='{{user.personal_url}}' target='_blank' class='faded mrm' tooltip="{{user.personal_url}}">
 									<i class="icon-external-link"></i>
 								</a>
+
+								<!-- <span class="faded pull-right"><i class="icon-magnet" tooltip='magnetism'></i> {{user.magnetism}}</span> -->
 
 								<!-- <div class='ptl'>
 									<i class='icon-certificate faded prm' title='verified account'></i>

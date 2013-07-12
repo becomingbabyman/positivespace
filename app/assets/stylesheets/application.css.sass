@@ -826,9 +826,17 @@ input, textarea
 /**                   space style                  **/
 //////////////////////////////////////////////////////
 .space
+    .expanded-share
+        @include box-sizing(border-box)
+        @include transition-property(max-height, padding, border)
+        @include transition-duration(0.1s)
+        overflow: hidden
+        max-height: 0px
+        &.expanded
+            max-height: 400px
     .name
         @include transition-property(color, padding-left)
-        @include transition-duration(0.3s)
+        @include transition-duration(0.1s)
         position: relative
         color: #ccc
         &:hover
@@ -836,7 +844,7 @@ input, textarea
             color: #999
         .icon-expand-alt, .icon-collapse-alt
             @include transition-property(visibility, opacity, width, left)
-            @include transition-duration(0.3s)
+            @include transition-duration(0.1s)
             position: absolute
             left: -24px
             bottom: 0
@@ -857,22 +865,20 @@ input, textarea
     .expanded-profile
         @include box-sizing(border-box)
         @include border-radius(3px)
-        border: 1px solid #ddd
-        @include transition-property(visibility, opacity, max-height, padding)
-        @include transition-duration(0.3s)
+        @include transition-property(max-height, padding, border)
+        @include transition-duration(0.1s)
         padding: 0px 20px
         max-height: 0px
-        visibility: hidden
-        opacity: 0
+        border: 0px solid #fff
         overflow: hidden
         &.expanded
             padding: 10px 20px
             max-height: 600px
-            visibility: visible
-            opacity: 1
+            border: 1px solid #ddd
         .icons
-            font-size: 26px
-            line-height: 26px
+            font-size: 22px
+            margin-top: 10px
+            // line-height: 34px
 
     .prompt
         position: relative

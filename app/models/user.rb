@@ -37,6 +37,7 @@ class User < ActiveRecord::Base
 				indexes :gender,   		type: 'string',  analyzer: 'keyword'
 				indexes :locale,   		type: 'string',  analyzer: 'keyword'
 				indexes :timezone, 		type: 'string',  analyzer: 'keyword'
+				indexes :magnetism,     type: 'integer', index:    :not_analyzed
 				indexes :update_at,     type: 'date'
 				indexes :created_at,    type: 'date'
 				indexes :avatar_thumb_url, type: 'string', index:  :not_analyzed
@@ -215,6 +216,7 @@ class User < ActiveRecord::Base
 			gender: gender,
 			locale: locale,
 			timezone: timezone,
+			magnetism: magnetism,
 			update_at: updated_at,
 			created_at: created_at,
 			avatar_thumb_url: avatar.try(:image).try(:thumb).try(:url),
