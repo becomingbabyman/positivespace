@@ -82,7 +82,7 @@ class Message < ActiveRecord::Base
 private
 
 	def validate_not_to_self
-		errors.add(:doppleganging, "is only allowed on opposite day") if self.from_id == self.to_id
+		errors.add(:doppleganging, "is only allowed on opposite day. Try talking to someone other than yourself.") if self.from_id == self.to_id
 	end
 
 	def validate_take_turns

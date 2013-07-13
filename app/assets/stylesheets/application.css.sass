@@ -124,9 +124,27 @@ p
     letter-spacing: 0.1em
     line-height: 1.8em
 
-input, button, select, textarea
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
-    line-height: 1.8em
+.controls
+    input, select, textarea
+        // line-height: 1.8em
+        @include border-radius(2px)
+        min-height: 2em
+        box-shadow: none
+        padding: 8px
+        font-size: 16px
+        line-height: 28px
+        resize: none
+        @include box-shadow(none)
+        &:focus, &:invalid:focus
+            @include box-shadow(none)
+    input
+        line-height: 16px
+.control-group
+    &.success, &.error, &.warning
+        input, select, textarea
+            @include box-shadow(none)
+            &:focus
+                @include box-shadow(none)
 
 form
     &>div
@@ -144,6 +162,9 @@ input, textarea
 
     &:focus:-moz-placeholder
         color: #ddd
+
+.btn
+    @include border-radius(2px)
 
 .navbar
     // height: 60px
@@ -655,7 +676,7 @@ input, textarea
             &:focus
                 border-color: #ccc
                 color: #555
-                @include box-shadow(0 0 6px #f8b9b7)
+                // @include box-shadow(0 0 6px #f8b9b7)
     &.success
         input, textarea, select
             border-color: #ccc
@@ -953,6 +974,7 @@ input, textarea
     #msg_body
         @include transition-property(min-height)
         @include transition-duration(0.1s)
+        @include border-radius(2px)
         min-height: 2em
     .send-button
         @include transition-property(visibility, opacity, color, background)
