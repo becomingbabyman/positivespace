@@ -313,14 +313,8 @@ psDirectives.directive "psTooltip", ["$timeout", ($timeout) ->
 		psTooltip: '='
 	link: (scope, element, attrs) ->
 		_.defer ->
-			if _.isString(scope.psTooltip)
-				scope.tooltip = new Opentip element, scope.psTooltip
-			else if _.isObject(scope.psTooltip)
-				opts = scope.psTooltip.options
-				scope.tooltip = new Opentip element, scope.psTooltip.content,
-					target: opts.target if opts?.target?
-					stem: opts.stem if opts?.stem?
-					showOn: opts.showOn if opts?.showOn?
+			if _.isObject(scope.psTooltip)
+				scope.tooltip = new Opentip element, scope.psTooltip.content, scope.psTooltip.options
 				scope.$watch 'psTooltip.show', (show) ->
 					if _.isBoolean show
 						if show

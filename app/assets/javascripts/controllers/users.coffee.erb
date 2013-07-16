@@ -175,11 +175,12 @@ root.usersStartCtrl = ps.controller "UsersStartCtrl", ["$scope", "$routeParams",
 		show = false
 		options =
 			target: true
-			group: 'onboard'
-			# showOn: 'creation'
-			# hideOn: 'click'
-			# hideTriggers: ['closeButton']
+			group: 'onboarding'
+			showOn: 'click'
+			hideOn: 'click'
 			containInViewport: false
+			# offset: [-0, -0]
+			hideTrigger: 'closeButton'
 			# showEffect: 'none'
 			# showEffectDuration: 0
 			# hideEffect: 'fade'
