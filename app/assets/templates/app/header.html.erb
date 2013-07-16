@@ -3,14 +3,8 @@
 
 		<ul class="nav user-nav pull-right">
 
-			<li ng-controller="SearchsHeaderCtrl" class="hidden-phone primary-search prm">
-				<form class="form-search pts uncenter" name="searchHeaderForm" ui-event="{mouseover: showInput, mouseout: hideInput}" ng-submit="" novalidate>
-					<label for="search_header_query"><i class="icon-search"></i></label>
-
-					<input type="text" name="query" ng-model="query" ng-show='showSearch' id='search_header_query' class="input-xlarge search-query opacity5 opacity-full-hover" placeholder="Search" typeahead="user as user.typeahead for user in search($viewValue)" ui-event="{keyup: 'updateScroll($event)', blur: hideInput}" autocomplete="off" autofocus>
-
-					<img ng-show="loading" src="<%= asset_path('ajax-loader-black-dots.gif') %>" alt="loading dots" class='loading'>
-				</form>
+			<li class="hidden-phone prm">
+				<ps-search hoverable='true' form-class='pts' input-class='input-xlarge opacity5 opacity-full-hover'></ps-search>
 			</li>
 
 			<li class='opacity5 opacity-full-hover' ng-hide='app.loggedIn()'>
@@ -96,13 +90,6 @@
 		</ul> -->
 	</div>
 
-	<div ng-controller="SearchsHeaderCtrl" class="primary-search container visible-phone">
-		<form class="form-search pts" name="searchHeaderForm" ng-submit="" novalidate>
-			<div class="row">
-				<input type="text" name="query" ng-model="query" id='search_header_query' class="span12 search-query opacity5 opacity-full-hover" placeholder="Search" typeahead="user as user.typeahead for user in search($viewValue)" autocomplete="off" autofocus>
+	<ps-search form-class='pts container visible-phone' input-class='span12 opacity5 opacity-full-hover' hide-label='true'></ps-search>
 
-				<img ng-show="loading" src="<%= asset_path('ajax-loader-black-dots.gif') %>" alt="loading dots" style='position: absolute; right: 10px; top: 13px;'>
-			</div>
-		</form>
-	</div>
 </div>

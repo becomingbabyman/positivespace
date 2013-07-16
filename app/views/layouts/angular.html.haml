@@ -10,6 +10,7 @@
 				= image_tag 'loading.gif', style: "width: 30px; position: absolute; top: 46px; left: 81px;"
 			%header#header{"ng-class" => "app.templates.header.classes", "ng-include" => "app.templates.header.url"}
 			#main{ :role => "main" }
+				#help{"ng-include" => "app.templates.help.url"}
 				#flash{"ng-include" => "app.templates.flash.url"}
 				#yielded{"ng-view"=>true}
 

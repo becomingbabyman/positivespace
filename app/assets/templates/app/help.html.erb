@@ -1,0 +1,11 @@
+<div ui-if='!_.isEmpty(app.helpMsgs.length)'>
+	<div ng-repeat="msg in app.helpMsgs" class='help-msg'>
+		<div class="container">
+			<div class="row">
+				<div class="offset1 span10 center">
+					<span ng-bind-html-unsafe='msg'>{{msg}}</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

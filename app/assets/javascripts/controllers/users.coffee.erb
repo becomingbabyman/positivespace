@@ -87,6 +87,171 @@ ps.controller "UserPasswordEditCtrl", ["$scope", "$location", "$routeParams", "U
 ]
 
 
+
+# Start
+root.usersStartCtrl = ps.controller "UsersStartCtrl", ["$scope", "$routeParams", "$timeout", "$location", "User", "user", ($scope, $routeParams, $timeout, $location, User, user) ->
+	$scope.user = user
+	$scope.inputs = {}
+	$scope.step = parseInt($routeParams.step) or 0
+	$scope.maxStep = 8.0
+	$scope.completionPercentage = $scope.step / $scope.maxStep * 100.0
+	inspirationalPeople = [
+		"Mahatma Gandhi"
+		"Mother Teresa"
+		"Martin Luther King"
+		"Albert Einstein"
+		"Leonardo da Vinci"
+		"Helen Keller"
+		"Muhammad Ali"
+		"John Doe"
+		"Jane Doe"
+		"Florence Nightingale"
+		"Anne Frank"
+		"Socrates"
+		"William Shakespeare"
+		"Eleanor Roosevelt"
+		"Rabindranath Tagore"
+		"Tenzin Gyatso"
+	]
+	$scope.inputs.namePlaceholder = inspirationalPeople[Math.floor(Math.random() * inspirationalPeople.length)]
+	$scope.inputs.maxTagSize = 5
+
+	# Can the user view the form
+	$scope.app.dcu.promise.then (currentUser) ->
+		if $scope.user.id != currentUser.id
+			$location.path("/#{$scope.user.slug}")
+	, (error) ->
+		$scope.app.flash('info', 'Log in to create your space')
+		$location.search('path', window.location.pathname)
+		$location.search('search', window.location.search)
+		$location.path('/login')
+		analytics.track 'view user start error',
+			routeId: $routeParams.user_id
+
+	$scope.app.meta.title = "Create your space"
+	$scope.app.meta.description = "Getting started on Positive Space"
+	$scope.app.meta.imageUrl = $scope.user.avatar.big_thumb_url
+	$scope.originalUsername = angular.copy $scope.user.username
+	if parseInt($scope.originalUsername) == $scope.user.id then $scope.user.username = null
+	if $scope.user.username == $scope.user.name then $scope.user.name = null
+
+
+	select2Options = (tagSet) ->
+		tags: true
+		# minimumInputLength: 3
+		maximumInputLength: 30
+		maximumSelectionSize: $scope.inputs.maxTagSize
+		tokenSeparators: [","]
+		createSearchChoice: (term, data) ->
+			if ($(data).filter((() -> this.text.localeCompare(term) == 0)).length == 0) then {id:term, text:term}
+		ajax:
+			url: '/api/tags'
+			data: (term, page) -> # page is the one-based page number tracked by Select2
+				{
+					q: term #search term
+					per: 10 # page size
+					page: page # page number
+				}
+			results: (data, page) ->
+				more = (page * 10) < data.total # whether or not there are more results available
+				# notice we return the value of more so Select2 knows if more results can be loaded
+				return {results: _.map(data.collection, ((t) -> {id: t.name, text: t.name})), more: more}
+				# return {results: _.pluck(data.collection, 'name'), more: more}
+		initSelection: (element, callback) ->
+			callback(_.map(user[tagSet], ((t) -> {id: t, text: t})))
+	$scope.skillsOptions = select2Options('skills')
+	$scope.interestsOptions = select2Options('interests')
+
+	$scope.next = ->
+		$scope.step += 1 if $scope.step <= $scope.maxStep
+		$location.search({step: $scope.step})
+		$scope.completionPercentage = $scope.step / $scope.maxStep * 100.0
+		$(window).resize()
+
+	$scope.back = ->
+		$scope.step -= 1 if $scope.step > 0
+		$location.search({step: $scope.step})
+		$scope.completionPercentage = $scope.step / $scope.maxStep * 100.0
+		$(window).resize()
+
+	$scope.selectUser = (query) ->
+		$scope.selectedUser = User.get {id: query.id}, ->
+			$scope.next()
+
+	$scope.usernameIsUnset = ->
+		if $scope.user then parseInt($scope.originalUsername) == $scope.user.id else false
+
+	$scope.addTag = (tagSet, tag) ->
+		if $scope.user[tagSet].length < $scope.inputs.maxTagSize
+			$scope.user[tagSet] = $scope.user[tagSet].concat([{id: tag, text: tag}])
+		else
+			$scope.app.flash 'info', "Sorry, max #{$scope.inputs.maxTagSize} #{tagSet}"
+
+	validateStep = ->
+		errors = []
+		switch $scope.step
+			when 0 then unless $scope.userCopy.skills.length > 0 then errors.push "Please add at least one skill."
+			when 1 then unless $scope.userCopy.interests.length > 0 then errors.push "Please add at least one interest."
+			when 2 then unless $scope.userCopy.bio.length > 14 then errors.push "Please fill in your bio."
+			when 3 then unless $scope.userCopy.prompt.length > 14 then errors.push "Please write your first prompt."
+		if errors.length > 0 then $scope.app.flash('error', errors) else true
+
+	$scope.saveSpace = ->
+		# $scope.app.show.loading = true
+		$scope.userCopy = angular.copy $scope.user
+		$scope.userCopy.skills = _.pluck($scope.user.skills, 'text').join(",")
+		$scope.userCopy.interests = _.pluck($scope.user.interests, 'text').join(",")
+		if validateStep()
+			$scope.next()
+			if $scope.step >= $scope.maxStep then $scope.userCopy.onboarded = true
+			success = (data) ->
+				# $scope.app.show.loading = false
+				analytics.track 'save space success',
+					href: window.location.href
+					routeId: $routeParams.user_id
+					userId: $scope.userCopy.id
+					userName: $scope.userCopy.name
+					firstSave: $scope.inputs.cantCloseEdit
+					namePlaceholder: $scope.inputs.namePlaceholder
+				$scope.app.loadCurrentUser()
+				$location.path("/#{$scope.userCopy.slug}") if $scope.step >= $scope.maxStep
+			error = (error) ->
+				$scope.back()
+				# $scope.app.show.loading = false
+				$scope.app.flash 'error', error.data.errors
+				analytics.track 'save space error',
+					href: window.location.href
+					routeId: $routeParams.user_id
+					userId: $scope.userCopy.id
+					userName: $scope.userCopy.name
+					firstSave: $scope.inputs.cantCloseEdit
+					namePlaceholder: $scope.inputs.namePlaceholder
+					error: JSON.stringify(error)
+			$scope.userCopy.save success, error
+
+]
+root.usersStartCtrl.loadStartUser = ["$q", "$route", "$location", "User", ($q, $route, $location, User) ->
+	defered = $q.defer()
+	User.get { id: $route.current.params.user_id }, (user) ->
+		defered.resolve(user)
+		analytics.track 'view user start success',
+			href: window.location.href
+			routeId: $route.current.params.user_id
+			userId: user.id
+			userName: user.name
+			userPrompt: user.space?.prompt
+	, (error) ->
+		# $scope.app.flash('info', 'Log in to edit your profile')
+		$location.search('path', window.location.pathname)
+		$location.search('search', window.location.search)
+		$location.path('/login')
+		analytics.track 'view user start error',
+			routeId: $route.current.params.user_id
+	defered.promise
+]
+
+
+
 # Edit
 root.usersEditCtrl = ps.controller "UsersEditCtrl", ["$scope", "$routeParams", "$timeout", "$location", "User", "user", ($scope, $routeParams, $timeout, $location, User, user) ->
 	$scope.user = user
@@ -256,18 +421,22 @@ root.usersShowCtrl = ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "
 
 	$scope.app.dcu.promise.then (currentUser) ->
 		if $scope.user.id == currentUser.id
-			# TODO: figure out why the raphael graph is 1/4 the width when showAdmin is false and it starts off hidden. It probably has something to do with the width of a hidden div
-			$scope.showAdmin = if $scope.user.sign_in_count == 3 then true else false
-			User.metrics {metrics: "views,responses,initiations"}, (metrics) ->
-				values = {}
-				values.x = [0..metrics.views.length-1]
-				values.y = [metrics.views, metrics.initiations, metrics.responses]
-				values.labels = ['views', 'initiations', 'responses']
-				values.opts = {smooth: true}
-				$scope.chart.values.resolve values
-			User.metrics {metrics: "responses,initiations", days_range:10000, intervals: 1}, (metrics) ->
-				$scope.totalResponses = metrics.responses[0]
-				$scope.totalInitiations = metrics.initiations[0]
+			unless currentUser.achievements.onboarded
+				# make sure user is onboarded
+				$location.path("/#{currentUser.slug}/start")
+			else
+				# TODO: figure out why the raphael graph is 1/4 the width when showAdmin is false and it starts off hidden. It probably has something to do with the width of a hidden div
+				$scope.showAdmin = if $scope.user.sign_in_count == 3 then true else false
+				User.metrics {metrics: "views,responses,initiations"}, (metrics) ->
+					values = {}
+					values.x = [0..metrics.views.length-1]
+					values.y = [metrics.views, metrics.initiations, metrics.responses]
+					values.labels = ['views', 'initiations', 'responses']
+					values.opts = {smooth: true}
+					$scope.chart.values.resolve values
+				User.metrics {metrics: "responses,initiations", days_range:10000, intervals: 1}, (metrics) ->
+					$scope.totalResponses = metrics.responses[0]
+					$scope.totalInitiations = metrics.initiations[0]
 		else
 			# Check for in_progress conversation
 			Conversation.query {user_id: currentUser.id, to: $scope.user.id, state: 'in_progress', order: 'created_at DESC'}, (conversations) ->

@@ -69,6 +69,12 @@ ps.config ['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvid
 	.when "/users/password/edit",
 		controller: "UserPasswordEditCtrl"
 		templateUrl: "<%= asset_path('users/password_edit.html') %>"
+	.when "/:user_id/start",
+		controller: "UsersStartCtrl"
+		templateUrl: "<%= asset_path('users/start.html') %>"
+		reloadOnSearch: false
+		resolve:
+			user: root.usersStartCtrl.loadStartUser
 	.when "/:user_id/edit",
 		controller: "UsersEditCtrl"
 		templateUrl: "<%= asset_path('users/edit.html') %>"

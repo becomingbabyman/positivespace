@@ -619,6 +619,86 @@ psDirectives.directive "psSpace", ["$location", "User", "Message", ($location, U
 
 ####################################################
 ####################################################
+# <ps-search>
+psDirectives.directive "psSearch", ["$location", "$http", "$q", ($location, $http, $q) ->
+	restrict: "E"
+	templateUrl: "<%= asset_path('directives/ps_search.html') %>"
+	replace: true
+	scope:
+		formClass: '@'
+		inputClass: '@'
+		hoverable: '@'
+		hideLabel: '@'
+		callback: '='
+
+	link: (scope, element, attrs) ->
+		scope.inputId = _.uniqueId("#search_")
+		scope.lastQuery = null
+		t = null
+		scope.showSearch = !attrs.hoverable?
+
+		scope.showInput = (e) ->
+			if scope.hoverable
+				scope.showSearch = true
+				window.setTimeout ->
+					$(element).find('.search-query').focus()
+				, 50
+		scope.hideInput = (e) ->
+			if scope.hoverable
+				scope.showSearch = false unless (scope.query and scope.query.length > 0) or $(element).find('.search-query').is(':focus')
+
+		scope.updateScroll = (e) ->
+			if e.keyCode in [38, 40]
+				# $(".nav ul.typeahead").scrollTo(".active", 200)
+				$.scrollTo($(element).find("ul.typeahead .active"), 200)
+
+		scope.setQuery = (query) ->
+			scope.query = query
+			scope.search(query)
+
+		scope.search = (query) ->
+			defered = $q.defer()
+
+			if t? then clearTimeout(t)
+			t = setTimeout ->
+				scope.loading = true
+				$http.get("/api/users?q=#{query}").then (response) ->
+					scope.loading = false
+					scope.lastQuery = query
+					if response.data?.collection? and response.data.collection.length > 0
+						results = response.data.collection
+					else
+						results = [{typeahead: "No results for #{query}"}, {typeahead: "Search spaces by name, bio, and prompt"}]
+					defered.resolve(results)
+				, (error) ->
+					scope.loading = false
+			, 300
+
+			defered.promise
+
+		# TODO: REFACTOR: This is a crappy way to select a search result. Find a better way.
+		scope.$watch 'query', (query) ->
+			if _.isObject(query)
+				scope.query = null
+				if query.slug?
+					if scope.callback?
+						scope.callback(query)
+					else
+						$location.path("/#{query.slug}")
+					analytics.track "search success",
+						query: scope.lastQuery
+						username: query.username
+						id: query.id
+				else
+					analytics.track "search not found",
+						query: scope.lastQuery
+						loggedIn: false
+		, true
+]
+
+
+####################################################
+####################################################
 # <ps-subtle-login>
 # TODO: REFACTOR: there is some overlap between this and ps-login directive. see if it can be refactored.
 psDirectives.directive 'psSubtleLogin', ["$timeout", "$location", "User", ($timeout, $location, User) ->
@@ -849,12 +929,12 @@ psDirectives.directive 'psLogin', ["$timeout", "$routeParams", "$location", "Use
 							scope.app.show.loading = false
 							scope.app.loadCurrentUser data
 							scope.credentials = {loginType: 'login'}
-							scope.app.flash 'success', "Welcome. Let's create your Positive Space! What do you want to talk about?"
+							scope.app.flash 'success', "Welcome. Let's create your Space."
 							if $routeParams.path?
 								$location.search(unescape($routeParams.search or '').replace('?', ''))
 								$location.path($routeParams.path)
 							else
-								$location.path("/#{data.slug}")
+								$location.path("/#{data.slug}/start")
 							analytics.track 'sign up success',
 								type: 'form'
 								href: window.location.href

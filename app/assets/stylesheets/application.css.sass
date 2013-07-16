@@ -82,7 +82,7 @@
 //        +_ SASS         //
 ////////////////////////////
 
-@include sticky-footer(50px, "#wrapper", "#layout_footer", "#footer")
+@include sticky-footer(80px, "#wrapper", "#layout_footer", "#footer")
 
 html
     // background-color: $color-background
@@ -105,8 +105,9 @@ body
     //  padding-top: 0
     // background: -webkit-linear-gradient(45deg, #020031 0%,#6d3353 100%)
     @media (max-width: 767px)
-        padding-right: 20px
-        padding-left: 20px
+        #yielded
+            padding-right: 20px
+            padding-left: 20px
 
     &.focus
         @include gradient-sky
@@ -139,6 +140,8 @@ p
             @include box-shadow(none)
     input
         line-height: 16px
+    textarea
+        padding-bottom: 22px
 .control-group
     &.success, &.error, &.warning
         input, select, textarea
@@ -408,106 +411,121 @@ input, textarea
                 padding: 9px 20px
             .divider
                 margin: 0 1px
+        .dropdown-menu .active > a, .dropdown-menu .active > a:hover
+            // background: #ddd
+
     .center
         margin: 0px auto
         float: none
         display: table
 
-    .primary-search
-        position: relative
-        &.visible-phone
-            margin-top: 51px
-        label i
-            position: absolute
-            top: 11px
-            left: -20px
-            font-size: 16px
-            color: #999
-        .loading
-            position: absolute
-            right: 10px
-            top: 18px
-        .typeahead.dropdown-menu
-            // overflow: auto
-            // max-height: 600px
-            max-width: 100%
-            margin-top: 11px
-            margin-bottom: 20px
-            &:after, &:before
-                top: -22px
-                border: solid transparent
-                content: " "
-                height: 0
-                width: 0
-                position: absolute
-                pointer-events: none
-            // &:after
-            //  border-color: rgba(255, 255, 255, 0)
-            //  border-bottom-color: #ffffff
-            //  border-width: 10px
-            //  left: 21px
-            //  margin-left: -11px
-            //  margin-top: 3px
-            &:before
-                border-color: rgba(221, 221, 221, 0)
-                border-bottom-color: #dddddd
-                border-width: 11px
-                left: 20px
-                margin-left: -11px
-            li
-                a
-                    white-space: normal
-                &.active:first-child
-                    a:after
-                        top: -22px
-                        border: solid transparent
-                        content: " "
-                        height: 0
-                        width: 0
-                        position: absolute
-                        pointer-events: none
-                        border-color: rgba(0, 136, 204, 0)
-                        border-bottom-color: #0088cc
-                        border-width: 10px
-                        left: 21px
-                        margin-left: -11px
-                        margin-top: 3px
 
-            .z1
+.ps-search
+    margin: 0
+    position: relative
+    z-index: 999
+    &.visible-phone
+        margin-top: 51px
+    label i
+        position: absolute
+        top: 6px
+        left: -20px
+        font-size: 16px
+        color: #999
+    .loading
+        position: absolute
+        right: 10px
+        top: 18px
+    .dropdown-menu
+        @include border-radius(3px)
+        @include box-shadow(0 2px 10px rgba(0, 0, 0, 0.15))
+        padding: 0
+        border: 1px solid #ddd
+        a
+            padding: 9px 20px
+        .divider
+            margin: 0 1px
+    .dropdown-menu .active > a, .dropdown-menu .active > a:hover
+        // background: #ddd
+    .typeahead.dropdown-menu
+        // overflow: auto
+        // max-height: 600px
+        max-width: 100%
+        margin-top: 11px
+        margin-bottom: 20px
+        &:after, &:before
+            top: -22px
+            border: solid transparent
+            content: " "
+            height: 0
+            width: 0
+            position: absolute
+            pointer-events: none
+        // &:after
+        //  border-color: rgba(255, 255, 255, 0)
+        //  border-bottom-color: #ffffff
+        //  border-width: 10px
+        //  left: 21px
+        //  margin-left: -11px
+        //  margin-top: 3px
+        &:before
+            border-color: rgba(221, 221, 221, 0)
+            border-bottom-color: #dddddd
+            border-width: 11px
+            left: 20px
+            margin-left: -11px
+        li
+            a
                 white-space: normal
-                cursor: pointer
-            .z2
-                padding-bottom: 5px
-            .z3
-                float: left
-                margin-right: 10px
-            .z3z
-                font-size: 17px
-                // color: #666
-            .z3z3
-                font-size: 13px
-                color: #ccc
-            .z4
-                @extend .img-circle
-                @extend .img-border
-                @extend .img-mini
-            .z4z4
-                font-size: 13px
-                line-height: 17px
-                color: #ccc
-                padding-bottom: 4px
-            .z5
-                font-size: 14px
-            .z6
-                float: right
-                color: #ccc
-                padding-left: 10px
-                font-size: 12px
-            .z7
-                color: #ddd
-                font-size: 12px
-        .dropdown-menu .active > a, .dropdown-menu .active > a:hover
-            // background: #ddd
+            &.active:first-child
+                a:after
+                    top: -22px
+                    border: solid transparent
+                    content: " "
+                    height: 0
+                    width: 0
+                    position: absolute
+                    pointer-events: none
+                    border-color: rgba(0, 136, 204, 0)
+                    border-bottom-color: #0088cc
+                    border-width: 10px
+                    left: 21px
+                    margin-left: -11px
+                    margin-top: 3px
+
+        .z1
+            white-space: normal
+            cursor: pointer
+        .z2
+            padding-bottom: 5px
+        .z3
+            float: left
+            margin-right: 10px
+        .z3z
+            font-size: 17px
+            // color: #666
+        .z3z3
+            font-size: 13px
+            color: #ccc
+        .z4
+            @extend .img-circle
+            @extend .img-border
+            @extend .img-mini
+        .z4z4
+            font-size: 13px
+            line-height: 17px
+            color: #ccc
+            padding-bottom: 4px
+        .z5
+            font-size: 14px
+        .z6
+            float: right
+            color: #ccc
+            padding-left: 10px
+            font-size: 12px
+        .z7
+            color: #ddd
+            font-size: 12px
 
 
 .navbar-inner
@@ -536,8 +554,11 @@ input, textarea
 
 #footer
     .container-fluid
+        padding-left: 20px
+        padding-right: 20px
+        padding-top: 30px
         @media (min-width: 520px)
-            padding-top: 15px
+            padding-top: 45px
     .watermark
         position: fixed
         bottom: 0
@@ -607,6 +628,20 @@ input, textarea
             @include transition-delay(0.1s)
             visibility: visible
             opacity: 1
+
+
+//////////////////////////////////////////////////////
+/**                   help style                   **/
+//////////////////////////////////////////////////////
+#help
+    .help-msg
+        min-height: 54px
+        font-size: 20px
+        line-height: 54px
+        border-top: 1px solid darken($color-blue, 10%)
+        border-bottom: 1px solid darken($color-blue, 10%)
+        background: $color-blue
+        color: white
 
 
 //////////////////////////////////////////////////////
@@ -989,6 +1024,14 @@ input, textarea
         .send-button
             visibility: visible
             opacity: 1
+
+
+//////////////////////////////////////////////////////
+/**                   inbox style                  **/
+//////////////////////////////////////////////////////
+#user_start
+    .step
+        min-height: 250px
 
 
 //////////////////////////////////////////////////////

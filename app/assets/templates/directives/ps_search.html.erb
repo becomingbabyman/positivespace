@@ -1,0 +1,9 @@
+<form class="form-search ps-search" ng-submit="" novalidate ng-class='formClass' ui-event="{mouseover: showInput, mouseout: hideInput}">
+	<div class="row-fluid">
+		<label for="{{inputId}}" ng-hide='hideLabel'><i class="icon-search"></i></label>
+
+		<input type="text" name="query" ng-model="query" ng-show='showSearch' id="{{inputId}}" class="search-query" placeholder="Search" typeahead="user as user.typeahead for user in search($viewValue)" ui-event="{keyup: 'updateScroll($event)', blur: 'hideInput()'}" autocomplete="off" ng-class='inputClass'>
+
+		<img ng-show="loading" src="<%= asset_path('ajax-loader-black-dots.gif') %>" alt="loading dots" style='position: absolute; right: 10px; top: 13px;'>
+	</div>
+</form>

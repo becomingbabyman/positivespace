@@ -124,6 +124,17 @@
 		color: $green
 		background: white
 
+.btnf-start
+	color: white
+	border-color: $yellow
+	background: lighten($yellow, 10%)
+	&:hover, &.active, &:visited:hover
+		color: white
+		background: $yellow
+	&:hover.active, &:visited
+		color: white
+		background: lighten($yellow, 10%)
+
 .btnf-huge
 	font-size: 30px
 	line-height: 30px

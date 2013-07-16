@@ -15,6 +15,10 @@ ps.controller "SearchsHeaderCtrl", ["$scope", "$http", "$location", "$q", ($scop
             # $(".nav ul.typeahead").scrollTo(".active", 200)
             $.scrollTo("ul.typeahead .active", 200)
 
+    $scope.setQuery = (query) ->
+        $scope.query = query
+        $scope.search(query)
+
     $scope.search = (query) ->
         defered = $q.defer()
 
@@ -27,7 +31,7 @@ ps.controller "SearchsHeaderCtrl", ["$scope", "$http", "$location", "$q", ($scop
                 if response.data?.collection? and response.data.collection.length > 0
                     results = response.data.collection
                 else
-                    results = [{typeahead: "No results for #{query}"}, {typeahead: "Search spaces by name, prompt, and location"}]
+                    results = [{typeahead: "No results for #{query}"}, {typeahead: "Search spaces by name, bio, and prompt"}]
                 defered.resolve(results)
             , (error) ->
                 $scope.loading = false
@@ -45,14 +49,7 @@ ps.controller "SearchsHeaderCtrl", ["$scope", "$http", "$location", "$q", ($scop
                     query: $scope.lastQuery
                     username: query.username
                     id: query.id
-            else if $scope.app.loggedIn()
-                $location.path("/#{$scope.app.currentUser.slug}")
-                analytics.track "search not found",
-                    query: $scope.lastQuery
-                    loggedIn: true
             else
-                $scope.app.flash('info', 'Looks like you need to log in first.')
-                $location.path("/register")
                 analytics.track "search not found",
                     query: $scope.lastQuery
                     loggedIn: false
