@@ -96,7 +96,7 @@ class User < ActiveRecord::Base
 
 	attr_accessor :login, :invitation_code, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :endorse_user_id
 	attr_accessible :username, :login, :email, :password, :password_confirmation, :remember_me
-	attr_accessible :bio, :location, :name, :personal_url, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :settings, :prompt, :skills, :interests, :onboarded #, :positive_response, :negative_response
+	attr_accessible :bio, :location, :name, :personal_url, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :settings, :prompt, :skills, :interests #, :positive_response, :negative_response
 	attr_protected :none, as: :admin
 
 	serialize :achievements
@@ -314,10 +314,6 @@ class User < ActiveRecord::Base
 		end
 	end
 
-	def onboarded= bool
-		self.achievements[:onboarded] = true if bool
-	end
-
 	def track_achievement achievement_name
 		self.achievements[achievement_name]=true
 		self.save
@@ -331,6 +327,18 @@ class User < ActiveRecord::Base
 			invitee.invitation_id = invite.id
 			invitee.endorse
 		end
+	end
+
+	def attempt_to_complete_onboarding
+		if !self.achievements[:onboarded] and self.profile_filled_in? and self.sent_messages.any?
+			self.achievements[:onboarded] = true
+			self.magnetism += 100
+			self.save
+		end
+	end
+
+	def profile_filled_in?
+		!self.bio.blank? and !self.space.prompt.blank? and self.skills.any? and self.interests.any?
 	end
 
 	# params: {days_ago: integer, days_range: integer, metrics: string(comma separated metrics list), intervals: integer}

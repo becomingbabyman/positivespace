@@ -198,6 +198,7 @@ psDirectives.directive "centerish", ["$timeout", ($timeout) ->
 
 		_.defer ->
 			center(true)
+			$(window).resize()
 
 		# $timeout ->
 		#	center(true)
@@ -301,6 +302,31 @@ psDirectives.directive "psLinechart", [() ->
 			# for i in [0..l-1]
 			#     r.text((i*w/l)+30, (h-m-8)/2, v[i]).attr({font: "10px sans-serif", 'text-anchor': 'start', fill: '#ccc'})
 
+]
+
+
+####################################################
+# <ps-tooltip>
+psDirectives.directive "psTooltip", ["$timeout", ($timeout) ->
+	restrict: "A"
+	scope:
+		psTooltip: '='
+	link: (scope, element, attrs) ->
+		_.defer ->
+			if _.isString(scope.psTooltip)
+				scope.tooltip = new Opentip element, scope.psTooltip
+			else if _.isObject(scope.psTooltip)
+				opts = scope.psTooltip.options
+				scope.tooltip = new Opentip element, scope.psTooltip.content,
+					target: opts.target if opts?.target?
+					stem: opts.stem if opts?.stem?
+					showOn: opts.showOn if opts?.showOn?
+				scope.$watch 'psTooltip.show', (show) ->
+					if _.isBoolean show
+						if show
+							scope.tooltip.show()
+						else
+							scope.tooltip.hide()
 ]
 
 
@@ -490,6 +516,7 @@ psDirectives.directive "psSpace", ["$location", "User", "Message", ($location, U
 	scope:
 		app: '='
 		user: '='
+		callback: '='
 
 	link: (scope, element, attrs) ->
 		scope.message = new Message
@@ -587,6 +614,8 @@ psDirectives.directive "psSpace", ["$location", "User", "Message", ($location, U
 						fromId: scope.app.currentUser.id
 						fromName: scope.app.currentUser.name
 						hasEmbedUrl: scope.message.embed_url?
+					if scope.callback?
+						scope.callback(data)
 				error = (error) ->
 					scope.app.show.loading = false
 					scope.app.flash 'error', error.data.errors
@@ -630,12 +659,18 @@ psDirectives.directive "psSearch", ["$location", "$http", "$q", ($location, $htt
 		hoverable: '@'
 		hideLabel: '@'
 		callback: '='
+		remoteQuery: '='
+	require: '?^form'
 
-	link: (scope, element, attrs) ->
+	link: (scope, element, attrs, controller) ->
 		scope.inputId = _.uniqueId("#search_")
 		scope.lastQuery = null
 		t = null
 		scope.showSearch = !attrs.hoverable?
+
+		scope.$watch 'remoteQuery', (q) ->
+			if _.isString(q) and q.length > 1
+				scope.setQuery q
 
 		scope.showInput = (e) ->
 			if scope.hoverable
@@ -653,15 +688,16 @@ psDirectives.directive "psSearch", ["$location", "$http", "$q", ($location, $htt
 				$.scrollTo($(element).find("ul.typeahead .active"), 200)
 
 		scope.setQuery = (query) ->
-			scope.query = query
-			scope.search(query)
+			element.find('input').val(query)
+			controller.query.$setViewValue(query)
+			element.find('input').focus()
 
 		scope.search = (query) ->
 			defered = $q.defer()
 
 			if t? then clearTimeout(t)
-			t = setTimeout ->
-				scope.loading = true
+			scope.loading = true
+			t = window.setTimeout ->
 				$http.get("/api/users?q=#{query}").then (response) ->
 					scope.loading = false
 					scope.lastQuery = query

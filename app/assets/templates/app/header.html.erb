@@ -3,6 +3,13 @@
 
 		<ul class="nav user-nav pull-right">
 
+			<li ng-show='app.loggedIn()'>
+				<a href="/{{app.currentUser.slug}}" title='magnetism' class='visible-phone unfancy-link'>
+					{{app.currentUser.magnetism}}
+					<i class="icon-magnet"></i>
+				</a>
+			</li>
+
 			<li class="hidden-phone prm">
 				<ps-search hoverable='true' form-class='pts' input-class='input-xlarge opacity5 opacity-full-hover'></ps-search>
 			</li>

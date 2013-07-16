@@ -89,12 +89,18 @@ ps.controller "UserPasswordEditCtrl", ["$scope", "$location", "$routeParams", "U
 
 
 # Start
-root.usersStartCtrl = ps.controller "UsersStartCtrl", ["$scope", "$routeParams", "$timeout", "$location", "User", "user", ($scope, $routeParams, $timeout, $location, User, user) ->
+root.usersStartCtrl = ps.controller "UsersStartCtrl", ["$scope", "$routeParams", "$timeout", "$location", "$q", "User", "user", ($scope, $routeParams, $timeout, $location, $q, User, user) ->
 	$scope.user = user
 	$scope.inputs = {}
 	$scope.step = parseInt($routeParams.step) or 0
-	$scope.maxStep = 8.0
+	if $routeParams.step == '6' and $routeParams.suid?
+		$scope.app.show.loading = true
+		User.get {id: $routeParams.suid}, (user) ->
+			$scope.app.show.loading = false
+			$scope.selectedUser = user
+	$scope.maxStep = 7.0
 	$scope.completionPercentage = $scope.step / $scope.maxStep * 100.0
+	$scope.tooltips = {}
 	inspirationalPeople = [
 		"Mahatma Gandhi"
 		"Mother Teresa"
@@ -158,25 +164,104 @@ root.usersStartCtrl = ps.controller "UsersStartCtrl", ["$scope", "$routeParams",
 				return {results: _.map(data.collection, ((t) -> {id: t.name, text: t.name})), more: more}
 				# return {results: _.pluck(data.collection, 'name'), more: more}
 		initSelection: (element, callback) ->
-			callback(_.map(user[tagSet], ((t) -> {id: t, text: t})))
+			if _.isObject $scope.user[tagSet][0]
+				callback($scope.user[tagSet])
+			else if _.isString $scope.user[tagSet][0]
+				callback(_.map($scope.user[tagSet], ((t) -> {id: t, text: t})))
 	$scope.skillsOptions = select2Options('skills')
 	$scope.interestsOptions = select2Options('interests')
 
+	addTooltip = (name, content) ->
+		show = false
+		options =
+			target: true
+			group: 'onboard'
+			# showOn: 'creation'
+			# hideOn: 'click'
+			# hideTriggers: ['closeButton']
+			containInViewport: false
+			# showEffect: 'none'
+			# showEffectDuration: 0
+			# hideEffect: 'fade'
+			# hideEffectDuration: 0
+		data =
+			content: content
+			options: options
+		$scope.tooltips[name] = data
+
+	addTooltip 'step0',
+		"""
+			<h5>Expertise</h5>
+			<p>Positive Space is designed to connect mutually beneficial strangers.</p>
+			<p>Filling out your expertise helps us determine who we should recommend you to.</p>
+			<p>For example, we will be more likely to recommend you to someone interested in Photography if you list Photography as your expertise.</p>
+		"""
+	addTooltip 'step1',
+		"""
+			<h5>Interests</h5>
+			<p>Our goal is to help you have the most useful conversations.</p>
+			<p>Filling out your interests gives us a quick overview of the topics you want to talk about.</p>
+			<p>For example, if you are interested in Startups then we can connect you with more people who have Startup experience.</p>
+		"""
+	addTooltip 'step2',
+		"""
+			<h5>Bio</h5>
+			<p>All conversations are private and 1 on 1.</p>
+			<p>We find that intimacy results in better conversations.</p>
+			<p>Use your bio to give people a glimpse of what it might be like to talk with you.</p>
+			<p>Draw from your experiences.</p>
+		"""
+	addTooltip 'step3',
+		"""
+			<h5>Prompt</h5>
+			<p>High quality conversation occur when expectations align.</p>
+			<p>Say exactly what you want to talk about so the right people can find you.</p>
+			<p>For example, If you want to talk about your idea for a new product, say so. It's good to be specific.</p>
+			<p>And don't think too hard. You can change your prompt whenever you want to talk about something else.</p>
+		"""
+	addTooltip 'step4',
+		"""
+			<h5>Profile</h5>
+			<p>We find that people are more likely to respond when they can see where you're coming from.</p>
+			<p>At the very least we recommend you add an image of yourself.</p>
+		"""
+	addTooltip 'step5',
+		"""
+			<h5>Discover</h5>
+			<p>Paying it forward is often the best place to start.</p>
+			<p>Let's find someone (preferably a stranger) whom you can help with your positivity, experience, and attention.</p>
+		"""
+	addTooltip 'step6',
+		"""
+			<h5>Respond</h5>
+			<p>Positive Space is designed for focus.</p>
+			<p>Try to stay focused on this specific prompt.</p>
+			<p>You will earn more characters as the conversation progresses, so there is no need to say everything at once.</p>
+			<p>For now focus on addressing the prompt and adding value.</p>
+		"""
+	$scope.tooltips["step#{$scope.step}"]?.show = true
+
 	$scope.next = ->
+		$scope.tooltips["step#{$scope.step}"]?.show = false
 		$scope.step += 1 if $scope.step <= $scope.maxStep
 		$location.search({step: $scope.step})
 		$scope.completionPercentage = $scope.step / $scope.maxStep * 100.0
+		$scope.tooltips["step#{$scope.step}"]?.show = true
 		$(window).resize()
+		analytics.track "onboarding step #{$scope.step}",
+			userId: $scope.user.id
+			userName: $scope.user.name
 
 	$scope.back = ->
+		$scope.tooltips["step#{$scope.step}"]?.show = false
 		$scope.step -= 1 if $scope.step > 0
 		$location.search({step: $scope.step})
 		$scope.completionPercentage = $scope.step / $scope.maxStep * 100.0
+		$scope.tooltips["step#{$scope.step}"]?.show = true
 		$(window).resize()
-
-	$scope.selectUser = (query) ->
-		$scope.selectedUser = User.get {id: query.id}, ->
-			$scope.next()
+		analytics.track "onboarding step #{$scope.step}",
+			userId: $scope.user.id
+			userName: $scope.user.name
 
 	$scope.usernameIsUnset = ->
 		if $scope.user then parseInt($scope.originalUsername) == $scope.user.id else false
@@ -192,8 +277,8 @@ root.usersStartCtrl = ps.controller "UsersStartCtrl", ["$scope", "$routeParams",
 		switch $scope.step
 			when 0 then unless $scope.userCopy.skills.length > 0 then errors.push "Please add at least one skill."
 			when 1 then unless $scope.userCopy.interests.length > 0 then errors.push "Please add at least one interest."
-			when 2 then unless $scope.userCopy.bio.length > 14 then errors.push "Please fill in your bio."
-			when 3 then unless $scope.userCopy.prompt.length > 14 then errors.push "Please write your first prompt."
+			when 2 then unless $scope.userCopy.bio?.length > 14 then errors.push "Please fill in your bio."
+			when 3 then unless $scope.userCopy.prompt?.length > 14 then errors.push "Please write your first prompt."
 		if errors.length > 0 then $scope.app.flash('error', errors) else true
 
 	$scope.saveSpace = ->
@@ -203,7 +288,6 @@ root.usersStartCtrl = ps.controller "UsersStartCtrl", ["$scope", "$routeParams",
 		$scope.userCopy.interests = _.pluck($scope.user.interests, 'text').join(",")
 		if validateStep()
 			$scope.next()
-			if $scope.step >= $scope.maxStep then $scope.userCopy.onboarded = true
 			success = (data) ->
 				# $scope.app.show.loading = false
 				analytics.track 'save space success',
@@ -211,10 +295,8 @@ root.usersStartCtrl = ps.controller "UsersStartCtrl", ["$scope", "$routeParams",
 					routeId: $routeParams.user_id
 					userId: $scope.userCopy.id
 					userName: $scope.userCopy.name
-					firstSave: $scope.inputs.cantCloseEdit
 					namePlaceholder: $scope.inputs.namePlaceholder
 				$scope.app.loadCurrentUser()
-				$location.path("/#{$scope.userCopy.slug}") if $scope.step >= $scope.maxStep
 			error = (error) ->
 				$scope.back()
 				# $scope.app.show.loading = false
@@ -224,10 +306,31 @@ root.usersStartCtrl = ps.controller "UsersStartCtrl", ["$scope", "$routeParams",
 					routeId: $routeParams.user_id
 					userId: $scope.userCopy.id
 					userName: $scope.userCopy.name
-					firstSave: $scope.inputs.cantCloseEdit
 					namePlaceholder: $scope.inputs.namePlaceholder
 					error: JSON.stringify(error)
 			$scope.userCopy.save success, error
+
+	$scope.setQuery = (query) ->
+	    $scope.discoverQuery = query
+
+	$scope.selectUser = (query) ->
+		if !query.id?
+			$scope.app.flash 'error', "Invalid selection."
+		else if parseInt(query.id) == $scope.user.id
+			$scope.app.flash 'error', "You can't select yourself."
+			$scope.discoverQuery = ''
+		else
+			$scope.app.show.loading = true
+			$scope.selectedUser = User.get {id: query.id}, ->
+				$scope.app.show.loading = false
+				$scope.next()
+				s = $location.search()
+				s.suid = query.id
+				$location.search(s)
+
+	$scope.messageSent = (message) ->
+		$scope.next()
+		$scope.app.loadCurrentUser()
 
 ]
 root.usersStartCtrl.loadStartUser = ["$q", "$route", "$location", "User", ($q, $route, $location, User) ->

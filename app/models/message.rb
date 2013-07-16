@@ -86,11 +86,11 @@ private
 	end
 
 	def validate_take_turns
-		errors.add(:you, "have to wait for a reply before sending another message") if m = self.conversation.last_message and m.from_id == self.from_id
+		errors.add(:you, "have to wait for a reply before sending another message") if m = self.conversation.last_message and m.from_id == self.from_id and !self.conversation.ended?
 	end
 
 	def validate_not_ended
-		errors.add(:you, "have already had a conversation with #{self.to.name} about this topic and the conversation is now over") if self.conversation.ended?
+		errors.add(:you, "have already had a conversation with #{self.to.name} about this prompt and the conversation is now over. You must wait for #{self.to.name.possessive} prompt to change before starting another conversation.") if self.conversation.ended?
 	end
 
 	def validate_from_is_in_conversation
@@ -105,6 +105,7 @@ private
 		self.conversation.last_message.reply if self.conversation.last_message
 		append_message_to_conversation
 		notify_recipient
+		self.from.attempt_to_complete_onboarding
 	end
 
 	def continue_conversation

@@ -21,6 +21,13 @@
 	</div>
 </div>
 
+<a href='/{{app.currentUser.slug}}' class='watermark' ng-class="{'hidden-phone': (app.show.footer && app.loggedIn()), hidden: (!app.show.footer || !app.loggedIn())}">
+	<h4 tooltip='magnetism' tooltip-placment='left'>
+		{{app.currentUser.magnetism}}
+		<i class="icon-magnet"></i>
+	</h4>
+</a>
+
 <a href='#' class='watermark' ng-class="{'hidden-phone': (app.show.footer && !app.loggedIn()), hidden: (!app.show.footer || app.loggedIn())}" ng-click='app.clickPoweredBy()'>
 	<div class='powered-by'>powered&nbsp;by</div>
 	<div class='positive-space'>Positive&nbsp;Space</div>

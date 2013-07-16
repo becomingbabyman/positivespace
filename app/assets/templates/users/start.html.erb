@@ -8,23 +8,29 @@
 					<div class="row-fluid uncenter">
 						<div class="span12">
 
-							<h3 class='pbs'>Getting Started</h3>
-							<div class="progress progress-success">
-								<div class="bar" style="width: {{completionPercentage}}%"></div>
-							</div>
+							<h3 class='pbs'>
+								<span class='pull-right'>Earn 100 <i class="icon-magnet" tooltip='magnetism'></i></span>
+								Getting Started
+							</h3>
+							<progress percent="completionPercentage" class='progress-success'></progress>
 
 
-							<form name='user_profile' class='form-vertical ptm' ng-submit='saveSpace()' novalidate style='width: 100%;' ng-show='step <= 4'>
+							<form name='user_profile' class='form-vertical' ng-submit='saveSpace()' novalidate style='width: 100%;' ng-show='step <= 4'>
 
 								<div class='step animated fadeInDown' ng-show='step == 0'>
-									<control-group label='Expertise' class='pbl' no-color='true'>
+									<h4>
+										<span class="pull-right" ps-tooltip="tooltips.step0">&nbsp;</span>
+										Select 5 things you excel at.
+									</h4>
+
+									<control-group class='pbl' no-color='true'>
 										<div class="muted pbm">type your skills:</div>
 										<input type='text' name='skills' placeholder='add a skill' id='user_skills' class='input-block-level' multiple ui-select2='skillsOptions' ng-model='user.skills'></input>
 										<div class="muted ptl pbm">or pick from some favorites:</div>
 										<div class='pbm'>
 											<a href="#" class="btn btn-info mbs mrs" ng-click="addTag('skills', 'Design')" ng-hide="user.skills | pluck:'text' | contains:'Design'"><i class='icon-lightbulb'></i> Design</a>
 											<a href="#" class="btn btn-info mbs mrs" ng-click="addTag('skills', 'Development')" ng-hide="user.skills | pluck:'text' | contains:'Development'"><i class='icon-code-fork'></i> Development</a>
-											<a href="#" class="btn btn-info mbs mrs" ng-click="addTag('skills', 'Buisness')" ng-hide="user.skills | pluck:'text' | contains:'Buisness'"><i class='icon-money'></i> Buisness</a>
+											<a href="#" class="btn btn-info mbs mrs" ng-click="addTag('skills', 'Business')" ng-hide="user.skills | pluck:'text' | contains:'Business'"><i class='icon-money'></i> Business</a>
 											<a href="#" class="btn btn-info mbs mrs" ng-click="addTag('skills', 'Writing')" ng-hide="user.skills | pluck:'text' | contains:'Writing'"><i class='icon-pencil'></i> Writing</a>
 											<a href="#" class="btn btn-info mbs mrs" ng-click="addTag('skills', 'Marketing')" ng-hide="user.skills | pluck:'text' | contains:'Marketing'"><i class='icon-bullhorn'></i> Marketing</a>
 											<a href="#" class="btn btn-info mbs mrs" ng-click="addTag('skills', 'Teaching')" ng-hide="user.skills | pluck:'text' | contains:'Teaching'"><i class='icon-group'></i> Teaching</a>
@@ -45,7 +51,12 @@
 
 
 								<div class='step animated fadeInDown' ng-show='step == 1'>
-									<control-group label='Interests' class='pbl' no-color='true'>
+									<h4>
+										<span class="pull-right" ps-tooltip="tooltips.step1">&nbsp;</span>
+										Select 5 things you want to discuss.
+									</h4>
+
+									<control-group class='pbl' no-color='true'>
 										<div class="muted pbm">type your interests:</div>
 										<input type='text' name='interests' placeholder='add an interest' id='user_interests' class='input-block-level' multiple ui-select2='interestsOptions' ng-model='user.interests'></input>
 										<div class="muted ptl pbm">or pick from some favorites:</div>
@@ -55,7 +66,7 @@
 											<a href="#" class="btn btn-warning mbs mrs" ng-click="addTag('interests', 'Startups')" ng-hide="user.interests | pluck:'text' | contains:'Startups'"><i class='icon-cloud-upload'></i> Startups</a>
 											<a href="#" class="btn btn-warning mbs mrs" ng-click="addTag('interests', 'Art')" ng-hide="user.interests | pluck:'text' | contains:'Art'"><i class='icon-picture'></i> Art</a>
 											<a href="#" class="btn btn-warning mbs mrs" ng-click="addTag('interests', 'Traveling')" ng-hide="user.interests | pluck:'text' | contains:'Traveling'"><i class='icon-plane'></i> Traveling</a>
-											<a href="#" class="btn btn-warning mbs mrs" ng-click="addTag('interests', 'Governence')" ng-hide="user.interests | pluck:'text' | contains:'Governence'"><i class='icon-legal'></i> Governence</a>
+											<a href="#" class="btn btn-warning mbs mrs" ng-click="addTag('interests', 'Governance')" ng-hide="user.interests | pluck:'text' | contains:'Governance'"><i class='icon-legal'></i> Governance</a>
 											<a href="#" class="btn btn-warning mbs mrs" ng-click="addTag('interests', 'Playing')" ng-hide="user.interests | pluck:'text' | contains:'Playing'"><i class='icon-gamepad'></i> Playing</a>
 											<!-- <a href="#" class="btn btn-warning mbs mrs" ng-click="addTag('interests', 'Acting')" ng-hide="user.interests | pluck:'text' | contains:'Acting'"><i class='icon-ticket'></i> Acting</a> -->
 											<a href="#" class="btn btn-warning mbs mrs" ng-click="addTag('interests', 'Sports')" ng-hide="user.interests | pluck:'text' | contains:'Sports'"><i class='icon-dribbble'></i> Sports</a>
@@ -67,15 +78,25 @@
 
 
 								<div class='step animated fadeInDown' ng-show='step == 2'>
-									<control-group label="Bio" maxlength=250 help-block="List what you do... Or share a short story with us." class='pbm'>
+									<h4>
+										<span class="pull-right" ps-tooltip="tooltips.step2">&nbsp;</span>
+										Write a short bio.
+									</h4>
+
+									<control-group maxlength=250 help-block="Say what you do... Or share a short story." class='pbm'>
 										<textarea name='bio' id='user_bio' title='your brief biography' placeholder="Here's what I've been up to recently..." class='input-block-level' ng-model='user.bio' rows=3 required ng-minlength=15 ng-maxlength=250></textarea>
 									</control-group>
 								</div>
 
 
 								<div class='step animated fadeInDown' ng-show='step == 3'>
+									<h4>
+										<span class="pull-right" ps-tooltip="tooltips.step3">&nbsp;</span>
+										Write your first prompt.
+									</h4>
+
 									<div class="position-relative pbm">
-										<control-group label="Prompt" maxlength=250 help-block='Keep it short and to the point. You can and should change it later when you are ready to discuss something else.'>
+										<control-group maxlength=250 help-block='Keep it short and to the point. You can and should change it later when you are ready to discuss something else.'>
 											<textarea name='prompt' id='user_space_prompt' title='prompt' placeholder="This is a pressing question or thought that I'd like to discuss..." class='input-block-level' ng-model='user.prompt' rows=3 required ng-minlength=15 ng-maxlength=250></textarea>
 										</control-group>
 										<i class="icon-info pull-right prm plm muted" style='position: absolute; top: 0; right: 0px;' tooltip-placement='left' tooltip-trigger='mouseenter' tooltip-html-unsafe="<span style='line-height: 1.8em; text-align: left'><ol><li>Prompt the conversation you want to have.</li><li>Everytime you change your prompt, Positive Space will update our search and discovery listings, so like-minded people will be able to easily find your space and start a 1 on 1 conversation with you.</li><li>We also use this prompt to better understand your interests and send you recomendations.</li><li><strong>Change it frequently for better recommendations.</strong></li></ol></span>"></i>
@@ -84,6 +105,11 @@
 
 
 								<div class='step animated fadeInDown' ng-show='step == 4'>
+									<h4>
+										<span class="pull-right" ps-tooltip="tooltips.step4">&nbsp;</span>
+										Complete your profile.
+									</h4>
+
 									<div class="center">
 										<ps-img src="{{user.avatar.big_thumb_url}}" alt="{{user.name}}" img-class="img-circle img-border img-big-thumb" attachable-type='User' attachable-id='{{user.id}}' image-type='avatar' image-url='big_thumb_url' can-edit='{{user.id && user.id == app.currentUser.id}}'></ps-img>
 									</div>
@@ -128,18 +154,21 @@
 							<div class='row-fluid step5' ui-if='step == 5'>
 								<div class="span12">
 									<div class="step">
-										<h4>What do you want to talk about first?</h4>
+										<h4 class='pbm'>
+											<span class="pull-right" ps-tooltip="tooltips.step5">&nbsp;</span>
+											Where will you add value today?
+										</h4>
 										<a href="#" ng-repeat='skill in app.currentUser.skills' ng-click="setQuery(skill)" class="btn btn-info mbs mrs">{{skill}}</a>
 										<a href="#" ng-repeat='interest in app.currentUser.interests' ng-click="setQuery(interest)" class="btn btn-warning mbs mrs">{{interest}}</a>
 
 										<div class="muted ptm">choose someone to talk with:</div>
 
-										<ps-search form-class='pts' input-class='span12' callback='selectUser' hide-label='true'></ps-search>
+										<ps-search form-class='pts' input-class='span12' callback='selectUser' hide-label='true' remote-query='discoverQuery'></ps-search>
 									</div>
 
 									<div class='control-group'>
 										<div class='controls'>
-											<a href='#' class='btn btn-success pull-right' disabled popover='search for someone to talk with in order to continue'>Continue</a>
+											<a href='#' class='btn btn-success pull-right' disabled popover='search for someone to talk with'>Continue</a>
 											<a href='#' ng-click='back()' class='btn'>Back</a>
 										</div>
 									</div>
@@ -148,14 +177,39 @@
 
 							<div class='row-fluid step6' ui-if='step == 6'>
 								<div class="span12">
-									<div class="step animated fadeInDown">
-										<h4 class='pbm'>Start your first conversation.</h4>
-										<ps-space app='app' user='selectedUser'></ps-space>
+									<div class="step animated fadeInDown pbl">
+										<h4 class='pbm'>
+											<span class="pull-right" ps-tooltip="tooltips.step6">&nbsp;</span>
+											Start your first conversation.
+										</h4>
+										<ps-space app='app' user='selectedUser' callback='messageSent' ui-if='selectedUser'></ps-space>
+										<p ng-hide='selectedUser || app.show.loading'>Go back to select someone to talk with</p>
 									</div>
 
 									<div class='control-group'>
 										<div class='controls'>
-											<a href='#' class='btn btn-success pull-right' disabled popover='compose a message to continue'>Continue</a>
+											<a href='#' class='btn btn-success pull-right' disabled popover='type a message to {{selectedUser.first_name}}'>Continue</a>
+											<a href='#' ng-click='back()' class='btn'>Back</a>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class='row-fluid step7' ui-if='step == 7'>
+								<div class="span12">
+									<div class="step animated fadeInDown pbl">
+										<h2>Congratulations!</h2>
+										<p>You have created a Space and reached out to your first stranger.</p>
+										<p class='hidden-phone'>Check out your magnetism below!</p>
+										<p class='visible-phone'>Check out your magnetism above!</p>
+										<p>We hope that the relationship will be the first of many new mutually beneficial relationships.</p>
+										<p><em>If it is not, please do what you can to be helpful, only giving what time you have, and then end the conversation.</em></p>
+										<p><b>Regardless of conversation quality, we suggest that you end all conversations when they start to veer off topic. You can always start a new one!</b></p>
+									</div>
+
+									<div class='control-group'>
+										<div class='controls'>
+											<a href='/{{app.currentUser.slug}}' class='btn btn-success pull-right'>Go to my Space</a>
 											<a href='#' ng-click='back()' class='btn'>Back</a>
 										</div>
 									</div>
