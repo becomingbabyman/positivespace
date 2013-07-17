@@ -65,8 +65,8 @@ class Message < ActiveRecord::Base
 
 	def max_char_count
 		char_count = BASE_CHAR_COUNT
-		char_count += CHAR_COUNT_PADDING if self.relax_constraints
 		char_count = self.conversation.messages.size * CHAR_COUNT_PADDING + char_count if self.conversation
+		char_count += char_count if self.relax_constraints # just double the char count to make the message less likely to be rejected.
 		char_count
 	end
 

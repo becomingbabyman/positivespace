@@ -44,7 +44,7 @@ private
 			# TODO: This does not work when you forward your email to another address. Think about alternatives.
 			# self.error_messages << "your email address is not authorized to reply to this message" unless message.to.email == sender
 			self.error_messages << "This message has already been replied to." unless message.conversation.last_message_id == message.id
-			self.error_messages << "Reply is too long, it contained #{self.stripped_text.size} characters but #{message.max_char_count} characters is the max." if self.stripped_text.size > (message.max_char_count + Message::CHAR_COUNT_PADDING)
+			self.error_messages << "Reply is too long, it contained #{self.stripped_text.size} characters but #{message.max_char_count} characters is the max. Because most email clients have no character counter we give you a lot of leeway, but #{self.stripped_text.size - message.max_char_count} characters over is more than double. Please pair it down a bit and reply again to the original email." if self.stripped_text.size > (message.max_char_count * 2)
 		end
 
 		if self.error_messages.any?
