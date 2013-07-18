@@ -36,13 +36,13 @@ class CreateEmails < ActiveRecord::Migration
 
 		add_column :messages, :authentication_token, :string
 
-		# Message.reset_column_information
+		Message.reset_column_information
 
-		# say_with_time "Add auth token to all messages" do
-		#	Message.all.each do |msg|
-		#		msg.authentication_token = SecureRandom.hex(20)
-		#		msg.save(:validate=>false)
-		#	end
-		# end
+		say_with_time "Add auth token to all messages" do
+			Message.all.each do |msg|
+				msg.authentication_token = SecureRandom.hex(20)
+				msg.save(:validate=>false)
+			end
+		end
 	end
 end
