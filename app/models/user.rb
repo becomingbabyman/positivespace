@@ -96,7 +96,7 @@ class User < ActiveRecord::Base
 
 	attr_accessor :login, :invitation_code, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :endorse_user_id
 	attr_accessible :username, :login, :email, :password, :password_confirmation, :remember_me
-	# attr_accessible :bio, :location, :name, :personal_url, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :settings, :prompt, :skills, :interests #, :positive_response, :negative_response
+	attr_accessible :bio, :location, :name, :personal_url, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :settings, :prompt, :skills, :interests #, :positive_response, :negative_response
 	attr_protected :none, as: :admin
 
 	serialize :achievements
@@ -127,7 +127,7 @@ class User < ActiveRecord::Base
 	accepts_nested_attributes_for :images, :avatars
 
 	validates :username, :uniqueness => {:case_sensitive => false}, :length => 3..18, :allow_blank => true, :if => Proc.new { |user| user.username != user.id.to_s }
-	# validates :bio, length: 1..250, allow_blank: true
+	validates :bio, length: 1..250, allow_blank: true
 	validates :positive_response, length: 1..250, allow_blank: true
 	validates :negative_response, length: 1..250, allow_blank: true
 	validate  :validate_username_format
