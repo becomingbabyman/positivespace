@@ -68,7 +68,7 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
             personalUrl               : user.personal_url
             lastSignInAt              : user.last_sign_in_at
             settings                  : JSON.stringify(user.settings)
-            achievements              : JSON.stringify(user.achievements)
+            achievements              : JSON.stringify(user.achievements_list)
             readyConversationsCount   : user.ready_conversations_count
             endedConversationsCount   : user.ended_conversations_count
             waitingConversationsCount : user.waiting_conversations_count
@@ -148,7 +148,7 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
             # Identify the user
             $scope.app.identify user
             # Apply help messages
-            unless user.achievements.onboarded or current.$$route.templateUrl == "<%= asset_path('users/start.html') %>"
+            unless ('onboarded' in user.achievements_list) or current.$$route.templateUrl == "<%= asset_path('users/start.html') %>"
                 $scope.app.helpMsgs = ["Your Space is incomplete. <a href='/#{user.slug}/start' class='btnf btnf-start btn-large btn-warning'>Get started</a>"]
             else
                 $scope.app.helpMsgs = []

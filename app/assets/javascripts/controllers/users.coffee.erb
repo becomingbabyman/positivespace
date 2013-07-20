@@ -525,7 +525,7 @@ root.usersShowCtrl = ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "
 
 	$scope.app.dcu.promise.then (currentUser) ->
 		if $scope.user.id == currentUser.id
-			unless currentUser.achievements.onboarded
+			unless "onboarded" in currentUser.achievements_list
 				# make sure user is onboarded
 				$location.path("/#{currentUser.slug}/start")
 			else
