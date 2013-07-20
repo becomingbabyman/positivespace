@@ -138,7 +138,7 @@ root.usersStartCtrl = ps.controller "UsersStartCtrl", ["$scope", "$routeParams",
 	$scope.app.meta.description = "Getting started on Positive Space"
 	$scope.app.meta.imageUrl = $scope.user.avatar.big_thumb_url
 	$scope.originalUsername = angular.copy $scope.user.username
-	if parseInt($scope.originalUsername) == $scope.user.id then $scope.user.username = null
+	# if parseInt($scope.originalUsername) == $scope.user.id then $scope.user.username = null
 	if $scope.user.username == $scope.user.name then $scope.user.name = null
 
 
