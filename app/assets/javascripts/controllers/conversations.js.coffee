@@ -80,7 +80,6 @@ ps.controller "ConversationsPartialCtrl", ["$scope", "$location", "$timeout", "C
 	$scope.messages = { collection: [] }
 	$scope.options = {}
 	$scope.hideAll = false
-	# $scope.animateCss = 'animated bounceOutLeft'
 	# $scope.autosave = { body: "reply_to_msg_id_#{$scope.conversation?.last_message_id}" }
 
 	$scope.init = (options = {}) ->

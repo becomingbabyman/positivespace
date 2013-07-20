@@ -278,5 +278,11 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
     $scope.app.selectText = (className) ->
         window.selectText(className)
 
+    $scope.setSearchQuery = (query) ->
+        if window.innerWidth > 768
+            $scope.searchDesktopQuery = query
+        else
+            $scope.searchMobileQuery = query
+
 ]
 

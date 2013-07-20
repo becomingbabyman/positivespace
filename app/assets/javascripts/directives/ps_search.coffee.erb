@@ -39,6 +39,7 @@ ps.directive "psSearch", ["$location", "$http", "$q", ($location, $http, $q) ->
 				$.scrollTo($(element).find("ul.typeahead .active"), 200)
 
 		scope.setQuery = (query) ->
+			scope.showSearch = true
 			element.find('input').val(query)
 			controller.query.$setViewValue(query)
 			element.find('input').focus()
