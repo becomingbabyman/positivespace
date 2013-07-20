@@ -323,7 +323,7 @@ class User < ActiveRecord::Base
 	end
 
 	def has_achievement? achievement_name
-		self.achievements_list.include?(achievement_name.to_s) or self.achievements.where(name: achievement_name).any?
+		self.achievements_list.include?(achievement_name.to_s) or self.achievements.where(name: achievement_name.to_s).any?
 	end
 
 	def endorse_user= uid

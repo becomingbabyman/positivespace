@@ -63,14 +63,6 @@ class CreateMagnetismsAndAchievements < ActiveRecord::Migration
         group.each do |u|
           u.achievements_list = u.achievements_list.map{|k,v| k.to_s}
           u.save
-        end
-      end
-    end
-
-    say_with_time "Make achievements" do
-      User.find_in_batches do |group|
-        sleep(10) # Make sure it doesn't get too crowded in there!
-        group.each do |u|
           u.achievements_list.each do |name|
             u.track_achievement name
           end
