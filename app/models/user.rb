@@ -319,7 +319,7 @@ class User < ActiveRecord::Base
 	end
 
 	def track_achievement achievement_name
-		self.achievements << Achievement.find_or_create_by_name(achievement_name.to_s) unless self.has_achievement?(achievement_name)
+		self.wins.create(achievement: Achievement.find_or_create_by_name(achievement_name.to_s)) unless self.has_achievement?(achievement_name)
 	end
 
 	def has_achievement? achievement_name

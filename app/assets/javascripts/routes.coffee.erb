@@ -54,7 +54,6 @@ ps.config ['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvid
 		templateUrl: "<%= asset_path('conversations/show.html') %>"
 		resolve:
 			conversation: root.resolves.conversationsShow.conversation
-			messages: root.resolves.conversationsShow.messages
 
 	# Users
 	.when "/login",

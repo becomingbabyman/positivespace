@@ -8,11 +8,11 @@
 					<a href="#" ng-click="filter('all')" title='all'>Conversations</a>
 				</div>
 				<div class="selections">
-					<a href="#" ng-click='filter("ready")' class='ready' ng-class="{active: (selectedFilter == 'ready' || selectedFilter == 'all')}" title='ready'>
-						{{app.currentUser.ready_conversations_count}}
-					</a>
 					<a href="#" ng-click='filter("waiting")' class='waiting' ng-class="{active: (selectedFilter == 'waiting' || selectedFilter == 'all')}" title='waiting'>
 						{{app.currentUser.waiting_conversations_count}}
+					</a>
+					<a href="#" ng-click='filter("ready")' class='ready' ng-class="{active: (selectedFilter == 'ready' || selectedFilter == 'all')}" title='ready'>
+						{{app.currentUser.ready_conversations_count}}
 					</a>
 					<a href="#" ng-click='filter("ended")' class='ended' ng-class="{active: (selectedFilter == 'ended' || selectedFilter == 'all')}" title='ended'>
 						{{app.currentUser.ended_conversations_count}}
@@ -26,65 +26,13 @@
 
 			<div class="row-fluid">
 				<div class="span12" ng-show='conversations.collection.length == 0'>
-					<h3 class='faded'>You should start one.</h3>
+					<a href="#" ng-click="app.randomSpace()"><h3>Meet someone random?</h3></a>
 				</div>
 			</div>
+			{{templates.partial}}
 			<div infinite-scroll='loadMoreConversations()' infinite-scroll-disabled='busy' infinite-scroll-distance='1'>
 				<div ng-repeat="conversation in conversations.collection">
-					<ps-conversation app='app' conversation='conversation'></ps-conversation>
-					<!-- <br/> -->
-					<!-- <div class="span12">
-						<hr/>
-						<a ng-href="/conversations/{{conversation.id}}?message_id={{conversation.last_message_id}}" class='unfancy-link'>
-							<div class="row-fluid">
-								<div class="span12">
-									<small class='faded'>
-										<time datetime="{{conversation.updated_at}}">
-											{{conversation.updated_at | fromNow}}
-										</time>
-									</small>
-								</div>
-							</div>
-							<div class="row-fluid">
-								<div class="span12">
-									<img ng-src="{{conversation.from.avatar.thumb_url}}" alt="{{conversation.from.name}}" class="img-circle img-border img-mini">
-									<img ng-src="{{conversation.to.avatar.thumb_url}}" alt="{{conversation.to.name}}" class="img-circle img-border">
-								</div>
-							</div>
-							<div class="row-fluid ptm">
-								<div class="span12">
-									<small ng-hide='conversation.from.id == app.currentUser.id'>from</small>
-									<small ng-hide='conversation.to.id == app.currentUser.id'>to</small>
-									<span ng-hide='conversation.from.id == app.currentUser.id'>{{conversation.from.name}}</span>
-									<span ng-hide='conversation.to.id == app.currentUser.id'>{{conversation.to.name}}</span>
-								</div>
-							</div>
-							<div class="row-fluid">
-								<div class="span12">
-									<p class='prompt' ng-bind-html-unsafe="conversation.prompt | linebreaks">{{conversation.prompt}}</p>
-								</div>
-							</div>
-							<div class="row-fluid ptl">
-								<div class="span12 uncenter">
-									<h5 class="faded">Last message</h5>
-								</div>
-							</div>
-							<div class="row-fluid font18">
-								<div class="span2">
-									<img ng-src="{{conversation.from.avatar.thumb_url}}" alt="{{conversation.from.name}}" class="img-circle img-border img-mini" ng-show='conversation.last_message_from_id == conversation.from.id'>
-									<img ng-src="{{conversation.to.avatar.thumb_url}}" alt="{{conversation.to.name}}" class="img-circle img-border img-mini" ng-show='conversation.last_message_from_id == conversation.to.id'>
-								</div>
-								<div class="span10">
-									<p class='uncenter' ng-bind-html-unsafe="conversation.last_message_body | linebreaks">{{conversation.last_message_body}}</p>
-								</div>
-							</div>
-							<div class="row-fluid" ng-show="conversation.state != 'ended' && conversation.last_message_from_id != app.currentUser.id">
-								<div class="span12 ptm pbl">
-									<div class='btnf btnf-respond' ng-click='selectConversation(conversation)'>Reply</div>
-								</div>
-							</div>
-						</a>
-					</div> -->
+					<div ng-include src="'<%= asset_path('conversations/conversation.html') %>'" ng-controller="ConversationsPartialCtrl" onload='init({animateExit:true})'></div>
 				</div>
 			</div>
 		</div>

@@ -16,7 +16,7 @@ private
 	def add_to_achievements_list
 		u = self.user
 		n = self.achievement.name
-		unless u.has_achievement?(n)
+		unless u.achievements_list.include?(n)
 			u.achievements_list << n
 			u.save
 		end

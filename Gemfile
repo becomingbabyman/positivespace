@@ -155,7 +155,7 @@ group :development do
 
   # Profiling
   # TODO: ALWAYS:
-  # gem 'bullet'
+  gem 'bullet'
   # gem 'rack-mini-profiler'
 
   # gem 'better_errors'

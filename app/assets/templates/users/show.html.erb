@@ -190,7 +190,7 @@
 
 			<div class='row animated fadeInUp ptl' ng-show="conversation">
 				<div class="span-mobile center">
-					<ps-conversation app='app' conversation='conversation'></ps-conversation>
+					<div ng-include src="'<%= asset_path('conversations/conversation.html') %>'" ng-controller="ConversationsPartialCtrl"></div>
 				</div>
 			</div>
 

@@ -50,6 +50,8 @@ GEM
     bootstrap-sass (2.2.2.0)
       sass (~> 3.2)
     builder (3.0.4)
+    bullet (4.6.0)
+      uniform_notifier
     callsite (0.0.11)
     cancan (1.6.10)
     capybara (2.1.0)
@@ -472,6 +474,7 @@ DEPENDENCIES
   asset_sync
   binding_of_caller
   bootstrap-sass (~> 2.2.2.0)
+  bullet
   cancan
   capybara-screenshot
   capybara-webkit

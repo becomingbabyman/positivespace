@@ -50,26 +50,61 @@ root.resolves.conversationsIndex =
 	]
 
 
-ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "$timeout", "Message", "Conversation", "conversation", "messages", ($scope, $routeParams, $location, $timeout, Message, Conversation, conversation, messages) ->
+ps.controller "ConversationsShowCtrl", ["$scope", "conversation", ($scope, conversation) ->
 	$scope.conversation = conversation
-	$scope.messages = messages
-	$scope.lastMsg = _.last(messages.collection)
-	$scope.message = _.findWhere(messages.collection, {id: $routeParams.message_id}) if $routeParams.message_id
-	$scope.message or= $scope.lastMsg
-	$scope.myMessage = new Message {user_id: conversation.partners_id, conversation_id: $routeParams.id}
-	$scope.show = {conversation: false, embedInput: false}
-	$scope.show.conversation = true if conversation.state == 'ended'
 	$scope.app.meta.title = "Conversation · #{conversation.from.name} -> #{conversation.to.name}"
+]
+root.resolves.conversationsShow =
+	conversation: ["$q", "$route", "$location", "Conversation", ($q, $route, $location, Conversation) ->
+		defered = $q.defer()
+		query = {user_id: 'me', id: $route.current.params.id}
+		Conversation.get query, (conversation) ->
+			defered.resolve(conversation)
+			analytics.track 'view conversation success'
+		, (error) ->
+			$location.search('path', window.location.pathname)
+			$location.search('search', window.location.search)
+			$location.path('/login')
+			# $scope.app.flash 'info', "Please log in first."
+			analytics.track 'view conversation error',
+				error: 'not logged in'
+			# defered.reject(error)
+		defered.promise
+	]
 
-	$scope.$watch 'myMessage.body', (value) ->
-		$scope.remainingChars = $scope.conversation.max_char_count - (if value? then value.length else 0)
 
+
+ps.controller "ConversationsPartialCtrl", ["$scope", "$location", "Conversation", "Message", "User", ($scope, $location, Conversation, Message, User) ->
+	$scope.expanded = false
+	$scope.messages = { collection: [] }
+	$scope.options = {}
+	# $scope.animateCss = 'animated bounceOutLeft'
+	# $scope.autosave = { body: "reply_to_msg_id_#{$scope.conversation?.last_message_id}" }
+
+	$scope.init = (options = {}) ->
+		$scope.options.animateExit = options.animateExit?
+		$scope.options.redirectAfterSuccess = options.redirectAfterSuccess?
+		$scope.toggleExpand() if options.toggleExpand?
+
+	$scope.toggleExpand = ->
+		if $scope.expanded
+			$scope.expanded = false
+			$scope.messages = { collection: [] }
+		else
+			$scope.expanded = true
+			$scope.myMessage = new Message {user_id: $scope.conversation.partners_id, conversation_id: $scope.conversation.id}
+			$scope.show = {embedInput: false}
+			if $scope.messages.collection.length == 0
+				loadMessages()
+
+	loadMessages = ->
+		query = {user_id: 'me', conversation_id: $scope.conversation.id}
+		$scope.messages = Message.query query
 
 	$scope.$watch 'show.embedInput', (value) ->
 		if value
 			analytics.track 'click reveal embed url input',
 				href: window.location.href
-				routeId: $routeParams.id
 
 	$scope.end = ->
 		# if window.confirm 'This conversation is finished.'
@@ -77,10 +112,10 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 		$scope.conversation.save (conversation) ->
 			$scope.app.currentUser.ready_conversations_count -= 1
 			$scope.app.currentUser.ended_conversations_count += 1
-			$location.path("/conversations")
+			$scope.animateCss = 'animated bounceOutRight' if $scope.options.animateExit?
+			$location.path("/conversations") if $scope.options.redirectAfterSuccess?
 			analytics.track 'end conversation success',
 				href: window.location.href
-				routeId: $routeParams.id
 				conversationId: $scope.conversation.id
 				conversationPrompt: $scope.conversation.prompt
 				toId: $scope.conversation.to.id
@@ -91,7 +126,6 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 		, (error) ->
 			analytics.track 'end conversation error',
 				href: window.location.href
-				routeId: $routeParams.id
 				conversationId: $scope.conversation.id
 				conversationPrompt: $scope.conversation.prompt
 				toId: $scope.conversation.to.id
@@ -116,16 +150,13 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 			$scope.app.flash 'success', 'Great, your message has been sent.'
 			if data.state == 'sent'
 				$scope.messages.collection.push $scope.myMessage
-				previousMsg = angular.copy($scope.lastMsg)
-				$scope.lastMsg = $scope.myMessage
-				$scope.message = $scope.myMessage
 				$scope.app.currentUser.ready_conversations_count -= 1
 				$scope.app.currentUser.waiting_conversations_count += 1
 				$scope.conversation = new Conversation data.conversation
-				$location.path("/conversations")
+				$scope.animateCss = 'animated bounceOutLeft' if $scope.options.animateExit?
+				$location.path("/conversations") if $scope.options.redirectAfterSuccess?
 				analytics.track 'message conversation success',
 					href: window.location.href
-					routeId: $routeParams.id
 					conversationId: $scope.conversation.id
 					conversationPrompt: $scope.conversation.prompt
 					messageId: data.id
@@ -134,11 +165,10 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 					fromId: data.from.id
 					fromName: data.from.name
 					hasEmbedUrl: $scope.myMessage.embed_url?
-					timeToReply: (Date.parse(new Date) - Date.parse(new Date(previousMsg.created_at)))
+					# timeToReply: (Date.parse(new Date) - Date.parse(new Date(previousMsg.created_at)))
 			else
 				analytics.track 'message conversation save draft',
 					href: window.location.href
-					routeId: $routeParams.id
 					conversationId: $scope.conversation.id
 					conversationPrompt: $scope.conversation.prompt
 					messageId: data.id
@@ -147,17 +177,16 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 					fromId: data.from.id
 					fromName: data.from.name
 					hasEmbedUrl: $scope.myMessage.embed_url?
-					timeToReply: (Date.parse(new Date) - Date.parse(new Date($scope.lastMsg.created_at)))
+					# timeToReply: (Date.parse(new Date) - Date.parse(new Date($scope.lastMsg.created_at)))
 		error = (error) ->
 			$scope.app.loading = false
 			$scope.app.flash 'error', error.data.errors
 			analytics.track 'message conversation error',
 				href: window.location.href
-				routeId: $routeParams.id
 				conversationId: $scope.conversation.id
 				conversationPrompt: $scope.conversation.prompt
 				hasEmbedUrl: $scope.myMessage.embed_url?
-				timeToReply: (Date.parse(new Date) - Date.parse(new Date($scope.lastMsg.created_at)))
+				# timeToReply: (Date.parse(new Date) - Date.parse(new Date($scope.lastMsg.created_at)))
 				error: JSON.stringify(error)
 
 		$scope.app.loading = true
@@ -166,27 +195,3 @@ ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "
 		$scope.myMessage.save success, error
 
 ]
-root.resolves.conversationsShow =
-	conversation: ["$q", "$route", "$location", "Conversation", ($q, $route, $location, Conversation) ->
-		defered = $q.defer()
-		query = {user_id: 'me', id: $route.current.params.id}
-		Conversation.get query, (conversation) ->
-			defered.resolve(conversation)
-			analytics.track 'view conversation success'
-		, (error) ->
-			$location.search('path', window.location.pathname)
-			$location.search('search', window.location.search)
-			$location.path('/login')
-			# $scope.app.flash 'info', "Please log in first."
-			analytics.track 'view conversation error',
-				error: 'not logged in'
-			# defered.reject(error)
-		defered.promise
-	]
-	messages: ["$q", "$route", "Message", ($q, $route, Message) ->
-		defered = $q.defer()
-		query = {user_id: 'me', conversation_id: $route.current.params.id}
-		Message.query query, (messages) ->
-			defered.resolve(messages)
-		defered.promise
-	]
