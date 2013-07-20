@@ -15,18 +15,22 @@ ps.directive "centerish", ["$timeout", ($timeout) ->
 			height -= $('#header').height() unless attrs.centerish == 'parent'
 			height -= $('#footer').height() unless attrs.centerish == 'parent'
 			if height > 0
-				element.css { 'position': 'relative' }
+				# element.css { 'position': 'relative' }
 				if animate
-					element.transition { 'top': (height/3) }
+					# element.transition { 'top': (height/3) }
+					element.transition { 'margin-top': (height/3) }
 				else
-					element.css { 'top': (height/3) }
+					# element.css { 'top': (height/3) }
+					element.css { 'margin-top': (height/3) }
 
 		element.resize ->
 			center()
+			$(window).resize()
 
 		if attrs.centerish == 'parent'
 			element.parent().resize ->
 				center()
+				$(window).resize()
 		else
 			$(window).resize ->
 				center()
