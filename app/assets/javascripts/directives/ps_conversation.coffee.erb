@@ -1,0 +1,250 @@
+####################################################
+# <ps-conversation>
+ps.directive "psConversation", ["$location", "Conversation", "Message", "User", ($location, Conversation, Message, User) ->
+	restrict: "E"
+	templateUrl: "<%= asset_path('directives/ps_conversation.html') %>"
+	replace: true
+	scope:
+		app: '='
+		conversation: '='
+		callback: '='
+
+	link: (scope, element, attrs) ->
+		scope.expanded = false
+		scope.messages = { collection: [] }
+		_.defer ->
+			scope.autosave = { body: "reply_to_msg_id_#{scope.conversation.last_message_id}" }
+
+			scope.toggleExpand = ->
+				if scope.expanded
+					scope.expanded = false
+					scope.messages = { collection: [] }
+				else
+					scope.expanded = true
+					scope.myMessage = new Message {user_id: scope.conversation.partners_id, conversation_id: scope.conversation.id}
+					scope.show = {embedInput: false}
+					if scope.messages.collection.length == 0
+						loadMessages()
+
+			loadMessages = ->
+				query = {user_id: 'me', conversation_id: scope.conversation.id}
+				scope.messages = Message.query query
+
+			scope.$watch 'show.embedInput', (value) ->
+				if value
+					analytics.track 'click reveal embed url input',
+						href: window.location.href
+						routeId: $routeParams.id
+
+			scope.end = ->
+				# if window.confirm 'This conversation is finished.'
+				scope.conversation.state_event = 'end'
+				scope.conversation.save (conversation) ->
+					scope.app.currentUser.ready_conversations_count -= 1
+					scope.app.currentUser.ended_conversations_count += 1
+					$location.path("/conversations")
+					analytics.track 'end conversation success',
+						href: window.location.href
+						conversationId: scope.conversation.id
+						conversationPrompt: scope.conversation.prompt
+						toId: scope.conversation.to.id
+						toName: scope.conversation.to.name
+						fromId: scope.conversation.from.id
+						fromName: scope.conversation.from.name
+						conversationDuration: (Date.parse(new Date) - Date.parse(new Date(scope.conversation.created_at)))
+				, (error) ->
+					analytics.track 'end conversation error',
+						href: window.location.href
+						conversationId: scope.conversation.id
+						conversationPrompt: scope.conversation.prompt
+						toId: scope.conversation.to.id
+						toName: scope.conversation.to.name
+						fromId: scope.conversation.from.id
+						fromName: scope.conversation.from.name
+						conversationDuration: (Date.parse(new Date) - Date.parse(new Date(scope.conversation.created_at)))
+						error: JSON.stringify(error)
+
+
+			# scope.continueConvo = ->
+			#	el = angular.element('.message').first()
+			#	el.addClass 'animated bounceOutRight'
+			#	$timeout ->
+			#		scope.messages = scope.messages.splice 1
+			#		scope.prepareFirstMessage()
+			#	, 500
+
+			scope.save = (state_event = null) ->
+				success = (data) ->
+					scope.app.loading = false
+					scope.app.flash 'success', 'Great, your message has been sent.'
+					if data.state == 'sent'
+						scope.messages.collection.push scope.myMessage
+						scope.app.currentUser.ready_conversations_count -= 1
+						scope.app.currentUser.waiting_conversations_count += 1
+						scope.conversation = new Conversation data.conversation
+						$location.path("/conversations")
+						analytics.track 'message conversation success',
+							href: window.location.href
+							conversationId: scope.conversation.id
+							conversationPrompt: scope.conversation.prompt
+							messageId: data.id
+							toId: data.to.id
+							toName: data.to.name
+							fromId: data.from.id
+							fromName: data.from.name
+							hasEmbedUrl: scope.myMessage.embed_url?
+							# timeToReply: (Date.parse(new Date) - Date.parse(new Date(previousMsg.created_at)))
+					else
+						analytics.track 'message conversation save draft',
+							href: window.location.href
+							conversationId: scope.conversation.id
+							conversationPrompt: scope.conversation.prompt
+							messageId: data.id
+							toId: data.to.id
+							toName: data.to.name
+							fromId: data.from.id
+							fromName: data.from.name
+							hasEmbedUrl: scope.myMessage.embed_url?
+							# timeToReply: (Date.parse(new Date) - Date.parse(new Date(scope.lastMsg.created_at)))
+				error = (error) ->
+					scope.app.loading = false
+					scope.app.flash 'error', error.data.errors
+					analytics.track 'message conversation error',
+						href: window.location.href
+						conversationId: scope.conversation.id
+						conversationPrompt: scope.conversation.prompt
+						hasEmbedUrl: scope.myMessage.embed_url?
+						# timeToReply: (Date.parse(new Date) - Date.parse(new Date(scope.lastMsg.created_at)))
+						error: JSON.stringify(error)
+
+				scope.app.loading = true
+				if state_event? then scope.myMessage.state_event = state_event
+				delete scope.myMessage['embed_url'] unless scope.show.embedInput
+				scope.myMessage.save success, error
+
+
+	#	scope.message = new Message
+	#	scope.hasFocus = false
+	#	scope.autosave = { body: "msg_to_space_#{scope.user.space.id}" }
+
+	#	scope.setFocus = (bool) ->
+	#		if bool
+	#			scope.hasFocus = true
+	#		else if !scope.message.body? or scope.message.body.length < 1
+	#			scope.hasFocus = false
+
+	#	scope.endorse = ->
+	#		if window.confirm("\nPlease note. This action cannot be undone. \n\nEndorsing this space will make it discoverable to the Positive Space community! And this space will forever link to yours. Do you want to endorse #{scope.user.name}?")
+	#			if scope.app.loggedIn()
+	#				scope.user.state = 'endorsed'
+	#				scope.user.invitation = {user: scope.app.currentUser}
+	#				User.update
+	#					id: scope.app.currentUser.id
+	#					endorse_user: scope.user.id
+	#				, (user) ->
+	#					scope.app.flash 'success', "Awesome, #{scope.user.name} is now officially part of the Positive Space community. #{scope.user.first_name} will be notified and #{window.possessive(scope.user.first_name)} space is now linked to your space."
+	#					analytics.track "endorse space success",
+	#						href: window.location.href
+	#						userId: scope.user.id
+	#						userName: scope.user.name
+	#						userPrompt: scope.user.space?.prompt
+	#						currentId: scope.app.currentUser.id
+	#						currentName: scope.app.currentUser.name
+	#				, (error) ->
+	#					scope.user.state = 'unendorsed'
+	#					scope.user.invitation = null
+	#					scope.app.flash 'error', error.data.errors
+	#					analytics.track "endorse space error",
+	#						href: window.location.href
+	#						userId: scope.user.id
+	#						userName: scope.user.name
+	#						userPrompt: scope.user.space?.prompt
+	#						currentId: scope.app.currentUser.id
+	#						currentName: scope.app.currentUser.name
+	#						error: JSON.stringify(error)
+	#			else
+	#				scope.app.flash 'info', "Log in to endorse #{window.possessive(scope.user.first_name)} space"
+	#				$location.search('path', "/#{scope.user.slug}")
+	#				$location.path('/login')
+
+	#	scope.social = (action) ->
+	#		has = "has_#{action.replace(/^un/, '')}"
+	#		if scope.app.loggedIn()
+	#			unless scope.user.id == scope.app.currentUser.id
+	#				scope.user[has] = !scope.user[has]
+	#				User.update
+	#					id: scope.app.currentUser.id
+	#					socialable_type: 'User'
+	#					socialable_id: scope.user.id
+	#					socialable_action: action
+	#				, (user) ->
+	#					analytics.track "#{action} space success",
+	#						href: window.location.href
+	#						userId: scope.user.id
+	#						userName: scope.user.name
+	#						userPrompt: scope.user.space?.prompt
+	#						currentId: scope.app.currentUser.id
+	#						currentName: scope.app.currentUser.name
+	#				, (error) ->
+	#					scope.user[has] = !scope.user[has]
+	#					scope.app.flash 'error', error.data.errors
+	#					analytics.track "#{action} space error",
+	#						href: window.location.href
+	#						userId: scope.user.id
+	#						userName: scope.user.name
+	#						userPrompt: scope.user.space?.prompt
+	#						currentId: scope.app.currentUser.id
+	#						currentName: scope.app.currentUser.name
+	#						error: JSON.stringify(error)
+	#			else
+	#				scope.app.flash 'notice', "Sorry, you cannot #{action} yourself"
+	#		else
+	#			scope.app.flash 'info', "Log in to #{action} #{window.possessive(scope.user.first_name)} space"
+	#			$location.search('path', "/#{scope.user.slug}")
+	#			$location.path('/login')
+
+	#	scope.submitMessage = ->
+	#		if scope.app.loggedIn()
+	#			scope.app.show.loading = true
+	#			success = (data) ->
+	#				scope.app.show.loading = false
+	#				amplify.store(scope.autosave.body, null)
+	#				# scope.app.flash 'success', 'Great, your message has been sent.'
+	#				analytics.track 'message space success',
+	#					href: window.location.href
+	#					userId: scope.user.id
+	#					userName: scope.user.name
+	#					userPrompt: scope.user.space?.prompt
+	#					fromId: scope.app.currentUser.id
+	#					fromName: scope.app.currentUser.name
+	#					hasEmbedUrl: scope.message.embed_url?
+	#				if scope.callback?
+	#					scope.callback(data)
+	#			error = (error) ->
+	#				scope.app.show.loading = false
+	#				scope.app.flash 'error', error.data.errors
+	#				analytics.track 'message space error',
+	#					href: window.location.href
+	#					userId: scope.user.id
+	#					userName: scope.user.name
+	#					userPrompt: scope.user.space?.prompt
+	#					fromId: scope.app.currentUser.id
+	#					fromName: scope.app.currentUser.name
+	#					hasEmbedUrl: scope.message.embed_url?
+	#					error: JSON.stringify(error)
+	#			scope.message.user_id = scope.user.id
+	#			scope.message.state_event = 'send'
+	#			scope.message.save success, error
+	#		else
+	#			# TODO: popup login modal with prompt
+	#			# See copy on iPad drafts app
+	#			scope.app.flash 'info', "Log in to talk with #{scope.user.name}. Your message has been temporarily saved and you can send it after you log in."
+	#			$location.search('path', "/#{scope.user.slug}")
+	#			$location.path('/login')
+	#			analytics.track 'message space error',
+	#				href: window.location.href
+	#				userId: scope.user.id
+	#				userName: scope.user.name
+	#				userPrompt: scope.user.space?.prompt
+	#				error: 'not logged in'
+]

@@ -70,6 +70,7 @@ ps.directive 'controlGroup', ["$timeout", ($timeout) ->
 			helpBlock: '@'
 			autosave: '@'
 			noColor: '@'
+			maxlength: '@'
 		templateUrl: "<%= asset_path('directives/control_group.html') %>"
 		transclude: true
 		replace: true
@@ -82,57 +83,57 @@ ps.directive 'controlGroup', ["$timeout", ($timeout) ->
 
 			# link
 			return (scope, element, attrs, formController) ->
-				scope.maxlength = parseInt(attrs.maxlength) if attrs.maxlength
-				scope.remainingCharCount = scope.maxlength
+				_.defer ->
+					scope.remainingCharCount = scope.maxlength
 
-				scope.inputEl = findInputEl(element)
+					scope.inputEl = findInputEl(element)
 
-				scope.input or= {}
-				scope.input.id = scope.inputEl.attr('id')
-				scope.input.name = scope.inputEl.attr('name')
-				scope.input.title = scope.inputEl.attr('title')
+					scope.input or= {}
+					scope.input.id = scope.inputEl.attr('id')
+					scope.input.name = scope.inputEl.attr('name')
+					scope.input.title = scope.inputEl.attr('title')
 
-				scope.field = formController[scope.input.name]
+					scope.field = formController[scope.input.name]
 
-				buildErrorMsg = ->
-					errors = []
-					if scope.field.$error.required  then errors.push "Oops, #{scope.input.title} can't be blank"
-					if scope.field.$error.email     then errors.push "Please enter a valid email address"
-					if scope.field.$error.url       then errors.push "Please enter a valid url, kind of like \"http://example.com\""
-					if scope.field.$error.minlength then errors.push "Keep typing, #{scope.input.title} is too short"
-					if scope.field.$error.maxlength then errors.push "Whoa, #{scope.input.title} is too long"
-					if scope.field.$error.pattern   then errors.push "Whoops, #{scope.input.title} is in the wrong format"
-					if scope.field.$error.usernameTaken   then errors.push "Sorry, this #{scope.input.title} is taken"
-					scope.field.errorMessage = errors.join('. ')
+					buildErrorMsg = ->
+						errors = []
+						if scope.field.$error.required  then errors.push "Oops, #{scope.input.title} can't be blank"
+						if scope.field.$error.email     then errors.push "Please enter a valid email address"
+						if scope.field.$error.url       then errors.push "Please enter a valid url, kind of like \"http://example.com\""
+						if scope.field.$error.minlength then errors.push "Keep typing, #{scope.input.title} is too short"
+						if scope.field.$error.maxlength then errors.push "Whoa, #{scope.input.title} is too long"
+						if scope.field.$error.pattern   then errors.push "Whoops, #{scope.input.title} is in the wrong format"
+						if scope.field.$error.usernameTaken   then errors.push "Sorry, this #{scope.input.title} is taken"
+						scope.field.errorMessage = errors.join('. ')
 
-				if scope.field?
-					buildErrorMsg()
-					scope.$watch 'field.$error', (() -> buildErrorMsg()), true
+					if scope.field?
+						buildErrorMsg()
+						scope.$watch 'field.$error', (() -> buildErrorMsg()), true
 
-					# TODO: REFACTOR: make this work outside of a timeout, maybe a defer
-					$timeout ->
-						if scope.autosave? and amplify.store(scope.autosave)?
-							# TODO: REFACTOR: setting the view and the model should not have to be 2 steps
-							scope.inputEl.val(amplify.store(scope.autosave))
-							scope.field.$setViewValue(amplify.store(scope.autosave))
-							$(window).resize()
-					, 200
-					if scope.maxlength? or scope.autosave?
-						scope.$watch 'field.$modelValue', (value) ->
-							# Update the count
-							if scope.maxlength? then scope.remainingCharCount = scope.maxlength - (if value? then value.length else 0)
-							# Save to local storage
-							if scope.autosave? and scope.field.$dirty
-								amplify.store(scope.autosave, value or null)
+						# TODO: REFACTOR: make this work outside of a timeout, maybe a defer
+						$timeout ->
+							if scope.autosave? and amplify.store(scope.autosave)?
+								# TODO: REFACTOR: setting the view and the model should not have to be 2 steps
+								scope.inputEl.val(amplify.store(scope.autosave))
+								scope.field.$setViewValue(amplify.store(scope.autosave))
+								$(window).resize()
+						, 200
+						if scope.maxlength? or scope.autosave?
+							scope.$watch 'field.$modelValue', (value) ->
+								# Update the count
+								if scope.maxlength? then scope.remainingCharCount = scope.maxlength - (if value? then value.length else 0)
+								# Save to local storage
+								if scope.autosave? and scope.field.$dirty
+									amplify.store(scope.autosave, value or null)
 
-				# set 'focused' class on control-group
-				scope.hasFocus = false
-				scope.inputEl.bind 'focusin', ->
-					scope.$apply ->
-						scope.hasFocus = true
-				scope.inputEl.bind 'focusout', ->
-					scope.$apply ->
-						scope.hasFocus = false
+					# set 'focused' class on control-group
+					scope.hasFocus = false
+					scope.inputEl.bind 'focusin', ->
+						scope.$apply ->
+							scope.hasFocus = true
+					scope.inputEl.bind 'focusout', ->
+						scope.$apply ->
+							scope.hasFocus = false
 
 	return directiveDefinitionObject
 ]

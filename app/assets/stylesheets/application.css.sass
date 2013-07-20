@@ -1027,6 +1027,43 @@ input, textarea
 
 
 //////////////////////////////////////////////////////
+/**               conversation style               **/
+//////////////////////////////////////////////////////
+.conversation
+    // border: 1px solid #ddd
+    // @include border-radius(3px)
+    border-top: 3px solid #ddd
+    padding-top: 5px
+    &.ready
+        border-top-color: $green
+    &.waiting
+        border-top-color: $yellow
+    &.ended
+        border-top-color: $red
+    .row-fluid [class*="span"]
+        min-height: 0
+    .prompt, .message
+        @include transition-property(max-height)
+        @include transition-duration(0.2s)
+        min-height: 1.5em
+        max-height: 1.5em
+        overflow: hidden
+        text-overflow: ellipsis
+        white-space: nowrap
+    .message
+        .from-name
+            vertical-align: top
+            padding-left: 4px
+        .body
+            margin-top: -16px
+            padding-left: 42px
+    &.expanded
+        .prompt, .message
+            max-height: 500em
+            white-space: normal
+
+
+//////////////////////////////////////////////////////
 /**                   inbox style                  **/
 //////////////////////////////////////////////////////
 #user_start

@@ -33,4 +33,21 @@ class Conversation < ActiveRecord::Base
 	def editors
 		[self.to, self.from]
 	end
+
+	def members
+		[self.to, self.from]
+	end
+
+	def relationship user
+		rel = :none
+		if members.include? user
+			if in_progress?
+				rel = :ready
+				rel = :waiting if last_message_from_id == user.id
+			else
+				rel = :ended
+			end
+		end
+		rel
+	end
 end

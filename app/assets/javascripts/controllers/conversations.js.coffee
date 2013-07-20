@@ -3,7 +3,7 @@ root = global ? window
 ps.controller "ConversationsIndexCtrl", ["$scope", "$location", "$timeout", "Conversation", "conversations", ($scope, $location, $timeout, Conversation, conversations) ->
 	$scope.conversations = conversations
 	$scope.app.meta.title = "My Conversations"
-	$scope.selectedFilter = $location.search().filter or 'ready'
+	$scope.selectedFilter = $location.search().filter or 'all'
 	$scope.busy = true
 	$timeout ->
 		$scope.busy = false
@@ -28,8 +28,8 @@ ps.controller "ConversationsIndexCtrl", ["$scope", "$location", "$timeout", "Con
 root.resolves.conversationsIndex =
 	conversations: ["$q", "$location", "Conversation", ($q, $location, Conversation) ->
 		defered = $q.defer()
-		query = {user_id: 'me', per: 5, page: 1}
-		filter = $location.search().filter or 'ready'
+		query = {user_id: 'me', per: 10, page: 1}
+		filter = $location.search().filter or 'all'
 		switch filter
 			when 'all' then _.extend(query, {order: "updated_at DESC"})
 			when 'ready' then _.extend(query, {state: 'in_progress', turn_id: 'me', order: "updated_at ASC"})

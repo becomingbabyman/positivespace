@@ -10,6 +10,10 @@ node :max_char_count do |conversation|
 	conversation.messages.last.max_char_count
 end
 
+node :relationship, :if => lambda { |c| (current_user and current_user.editor?(c)) } do |conversation|
+	conversation.relationship current_user
+end
+
 # child from: :from do
 #	extends 'api/v1/users/base'
 # end

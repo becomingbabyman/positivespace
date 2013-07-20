@@ -1,0 +1,136 @@
+<div class="row-fluid conversation" ng-class="{ready: conversation.relationship == 'ready', waiting: conversation.relationship == 'waiting', ended: conversation.relationship == 'ended', expanded: expanded }">
+	<div class="span12 uncenter pbl ptm">
+		<div class="row-fluid">
+			<div class="span2">
+				<a href="#" ng-click='toggleExpand()'>
+					<img ng-src="{{conversation.from.avatar.thumb_url}}" alt="{{conversation.from.name}}" class="img-rounded img-border" ng-show='conversation.partners_id == conversation.from.id'>
+					<img ng-src="{{conversation.to.avatar.thumb_url}}" alt="{{conversation.to.name}}" class="img-rounded img-border" ng-show='conversation.partners_id == conversation.to.id'>
+				</a>
+			</div>
+			<div class="span10">
+				<div class="row-fluid">
+					<div class="span12">
+						<small class='faded pull-right'>
+							<time datetime="{{conversation.updated_at}}">
+								{{conversation.updated_at | fromNow}}
+							</time>
+						</small>
+						<a href="#" ng-click='toggleExpand()' class='unfancy-link'>
+							<h4 class='pull-left m0' ng-show='conversation.from.id == conversation.partners_id'>{{conversation.from.name}}</h4>
+							<h4 class='pull-left m0' ng-show='conversation.to.id == conversation.partners_id'>{{conversation.to.name}}</h4>
+						</a>
+					</div>
+				</div>
+				<div class="row-fluid">
+					<div class="span12 font12 faded">
+						{{conversation.to.name}} prompted:
+					</div>
+				</div>
+				<div class="row-fluid">
+					<div class="span12">
+						<a href="#" ng-click='toggleExpand()' class='unfancy-link'>
+							<div class='prompt' ng-bind-html-unsafe="conversation.prompt | linebreaks">{{conversation.prompt}}</div>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row-fluid" ng-show='expanded'>
+			<div class="span12">
+
+				<img ng-src="<%= asset_path 'loading.gif' %>" alt="loading" ng-hide='messages.collection.length > 0'>
+				<div class="row-fluid" ng-repeat="msg in messages.collection">
+					<div class="span12 message pbs ptl">
+						<div class="row-fluid">
+							<div class="span12 uncenter">
+								<small class='pull-right faded'>
+									<time datetime="{{msg.created_at}}">
+										{{msg.created_at | date:'MMM d'}}
+									</time>
+								</small>
+								<a ng-href="/{{msg.from.slug}}" title='{{msg.from.name}}' class='unfancy-link'>
+									<img ng-src="{{msg.from.avatar.thumb_url}}" alt="{{msg.from.name}}" class="img-rounded img-border img-mini">
+									<small class='from-name faded'>{{msg.from.name}}</small>
+								</a>
+							</div>
+						</div>
+
+						<div class="row-fluid">
+							<div class="span12 uncenter">
+								<p class='body' ng-bind-html-unsafe="msg.body | linebreaks">{{msg.body}}</p>
+							</div>
+						</div>
+
+						<div class="row-fluid" ui-if='msg.embed_url'>
+							<div class="span12">
+								<img ng-show='(msg.embed_data.thumbnail_url || msg.embed_data.type == "photo") && !msg.embed_data.html' alt='{{msg.embed_data.title}}' title='{{msg.embed_data.title}}' ng-src='{{msg.embed_data.thumbnail_url || msg.embed_data.url}}'>
+								<div ng-bind-html-unsafe="msg.embed_data.html"></div>
+								<a ng-href='{{msg.embed_url}}' target='_blank' title='{{msg.embed_data.description}}' class='font12'>{{msg.embed_url}}</a>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div ng-show='conversation.relationship == "ready"' class="row-fluid reply">
+					<div class="span12 pbl">
+						<!-- <a href="#" class="reply pull-right">reply</a> -->
+
+						<form name='replyForm' class='reply' ng-submit="save('send')" novalidate style='width: 100%;'>
+							<control-group maxlength='{{conversation.max_char_count}}' autosave='{{autosave.body}}'>
+								<textarea name='body' cols="30" rows="4" ng-model='myMessage.body' id='response_body' placeholder='your response' class='input-block-level' required></textarea>
+							</control-group>
+
+							<div ng-show='show.embedInput'>
+								<control-group>
+									<input type="url" name='embed_url' id='my_message_embed_url' title='embed url' placeholder='http://example.com' class='input-block-level' ng-model='myMessage.embed_url' ng-disabled='myMessage.id'>
+								</control-group>
+							</div>
+
+							<div class='control-group'>
+								<div class='controls'>
+									<button type='submit' class='btn btn-success pull-right' ng-disabled="replyForm.body.$invalid">
+										Send
+									</button>
+
+									<span class='pull-right pts'>&nbsp;&nbsp;or&nbsp;&nbsp;</span>
+									<!-- <a href='#' class='btn pull-right' ng-disabled='savedBody == myMessage.body' ng-click='save()'>Save Draft</a> -->
+
+									<a href='#' class='pull-right' ng-click='end()' tooltip="End the conversation if it's going nowhere." tooltip-placement='left'>
+										<i class="icon-remove-circle font30 color-red opacity8"></i>
+									</a>
+
+									<a href='#' class='muted pts pull-left' ng-click='show.embedInput = true' ng-hide='show.embedInput' tooltip='Attach a link. We will magically find and embed picture, video, audio, and more in your response.' tooltip-placement='right'><i class='icon-paper-clip font20'></i> Attach 1 link</a>
+									<a href='#' class='muted pts pull-left' ng-click='show.embedInput = false' ng-show='show.embedInput'><i class='icon-unlink font20'></i></a>
+								</div>
+							</div>
+						</form>
+
+					</div>
+				</div>
+
+				<div ng-show='conversation.relationship == "waiting"' class="row-fluid ptm">
+					<div class="span12 well well-small center">
+						Awaiting reply.
+					</div>
+				</div>
+
+				<div ng-show='conversation.relationship == "ended"' class="row-fluid ptm">
+					<div class="span12 well center" tooltip='This conversation has ended. If you have more to say you may start a new one.' tooltip-placement='bottom'>
+						The end.
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="row-fluid" ng-hide="messages.collection.length > 0">
+			<div class="span12">
+				<a href="#" ng-click='toggleExpand()' class='unfancy-link'>
+					<p class='message muted font14' ng-bind-html-unsafe="conversation.last_message_body | linebreaks">{{conversation.last_message_body}}</p>
+				</a>
+			</div>
+		</div>
+
+	</div>
+</div>
