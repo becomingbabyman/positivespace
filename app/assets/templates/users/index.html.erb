@@ -106,7 +106,7 @@
 		<div infinite-scroll='loadMoreUsers()' infinite-scroll-disabled='busy' infinite-scroll-distance='1'>
 			<div class="row pbl ptl" ng-repeat='user in users.collection'>
 				<div class="span12">
-					<ps-space app='app' user='user'></ps-space>
+					<div ng-include src="'<%= asset_path('users/space.html') %>'" ng-controller="UsersSpaceCtrl" onload=''></div>
 
 					<!-- <div class='row ptl respond'>
 						<div class="span-mobile center">
@@ -126,7 +126,7 @@
 		<ul class='cols'>
 			<li class='col' ng-repeat='user in users.collection'>
 
-				<ps-space app='app' user='user'></ps-space>
+				<div ng-include src="'<%= asset_path('users/space.html') %>'" ng-controller="UsersSpaceCtrl" onload=''></div>
 
 				<div class='row ptl respond'>
 					<div class="span-mobile center">

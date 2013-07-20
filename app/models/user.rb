@@ -72,6 +72,10 @@ class User < ActiveRecord::Base
 		initialize_permissions
 		initialize_settings
 	end
+	before_save do
+		# TODO: FIX: UNHACK: why are settings getting unset?
+		initialize_settings if self.settings.nil?
+	end
 	after_create :add_gravatar
 	# TODO: BETA: REMOVE: don't auto endorse people on create
 	after_create :endorse

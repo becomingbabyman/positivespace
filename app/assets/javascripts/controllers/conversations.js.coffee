@@ -74,10 +74,12 @@ root.resolves.conversationsShow =
 
 
 
-ps.controller "ConversationsPartialCtrl", ["$scope", "$location", "Conversation", "Message", "User", ($scope, $location, Conversation, Message, User) ->
+ps.controller "ConversationsPartialCtrl", ["$scope", "$location", "$timeout", "Conversation", "Message", "User", ($scope, $location, $timeout, Conversation, Message, User) ->
+	$scope.conversation = new Conversation $scope.conversation
 	$scope.expanded = false
 	$scope.messages = { collection: [] }
 	$scope.options = {}
+	$scope.hideAll = false
 	# $scope.animateCss = 'animated bounceOutLeft'
 	# $scope.autosave = { body: "reply_to_msg_id_#{$scope.conversation?.last_message_id}" }
 
@@ -113,6 +115,9 @@ ps.controller "ConversationsPartialCtrl", ["$scope", "$location", "Conversation"
 			$scope.app.currentUser.ready_conversations_count -= 1
 			$scope.app.currentUser.ended_conversations_count += 1
 			$scope.animateCss = 'animated bounceOutRight' if $scope.options.animateExit?
+			$timeout ->
+				$scope.hideAll = true
+			, 500
 			$location.path("/conversations") if $scope.options.redirectAfterSuccess?
 			analytics.track 'end conversation success',
 				href: window.location.href
@@ -136,14 +141,6 @@ ps.controller "ConversationsPartialCtrl", ["$scope", "$location", "Conversation"
 				error: JSON.stringify(error)
 
 
-	# $scope.continueConvo = ->
-	#	el = angular.element('.message').first()
-	#	el.addClass 'animated bounceOutRight'
-	#	$timeout ->
-	#		$scope.messages = $scope.messages.splice 1
-	#		$scope.prepareFirstMessage()
-	#	, 500
-
 	$scope.save = (state_event = null) ->
 		success = (data) ->
 			$scope.app.loading = false
@@ -154,6 +151,9 @@ ps.controller "ConversationsPartialCtrl", ["$scope", "$location", "Conversation"
 				$scope.app.currentUser.waiting_conversations_count += 1
 				$scope.conversation = new Conversation data.conversation
 				$scope.animateCss = 'animated bounceOutLeft' if $scope.options.animateExit?
+				$timeout ->
+					$scope.hideAll = true
+				, 500
 				$location.path("/conversations") if $scope.options.redirectAfterSuccess?
 				analytics.track 'message conversation success',
 					href: window.location.href

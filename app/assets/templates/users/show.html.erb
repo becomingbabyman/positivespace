@@ -179,7 +179,7 @@
 
 			<div class="row">
 				<div class="span-mobile center">
-					<ps-space app='app' user='user'></ps-space>
+					<div ng-include src="'<%= asset_path('users/space.html') %>'" ng-controller="UsersSpaceCtrl" onload=''></div>
 				</div>
 			</div>
 

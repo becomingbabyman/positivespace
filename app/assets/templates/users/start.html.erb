@@ -184,7 +184,7 @@
 											<span class="pull-right" ps-tooltip="tooltips.step3">&nbsp;</span>
 											Start your first conversation.
 										</h4>
-										<ps-space app='app' user='selectedUser' callback='messageSent' ui-if='selectedUser'></ps-space>
+										<div ng-include src="'<%= asset_path('users/space.html') %>'" ng-controller="UsersSpaceCtrl" onload='init({user: selectedUser, callback: messageSent})' ui-if='selectedUser'></div>
 										<p ng-hide='selectedUser || app.show.loading'>Go back to select someone to talk with</p>
 									</div>
 
