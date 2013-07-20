@@ -53,7 +53,7 @@ protected
 	end
 
 	def collection
-		@messages = apply_scopes(end_of_association_chain)
+		@messages = apply_scopes(end_of_association_chain).includes(:to, :from)
 	end
 
 	def pick_params
