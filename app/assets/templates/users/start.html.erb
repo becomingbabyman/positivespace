@@ -1,4 +1,6 @@
-<div id='user_start' class="container" centerish>
+<div id='user_start' class="container">
+	<br/>
+	<br/>
 	<div class="row">
 		<div class="span12">
 
@@ -15,7 +17,7 @@
 							<progress percent="completionPercentage" class='progress-success'></progress>
 
 
-							<form name='user_profile' class='form-vertical' ng-submit='saveSpace()' novalidate style='width: 100%;' ng-show='step <= 4'>
+							<form name='user_profile' class='form-vertical' ng-submit='saveSpace()' novalidate style='width: 100%;' ng-show='step == 0 || step == 1 || step == 4 || step == 5 || step == 6'>
 
 								<div class='step animated fadeInDown' ng-show='step == 0'>
 									<h4>
@@ -77,9 +79,9 @@
 								</div>
 
 
-								<div class='step animated fadeInDown' ng-show='step == 2'>
+								<div class='step animated fadeInDown' ng-show='step == 4'>
 									<h4>
-										<span class="pull-right" ps-tooltip="tooltips.step2">&nbsp;</span>
+										<span class="pull-right" ps-tooltip="tooltips.step4">&nbsp;</span>
 										Write a short bio.
 									</h4>
 
@@ -89,9 +91,9 @@
 								</div>
 
 
-								<div class='step animated fadeInDown' ng-show='step == 3'>
+								<div class='step animated fadeInDown' ng-show='step == 5'>
 									<h4>
-										<span class="pull-right" ps-tooltip="tooltips.step3">&nbsp;</span>
+										<span class="pull-right" ps-tooltip="tooltips.step5">&nbsp;</span>
 										Write your first prompt.
 									</h4>
 
@@ -104,9 +106,9 @@
 								</div>
 
 
-								<div class='step animated fadeInDown' ng-show='step == 4'>
+								<div class='step animated fadeInDown' ng-show='step == 6'>
 									<h4>
-										<span class="pull-right" ps-tooltip="tooltips.step4">&nbsp;</span>
+										<span class="pull-right" ps-tooltip="tooltips.step6">&nbsp;</span>
 										Complete your profile.
 									</h4>
 
@@ -151,11 +153,11 @@
 							</form>
 
 
-							<div class='row-fluid step5' ui-if='step == 5'>
+							<div class='row-fluid step2' ui-if='step == 2'>
 								<div class="span12">
 									<div class="step">
 										<h4 class='pbm'>
-											<span class="pull-right" ps-tooltip="tooltips.step5">&nbsp;</span>
+											<span class="pull-right" ps-tooltip="tooltips.step2">&nbsp;</span>
 											Where will you add value today?
 										</h4>
 										<a href="#" ng-repeat='skill in app.currentUser.skills' ng-click="setQuery(skill)" class="btn btn-info mbs mrs">{{skill}}</a>
@@ -175,11 +177,11 @@
 								</div>
 							</div>
 
-							<div class='row-fluid step6' ui-if='step == 6'>
+							<div class='row-fluid step3' ui-if='step == 3'>
 								<div class="span12">
 									<div class="step animated fadeInDown pbl">
 										<h4 class='pbm'>
-											<span class="pull-right" ps-tooltip="tooltips.step6">&nbsp;</span>
+											<span class="pull-right" ps-tooltip="tooltips.step3">&nbsp;</span>
 											Start your first conversation.
 										</h4>
 										<ps-space app='app' user='selectedUser' callback='messageSent' ui-if='selectedUser'></ps-space>

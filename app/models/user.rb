@@ -79,6 +79,7 @@ class User < ActiveRecord::Base
 		# sync_slug if username != profile.slug
 		generate_username unless username?
 		update_achievements
+		attempt_to_complete_onboarding
 	end
 
 	# Include default devise modules. Others available are:
@@ -99,7 +100,7 @@ class User < ActiveRecord::Base
 	attr_accessible :bio, :location, :name, :personal_url, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :settings, :prompt, :skills, :interests #, :positive_response, :negative_response
 	attr_protected :none, as: :admin
 
-	serialize :achievements
+	serialize :achievements_list
 	serialize :settings
 
 	has_paper_trail
@@ -121,6 +122,9 @@ class User < ActiveRecord::Base
 	has_many :recieved_messages, :foreign_key => :to_id, :class_name => 'Message', :order => 'created_at desc'
 	has_many :sent_conversations, :foreign_key => :from_id, :class_name => 'Conversation', :order => 'created_at desc'
 	has_many :recieved_conversations, :foreign_key => :to_id, :class_name => 'Conversation', :order => 'created_at desc'
+	has_many :magnetisms, :order => 'created_at asc'
+	has_many :wins, :order => 'created_at asc'
+	has_many :achievements, through: :wins, :order => 'wins.created_at asc'
 	has_many :invitations
 	belongs_to :invitation
 
@@ -315,8 +319,11 @@ class User < ActiveRecord::Base
 	end
 
 	def track_achievement achievement_name
-		self.achievements[achievement_name]=true
-		self.save
+		self.achievements << Achievement.find_or_create_by_name(achievement_name.to_s) unless self.has_achievement?(achievement_name)
+	end
+
+	def has_achievement? achievement_name
+		self.achievements_list.include?(achievement_name.to_s) or self.achievements.where(name: achievement_name).any?
 	end
 
 	def endorse_user= uid
@@ -330,10 +337,9 @@ class User < ActiveRecord::Base
 	end
 
 	def attempt_to_complete_onboarding
-		if !self.achievements[:onboarded] and self.profile_filled_in? and self.sent_messages.any?
-			self.achievements[:onboarded] = true
-			self.magnetism += 100
-			self.save
+		if !self.has_achievement?(:onboarded) and self.profile_filled_in? and self.sent_conversations.any?
+			self.track_achievement 'onboarded'
+			self.magnetisms.create(inc: 100, reason: 'onboarding complete', attachable: self.sent_conversations.first)
 		end
 	end
 

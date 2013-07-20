@@ -29,6 +29,7 @@ class Message < ActiveRecord::Base
 	belongs_to :to, :class_name => 'User'
 	belongs_to :from, :class_name => 'User'
 	belongs_to :conversation
+	has_many :magnetisms, :as => :attachable
 
 	validates :body, presence: true#, length: {maximum: 250}
 	validates :to_id, presence: true

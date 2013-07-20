@@ -13,6 +13,7 @@ class Conversation < ActiveRecord::Base
 	belongs_to :last_message, :class_name => 'Message'
 	belongs_to :last_message_from, :class_name => 'User'
 	has_many :messages, :dependent => :destroy
+	has_many :magnetisms, :as => :attachable
 
 	validates :to_id, presence: true
 	validates :from_id, presence: true

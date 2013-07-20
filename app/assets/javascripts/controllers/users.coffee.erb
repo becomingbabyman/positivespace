@@ -206,13 +206,27 @@ root.usersStartCtrl = ps.controller "UsersStartCtrl", ["$scope", "$routeParams",
 		"""
 	addTooltip 'step2',
 		"""
+			<h5>Discover</h5>
+			<p>Paying it forward is often the best place to start.</p>
+			<p>Let's find someone (preferably a stranger) whom you can help.</p>
+		"""
+	addTooltip 'step3',
+		"""
+			<h5>Respond</h5>
+			<p>Positive Space is designed for focus.</p>
+			<p>Try to stay focused on this specific prompt.</p>
+			<p>You will earn more characters as the conversation progresses, so there is no need to say everything at once.</p>
+			<p>For now focus on addressing the prompt and adding value.</p>
+		"""
+	addTooltip 'step4',
+		"""
 			<h5>Bio</h5>
 			<p>All conversations are private and 1 on 1.</p>
 			<p>We find that intimacy results in better conversations.</p>
 			<p>Use your bio to give people a glimpse of what it might be like to talk with you.</p>
 			<p>Draw from your experiences.</p>
 		"""
-	addTooltip 'step3',
+	addTooltip 'step5',
 		"""
 			<h5>Prompt</h5>
 			<p>High quality conversation occur when expectations align.</p>
@@ -220,25 +234,11 @@ root.usersStartCtrl = ps.controller "UsersStartCtrl", ["$scope", "$routeParams",
 			<p>For example, If you want to talk about your idea for a new product, say so. It's good to be specific.</p>
 			<p>And don't think too hard. You can change your prompt whenever you want to talk about something else.</p>
 		"""
-	addTooltip 'step4',
+	addTooltip 'step6',
 		"""
 			<h5>Profile</h5>
 			<p>We find that people are more likely to respond when they can see where you're coming from.</p>
 			<p>At the very least we recommend you add an image of yourself.</p>
-		"""
-	addTooltip 'step5',
-		"""
-			<h5>Discover</h5>
-			<p>Paying it forward is often the best place to start.</p>
-			<p>Let's find someone (preferably a stranger) whom you can help with your positivity, experience, and attention.</p>
-		"""
-	addTooltip 'step6',
-		"""
-			<h5>Respond</h5>
-			<p>Positive Space is designed for focus.</p>
-			<p>Try to stay focused on this specific prompt.</p>
-			<p>You will earn more characters as the conversation progresses, so there is no need to say everything at once.</p>
-			<p>For now focus on addressing the prompt and adding value.</p>
 		"""
 	$scope.tooltips["step#{$scope.step}"]?.show = true
 

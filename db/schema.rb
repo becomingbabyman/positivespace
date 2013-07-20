@@ -11,7 +11,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130710024412) do
+ActiveRecord::Schema.define(:version => 20130720034929) do
+
+  create_table "achievements", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "achievements", ["name"], :name => "index_achievements_on_name"
 
   create_table "administrators", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -162,6 +171,23 @@ ActiveRecord::Schema.define(:version => 20130710024412) do
   add_index "likes", ["likeable_id", "likeable_type"], :name => "fk_likeables"
   add_index "likes", ["liker_id", "liker_type"], :name => "fk_likes"
 
+  create_table "magnetisms", :force => true do |t|
+    t.integer  "inc"
+    t.string   "reason"
+    t.text     "note"
+    t.integer  "user_id"
+    t.integer  "attachable_id"
+    t.string   "attachable_type"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  add_index "magnetisms", ["attachable_id"], :name => "index_magnetisms_on_attachable_id"
+  add_index "magnetisms", ["attachable_type"], :name => "index_magnetisms_on_attachable_type"
+  add_index "magnetisms", ["inc"], :name => "index_magnetisms_on_inc"
+  add_index "magnetisms", ["reason"], :name => "index_magnetisms_on_reason"
+  add_index "magnetisms", ["user_id"], :name => "index_magnetisms_on_user_id"
+
   create_table "mentions", :force => true do |t|
     t.string   "mentioner_type"
     t.integer  "mentioner_id"
@@ -268,8 +294,8 @@ ActiveRecord::Schema.define(:version => 20130710024412) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                       :default => "",                         :null => false
-    t.string   "encrypted_password",          :default => "",                         :null => false
+    t.string   "email",                       :default => "",         :null => false
+    t.string   "encrypted_password",          :default => "",         :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -286,8 +312,8 @@ ActiveRecord::Schema.define(:version => 20130710024412) do
     t.string   "unlock_token"
     t.datetime "locked_at"
     t.string   "authentication_token"
-    t.datetime "created_at",                                                          :null => false
-    t.datetime "updated_at",                                                          :null => false
+    t.datetime "created_at",                                          :null => false
+    t.datetime "updated_at",                                          :null => false
     t.integer  "permissions",                 :default => 0
     t.string   "facebook_id"
     t.string   "username"
@@ -297,7 +323,7 @@ ActiveRecord::Schema.define(:version => 20130710024412) do
     t.string   "name"
     t.text     "body"
     t.string   "location"
-    t.text     "achievements",                :default => "---\n:registered: true\n"
+    t.text     "achievements_list",           :default => "--- []\n"
     t.string   "personal_url"
     t.text     "positive_response"
     t.text     "negative_response"
@@ -315,6 +341,8 @@ ActiveRecord::Schema.define(:version => 20130710024412) do
     t.text     "settings",                    :default => "--- {}\n"
     t.text     "bio"
     t.integer  "magnetism",                   :default => 0
+    t.integer  "magnetisms_count",            :default => 0
+    t.integer  "achievements_count",          :default => 0
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true
@@ -346,5 +374,16 @@ ActiveRecord::Schema.define(:version => 20130710024412) do
   end
 
   add_index "versions", ["item_type", "item_id"], :name => "index_versions_on_item_type_and_item_id"
+
+  create_table "wins", :force => true do |t|
+    t.integer  "achievement_id"
+    t.integer  "user_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
+  add_index "wins", ["achievement_id", "user_id"], :name => "index_wins_on_achievement_id_and_user_id"
+  add_index "wins", ["achievement_id"], :name => "index_wins_on_achievement_id"
+  add_index "wins", ["user_id"], :name => "index_wins_on_user_id"
 
 end
