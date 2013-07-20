@@ -188,7 +188,7 @@
 			<br/>
 
 
-			<div class='row animated fadeInUp ptl' ng-show="conversation">
+			<div class='row animated fadeInUp ptl' ui-if="conversation">
 				<div class="span-mobile center">
 					<div ng-include src="'<%= asset_path('conversations/conversation.html') %>'" ng-controller="ConversationsPartialCtrl"></div>
 				</div>

@@ -29,7 +29,7 @@
 					<a href="#" ng-click="app.randomSpace()"><h3>Meet someone random?</h3></a>
 				</div>
 			</div>
-			{{templates.partial}}
+
 			<div infinite-scroll='loadMoreConversations()' infinite-scroll-disabled='busy' infinite-scroll-distance='1'>
 				<div ng-repeat="conversation in conversations.collection">
 					<div ng-include src="'<%= asset_path('conversations/conversation.html') %>'" ng-controller="ConversationsPartialCtrl" onload='init({animateExit:true})'></div>
