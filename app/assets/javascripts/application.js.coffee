@@ -21,11 +21,11 @@
 #= require bootstrap-button
 #
 # App JS
-#= require services
-#= require directives
-#= require filters
 #= require routes
+#= require services
+#= require filters
 #= require_tree ./controllers/
+#= require_tree ./directives/
 #
 # Plugins
 #= require tinycon

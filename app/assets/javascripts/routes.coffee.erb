@@ -1,7 +1,7 @@
 root = global ? window
 angular = root.angular
 
-ps = angular.module "ps", ['ui', 'ui.bootstrap', 'infinite-scroll', 'ngCookies', 'psDirectives', 'psFilters', 'psServices']
+ps = angular.module "ps", ['ui', 'ui.bootstrap', 'infinite-scroll', 'ngCookies', 'psFilters', 'psServices']
 
 ps.config ['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvider, $locationProvider, $httpProvider) ->
 	$httpProvider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content')
@@ -15,7 +15,7 @@ ps.config ['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvid
 		# controller: "UsersIndexCtrl"
 		# templateUrl: "<%= asset_path('users/index.html') %>"
 		# resolve:
-		#	users: root.usersIndexCtrl.loadUsers
+		#	users: root.resolves.usersIndex.users
 
 	# Pages
 	# .when "/",
@@ -48,13 +48,13 @@ ps.config ['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvid
 		templateUrl: "<%= asset_path('conversations/index.html') %>"
 		# reloadOnSearch: false
 		resolve:
-			conversations: root.conversationsIndexCtrl.loadConversations
+			conversations: root.resolves.conversationsIndex.conversations
 	.when "/conversations/:id",
 		controller: "ConversationsShowCtrl"
 		templateUrl: "<%= asset_path('conversations/show.html') %>"
 		resolve:
-			conversation: root.conversationsShowCtrl.loadConversation
-			messages: root.conversationsShowCtrl.loadMessages
+			conversation: root.resolves.conversationsShow.conversation
+			messages: root.resolves.conversationsShow.messages
 
 	# Users
 	.when "/login",
@@ -74,19 +74,19 @@ ps.config ['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvid
 		templateUrl: "<%= asset_path('users/start.html') %>"
 		reloadOnSearch: false
 		resolve:
-			user: root.usersStartCtrl.loadStartUser
+			user: root.resolves.usersStart.user
 	.when "/:user_id/edit",
 		controller: "UsersEditCtrl"
 		templateUrl: "<%= asset_path('users/edit.html') %>"
 		resolve:
-			user: root.usersEditCtrl.loadEditUser
+			user: root.resolves.usersEdit.user
 	.when "/:user_id",
 		controller: "UsersShowCtrl"
 		templateUrl: "<%= asset_path('users/show.html') %>"
 		resolve:
-			user: root.usersShowCtrl.loadUser
+			user: root.resolves.usersShow.user
 	.otherwise redirectTo: "/404"
 ]
 
 root.ps = ps
-
+root.resolves = {}

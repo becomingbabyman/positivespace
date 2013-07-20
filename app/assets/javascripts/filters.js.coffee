@@ -1,8 +1,9 @@
+psFilters = angular.module "psFilters", []
+
 #############
 ## FILTERS ##
 #############
 
-psFilters = angular.module "psFilters", []
 
 psFilters.filter "range", ->
 	(input, range) ->

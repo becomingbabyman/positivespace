@@ -1,0 +1,74 @@
+####################################################
+# <ps-img>
+ps.directive "psImg", ["$timeout", ($timeout) ->
+	restrict: "E"
+	scope:
+		src: '@'
+		alt: '@'
+		imgClass: '@'
+		canEdit: '@'
+		attachableType: '@'
+		attachableId: '@'
+		imageType: '@'
+		imageUrl: '@'
+	templateUrl: "<%= asset_path('directives/ps_img.html') %>"
+
+	link: (scope, element, attrs) ->
+
+		initDropzone = ->
+			prompt = "Click to change #{scope.imageType} (or drag one in)"
+			tooltip = new Opentip element.find('img'), prompt
+			element.find('img').addClass 'ps-img-dropzone'
+
+			imgDropzone = new Dropzone element.find('img', {escapeContent: true}),
+				url: '/api/images'
+				maxFilesize: 5
+				maxThumbnailFilesize: 0.5
+				paramName: 'image'
+				# previewsContainer: element.find('.dropzone-preview')
+
+			imgDropzone.on "sending", (file, xhr, formData) ->
+				tooltip.setContent """
+					<div class="progress progress-striped active" style="width:140px;">
+						<div class="bar" style="width: 20%;"></div>
+					</div>
+					"""
+				tooltip.show()
+
+				formData.append 'image_type', scope.imageType
+				formData.append 'attachable_type', scope.attachableType
+				formData.append 'attachable_id', scope.attachableId
+				$.rails.CSRFProtection(xhr)
+
+				analytics.track 'image upload sending',
+					attachableType: scope.attachableType
+					attachableId: scope.attachableId
+					imageType: scope.imageType
+					imageUrl: scope.imageUrl
+
+			imgDropzone.on "uploadprogress", (file, progress) ->
+				tooltip.setContent """
+					<div class="progress progress-striped active" style="width:140px;">
+						<div class="bar" style="width: #{progress}%;"></div>
+					</div>
+					"""
+				tooltip.show()
+
+			imgDropzone.on "success", (file, data) ->
+				$img = element.find('img')
+				$img.attr 'src', data.url
+				tooltip.setContent("Nice, #{scope.imageType} successfully changed. This is just a preview. Refresh the page in a few seconds to see the final version of your image.")
+				$timeout ->
+					tooltip.hide()
+					tooltip.setContent prompt
+				, 20000
+				analytics.track 'image upload success',
+					attachableType: scope.attachableType
+					attachableId: scope.attachableId
+					imageType: scope.imageType
+					imageUrl: scope.imageUrl
+
+		# TODO: refactor all can methods. Maybe return a models editors in its json.
+		scope.$watch 'canEdit', (value) ->
+			if value == 'true' then initDropzone()
+]

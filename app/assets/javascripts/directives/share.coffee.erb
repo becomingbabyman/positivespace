@@ -1,0 +1,98 @@
+#####################################################
+# <a href="#" share='facebook'>
+# must be 'a' tag
+#
+ps.directive "share", ["$location", ($location) ->
+	restrict: "A"
+	scope:
+		shareName:"@"
+		shareDesc:"@"
+		shareUrl:"@"
+		shareImage:"@"
+	link: (scope, element, attrs) ->
+
+		element.bind 'click', ->
+			scope.generateShareTarget()
+			analytics.track 'click share button',
+				service: attrs.share
+				url: scope.shareUrl
+				name: scope.shareName
+				description: scope.shareDesc
+				image: scope.shareImage
+				href: window.location.href
+				path: window.location.pathname
+
+		scope.generateShareTarget = ->
+			scope.shareImage = scope.shareImage.addHttp() if scope.shareImage
+			scope.shareUrl ||= $location.absUrl()
+
+			fbShare = (method) ->
+				callback = (response) ->
+					if response and response.post_id
+						analytics.track 'share success',
+							service: "facebook - #{method}"
+					else
+						analytics.track 'share error',
+							service: "facebook - #{method}"
+				share = ->
+					fbObject =
+						method: method
+						caption: "Positive Space"
+					fbObject.link =        scope.shareUrl   if scope.shareUrl?
+					fbObject.name =        scope.shareName  if scope.shareName?
+					fbObject.description = scope.shareDesc  if scope.shareDesc?
+					fbObject.picture =     scope.shareImage if scope.shareImage?
+
+					FB.ui fbObject, callback
+
+				share()
+				false
+
+			switch attrs.share
+				when 'facebook'
+					fbShare('feed')
+
+				when 'facebook send'
+					fbShare('send')
+
+				when 'pinterest'
+					url = 'http://pinterest.com/pin/create/button/?' +
+						if !scope.shareUrl?   then '' else "url=#{encodeURIComponent(scope.shareUrl)}" +
+						if !scope.shareName?  then '' else "&description=#{encodeURIComponent(scope.shareName)}" +
+						if !scope.shareImage? then '' else "&media=#{encodeURIComponent(scope.shareImage)}"
+					pinWindow = window.openCenter url, 'Post to Pinterest', 700, 300
+					false
+
+
+				when 'twitter'
+					element.attr 'target', '_blank'
+					element.attr 'href', "https://twitter.com/intent/tweet?hashtags=positivespace" +
+						if !scope.shareUrl?   then '' else "&url=#{encodeURIComponent(scope.shareUrl)}" +
+						if !scope.shareName?  then '' else "&text=#{encodeURIComponent(scope.shareName)}%20via%20%40positivespaceny"
+
+				when 'tumblr'
+					url = "http://www.tumblr.com/share/link?" +
+						if !scope.shareUrl?   then '' else "url=#{encodeURIComponent(scope.shareUrl)}" +
+						if !scope.shareName?  then '' else "&name=#{encodeURIComponent(scope.shareName)}" +
+						if !scope.shareDesc?  then '' else "&description=#{encodeURIComponent(scope.shareDesc)}"
+					tumblrWindow = window.openCenter url, 'Post to Tumblr', 450, 450
+					false
+
+				when 'stumbleupon'
+					url = "https://www.stumbleupon.com/submit?" +
+						if !scope.shareUrl?   then '' else "url=#{encodeURIComponent(scope.shareUrl)}"
+					stumbleuponWindow = window.openCenter url, 'Post to StumbleUpon', 800, 600
+					false
+
+				when 'email'
+					url = "mailto:?subject=" +
+						if !scope.shareName?  then 'Check this out on Positive Space' else "#{encodeURIComponent(scope.shareName)}" +
+						if !scope.shareDesc?  then '&body=' else "&body=#{encodeURIComponent(scope.shareDesc)}" +
+						if !scope.shareUrl?   then '' else "%0A%0A#{encodeURIComponent(scope.shareUrl)}%0A"
+					window.location = url
+
+
+				# <a href="http://www.linkedin.com/shareArticle?mini=true&url=URL GOES HERE&title=TITLE GOES HERE&summary=TEXT SUMMARY HERE&source=SITE'S NAME HERE" target="_blank">Linkedin</a>
+				# <a href="http://digg.com/submit?url=URL GOES HERE" target="_blank">Digg</a>
+				# <a href="http://www.reddit.com/submit?url=URL GOES HERE" target="_blank">Reddit</a>
+]

@@ -1,0 +1,95 @@
+####################################################
+# Bootstrap Buttons
+#
+# Stolen from AngularStrap
+# http://mgcrea.github.com/angular-strap/#/buttons
+# requires bootstrap-button js and jQuery
+# TODO: rewrite to remove dependency on bootstrap js and jQuery
+#
+# Radio Buttons
+# <div class="btn-group" ng-model="radioValue" ps-buttons-radio>
+#   <button type="button" class="btn" value="left">...</button>
+#   <button type="button" class="btn" value="middle">...</button>
+#   <button type="button" class="btn" value="right">...</button>
+# </div>
+# or
+# <div class="btn-group" ps-buttons-radio>
+#   <button type="button" class="btn" ng-model="radio.left">...</button>
+#   <button type="button" class="btn" ng-model="radio.middle">...</button>
+#   <button type="button" class="btn" ng-model="radio.right">...</button>
+# </div>
+ps.directive("psButton", ["$parse", "$timeout", ($parse, $timeout) ->
+	"use strict"
+	restrict: "A"
+	require: "?ngModel"
+	link: postLink = (scope, element, attrs, controller) ->
+		if controller
+			element.attr "data-toggle", "button"  unless element.parent("[data-toggle=\"buttons-checkbox\"], [data-toggle=\"buttons-radio\"]").length
+			startValue = !!scope.$eval(attrs.ngModel)
+			element.addClass "active"  if startValue
+			scope.$watch attrs.ngModel, (newValue, oldValue) ->
+				bNew = !!newValue
+				bOld = !!oldValue
+				if bNew isnt bOld
+					$.fn.button.Constructor::toggle.call button
+				else element.addClass "active"  if bNew and not startValue
+
+		unless element.hasClass("btn")
+			element.on "click.button.data-api", (e) ->
+				element.button "toggle"
+
+		element.button()
+		button = element.data("button")
+		button.toggle = ->
+			return $.fn.button.Constructor::toggle.call(this)  unless controller
+			$parent = element.parent("[data-toggle=\"buttons-radio\"]")
+			if $parent.length
+				element.siblings("[ng-model]").each (k, v) ->
+					$parse($(v).attr("ng-model")).assign scope, false
+
+				scope.$digest()
+				unless controller.$modelValue
+					controller.$setViewValue not controller.$modelValue
+					scope.$digest()
+			else
+				scope.$apply ->
+					controller.$setViewValue not controller.$modelValue
+
+]).directive("psButtonsCheckbox", ["$parse", ($parse) ->
+	"use strict"
+	restrict: "A"
+	require: "?ngModel"
+	compile: compile = (tElement, tAttrs, transclude) ->
+		tElement.attr("data-toggle", "buttons-checkbox").find("a, button").each (k, v) ->
+			$(v).attr "ps-button", ""
+
+]).directive "psButtonsRadio", ["$parse", ($parse) ->
+	"use strict"
+	restrict: "A"
+	require: "?ngModel"
+	compile: compile = (tElement, tAttrs, transclude) ->
+		tElement.attr "data-toggle", "buttons-radio"
+
+		# Delegate to children ngModel
+		unless tAttrs.ngModel
+			tElement.find("a, button").each (k, v) ->
+				$(v).attr "ps-button", ""
+
+		postLink = (scope, iElement, iAttrs, controller) ->
+
+			# If we have a controller (i.e. ngModelController) then wire it up
+			if controller
+				iElement.find("[value]").button().filter("[value=\"" + scope.$eval(iAttrs.ngModel) + "\"]").addClass "active"
+				iElement.on "click.button.data-api", (ev) ->
+					scope.$apply ->
+						controller.$setViewValue $(ev.target).closest("button").attr("value")
+
+
+
+				# Watch model for changes
+				scope.$watch iAttrs.ngModel, (newValue, oldValue) ->
+					if newValue isnt oldValue
+						$btn = iElement.find("[value=\"" + scope.$eval(iAttrs.ngModel) + "\"]")
+						$.fn.button.Constructor::toggle.call $btn.data("button")  if $btn.length
+
+]

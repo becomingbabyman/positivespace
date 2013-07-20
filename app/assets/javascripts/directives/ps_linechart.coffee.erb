@@ -1,0 +1,71 @@
+####################################################
+# <ps-linechart>
+ps.directive "psLinechart", [() ->
+	restrict: "E"
+	template: "<div class='chart chart-line'></div>"
+	replace: true
+	scope:
+		# height: '@'  # use attrs
+		values: '='    # { x: Array, y: Array of arrays, labels: Array the length of y, opts: {} }
+		label: '@'   # use attrs
+		increment: '@'
+
+	link: (scope, element, attrs) ->
+		attrs.$set 'id', _.uniqueId("linechart_")
+		element.css("height", attrs.height)
+		r = Raphael(attrs.id)
+		colors = ['#8e44ad', '#00C0FF', '#46a546', '#e67e22', '#9d261d']
+
+		# Either defered or not can be used for now
+		scope.$watch 'values', (values) ->
+			if values?.promise?
+				values.promise.then (v) ->
+					draw(v)
+			else if _.isArray(values.x) and _.isArray(values.y)
+				draw(values)
+		, true
+
+		# TODO: if the trend is up the color should be green, down should be red.
+		# TODO: animate
+		# TODO: aggregate meta/trend info below like segment.io
+		# TODO: reveal different tooltips for the same column based on the vertical position of the cursor
+		# TODO: clicking the key should toggle the respective line on and off like highcharts
+
+		draw = (values) ->
+			# chart
+			linechart = r.linechart(0, 0, element.parent().width(), attrs.height-20, values.x, values.y, {smooth: values.opts?.smooth, colors: colors, symbol: '', shade: values.opts?.shade, nostroke: values.opts?.nostroke});
+
+			# label
+			r.text(10, 10, attrs.label).attr({font: "16px sans-serif", 'text-anchor': 'start', fill: '#ccc'}) if attrs.label?
+
+			# tooltips
+			linechart.hoverColumn ->
+			  @tags = r.set()
+			  for i in [0..@y.length-1]
+				  label = @values[i] + " " + (if @values[i] == 1 then values.labels[i].slice(0,-1) else values.labels[i])
+				  angle = if @axis < values.x.length/2 then 0 else 180
+				  @tags.push r.flag(@x, @y[i], label, angle).insertBefore(@).attr([{ fill: "#fff", stroke: "#ddd", 'stroke-width': 1 }, { fill: "#333" }])
+			, ->
+			  @tags and @tags.remove()
+
+			# key
+			w = element.parent().width()
+			h = attrs.height
+			l = values.labels.length
+			m = 8
+			for i in [0..l-1]
+				r.path("M#{(i*w/l)+10} #{h-m}L#{(i*w/l)+26} #{h-m}").attr({"stroke-width": 2, stroke: colors[i]})
+				r.circle((i*w/l)+18, h-m, 2).attr({"stroke-width": 2, stroke: colors[i]})
+				r.text((i*w/l)+30, h-m, values.labels[i]).attr({font: "12px sans-serif", 'text-anchor': 'start', fill: '#ccc'})
+			l = values.x.length
+			v = angular.copy values.x
+			v.reverse()
+
+			inc = scope.increment
+			y = values.opts?.key?.y or (h-m-12)
+			r.text(10, y, "#{_.first(v)} #{(if _.first(v) == 1 then inc.slice(0,-1) else inc)} ago").attr({font: "10px sans-serif", 'text-anchor': 'start', fill: '#ccc'})
+			r.text(w-10, y, "#{_.last(v)} #{(if _.last(v) == 1 then inc.slice(0,-1) else inc)} ago").attr({font: "10px sans-serif", 'text-anchor': 'end', fill: '#ccc'})
+			# for i in [0..l-1]
+			#     r.text((i*w/l)+30, (h-m-8)/2, v[i]).attr({font: "10px sans-serif", 'text-anchor': 'start', fill: '#ccc'})
+
+]

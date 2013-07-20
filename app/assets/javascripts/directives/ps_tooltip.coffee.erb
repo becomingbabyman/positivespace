@@ -1,0 +1,17 @@
+####################################################
+# <ps-tooltip>
+ps.directive "psTooltip", ["$timeout", ($timeout) ->
+	restrict: "A"
+	scope:
+		psTooltip: '='
+	link: (scope, element, attrs) ->
+		_.defer ->
+			if _.isObject(scope.psTooltip)
+				scope.tooltip = new Opentip element, scope.psTooltip.content, scope.psTooltip.options
+				scope.$watch 'psTooltip.show', (show) ->
+					if _.isBoolean show
+						if show
+							scope.tooltip.show()
+						else
+							scope.tooltip.hide()
+]

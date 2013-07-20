@@ -1,6 +1,6 @@
 root = global ? window
 
-root.conversationsIndexCtrl = ps.controller "ConversationsIndexCtrl", ["$scope", "$location", "$timeout", "Conversation", "conversations", ($scope, $location, $timeout, Conversation, conversations) ->
+ps.controller "ConversationsIndexCtrl", ["$scope", "$location", "$timeout", "Conversation", "conversations", ($scope, $location, $timeout, Conversation, conversations) ->
 	$scope.conversations = conversations
 	$scope.app.meta.title = "My Conversations"
 	$scope.selectedFilter = $location.search().filter or 'ready'
@@ -25,31 +25,32 @@ root.conversationsIndexCtrl = ps.controller "ConversationsIndexCtrl", ["$scope",
 				$scope.busy = false unless $scope.conversations.query.page >= $scope.conversations.total_pages
 
 ]
-root.conversationsIndexCtrl.loadConversations = ["$q", "$location", "Conversation", ($q, $location, Conversation) ->
-	defered = $q.defer()
-	query = {user_id: 'me', per: 5, page: 1}
-	filter = $location.search().filter or 'ready'
-	switch filter
-		when 'all' then _.extend(query, {order: "updated_at DESC"})
-		when 'ready' then _.extend(query, {state: 'in_progress', turn_id: 'me', order: "updated_at ASC"})
-		when 'waiting' then _.extend(query, {state: 'in_progress', not_turn_id: 'me', order: "updated_at DESC"})
-		when 'ended' then _.extend(query, {state: 'ended', order: "updated_at DESC"})
-	Conversation.query query, (conversations) ->
-		defered.resolve(conversations)
-		analytics.track 'view conversations success'
-	, (error) ->
-		$location.search('path', window.location.pathname)
-		$location.search('search', window.location.search)
-		$location.path('/login')
-		# $scope.app.flash 'info', "Sorry, we don't know whose conversations to show you. Please log in."
-		analytics.track 'view conversations error',
-			error: 'not logged in'
-		# defered.reject(error)
-	defered.promise
-]
+root.resolves.conversationsIndex =
+	conversations: ["$q", "$location", "Conversation", ($q, $location, Conversation) ->
+		defered = $q.defer()
+		query = {user_id: 'me', per: 5, page: 1}
+		filter = $location.search().filter or 'ready'
+		switch filter
+			when 'all' then _.extend(query, {order: "updated_at DESC"})
+			when 'ready' then _.extend(query, {state: 'in_progress', turn_id: 'me', order: "updated_at ASC"})
+			when 'waiting' then _.extend(query, {state: 'in_progress', not_turn_id: 'me', order: "updated_at DESC"})
+			when 'ended' then _.extend(query, {state: 'ended', order: "updated_at DESC"})
+		Conversation.query query, (conversations) ->
+			defered.resolve(conversations)
+			analytics.track 'view conversations success'
+		, (error) ->
+			$location.search('path', window.location.pathname)
+			$location.search('search', window.location.search)
+			$location.path('/login')
+			# $scope.app.flash 'info', "Sorry, we don't know whose conversations to show you. Please log in."
+			analytics.track 'view conversations error',
+				error: 'not logged in'
+			# defered.reject(error)
+		defered.promise
+	]
 
 
-root.conversationsShowCtrl = ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "$timeout", "Message", "Conversation", "conversation", "messages", ($scope, $routeParams, $location, $timeout, Message, Conversation, conversation, messages) ->
+ps.controller "ConversationsShowCtrl", ["$scope", "$routeParams", "$location", "$timeout", "Message", "Conversation", "conversation", "messages", ($scope, $routeParams, $location, $timeout, Message, Conversation, conversation, messages) ->
 	$scope.conversation = conversation
 	$scope.messages = messages
 	$scope.lastMsg = _.last(messages.collection)
@@ -165,26 +166,27 @@ root.conversationsShowCtrl = ps.controller "ConversationsShowCtrl", ["$scope", "
 		$scope.myMessage.save success, error
 
 ]
-root.conversationsShowCtrl.loadConversation = ["$q", "$route", "$location", "Conversation", ($q, $route, $location, Conversation) ->
-	defered = $q.defer()
-	query = {user_id: 'me', id: $route.current.params.id}
-	Conversation.get query, (conversation) ->
-		defered.resolve(conversation)
-		analytics.track 'view conversation success'
-	, (error) ->
-		$location.search('path', window.location.pathname)
-		$location.search('search', window.location.search)
-		$location.path('/login')
-		# $scope.app.flash 'info', "Please log in first."
-		analytics.track 'view conversation error',
-			error: 'not logged in'
-		# defered.reject(error)
-	defered.promise
-]
-root.conversationsShowCtrl.loadMessages = ["$q", "$route", "Message", ($q, $route, Message) ->
-	defered = $q.defer()
-	query = {user_id: 'me', conversation_id: $route.current.params.id}
-	Message.query query, (messages) ->
-		defered.resolve(messages)
-	defered.promise
-]
+root.resolves.conversationsShow =
+	conversation: ["$q", "$route", "$location", "Conversation", ($q, $route, $location, Conversation) ->
+		defered = $q.defer()
+		query = {user_id: 'me', id: $route.current.params.id}
+		Conversation.get query, (conversation) ->
+			defered.resolve(conversation)
+			analytics.track 'view conversation success'
+		, (error) ->
+			$location.search('path', window.location.pathname)
+			$location.search('search', window.location.search)
+			$location.path('/login')
+			# $scope.app.flash 'info', "Please log in first."
+			analytics.track 'view conversation error',
+				error: 'not logged in'
+			# defered.reject(error)
+		defered.promise
+	]
+	messages: ["$q", "$route", "Message", ($q, $route, Message) ->
+		defered = $q.defer()
+		query = {user_id: 'me', conversation_id: $route.current.params.id}
+		Message.query query, (messages) ->
+			defered.resolve(messages)
+		defered.promise
+	]

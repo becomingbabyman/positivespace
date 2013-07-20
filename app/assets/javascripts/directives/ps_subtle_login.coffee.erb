@@ -1,0 +1,144 @@
+####################################################
+# <ps-subtle-login>
+# TODO: REFACTOR: there is some overlap between this and ps-login directive. see if it can be refactored.
+ps.directive 'psSubtleLogin', ["$timeout", "$location", "User", ($timeout, $location, User) ->
+	directiveDefinitionObject =
+		restrict: 'E'
+		scope:
+			app: '='
+		templateUrl: "<%= asset_path('directives/ps_subtle_login.html') %>"
+
+		link: (scope, element, attrs) ->
+			scope.credentials = {loginType: ''}
+			scope.usernameTaken = true
+			scope.mousedownHappened = false
+
+			$('a').mousedown ->
+				scope.mousedownHappened = true
+				$timeout () ->
+					scope.mousedownHappened = false
+				, 2000
+
+			scope.checkLogin = () ->
+				login = element.find("#sbtl_lgn_email").val()
+				User.query
+					login: login
+					publishable: false
+					endorsed: false
+					(data) ->
+						if data.collection.length > 0
+							scope.credentials.loginType = 'login'
+							# scope.app.flash 'info', "Looks like you already have an account. Go ahead and log in."
+							$timeout () ->
+								element.find('#lgn_password').focus()
+							, 100
+							analytics.track 'sign up expand',
+								type: 'subtle'
+								href: window.location.href
+						else if data.collection.length == 0
+							scope.credentials.loginType = 'register'
+							# scope.app.flash 'info', "Looks like you need an account. Go ahead and start one."
+							$timeout () ->
+								element.find('#reg_password').focus()
+							, 100
+							analytics.track 'sign in expand',
+								type: 'subtle'
+								href: window.location.href
+
+			scope.checkUsername = (username = scope.credentials.username) ->
+				if scope.credentials.loginType == 'register'
+					User.query
+						username: username
+						publishable: false
+						endorsed: false
+						(data) ->
+							if data.collection.length > 0 and scope.credentials.loginType == 'register'
+								scope.usernameTaken = false
+							else
+								scope.usernameTaken = true
+				else
+					scope.usernameTaken = true
+
+			scope.login = () ->
+				unless scope.app.loggedIn() or scope.mousedownHappened
+					if scope.credentials.loginType == 'register'
+						scope.app.show.loading = true
+						User.register
+							user:
+								email: element.find("#sbtl_lgn_email").val()
+								password: element.find("#reg_password").val()
+								username: element.find("#reg_username").val()
+							(data) ->
+								scope.app.show.loading = false
+								scope.app.loadCurrentUser data
+								scope.credentials = {loginType: ''}
+								# scope.app.flash 'success', "Welcome! Go ahead and start a conversation."
+								analytics.track 'sign up success',
+									type: 'subtle'
+									href: window.location.href
+							(error) ->
+								scope.app.show.loading = false
+								scope.app.flash 'error', error.data.errors
+								analytics.track 'sign up error',
+									type: 'subtle'
+									href: window.location.href
+									error: JSON.stringify(error)
+					else
+						scope.app.show.loading = true
+						User.login
+							user:
+								login: element.find("#sbtl_lgn_email").val()
+								password: element.find("#lgn_password").val()
+								# remember_me: rememberMe
+							(data) ->
+								scope.app.show.loading = false
+								scope.app.loadCurrentUser data
+								scope.credentials = {loginType: ''}
+								# scope.app.flash 'success', "Welcome back!"
+								analytics.track 'sign in success',
+									type: 'subtle'
+									href: window.location.href
+							(error) ->
+								scope.app.show.loading = false
+								# TODO: put error on input field
+								scope.app.flash 'error', "Oops, that's the wrong password."
+								$input = element.find('#lgn_password')
+								# $input.focus()
+								$input.addClass('animated shake')
+								$timeout () ->
+									$input.removeClass('shake')
+								,1000
+								analytics.track 'sign in error',
+									type: 'subtle'
+									href: window.location.href
+									error: JSON.stringify(error)
+
+			scope.enterLogin = (e) ->
+				if e.which == 13
+					e.preventDefault()
+					scope.login()
+
+			scope.fbLogin = () ->
+				scope.app.show.loading = true
+				FB.login ((response) ->
+					if response.authResponse
+						$.get '/users/auth/facebook/callback', { signed_request: response.authResponse.signedRequest }, (data) ->
+							scope.app.show.loading = false
+							scope.app.loadCurrentUser data
+							scope.app.flash 'success', "Welcome!"
+							analytics.track 'connect with facebook success',
+								type: 'subtle'
+								href: window.location.href
+					else
+						scope.app.show.loading = false
+						scope.app.flash 'error', "Sorry, we had trouble contacting facebook. Please try again."
+						analytics.track 'connect with facebook error',
+							type: 'subtle'
+							href: window.location.href
+				),
+					scope: "email"
+
+			scope.forgot = ->
+				scope.app.resetPassword(element.find("#sbtl_lgn_email").val())
+
+]

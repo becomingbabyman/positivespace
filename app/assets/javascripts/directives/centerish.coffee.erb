@@ -1,0 +1,45 @@
+####################################################
+# To center something on the page
+# <div centerish>
+# or
+# To center within its parent element
+# <div centerish='parent'>
+ps.directive "centerish", ["$timeout", ($timeout) ->
+	restrict: "A"
+
+	link: (scope, element, attrs) ->
+
+		center = (animate = false) ->
+			height = if attrs.centerish == 'parent' then element.parent().height() else $(document).height()
+			height -= element.height()
+			height -= $('#header').height() unless attrs.centerish == 'parent'
+			height -= $('#footer').height() unless attrs.centerish == 'parent'
+			if height > 0
+				element.css { 'position': 'relative' }
+				if animate
+					element.transition { 'top': (height/3) }
+				else
+					element.css { 'top': (height/3) }
+
+		element.resize ->
+			center()
+
+		if attrs.centerish == 'parent'
+			element.parent().resize ->
+				center()
+		else
+			$(window).resize ->
+				center()
+
+		_.defer ->
+			center(true)
+			$(window).resize()
+
+		# $timeout ->
+		#	center(true)
+		# , 300
+
+		# $timeout ->
+		#	center(true)
+		# , 600
+]

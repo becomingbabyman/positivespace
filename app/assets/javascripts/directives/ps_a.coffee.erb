@@ -1,0 +1,20 @@
+####################################################
+# <ps-a>
+ps.directive "psA", [() ->
+	restrict: "E"
+	template: "<a ng-href='{{href}}'>{{prettyHref}}</a>"
+	replace: true
+	scope:
+		href: '@'
+		target: '@'
+
+	link: (scope, element, attrs) ->
+		element.find('a').attr 'target', scope.target
+
+		scope.$watch 'href', (href) ->
+			if href? and (splitHref = href.split("//")) and splitHref.length > 1
+				scope.prettyHref = splitHref[1]
+			else
+				scope.href = "http://#{scope.href}"
+
+]

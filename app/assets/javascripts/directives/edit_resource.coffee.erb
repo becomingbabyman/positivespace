@@ -1,0 +1,20 @@
+####################################################
+# <edit-resource>
+ps.directive 'editResource', ->
+	directiveDefinitionObject =
+		restrict: 'E'
+		scope:
+			app: '='
+			toggle: '='
+			resource: '='
+		templateUrl: "<%= asset_path('directives/edit_resource.html') %>"
+
+		link: (scope, element, attrs) ->
+			scope.resourceCopy = angular.copy scope.resource
+			scope.submitForm = ->
+				success = (data) ->
+					scope.app.flash 'success', 'Bam, saved!'
+					scope.resource = angular.copy scope.resourceCopy
+				error = (error) ->
+					scope.app.flash 'error', error.data.errors
+				scope.resourceCopy.save(success, error)

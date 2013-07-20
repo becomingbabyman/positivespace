@@ -1,0 +1,138 @@
+####################################################
+####################################################
+# Form Directives
+# Notes:
+# - All inputs should be within a form element
+# - Form elements should have a unique name attribute
+# - This may become an alternative - https://github.com/angular-ui/angular-ui/pull/191
+
+
+##########################
+# <input> or <select> or <textarea>
+# Pure HTML manipulation directive to autofill input attributes with logical defaults
+# name:         String - REQUIRED      #TODO: see if you can programatically find it by searching up the dom tree for the 'form' elm
+# type:         String - default 'text' - only on <input>
+# placeholder:  String - default name
+# title:        String - default name
+# id:           String - default name + random number
+fieldDirectiveDefinitionObject =
+	restrict: 'E'
+	link: (scope, element, attrs) ->
+		if element.prop("tagName") == 'INPUT' and !attrs.type?
+			attrs.$set 'type', (attrs.type or 'text')
+		unless attrs.placeholder? then attrs.$set 'placeholder', attrs.name
+		unless attrs.title? then attrs.$set 'title', (attrs.placeholder or attrs.name)
+		unless attrs.id? then attrs.$set 'id', _.uniqueId("#{attrs.name}_")
+		# attrs.$set 'name', (attrs.name or attrs.placeholder.replace(///^\s+|\s+$///g, '').split(' ').join('-'))
+		# Placeholder pollyfill
+		if element.prop("tagName") == 'INPUT' or element.prop("tagName") == 'TEXTAREA' then element.placeholder()
+		# Autosize
+		if element.prop("tagName") == 'TEXTAREA'
+			element.autosize()
+			# TODO: REFACTOR:
+			window.setTimeout ->
+				$(window).resize()
+			, 200
+			window.setTimeout ->
+				$(window).resize()
+			, 900
+		# On Off Switch
+		if element.prop("tagName") == 'INPUT' and attrs.type == 'checkbox' and attrs.onoffswitch? then element.onoffswitch()
+
+ps.directive 'input', () ->
+	return fieldDirectiveDefinitionObject
+
+ps.directive 'select', () ->
+	return fieldDirectiveDefinitionObject
+
+ps.directive 'textarea', () ->
+	return fieldDirectiveDefinitionObject
+
+
+##########################
+# <control-group>
+# label:        String - default null
+# helpInline:   String - default null
+# helpBlock:    String - default null
+ps.directive 'controlGroup', ["$timeout", ($timeout) ->
+
+	findInputEl = (element) ->
+		e = element.find('input')
+		if e.length < 1 then e = element.find('select')
+		if e.length < 1 then e = element.find('textarea')
+		e
+
+	directiveDefinitionObject =
+		restrict: 'E'
+		scope:
+			label: '@'
+			helpInline: '@'
+			helpBlock: '@'
+			autosave: '@'
+			noColor: '@'
+		templateUrl: "<%= asset_path('directives/control_group.html') %>"
+		transclude: true
+		replace: true
+		require: '?^form'
+
+		compile: (element, attrs) ->
+			inputEl = findInputEl(element)
+			type = inputEl.attr('type')
+			element.find('.control-group').addClass(type)
+
+			# link
+			return (scope, element, attrs, formController) ->
+				scope.maxlength = parseInt(attrs.maxlength) if attrs.maxlength
+				scope.remainingCharCount = scope.maxlength
+
+				scope.inputEl = findInputEl(element)
+
+				scope.input or= {}
+				scope.input.id = scope.inputEl.attr('id')
+				scope.input.name = scope.inputEl.attr('name')
+				scope.input.title = scope.inputEl.attr('title')
+
+				scope.field = formController[scope.input.name]
+
+				buildErrorMsg = ->
+					errors = []
+					if scope.field.$error.required  then errors.push "Oops, #{scope.input.title} can't be blank"
+					if scope.field.$error.email     then errors.push "Please enter a valid email address"
+					if scope.field.$error.url       then errors.push "Please enter a valid url, kind of like \"http://example.com\""
+					if scope.field.$error.minlength then errors.push "Keep typing, #{scope.input.title} is too short"
+					if scope.field.$error.maxlength then errors.push "Whoa, #{scope.input.title} is too long"
+					if scope.field.$error.pattern   then errors.push "Whoops, #{scope.input.title} is in the wrong format"
+					if scope.field.$error.usernameTaken   then errors.push "Sorry, this #{scope.input.title} is taken"
+					scope.field.errorMessage = errors.join('. ')
+
+				if scope.field?
+					buildErrorMsg()
+					scope.$watch 'field.$error', (() -> buildErrorMsg()), true
+
+					# TODO: REFACTOR: make this work outside of a timeout, maybe a defer
+					$timeout ->
+						if scope.autosave? and amplify.store(scope.autosave)?
+							# TODO: REFACTOR: setting the view and the model should not have to be 2 steps
+							scope.inputEl.val(amplify.store(scope.autosave))
+							scope.field.$setViewValue(amplify.store(scope.autosave))
+							$(window).resize()
+					, 200
+					if scope.maxlength? or scope.autosave?
+						scope.$watch 'field.$modelValue', (value) ->
+							# Update the count
+							if scope.maxlength? then scope.remainingCharCount = scope.maxlength - (if value? then value.length else 0)
+							# Save to local storage
+							if scope.autosave? and scope.field.$dirty
+								amplify.store(scope.autosave, value or null)
+
+				# set 'focused' class on control-group
+				scope.hasFocus = false
+				scope.inputEl.bind 'focusin', ->
+					scope.$apply ->
+						scope.hasFocus = true
+				scope.inputEl.bind 'focusout', ->
+					scope.$apply ->
+						scope.hasFocus = false
+
+	return directiveDefinitionObject
+]
