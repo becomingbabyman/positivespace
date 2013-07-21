@@ -41,6 +41,7 @@
 #= require g.line-min
 #= require moment.min
 #= require json2
+#= require gestures
 #= require amplify.core.min
 #= require amplify.store.min
 #

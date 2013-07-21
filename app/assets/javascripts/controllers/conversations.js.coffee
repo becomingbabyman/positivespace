@@ -9,6 +9,14 @@ ps.controller "ConversationsIndexCtrl", ["$scope", "$location", "$timeout", "Con
 		$scope.busy = false
 	, 1500
 
+	$scope.filterRight = ->
+		map = {all: 'ready', ready: 'ended', ended: 'waiting', waiting: 'ready'}
+		$scope.filter(map[$scope.selectedFilter])
+
+	$scope.filterLeft = ->
+		map = {all: 'ready', ready: 'waiting', waiting: 'ended', ended: 'ready'}
+		$scope.filter(map[$scope.selectedFilter])
+
 	$scope.filter = (filter) ->
 		$location.search({filter: filter})
 		analytics.track "filter conversations",
