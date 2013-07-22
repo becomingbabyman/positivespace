@@ -41,11 +41,11 @@
 #= require g.line-min
 #= require moment.min
 #= require json2
-#= require gestures
 #= require amplify.core.min
 #= require amplify.store.min
 #
 # Not Currently Required
+# require gestures
 # require jquery.jlabel
 # require sisyphus.min
 #
