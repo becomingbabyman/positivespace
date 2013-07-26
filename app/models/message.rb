@@ -26,9 +26,9 @@ class Message < ActiveRecord::Base
 	serialize :embed_data
 
 	acts_as_mentioner
-	belongs_to :to, :class_name => 'User'
-	belongs_to :from, :class_name => 'User'
-	belongs_to :conversation
+	belongs_to :to, :class_name => 'User', counter_cache: :recieved_messages_count
+	belongs_to :from, :class_name => 'User', counter_cache: :sent_messages_count
+	belongs_to :conversation, counter_cache: :messages_count
 	has_many :magnetisms, :as => :attachable
 
 	validates :body, presence: true#, length: {maximum: 250}

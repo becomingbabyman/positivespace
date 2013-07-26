@@ -2,7 +2,7 @@ object @user
 
 extends 'api/v1/users/base'
 
-attributes :body, :location, :personal_url, :created_at, :impressions_count, :state, :likers_count, :followers_count, :mentioners_count
+attributes :body, :location, :personal_url, :created_at, :impressions_count, :state, :likers_count, :followers_count, :follows_count, :mentioners_count, :sent_conversations_count, :recieved_conversations_count
 attributes :achievements_list, :settings, :sign_in_count, :last_sign_in_at, :updated_at, :gender, :birthday, :locale, :timezone, :remaining_invitations_count, :if => lambda { |u| can?(:update, u) }
 
 # TODO: remove this when there is a better/separate space editing UI
@@ -19,11 +19,11 @@ node :last_name do |user|
 end
 
 node :skills do |u|
-	u.skill_list
+	u.skills.pluck(:name)
 end
 
 node :interests do |u|
-	u.interest_list
+	u.interests.pluck(:name)
 end
 
 node :can_edit do |user|
@@ -39,7 +39,7 @@ node :accessible_attributes, :if => lambda { |u| can?(:update, u) } do |user|
 end
 
 node :ready_conversations_count, :if => lambda { |u| can?(:update, u) } do |user|
-	user.conversations.in_progress.turn(user.id).size
+	user.conversations.in_progress.turn(user.id).count
 end
 
 node :waiting_conversations_count, :if => lambda { |u| can?(:update, u) } do |user|

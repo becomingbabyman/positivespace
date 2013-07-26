@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130720034929) do
+ActiveRecord::Schema.define(:version => 20130723230620) do
 
   create_table "achievements", :force => true do |t|
     t.string   "name"
@@ -44,17 +44,19 @@ ActiveRecord::Schema.define(:version => 20130720034929) do
     t.integer  "from_id"
     t.integer  "to_id"
     t.string   "state"
-    t.datetime "created_at",           :null => false
-    t.datetime "updated_at",           :null => false
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
     t.integer  "last_message_id"
     t.integer  "last_message_from_id"
     t.text     "last_message_body"
     t.text     "prompt"
+    t.integer  "messages_count",       :default => 0, :null => false
   end
 
   add_index "conversations", ["from_id"], :name => "index_conversations_on_from_id"
   add_index "conversations", ["last_message_from_id"], :name => "index_conversations_on_last_message_from_id"
   add_index "conversations", ["last_message_id"], :name => "index_conversations_on_last_message_id"
+  add_index "conversations", ["messages_count"], :name => "index_conversations_on_messages_count"
   add_index "conversations", ["prompt"], :name => "index_conversations_on_prompt"
   add_index "conversations", ["state"], :name => "index_conversations_on_state"
   add_index "conversations", ["to_id"], :name => "index_conversations_on_to_id"
@@ -294,12 +296,12 @@ ActiveRecord::Schema.define(:version => 20130720034929) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                       :default => "",         :null => false
-    t.string   "encrypted_password",          :default => "",         :null => false
+    t.string   "email",                        :default => "",         :null => false
+    t.string   "encrypted_password",           :default => "",         :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",               :default => 0
+    t.integer  "sign_in_count",                :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -308,13 +310,13 @@ ActiveRecord::Schema.define(:version => 20130720034929) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
-    t.integer  "failed_attempts",             :default => 0
+    t.integer  "failed_attempts",              :default => 0
     t.string   "unlock_token"
     t.datetime "locked_at"
     t.string   "authentication_token"
-    t.datetime "created_at",                                          :null => false
-    t.datetime "updated_at",                                          :null => false
-    t.integer  "permissions",                 :default => 0
+    t.datetime "created_at",                                           :null => false
+    t.datetime "updated_at",                                           :null => false
+    t.integer  "permissions",                  :default => 0
     t.string   "facebook_id"
     t.string   "username"
     t.string   "slug"
@@ -323,7 +325,7 @@ ActiveRecord::Schema.define(:version => 20130720034929) do
     t.string   "name"
     t.text     "body"
     t.string   "location"
-    t.text     "achievements_list",           :default => "--- []\n"
+    t.text     "achievements_list",            :default => "--- []\n"
     t.string   "personal_url"
     t.text     "positive_response"
     t.text     "negative_response"
@@ -331,18 +333,23 @@ ActiveRecord::Schema.define(:version => 20130720034929) do
     t.datetime "birthday"
     t.string   "locale"
     t.integer  "timezone"
-    t.integer  "impressions_count",           :default => 1
+    t.integer  "impressions_count",            :default => 1
     t.integer  "invitation_id"
     t.string   "state"
-    t.integer  "followers_count",             :default => 0
-    t.integer  "likers_count",                :default => 0
-    t.integer  "mentioners_count",            :default => 0
-    t.integer  "remaining_invitations_count", :default => 0
-    t.text     "settings",                    :default => "--- {}\n"
+    t.integer  "followers_count",              :default => 0
+    t.integer  "likers_count",                 :default => 0
+    t.integer  "mentioners_count",             :default => 0
+    t.integer  "remaining_invitations_count",  :default => 0
+    t.text     "settings",                     :default => "--- {}\n"
     t.text     "bio"
-    t.integer  "magnetism",                   :default => 0
-    t.integer  "magnetisms_count",            :default => 0
-    t.integer  "achievements_count",          :default => 0
+    t.integer  "magnetism",                    :default => 0
+    t.integer  "magnetisms_count",             :default => 0
+    t.integer  "achievements_count",           :default => 0
+    t.integer  "follows_count",                :default => 0,          :null => false
+    t.integer  "sent_conversations_count",     :default => 0,          :null => false
+    t.integer  "recieved_conversations_count", :default => 0,          :null => false
+    t.integer  "sent_messages_count",          :default => 0,          :null => false
+    t.integer  "recieved_messages_count",      :default => 0,          :null => false
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true
@@ -350,6 +357,7 @@ ActiveRecord::Schema.define(:version => 20130720034929) do
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["facebook_id"], :name => "index_users_on_facebook_id"
   add_index "users", ["followers_count"], :name => "index_users_on_followers_count"
+  add_index "users", ["follows_count"], :name => "index_users_on_follows_count"
   add_index "users", ["impressions_count"], :name => "index_users_on_impressions_count"
   add_index "users", ["likers_count"], :name => "index_users_on_likers_count"
   add_index "users", ["location"], :name => "index_users_on_location"
@@ -357,8 +365,12 @@ ActiveRecord::Schema.define(:version => 20130720034929) do
   add_index "users", ["mentioners_count"], :name => "index_users_on_mentioners_count"
   add_index "users", ["name"], :name => "index_users_on_name"
   add_index "users", ["permissions"], :name => "index_users_on_permissions"
+  add_index "users", ["recieved_conversations_count"], :name => "index_users_on_recieved_conversations_count"
+  add_index "users", ["recieved_messages_count"], :name => "index_users_on_recieved_messages_count"
   add_index "users", ["remaining_invitations_count"], :name => "index_users_on_remaining_invitations_count"
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+  add_index "users", ["sent_conversations_count"], :name => "index_users_on_sent_conversations_count"
+  add_index "users", ["sent_messages_count"], :name => "index_users_on_sent_messages_count"
   add_index "users", ["slug"], :name => "index_users_on_slug", :unique => true
   add_index "users", ["state"], :name => "index_users_on_state"
   add_index "users", ["unlock_token"], :name => "index_users_on_unlock_token", :unique => true

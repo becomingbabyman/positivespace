@@ -10,6 +10,11 @@ class Follow < ActiveRecord::Base
 			m.increment(:followers_count)
 			m.save!
 		end
+		t = self.follower
+		if t.has_attribute? :follows_count
+			t.increment(:follows_count)
+			t.save!
+		end
 	end
 
 	def decrement_counter_cache
@@ -17,6 +22,11 @@ class Follow < ActiveRecord::Base
 		if m.has_attribute? :followers_count
 			m.decrement(:followers_count)
 			m.save!
+		end
+		t = self.follower
+		if t.has_attribute? :follows_count
+			t.decrement(:follows_count)
+			t.save!
 		end
 	end
 end

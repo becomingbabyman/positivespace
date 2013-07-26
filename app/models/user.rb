@@ -27,12 +27,12 @@ class User < ActiveRecord::Base
 				indexes :id,            type: 'integer', index:    :not_analyzed
 				indexes :slug,          type: 'string',  analyzer: 'keyword'
 				indexes :state,         type: 'string',  analyzer: 'keyword'
-				indexes :name,          type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball', :boost => 10.0
+				indexes :name,          type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball', :boost => 20.0
 				indexes :bio,           type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball', :boost => 10.0
-				indexes :username,      type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball', :boost => 10.0
+				indexes :username,      type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball', :boost => 20.0
 				indexes :location,      type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball', :boost => 10.0
 				indexes :personal_url,  type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball', :boost => 5.0
-				indexes :skills,   		type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball', :boost => 10.0
+				indexes :skills,   		type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball', :boost => 15.0
 				indexes :interests,		type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball', :boost => 10.0
 				indexes :gender,   		type: 'string',  analyzer: 'keyword'
 				indexes :locale,   		type: 'string',  analyzer: 'keyword'
@@ -42,7 +42,7 @@ class User < ActiveRecord::Base
 				indexes :created_at,    type: 'date'
 				indexes :avatar_thumb_url, type: 'string', index:  :not_analyzed
 				indexes :personal_url_root, type: 'string', index:  :not_analyzed
-				indexes :current_space_prompt,  type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball', :boost => 10.0
+				indexes :current_space_prompt,  type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball', :boost => 20.0
 				indexes :current_space_embed_url,  type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball', :boost => 5.0
 			end
 		end
@@ -118,6 +118,7 @@ class User < ActiveRecord::Base
 	acts_as_likeable
 	acts_as_mentionable
 	acts_as_ordered_taggable_on :skills, :interests
+	acts_as_tagger
 
 	has_many :spaces, :order => 'created_at desc'
 	has_many :images, :as => :attachable
@@ -219,8 +220,8 @@ class User < ActiveRecord::Base
 			username: username,
 			location: location,
 			personal_url: personal_url,
-			skills: skill_list.to_s,
-			interests: interest_list.to_s,
+			skills: skills.pluck(:name).to_s,
+			interests: interests.pluck(:name).to_s,
 			gender: gender,
 			locale: locale,
 			timezone: timezone,
@@ -299,11 +300,13 @@ class User < ActiveRecord::Base
 	end
 
 	def skills= ids
-		self.skill_list = ids
+		self.tag self, with: ids, on: :skills
+		# self.skill_list = ids
 	end
 
 	def interests= ids
-		self.interest_list = ids
+		self.tag self, with: ids, on: :interests
+		# self.interest_list = ids
 	end
 
 	def socialable_action= action

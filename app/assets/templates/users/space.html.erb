@@ -115,6 +115,22 @@
 
 				<div class='row-fluid expanded-profile' ng-class="{expanded: expanded}">
 					<div class='span12'>
+						<div class='row-fluid stats'>
+							<div class='span4'>
+								<h4>{{user.sent_conversations_count + user.recieved_conversations_count}}</h4>
+								<ng-pluralize count="user.sent_conversations_count + user.recieved_conversations_count" when="{1: 'Conversation', other: 'Conversations' }"></ng-pluralize>
+							</div>
+							<div class='span4'>
+								<h4>{{user.follows_count}}</h4>
+								Following
+							</div>
+							<div class='span4'>
+								<h4>{{user.followers_count}}</h4>
+								<ng-pluralize count="user.followers_count" when="{1: 'Follower', other: 'Followers' }"></ng-pluralize>
+							</div>
+						</div>
+						<hr/>
+
 						<div class='row-fluid'>
 							<div class='span12 faded icons'>
 								<!-- <a href="/{{user.invitation.user.slug || 'space'}}" class='ghost uncenter mtl mrl font20' tooltip='Endorsed by {{user.invitation.user.name || "+_"}}' ui-if='!showShareMini && user.state != "unendorsed"'>
@@ -147,7 +163,7 @@
 						</div>
 
 						<div class='row-fluid' ng-show='user.skills.length > 0'>
-							<div class='span12 mbm faded font14'>
+							<div class='span12 mtm mbm faded font14'>
 								Expertise:
 								<br/>
 								<a href='#' class="btn btn-info btn-mini mrs mts" ng-repeat="skill in user.skills" ng-click="setSearchQuery(skill)">{{skill}}</a>
@@ -155,7 +171,7 @@
 						</div>
 
 						<div class='row-fluid' ng-show='user.skills.length > 0'>
-							<div class='span12 mbm faded font14'>
+							<div class='span12 mtm mbm faded font14'>
 								Interests:
 								<br/>
 								<a href='#' class="btn btn-warning btn-mini mrs mts" ng-repeat="interest in user.interests" ng-click="setSearchQuery(interest)">{{interest}}</a>
@@ -201,7 +217,7 @@
 			<div class="span12 uncenter">
 				<form name='messageForm' class='form-vertical uncenter' ng-submit='submitMessage()' novalidate style='width: 100%;'>
 					<control-group maxlength='250' autosave='{{autosave.body}}'>
-						<textarea name='body' id='msg_body' title='message body' placeholder="Add some value..." class='input-block-level' ng-model='message.body' rows="1" required ng-disabled='message.id' ui-event="{focus: 'setFocus(true)', blur: 'setFocus(false)'}"></textarea>
+						<textarea name='body' id='msg_body' title='message body' placeholder="Start a private conversation" class='input-block-level' ng-model='message.body' rows="1" required ng-disabled='message.id' ui-event="{focus: 'setFocus(true)', blur: 'setFocus(false)'}"></textarea>
 					</control-group>
 
 					<!-- <ps-subtle-login app='app'></ps-subtle-login> -->
