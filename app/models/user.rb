@@ -146,6 +146,8 @@ class User < ActiveRecord::Base
 
 	scope :unendorsed, where(state: 'unendorsed')
 	scope :endorsed, where(state: 'endorsed')
+	scope :following, lambda{ |user_id| joins("INNER JOIN follows ON follows.followable_id = users.id AND follows.followable_type = 'User'").where("follows.follower_type = 'User' AND follows.follower_id = ?", user_id) }
+	scope :followers, lambda{ |user_id| joins(:follows).where("follows.followable_id = ? AND follows.followable_type = 'User' AND follows.follower_type = 'User'",user_id) }
 
 
 	# Authenticate with email or username

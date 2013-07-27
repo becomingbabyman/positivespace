@@ -15,10 +15,10 @@ class Api::V1::UsersController < InheritedResources::Base
 		scope.where("users.id = ?", value.downcase)
 	end
 	has_scope :following, :only => :index do |controller, scope, value|
-		scope.joins("INNER JOIN follows ON follows.followable_id = users.id AND follows.followable_type = 'User'").where("follows.follower_type = 'User' AND follows.follower_id = ?", value.to_i)
+		scope.following(value.to_i)
 	end
 	has_scope :followers, :only => :index do |controller, scope, value|
-		scope.joins(:follows).where("follows.followable_id = ? AND follows.followable_type = 'User' AND follows.follower_type = 'User'", value.to_i)
+		scope.followers(value.to_i)
 	end
 	has_scope :publishable, :only => :index, type: :boolean, default: true do |controller, scope, value|
 		scope.where("users.body IS NOT NULL")
@@ -26,7 +26,7 @@ class Api::V1::UsersController < InheritedResources::Base
 	has_scope :complete, :only => :index, type: :boolean do |controller, scope, value|
 		scope.where("users.body IS NOT NULL AND users.location IS NOT NULL AND users.personal_url IS NOT NULL")
 	end
-	has_scope :endorsed, :only => :index, type: :boolean, default: true do |controller, scope, value|
+	has_scope :endorsed, :only => :index, type: :boolean do |controller, scope, value|
 		scope.endorsed
 	end
 	has_scope :order, :only => :index do |controller, scope, value|
@@ -76,7 +76,7 @@ class Api::V1::UsersController < InheritedResources::Base
 protected
 
 	def collection
-		@users ||= apply_scopes(end_of_association_chain) unless params[:q]
+		@users ||= apply_scopes(end_of_association_chain).includes(:invitation) unless params[:q]
 	end
 
 	def pick_params

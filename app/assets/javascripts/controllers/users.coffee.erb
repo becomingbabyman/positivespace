@@ -2,13 +2,22 @@ root = global ? window
 
 
 # Index
-ps.controller "UsersIndexCtrl", ["$scope", "$routeParams", "$timeout", "$location", "User", "users", ($scope, $routeParams, $timeout, $location, User, users) ->
+ps.controller "UsersIndexCtrl", ["$scope", "$routeParams", "$timeout", "$location", "User", "users", "user", ($scope, $routeParams, $timeout, $location, User, users, user) ->
 	$scope.users = users
+	$scope.user = user
 	$scope.filter = 'recent'
 	$scope.busy = true
 	$timeout ->
 		$scope.busy = false
 	, 1500
+
+	$scope.updateTitle = ->
+		if $scope.user
+			$scope.title = "#{$scope.users.total} Following <a href='/#{$scope.user.slug}'>@#{$scope.user.username}</a>" if $scope.users.query.followers?
+			$scope.title = "#{$scope.users.total} <a href='/#{$scope.user.slug}'>@#{$scope.user.username}</a> Follows" if $scope.users.query.following?
+		else
+			$scope.title = 'Browse Spaces'
+	$scope.updateTitle()
 
 	$scope.updateFilter = ->
 		$scope.app.show.loading = true
@@ -21,8 +30,10 @@ ps.controller "UsersIndexCtrl", ["$scope", "$routeParams", "$timeout", "$locatio
 				query = { followers: $scope.app.currentUser.id, per: 5 }
 		$scope.users = User.query query, ->
 			$scope.app.show.loading = false
+			$scope.updateTitle()
 		, ->
 			$scope.app.show.loading = false
+			$scope.updateTitle()
 		analytics.track 'filter users',
 			filter: $scope.filter
 
@@ -39,12 +50,27 @@ ps.controller "UsersIndexCtrl", ["$scope", "$routeParams", "$timeout", "$locatio
 
 ]
 root.resolves.usersIndex =
-	users: ["$q", "User", ($q, User) ->
+	users: ["$q", "$route", "User", ($q, $route, User) ->
 		defered = $q.defer()
-		User.query { order: 'updated_at DESC', per: 5 }, (users) ->
+		query = $route.current.params
+		query.order or= 'updated_at DESC'
+		query.page or= 1
+		query.per or= 4
+		User.query query, (users) ->
 			defered.resolve(users)
 		, (error) ->
 			defered.reject(error)
+		defered.promise
+	]
+	user: ["$q", "$route", "User", ($q, $route, User) ->
+		defered = $q.defer()
+		id = $route.current.params.followers or $route.current.params.following
+		if id?
+			User.get {id: id}, (user) ->
+				defered.resolve(user)
+		else
+			defered.resolve(false)
+
 		defered.promise
 	]
 

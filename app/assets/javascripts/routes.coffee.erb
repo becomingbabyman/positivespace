@@ -12,15 +12,11 @@ ps.config ['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvid
 
 	.when "/",
 		redirectTo: '/space'
-		# controller: "UsersIndexCtrl"
-		# templateUrl: "<%= asset_path('users/index.html') %>"
-		# resolve:
-		#	users: root.resolves.usersIndex.users
 
 	# Pages
 	# .when "/",
-	#	controller: "PagesCtrl"
-	#	templateUrl: "<%= asset_path('pages/home.html') %>"
+	#   controller: "PagesCtrl"
+	#   templateUrl: "<%= asset_path('pages/home.html') %>"
 	.when "/404",
 		controller: "PagesCtrl"
 		templateUrl: "<%= asset_path('pages/404.html') %>"
@@ -34,11 +30,11 @@ ps.config ['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvid
 		controller: "PagesCtrl"
 		templateUrl: "<%= asset_path('pages/privacy.html') %>"
 	# .when "/jobs",
-	#	controller: "PagesCtrl"
-	#	templateUrl: "<%= asset_path('pages/jobs.html') %>"
+	#   controller: "PagesCtrl"
+	#   templateUrl: "<%= asset_path('pages/jobs.html') %>"
 	# .when "/contact",
-	#	controller: "PagesCtrl"
-	#	templateUrl: "<%= asset_path('pages/contact.html') %>"
+	#   controller: "PagesCtrl"
+	#   templateUrl: "<%= asset_path('pages/contact.html') %>"
 
 	# Conversations
 	.when "/inbox",
@@ -68,6 +64,12 @@ ps.config ['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvid
 	.when "/users/password/edit",
 		controller: "UserPasswordEditCtrl"
 		templateUrl: "<%= asset_path('users/password_edit.html') %>"
+	.when "/users",
+		controller: "UsersIndexCtrl"
+		templateUrl: "<%= asset_path('users/index.html') %>"
+		resolve:
+			users: root.resolves.usersIndex.users
+			user: root.resolves.usersIndex.user
 	.when "/:user_id/start",
 		controller: "UsersStartCtrl"
 		templateUrl: "<%= asset_path('users/start.html') %>"

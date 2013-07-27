@@ -122,6 +122,14 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
     ###################
     # On Route Change #
     ###################
+
+    # TODO: move to directive that can be used at the top of any element, not just body
+    loading = false
+    progressWidth = (width) -> $("#progress").width("#{width}%")
+    progressTransitionDuration = (duration) ->
+        for prefix in ['-moz-', '-webkit-', '-ms-', '-o-', '']
+            $("#progress").css("#{prefix}transition-duration", duration)
+
     $rootScope.$on "$routeChangeStart", (event, next, current) ->
         # Reset the meta tags
         $scope.app.meta.reset()
@@ -129,21 +137,28 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
         # Make sure the chrome is visible
         $scope.app.show.allChrome()
 
-        # Autosize all textareas
-        # $timeout (() -> $('textarea').autosize()), 1000
-
         # SEO - say the page is ready after a reasonable amount of time
         # $timeout ->
         #     $scope.htmlReady()
         # , 8888
 
+        loading = true
         # Start loading animation
         if $("#progress").length is 0
             $("body").append $("<div><dt/><dd/></div>").attr("id", "progress")
-            progress = 70 + Math.random() * 20
-            $("#progress").width (progress) + "%"
+            progress = 55 + Math.random() * 20
+            progressWidth progress
+            $timeout () ->
+                if loading
+                    progressTransitionDuration '2s'
+                    progressWidth(progress + 20)
+            , 400
 
     $rootScope.$on '$routeChangeSuccess', (event, current, previous) ->
+        loading = false
+        progressTransitionDuration '0.4s'
+        progressWidth("101%").delay(200).fadeOut 400, -> $(@).remove()
+
         $scope.app.dcu.promise.then (user) ->
             # Identify the user
             $scope.app.identify user
@@ -152,6 +167,7 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
                 $scope.app.helpMsgs = ["Your Space is incomplete. <a href='/#{user.slug}/start' class='btnf btnf-start btn-large btn-warning'>Get started</a>"]
             else
                 $scope.app.helpMsgs = []
+
         # Track a pageview
         analytics.pageview()
         analytics.track 'view page',

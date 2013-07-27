@@ -49,7 +49,7 @@
 				><i class="share icon-envelope"></i> <span class='font16'>Email</span></a>
 				<span class="opacity5 opacity-full-hover" title="share link to {{user.name | possessive}} space">
 					<i class="font20 icon-link muted" ng-click="app.selectText('share-url-mini')"></i>
-					<pre ng-click="app.selectText('share-url-mini')" class="share-url-mini sans bold font12" style="padding:2px 4px; max-width: 150px; overflow: hidden; white-space:nowrap; display: inline-block; vertical-align: top;">http://www.positivespace.io/{{user.slug}}</pre> <span ng-click="app.selectText('share-url-mini')" class='font16'>Link</span>
+					<pre ng-click="app.selectText('share-url-mini')" class="share-url-mini sans bold font12" style="padding:2px 4px; max-width: 180px; overflow: hidden; white-space:nowrap; display: inline-block; vertical-align: top;">http://www.positivespace.io/{{user.slug}}</pre> <span ng-click="app.selectText('share-url-mini')" class='font16'>Link</span>
 				</span>
 				<a href="#" class='font18 unfancy-link opacity5 opacity-full-hover pll vac' ng-click="showShareMini = !showShareMini" title="close">
 					<i class="icon-remove-circle"></i>
@@ -116,18 +116,22 @@
 				<div class='row-fluid expanded-profile' ng-class="{expanded: expanded}">
 					<div class='span12'>
 						<div class='row-fluid stats'>
-							<div class='span4'>
+							<div class='span4 mobile1'>
 								<h4>{{user.sent_conversations_count + user.recieved_conversations_count}}</h4>
-								<ng-pluralize count="user.sent_conversations_count + user.recieved_conversations_count" when="{1: 'Conversation', other: 'Conversations' }"></ng-pluralize>
+								<small><ng-pluralize count="user.sent_conversations_count + user.recieved_conversations_count" when="{1: 'Conversation', other: 'Conversations' }"></ng-pluralize></small>
 							</div>
-							<div class='span4'>
-								<h4>{{user.follows_count}}</h4>
-								Following
-							</div>
-							<div class='span4'>
-								<h4>{{user.followers_count}}</h4>
-								<ng-pluralize count="user.followers_count" when="{1: 'Follower', other: 'Followers' }"></ng-pluralize>
-							</div>
+							<a href="/users?following={{user.id}}" class='color-text'>
+								<div class='span4 mobile1'>
+									<h4>{{user.follows_count}}</h4>
+									<small>Following</small>
+								</div>
+							</a>
+							<a href="/users?followers={{user.id}}" class='color-text'>
+								<div class='span4 mobile1'>
+									<h4>{{user.followers_count}}</h4>
+									<small><ng-pluralize count="user.followers_count" when="{1: 'Follower', other: 'Followers' }"></ng-pluralize></small>
+								</div>
+							</a>
 						</div>
 						<hr/>
 
