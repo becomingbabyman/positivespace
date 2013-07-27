@@ -13,8 +13,8 @@ ps.controller "UsersIndexCtrl", ["$scope", "$routeParams", "$timeout", "$locatio
 
 	$scope.updateTitle = ->
 		if $scope.user
-			$scope.title = "#{$scope.users.total} Following <a href='/#{$scope.user.slug}'>@#{$scope.user.username}</a>" if $scope.users.query.followers?
-			$scope.title = "#{$scope.users.total} <a href='/#{$scope.user.slug}'>@#{$scope.user.username}</a> Follows" if $scope.users.query.following?
+			$scope.title = "Following <a href='/#{$scope.user.slug}'>@#{$scope.user.username}</a>" if $scope.users.query.followers?
+			$scope.title = "<a href='/#{$scope.user.slug}'>@#{$scope.user.username}</a> Follows" if $scope.users.query.following?
 		else
 			$scope.title = 'Browse Spaces'
 	$scope.updateTitle()
@@ -153,6 +153,8 @@ ps.controller "UsersStartCtrl", ["$scope", "$routeParams", "$timeout", "$locatio
 	$scope.app.dcu.promise.then (currentUser) ->
 		if $scope.user.id != currentUser.id
 			$location.path("/#{$scope.user.slug}")
+		else
+			if $scope.step == 5 then $scope.setQuery($scope.app.currentUser.interests[0])
 	, (error) ->
 		$scope.app.flash('info', 'Log in to create your space')
 		$location.search('path', window.location.pathname)
@@ -233,39 +235,39 @@ ps.controller "UsersStartCtrl", ["$scope", "$routeParams", "$timeout", "$locatio
 		"""
 	addTooltip 'step2',
 		"""
-			<h5>Discover</h5>
-			<p>Paying it forward is often the best place to start.</p>
-			<p>Let's find someone (preferably a stranger) whom you can help.</p>
-		"""
-	addTooltip 'step3',
-		"""
-			<h5>Respond</h5>
-			<p>Positive Space is designed for focus.</p>
-			<p>Try to stay focused on this specific prompt.</p>
-			<p>You will earn more characters as the conversation progresses, so there is no need to say everything at once.</p>
-			<p>For now focus on addressing the prompt and adding value.</p>
-		"""
-	addTooltip 'step4',
-		"""
 			<h5>Bio</h5>
 			<p>All conversations are private and 1 on 1.</p>
 			<p>We find that intimacy results in better conversations.</p>
 			<p>Use your bio to give people a glimpse of what it might be like to talk with you.</p>
 			<p>Draw from your experiences.</p>
 		"""
-	addTooltip 'step5',
+	addTooltip 'step3',
 		"""
 			<h5>Prompt</h5>
-			<p>High quality conversation occur when expectations align.</p>
+			<p>High quality conversations occur when expectations align.</p>
 			<p>Say exactly what you want to talk about so the right people can find you.</p>
 			<p>For example, If you want to talk about your idea for a new product, say so. It's good to be specific.</p>
 			<p>And don't think too hard. You can change your prompt whenever you want to talk about something else.</p>
 		"""
-	addTooltip 'step6',
+	addTooltip 'step4',
 		"""
 			<h5>Profile</h5>
 			<p>We find that people are more likely to respond when they can see where you're coming from.</p>
 			<p>At the very least we recommend you add an image of yourself.</p>
+		"""
+	addTooltip 'step5',
+		"""
+			<h5>Discover</h5>
+			<p>Paying it forward is often the best place to start.</p>
+			<p>Let's find someone (preferably a stranger) whom you can help.</p>
+		"""
+	addTooltip 'step6',
+		"""
+			<h5>Respond</h5>
+			<p>Positive Space is designed for focus.</p>
+			<p>Try to stay focused on this specific prompt.</p>
+			<p>You will earn more characters as the conversation progresses, so there is no need to say everything at once.</p>
+			<p>For now focus on addressing the prompt and adding value.</p>
 		"""
 	$scope.tooltips["step#{$scope.step}"]?.show = true
 
@@ -275,6 +277,7 @@ ps.controller "UsersStartCtrl", ["$scope", "$routeParams", "$timeout", "$locatio
 		$location.search({step: $scope.step})
 		$scope.completionPercentage = $scope.step / $scope.maxStep * 100.0
 		$scope.tooltips["step#{$scope.step}"]?.show = true
+		if $scope.step == 5 then $scope.setQuery($scope.app.currentUser.interests[0])
 		$(window).resize()
 		analytics.track "onboarding step #{$scope.step}",
 			userId: $scope.user.id
@@ -286,6 +289,7 @@ ps.controller "UsersStartCtrl", ["$scope", "$routeParams", "$timeout", "$locatio
 		$location.search({step: $scope.step})
 		$scope.completionPercentage = $scope.step / $scope.maxStep * 100.0
 		$scope.tooltips["step#{$scope.step}"]?.show = true
+		if $scope.step == 5 then $scope.setQuery($scope.app.currentUser.interests[0])
 		$(window).resize()
 		analytics.track "onboarding step #{$scope.step}",
 			userId: $scope.user.id
