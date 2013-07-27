@@ -3,7 +3,7 @@ object @user
 extends 'api/v1/users/base'
 
 attributes :body, :location, :personal_url, :created_at, :impressions_count, :state, :likers_count, :followers_count, :follows_count, :mentioners_count, :sent_conversations_count, :recieved_conversations_count
-attributes :achievements_list, :settings, :sign_in_count, :last_sign_in_at, :updated_at, :gender, :birthday, :locale, :timezone, :remaining_invitations_count, :if => lambda { |u| can?(:update, u) }
+attributes :settings, :sign_in_count, :last_sign_in_at, :updated_at, :gender, :birthday, :locale, :timezone, :remaining_invitations_count, :if => lambda { |u| can?(:update, u) }
 
 # TODO: remove this when there is a better/separate space editing UI
 node :prompt do |u|
@@ -32,6 +32,10 @@ end
 
 node :can_delete do |user|
 	can?(:destroy, user)
+end
+
+node :achievements_list, :if => lambda { |u| can?(:update, u) } do |user|
+	user.achievements.pluck(:name)
 end
 
 node :accessible_attributes, :if => lambda { |u| can?(:update, u) } do |user|

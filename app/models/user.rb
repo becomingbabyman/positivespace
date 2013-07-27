@@ -104,7 +104,6 @@ class User < ActiveRecord::Base
 	attr_accessible :bio, :location, :name, :personal_url, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :settings, :prompt, :skills, :interests #, :positive_response, :negative_response
 	attr_protected :none, as: :admin
 
-	serialize :achievements_list
 	serialize :settings
 
 	has_paper_trail
@@ -332,7 +331,7 @@ class User < ActiveRecord::Base
 	end
 
 	def has_achievement? achievement_name
-		self.achievements_list.include?(achievement_name.to_s) or self.achievements.where(name: achievement_name.to_s).any?
+		self.achievements.where(name: achievement_name.to_s).any?
 	end
 
 	def endorse_user= uid

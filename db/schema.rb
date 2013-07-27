@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130727174217) do
+ActiveRecord::Schema.define(:version => 20130727225354) do
 
   create_table "achievements", :force => true do |t|
     t.string   "name"
@@ -325,7 +325,6 @@ ActiveRecord::Schema.define(:version => 20130727174217) do
     t.string   "name"
     t.text     "body"
     t.string   "location"
-    t.text     "achievements_list",            :default => "--- []\n"
     t.string   "personal_url"
     t.text     "positive_response"
     t.text     "negative_response"
