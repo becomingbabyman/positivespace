@@ -111,8 +111,8 @@ private
 
 	def continue_conversation
 		unless self.conversation
-			c = Conversation.between(self.from_id, self.to_id).where(prompt: self.to.space.try(:prompt)).first
-			c ||= Conversation.new(from_id: self.from_id, to_id: self.to_id, prompt: self.to.space.try(:prompt))
+			c = Conversation.between(self.from_id, self.to_id).where(space_id: self.to.space.try(:id)).first
+			c ||= Conversation.new(from_id: self.from_id, to_id: self.to_id, prompt: self.to.space.try(:prompt), space: self.to.space)
 			self.conversation = c
 		end
 	end

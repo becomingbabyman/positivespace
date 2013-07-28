@@ -12,6 +12,7 @@ class Conversation < ActiveRecord::Base
 	belongs_to :from, :class_name => 'User', counter_cache: :sent_conversations_count
 	belongs_to :last_message, :class_name => 'Message'
 	belongs_to :last_message_from, :class_name => 'User'
+	belongs_to :space, counter_cache: :conversations_count
 	has_many :messages, :dependent => :destroy
 	has_many :magnetisms, :as => :attachable
 

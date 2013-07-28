@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130727225354) do
+ActiveRecord::Schema.define(:version => 20130728145131) do
 
   create_table "achievements", :force => true do |t|
     t.string   "name"
@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(:version => 20130727225354) do
     t.text     "last_message_body"
     t.text     "prompt"
     t.integer  "messages_count",       :default => 0, :null => false
+    t.integer  "space_id"
   end
 
   add_index "conversations", ["from_id"], :name => "index_conversations_on_from_id"
@@ -58,6 +59,7 @@ ActiveRecord::Schema.define(:version => 20130727225354) do
   add_index "conversations", ["last_message_id"], :name => "index_conversations_on_last_message_id"
   add_index "conversations", ["messages_count"], :name => "index_conversations_on_messages_count"
   add_index "conversations", ["prompt"], :name => "index_conversations_on_prompt"
+  add_index "conversations", ["space_id"], :name => "index_conversations_on_space_id"
   add_index "conversations", ["state"], :name => "index_conversations_on_state"
   add_index "conversations", ["to_id"], :name => "index_conversations_on_to_id"
 
@@ -269,10 +271,12 @@ ActiveRecord::Schema.define(:version => 20130727225354) do
     t.text     "state"
     t.text     "embed_url"
     t.text     "embed_data"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
+    t.integer  "conversations_count", :default => 0, :null => false
   end
 
+  add_index "spaces", ["conversations_count"], :name => "index_spaces_on_conversations_count"
   add_index "spaces", ["embed_url"], :name => "index_spaces_on_embed_url"
   add_index "spaces", ["prompt"], :name => "index_spaces_on_prompt"
   add_index "spaces", ["state"], :name => "index_spaces_on_state"
@@ -349,6 +353,7 @@ ActiveRecord::Schema.define(:version => 20130727225354) do
     t.integer  "recieved_conversations_count", :default => 0,          :null => false
     t.integer  "sent_messages_count",          :default => 0,          :null => false
     t.integer  "recieved_messages_count",      :default => 0,          :null => false
+    t.integer  "spaces_count",                 :default => 0,          :null => false
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true
@@ -371,6 +376,7 @@ ActiveRecord::Schema.define(:version => 20130727225354) do
   add_index "users", ["sent_conversations_count"], :name => "index_users_on_sent_conversations_count"
   add_index "users", ["sent_messages_count"], :name => "index_users_on_sent_messages_count"
   add_index "users", ["slug"], :name => "index_users_on_slug", :unique => true
+  add_index "users", ["spaces_count"], :name => "index_users_on_spaces_count"
   add_index "users", ["state"], :name => "index_users_on_state"
   add_index "users", ["unlock_token"], :name => "index_users_on_unlock_token", :unique => true
   add_index "users", ["username"], :name => "index_users_on_username", :unique => true

@@ -20,8 +20,8 @@ class Api::V1::UsersController < InheritedResources::Base
 	has_scope :followers, :only => :index do |controller, scope, value|
 		scope.followers(value.to_i)
 	end
-	has_scope :publishable, :only => :index, type: :boolean, default: true do |controller, scope, value|
-		scope.where("users.body IS NOT NULL")
+	has_scope :publishable, :only => :index, type: :boolean do |controller, scope, value|
+		scope.where("users.spaces_count > '0'")
 	end
 	has_scope :complete, :only => :index, type: :boolean do |controller, scope, value|
 		scope.where("users.body IS NOT NULL AND users.location IS NOT NULL AND users.personal_url IS NOT NULL")

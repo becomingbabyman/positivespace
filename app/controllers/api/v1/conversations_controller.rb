@@ -20,6 +20,9 @@ class Api::V1::ConversationsController < InheritedResources::Base
 	has_scope :state, :only => :index do |controller, scope, value|
 		scope.where(state: value)
 	end
+	has_scope :space, :only => :index do |controller, scope, value|
+		scope.where(space_id: value.to_i)
+	end
 	has_scope :turn_id, :only => :index do |controller, scope, value|
 		value == 'me' ? scope.turn(controller.current_user.id) : scope.turn(value.to_i)
 	end

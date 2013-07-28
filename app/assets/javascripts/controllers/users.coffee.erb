@@ -576,7 +576,7 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 					$scope.totalInitiations = metrics.initiations[0]
 		else
 			# Check for in_progress conversation
-			Conversation.query {user_id: currentUser.id, to: $scope.user.id, state: 'in_progress', order: 'created_at DESC'}, (conversations) ->
+			Conversation.query {user_id: currentUser.id, space: $scope.user.space.id, order: 'created_at DESC'}, (conversations) ->
 				$scope.conversation = conversations.collection[0]
 
 	$scope.$watch 'show.embedInput', (value) ->

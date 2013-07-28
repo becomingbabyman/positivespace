@@ -15,7 +15,8 @@ class Space < ActiveRecord::Base
 	serialize :embed_data
 
 	acts_as_likeable
-	belongs_to :user
+	belongs_to :user, counter_cache: :spaces_count
+	has_many :conversations
 
 	validates :prompt, presence: true, length: 1..250
 
