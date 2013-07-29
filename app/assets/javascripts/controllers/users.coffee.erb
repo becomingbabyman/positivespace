@@ -278,6 +278,12 @@ ps.controller "UsersStartCtrl", ["$scope", "$routeParams", "$timeout", "$locatio
 		$scope.completionPercentage = $scope.step / $scope.maxStep * 100.0
 		$scope.tooltips["step#{$scope.step}"]?.show = true
 		if $scope.step == 5 then $scope.setQuery($scope.app.currentUser.interests[0])
+		# TODO: UNHACK:
+		# Update the user to make sure it has the 'onboarded' achievement
+		if $scope.step == 7
+			$timeout ->
+				$scope.app.loadCurrentUser()
+			, 1000
 		$(window).resize()
 		analytics.track "onboarding step #{$scope.step}",
 			userId: $scope.user.id

@@ -147,7 +147,7 @@ class User < ActiveRecord::Base
 	scope :endorsed, where(state: 'endorsed')
 	scope :following, lambda{ |user_id| joins("INNER JOIN follows ON follows.followable_id = users.id AND follows.followable_type = 'User'").where("follows.follower_type = 'User' AND follows.follower_id = ?", user_id) }
 	scope :followers, lambda{ |user_id| joins(:follows).where("follows.followable_id = ? AND follows.followable_type = 'User' AND follows.follower_type = 'User'",user_id) }
-
+	scope :accepting_conversations_with, lambda{ |user_id| where{ id.not_in(User.joins(:recieved_conversations).where{ (recieved_conversations.from_id == user_id) }.select(:id)) } }
 
 	# Authenticate with email or username
 	def self.find_first_by_auth_conditions(warden_conditions)

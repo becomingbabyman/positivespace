@@ -20,6 +20,9 @@ class Api::V1::UsersController < InheritedResources::Base
 	has_scope :followers, :only => :index do |controller, scope, value|
 		scope.followers(value.to_i)
 	end
+	has_scope :accepting_conversations_with, :only => :index do |controller, scope, value|
+		scope.accepting_conversations_with(value.to_i)
+	end
 	has_scope :publishable, :only => :index, type: :boolean do |controller, scope, value|
 		scope.where("users.spaces_count > '0'")
 	end
