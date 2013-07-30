@@ -714,17 +714,17 @@ ps.controller "UsersSpaceCtrl", ["$scope", "$location", "User", "Message", ($sco
 		if $scope.app.loggedIn()
 			unless $scope.user.id == $scope.app.currentUser.id
 				$scope.user[has] = !$scope.user[has]
+				switch action
+					when 'follow'
+						$scope.user.followers_count += 1
+					when 'unfollow'
+						$scope.user.followers_count -= 1
 				User.update
 					id: $scope.app.currentUser.id
 					socialable_type: 'User'
 					socialable_id: $scope.user.id
 					socialable_action: action
 				, (user) ->
-					switch action
-						when 'follow'
-							$scope.user.followers_count += 1
-						when 'unfollow'
-							$scope.user.followers_count -= 1
 					analytics.track "#{action} space success",
 						href: window.location.href
 						userId: $scope.user.id
@@ -733,6 +733,11 @@ ps.controller "UsersSpaceCtrl", ["$scope", "$location", "User", "Message", ($sco
 						currentId: $scope.app.currentUser.id
 						currentName: $scope.app.currentUser.name
 				, (error) ->
+					switch action
+						when 'follow'
+							$scope.user.followers_count -= 1
+						when 'unfollow'
+							$scope.user.followers_count += 1
 					$scope.user[has] = !$scope.user[has]
 					$scope.app.flash 'error', error.data.errors
 					analytics.track "#{action} space error",
