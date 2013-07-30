@@ -965,6 +965,13 @@ input, textarea
             font-size: 22px
             margin-top: 10px
             // line-height: 34px
+    .bio
+        @include transition-property(max-height)
+        @include transition-duration(0.1s)
+        max-height: 0px
+        overflow: hidden
+        &.expanded
+            max-height: 400px
 
     .prompt
         position: relative
