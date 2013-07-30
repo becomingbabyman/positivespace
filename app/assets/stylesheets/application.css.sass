@@ -909,6 +909,17 @@ input, textarea
         max-height: 0px
         &.expanded
             max-height: 400px
+    .social-actions
+        .follow, .unfollow
+            .text
+                @include transition-property(max-width)
+                @include transition-duration(0.2s)
+                overflow: hidden
+                max-width: 0px
+                margin-top: 6px
+            &:hover
+                .text
+                    max-width: 100px
     .name
         @include transition-property(color, padding-left)
         @include transition-duration(0.1s)

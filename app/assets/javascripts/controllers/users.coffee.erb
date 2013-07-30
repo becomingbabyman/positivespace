@@ -720,6 +720,11 @@ ps.controller "UsersSpaceCtrl", ["$scope", "$location", "User", "Message", ($sco
 					socialable_id: $scope.user.id
 					socialable_action: action
 				, (user) ->
+					switch action
+						when 'follow'
+							$scope.user.followers_count += 1
+						when 'unfollow'
+							$scope.user.followers_count -= 1
 					analytics.track "#{action} space success",
 						href: window.location.href
 						userId: $scope.user.id

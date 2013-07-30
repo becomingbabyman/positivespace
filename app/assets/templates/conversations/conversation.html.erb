@@ -23,7 +23,8 @@
 				</div>
 				<div class="row-fluid">
 					<div class="span12 font12 faded">
-						{{conversation.to.name}} prompted:
+						<a href="/{{conversation.to.slug}}" class='faded'>{{conversation.to.name}}</a>
+						prompted:
 					</div>
 				</div>
 				<div class="row-fluid">
@@ -49,9 +50,9 @@
 										{{msg.created_at | date:'MMM d'}}
 									</time>
 								</small>
-								<a ng-href="/{{msg.from.slug}}" title='{{msg.from.name}}' class='unfancy-link'>
+								<a ng-href="/{{msg.from.slug}}" title='{{msg.from.name}}' class='faded'>
 									<img ng-src="{{msg.from.avatar.thumb_url}}" alt="{{msg.from.name}}" class="img-rounded img-border img-mini">
-									<small class='from-name faded'>{{msg.from.name}}</small>
+									<small class='from-name'>{{msg.from.name}}</small>
 								</a>
 							</div>
 						</div>
