@@ -18,24 +18,24 @@
 @import "bootstrap"
 @import "bootstrap-responsive"
 @media (max-width: 767px)
-    .row-fluid .mobile1
-        width: 31.491712707182323%
-        *width: 31.43852121782062%
+	.row-fluid .mobile1
+		width: 31.491712707182323%
+		*width: 31.43852121782062%
 
-    .row-fluid .mobile3
-        width: 65.74585635359117%
-        *width: 65.69266486422946%
+	.row-fluid .mobile3
+		width: 65.74585635359117%
+		*width: 65.69266486422946%
 
-    .row-fluid .mobile2
-        width: 48.61878453038674%
-        *width: 48.56559304102504%
+	.row-fluid .mobile2
+		width: 48.61878453038674%
+		*width: 48.56559304102504%
 
-    .row-fluid .mobile1,
-    .row-fluid .mobile2,
-    .row-fluid .mobile3
-        float: left
-        margin-left: 2.7624309392265194%
-        *margin-left: 2.709239449864817%
+	.row-fluid .mobile1,
+	.row-fluid .mobile2,
+	.row-fluid .mobile3
+		float: left
+		margin-left: 2.7624309392265194%
+		*margin-left: 2.709239449864817%
 
 // Dropzone
 // @import "dropzone.basic";
@@ -104,1235 +104,1246 @@
 @include sticky-footer(80px, "#wrapper", "#layout_footer", "#footer")
 
 html
-    // background-color: $color-background
+	// background-color: $color-background
 
 body
-    padding: 0
-    box-sizing: border-box
-    -moz-box-sizing: border-box
-    -webkit-box-sizing: border-box
-    color: $color-text
-    background-color: $color-background //#36124E //#2A044A
-    // background-image: image_url("noisy-texture-200x200-o12-d48-c-4F2958-t1.png")
-    // background: -webkit-radial-gradient(top,darken(#eee, 5%),darken(#eee, 0%))
-    @include sans
-    font-size: $base-font-size
-    line-height: $base-line-height
-    // letter-spacing: 0.1em
-    // padding-top: 41px
-    // @media (max-width: 979px)
-    //  padding-top: 0
-    // background: -webkit-linear-gradient(45deg, #020031 0%,#6d3353 100%)
-    @media (max-width: 767px)
-        #yielded
-            padding-right: 20px
-            padding-left: 20px
+	padding: 0
+	box-sizing: border-box
+	-moz-box-sizing: border-box
+	-webkit-box-sizing: border-box
+	color: $color-text
+	background-color: $color-background //#36124E //#2A044A
+	// background-image: image_url("noisy-texture-200x200-o12-d48-c-4F2958-t1.png")
+	// background: -webkit-radial-gradient(top,darken(#eee, 5%),darken(#eee, 0%))
+	@include sans
+	font-size: $base-font-size
+	line-height: $base-line-height
+	// letter-spacing: 0.1em
+	// padding-top: 41px
+	// @media (max-width: 979px)
+	//  padding-top: 0
+	// background: -webkit-linear-gradient(45deg, #020031 0%,#6d3353 100%)
+	@media (max-width: 767px)
+		#yielded
+			padding-right: 20px
+			padding-left: 20px
 
-    &.focus
-        @include gradient-sky
+	&.focus
+		@include gradient-sky
 
 a
-    &:hover
-        text-decoration: none
+	&:hover
+		text-decoration: none
 
-    &:active
-        position: relative
-        top: 1px
-        left: 1px
+	&:active
+		position: relative
+		top: 1px
+		left: 1px
 
 p
-    letter-spacing: 0.1em
-    line-height: 1.8em
+	letter-spacing: 0.1em
+	line-height: 1.8em
 
 .controls
-    input, select, textarea
-        // line-height: 1.8em
-        @include border-radius(2px)
-        min-height: 2em
-        box-shadow: none
-        padding: 8px
-        font-size: 16px
-        line-height: 28px
-        resize: none
-        @include box-shadow(none)
-        &:focus, &:invalid:focus
-            @include box-shadow(none)
-    input
-        line-height: 16px
-    textarea
-        padding-bottom: 22px
+	input, select, textarea
+		// line-height: 1.8em
+		@include border-radius(2px)
+		min-height: 2em
+		box-shadow: none
+		padding: 8px
+		font-size: 16px
+		line-height: 28px
+		resize: none
+		@include box-shadow(none)
+		&:focus, &:invalid:focus
+			@include box-shadow(none)
+	input
+		line-height: 16px
+	textarea
+		padding-bottom: 22px
 .control-group
-    &.success, &.error, &.warning
-        input, select, textarea
-            @include box-shadow(none)
-            &:focus
-                @include box-shadow(none)
+	&.success, &.error, &.warning
+		input, select, textarea
+			@include box-shadow(none)
+			&:focus
+				@include box-shadow(none)
 
 form
-    &>div
-        position: relative
+	&>div
+		position: relative
 
 input, textarea
-    &::-webkit-input-placeholder
-        color: #bbb
+	&::-webkit-input-placeholder
+		color: #bbb
 
-    &:-moz-placeholder
-        color: #bbb
+	&:-moz-placeholder
+		color: #bbb
 
-    &:focus::-webkit-input-placeholder
-        color: #ddd
+	&:focus::-webkit-input-placeholder
+		color: #ddd
 
-    &:focus:-moz-placeholder
-        color: #ddd
+	&:focus:-moz-placeholder
+		color: #ddd
 
 .btn
-    @include border-radius(2px)
+	@include border-radius(2px)
+
+@include keyframes(psPogressBar)
+	0%
+		background-position: 40px 0px
+	100%
+		background-position: 0px 0px
+.ps-progress-bar, .btn.ps-progress-bar
+	background-image: linear-gradient(45deg, rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)
+	background-size: 40px 40px
+	@include animation(psPogressBar 1s infinite linear)
+
 
 .navbar
-    // height: 60px
-    margin: 0
+	// height: 60px
+	margin: 0
 
-    .brand-dropdown
-        position: fixed
-        top: 5px
-        left: 15px
-        z-index: 9999
-        @include transition-property(visibility, opacity, height)
-        @include transition-delay(3.0s)
-        @include transition-duration(3.0s)
+	.brand-dropdown
+		position: fixed
+		top: 5px
+		left: 15px
+		z-index: 9999
+		@include transition-property(visibility, opacity, height)
+		@include transition-delay(3.0s)
+		@include transition-duration(3.0s)
 
-        @mixin brand-dropdown-hover-and-open
-            .brand
-                // .colored
-                //     opacity: 0
-                //     visibility: hidden
-                // .inset
-                //     // @include transition-duration(1s)
-                //     opacity: 1
-                //     visibility: visible
-                .icon-home
-                    color: #ccc
-                &:before
-                    @include transition-delay(0.1s)
-                    @include transition-duration(0.7s)
-                    opacity: 1
-                    visibility: visible
-                &:after
-                    @include transition-delay(0.7s)
-                    @include transition-duration(0.7s)
-                    opacity: 1
-                    visibility: visible
-            .brand-dropdown-menu
-                @include transition-delay(0s)
-                @include transition-duration(0.4s)
-                opacity: 1
-                visibility: visible
-                // display: block
-                a
-                    @include transition-delay(0s)
-                    @include transition-duration(0.4s)
-                    height: 40px
+		@mixin brand-dropdown-hover-and-open
+			.brand
+				// .colored
+				//     opacity: 0
+				//     visibility: hidden
+				// .inset
+				//     // @include transition-duration(1s)
+				//     opacity: 1
+				//     visibility: visible
+				.icon-home
+					color: #ccc
+				&:before
+					@include transition-delay(0.1s)
+					@include transition-duration(0.7s)
+					opacity: 1
+					visibility: visible
+				&:after
+					@include transition-delay(0.7s)
+					@include transition-duration(0.7s)
+					opacity: 1
+					visibility: visible
+			.brand-dropdown-menu
+				@include transition-delay(0s)
+				@include transition-duration(0.4s)
+				opacity: 1
+				visibility: visible
+				// display: block
+				a
+					@include transition-delay(0s)
+					@include transition-duration(0.4s)
+					height: 40px
 
-        &:hover, &.open
-            @include brand-dropdown-hover-and-open
-        @media (max-width: 767px)
-            position: absolute
-            &:hover
-                .brand-dropdown-menu
-                    opacity: 0
-                    visibility: hidden
-                    a
-                        height: 0px
-            &:hover.open
-                @include brand-dropdown-hover-and-open
-        .brand
-            position: relative
-            width: 138px
-            height: 64px
-            img
-                width: 100px
-                height: 64px
-            i
-                position: absolute
-                left: 80px
-                top: 30px
-                font-size: 30px
-                color: #e3e3e3
-                @include transition-property(color)
-                @include transition-duration(0.4s)
-                @include transition-delay(0s)
-            .inset
-                opacity: 0
-                visibility: hidden
-            @media (max-width: 767px)
-                width: 50px
-                height: 32px
-                img
-                    width: 50px
-                    height: 32px
-                i
-                    left: 50px
-                    top: 20px
-                    font-size: 16px
-                // &:after
-                //     font-size: 10px
-                //     left: 45px
-                //     bottom: 16px
-            @media (max-width: 979px)
-                padding-left: 20px
-                padding-right: 20px
-                margin: 0 0 0 -20px
-            img
-                @include transition-property(visibility, opacity)
-                @include transition-duration(0.4s)
-                @include transition-delay(0s)
-                position: absolute
-            &:before, &:after
-                opacity: 0
-                visibility: hidden
-                pointer-events: none
-                position: absolute
-                width: 230px
-                z-index: 9999
-                background: white
-            &:before
-                @include transition-delay(0.7s)
-                @include transition-duration(0.7s)
-                color: #ccc
-                content: "Positive Space"
-                letter-spacing: 0.1em
-                height: 40px
-                line-height: 40px
-                bottom: -40px
-            &:after
-                @include transition-delay(0.1s)
-                @include transition-duration(0.7s)
-                color: #bbb
-                font-size: 13px
-                content: "beta"
-                letter-spacing: 0.1em
-                height: 20px
-                line-height: 20px
-                left: 193px
-                bottom: -26px
-                width: 30px
-            &.logged-in
-                &:before, &:after
-                    content: ""
-                    height: 0
-                    width: 0
+		&:hover, &.open
+			@include brand-dropdown-hover-and-open
+		@media (max-width: 767px)
+			position: absolute
+			&:hover
+				.brand-dropdown-menu
+					opacity: 0
+					visibility: hidden
+					a
+						height: 0px
+			&:hover.open
+				@include brand-dropdown-hover-and-open
+		.brand
+			position: relative
+			width: 138px
+			height: 64px
+			img
+				width: 100px
+				height: 64px
+			i
+				position: absolute
+				left: 80px
+				top: 30px
+				font-size: 30px
+				color: #e3e3e3
+				@include transition-property(color)
+				@include transition-duration(0.4s)
+				@include transition-delay(0s)
+			.inset
+				opacity: 0
+				visibility: hidden
+			@media (max-width: 767px)
+				width: 50px
+				height: 32px
+				img
+					width: 50px
+					height: 32px
+				i
+					left: 50px
+					top: 20px
+					font-size: 16px
+				// &:after
+				//     font-size: 10px
+				//     left: 45px
+				//     bottom: 16px
+			@media (max-width: 979px)
+				padding-left: 20px
+				padding-right: 20px
+				margin: 0 0 0 -20px
+			img
+				@include transition-property(visibility, opacity)
+				@include transition-duration(0.4s)
+				@include transition-delay(0s)
+				position: absolute
+			&:before, &:after
+				opacity: 0
+				visibility: hidden
+				pointer-events: none
+				position: absolute
+				width: 230px
+				z-index: 9999
+				background: white
+			&:before
+				@include transition-delay(0.7s)
+				@include transition-duration(0.7s)
+				color: #ccc
+				content: "Positive Space"
+				letter-spacing: 0.1em
+				height: 40px
+				line-height: 40px
+				bottom: -40px
+			&:after
+				@include transition-delay(0.1s)
+				@include transition-duration(0.7s)
+				color: #bbb
+				font-size: 13px
+				content: "beta"
+				letter-spacing: 0.1em
+				height: 20px
+				line-height: 20px
+				left: 193px
+				bottom: -26px
+				width: 30px
+			&.logged-in
+				&:before, &:after
+					content: ""
+					height: 0
+					width: 0
 
-        .brand-dropdown-menu
-            @include transition-property(visibility, opacity)
-            @include transition-duration(0.4s)
-            @include transition-delay(0.1s)
-            visibility: hidden
-            // display: none
-            opacity: 0
-            position: absolute
-            top: 83px
-            left: 0px
-            width: 120px
-            padding: 7px 30px 40px 0px
-            background: #fff
-            z-index: 9998
-            @media (max-width: 767px)
-                top: 52px
-                background-color: white
-                padding: 5px 10px 20px 0px
-                @include border-radius(3px)
-            // @media (max-width: 979px)
-            a
-                @include transition-property(height)
-                @include transition-duration(0.4s)
-                @include transition-delay(0.1s)
-                // font-size: 18px
-                position: relative
-                display: block
-                width: 100%
-                height: 0px
-                background: #eee
-                margin: 0 auto
-                margin-top: 5px
-                @include border-radius(3px)
-                text-align: center
-                line-height: 38px
-                &:hover
-                    background: #ddd
-                &.profile, &.inbox
-                    display: none
-                    &.ui-scrollfix
-                        @media (min-width: 767px)
-                            display: block
-                img
-                    height: 90%
-                    margin-top: -1px
-                i
-                    font-size: 30px
-                    padding-top: 4px
-                    display: block
-                    // color: $color-blue
-                .count
-                    position: absolute
-                    right: 36px
-                    bottom: 24px
-                    background-color: $danger
-                    color: #fff
-                    padding: 1px 2px
-                    min-width: 12px
-                    max-width: 26px
-                    height: 16px
-                    text-align: center
-                    font-size: 12px
-                    line-height: 15px
-                    @include border-radius(2px)
+		.brand-dropdown-menu
+			@include transition-property(visibility, opacity)
+			@include transition-duration(0.4s)
+			@include transition-delay(0.1s)
+			visibility: hidden
+			// display: none
+			opacity: 0
+			position: absolute
+			top: 83px
+			left: 0px
+			width: 120px
+			padding: 7px 30px 40px 0px
+			background: #fff
+			z-index: 9998
+			@media (max-width: 767px)
+				top: 52px
+				background-color: white
+				padding: 5px 10px 20px 0px
+				@include border-radius(3px)
+			// @media (max-width: 979px)
+			a
+				@include transition-property(height)
+				@include transition-duration(0.4s)
+				@include transition-delay(0.1s)
+				// font-size: 18px
+				position: relative
+				display: block
+				width: 100%
+				height: 0px
+				background: #eee
+				margin: 0 auto
+				margin-top: 5px
+				@include border-radius(3px)
+				text-align: center
+				line-height: 38px
+				&:hover
+					background: #ddd
+				&.profile, &.inbox
+					display: none
+					&.ui-scrollfix
+						@media (min-width: 767px)
+							display: block
+				img
+					height: 90%
+					margin-top: -1px
+				i
+					font-size: 30px
+					padding-top: 4px
+					display: block
+					// color: $color-blue
+				.count
+					position: absolute
+					right: 36px
+					bottom: 24px
+					background-color: $danger
+					color: #fff
+					padding: 1px 2px
+					min-width: 12px
+					max-width: 26px
+					height: 16px
+					text-align: center
+					font-size: 12px
+					line-height: 15px
+					@include border-radius(2px)
 
-    .nav
-        li.dropdown.open > .dropdown-toggle
-            background-color: white
+	.nav
+		li.dropdown.open > .dropdown-toggle
+			background-color: white
 
-        >li >a
-            font-size: 20px
-            position: relative
-            color: $color-blue
-            &:hover
-                color: darken($color-blue, 5%)
-            .avatar
-                width: 30px
-                height: 30px
-                margin-top: -6px
-            .count
-                position: absolute
-                right: 6px
-                bottom: 23px
-                background-color: $danger
-                color: #fff
-                padding: 1px 2px
-                min-width: 10px
-                max-width: 26px
-                height: 14px
-                text-align: center
-                font-size: 10px
-                line-height: 13px
-                @include border-radius(2px)
-        >li
-            &.open >a
-                color: darken($color-blue, 5%)
-        // >li.brand-dropdown-toggle >a
-        //     // position: fixed
+		>li >a
+			font-size: 20px
+			position: relative
+			color: $color-blue
+			&:hover
+				color: darken($color-blue, 5%)
+			.avatar
+				width: 30px
+				height: 30px
+				margin-top: -6px
+			.count
+				position: absolute
+				right: 6px
+				bottom: 23px
+				background-color: $danger
+				color: #fff
+				padding: 1px 2px
+				min-width: 10px
+				max-width: 26px
+				height: 14px
+				text-align: center
+				font-size: 10px
+				line-height: 13px
+				@include border-radius(2px)
+		>li
+			&.open >a
+				color: darken($color-blue, 5%)
+		// >li.brand-dropdown-toggle >a
+		//     // position: fixed
 
-        .dropdown-menu
-            @include border-radius(3px)
-            @include box-shadow(0 2px 10px rgba(0, 0, 0, 0.15))
-            padding: 0
-            border: 1px solid #ddd
-            a
-                padding: 9px 20px
-            .divider
-                margin: 0 1px
-        .dropdown-menu .active > a, .dropdown-menu .active > a:hover
-            // background: #ddd
+		.dropdown-menu
+			@include border-radius(3px)
+			@include box-shadow(0 2px 10px rgba(0, 0, 0, 0.15))
+			padding: 0
+			border: 1px solid #ddd
+			a
+				padding: 9px 20px
+			.divider
+				margin: 0 1px
+		.dropdown-menu .active > a, .dropdown-menu .active > a:hover
+			// background: #ddd
 
-    .center
-        margin: 0px auto
-        float: none
-        display: table
+	.center
+		margin: 0px auto
+		float: none
+		display: table
 
 
 .ps-search
-    margin: 0
-    position: relative
-    z-index: 9999
-    &.visible-phone
-        margin-top: 51px
-    label i
-        position: absolute
-        top: 6px
-        left: -20px
-        font-size: 16px
-        color: #999
-    .loading
-        position: absolute
-        right: 10px
-        top: 18px
-    .dropdown-menu
-        @include border-radius(3px)
-        @include box-shadow(0 2px 10px rgba(0, 0, 0, 0.15))
-        padding: 0
-        border: 1px solid #ddd
-        a
-            padding: 9px 20px
-        .divider
-            margin: 0 1px
-    .dropdown-menu .active > a, .dropdown-menu .active > a:hover
-        // background: #ddd
-    .typeahead.dropdown-menu
-        // overflow: auto
-        // max-height: 600px
-        max-width: 100%
-        margin-top: 11px
-        margin-bottom: 20px
-        &:after, &:before
-            top: -22px
-            border: solid transparent
-            content: " "
-            height: 0
-            width: 0
-            position: absolute
-            pointer-events: none
-        // &:after
-        //  border-color: rgba(255, 255, 255, 0)
-        //  border-bottom-color: #ffffff
-        //  border-width: 10px
-        //  left: 21px
-        //  margin-left: -11px
-        //  margin-top: 3px
-        &:before
-            border-color: rgba(221, 221, 221, 0)
-            border-bottom-color: #dddddd
-            border-width: 11px
-            left: 20px
-            margin-left: -11px
-        li
-            a
-                white-space: normal
-            &.active:first-child
-                a:after
-                    top: -22px
-                    border: solid transparent
-                    content: " "
-                    height: 0
-                    width: 0
-                    position: absolute
-                    pointer-events: none
-                    border-color: rgba(0, 136, 204, 0)
-                    border-bottom-color: #0088cc
-                    border-width: 10px
-                    left: 21px
-                    margin-left: -11px
-                    margin-top: 3px
+	margin: 0
+	position: relative
+	z-index: 9999
+	&.visible-phone
+		margin-top: 51px
+	label i
+		position: absolute
+		top: 6px
+		left: -20px
+		font-size: 16px
+		color: #999
+	.loading
+		position: absolute
+		right: 10px
+		top: 18px
+	.dropdown-menu
+		@include border-radius(3px)
+		@include box-shadow(0 2px 10px rgba(0, 0, 0, 0.15))
+		padding: 0
+		border: 1px solid #ddd
+		a
+			padding: 9px 20px
+		.divider
+			margin: 0 1px
+	.dropdown-menu .active > a, .dropdown-menu .active > a:hover
+		// background: #ddd
+	.typeahead.dropdown-menu
+		// overflow: auto
+		// max-height: 600px
+		max-width: 100%
+		margin-top: 11px
+		margin-bottom: 20px
+		&:after, &:before
+			top: -22px
+			border: solid transparent
+			content: " "
+			height: 0
+			width: 0
+			position: absolute
+			pointer-events: none
+		// &:after
+		//  border-color: rgba(255, 255, 255, 0)
+		//  border-bottom-color: #ffffff
+		//  border-width: 10px
+		//  left: 21px
+		//  margin-left: -11px
+		//  margin-top: 3px
+		&:before
+			border-color: rgba(221, 221, 221, 0)
+			border-bottom-color: #dddddd
+			border-width: 11px
+			left: 20px
+			margin-left: -11px
+		li
+			a
+				white-space: normal
+			&.active:first-child
+				a:after
+					top: -22px
+					border: solid transparent
+					content: " "
+					height: 0
+					width: 0
+					position: absolute
+					pointer-events: none
+					border-color: rgba(0, 136, 204, 0)
+					border-bottom-color: #0088cc
+					border-width: 10px
+					left: 21px
+					margin-left: -11px
+					margin-top: 3px
 
-        .z1
-            white-space: normal
-            cursor: pointer
-        .z2
-            padding-bottom: 5px
-        .z3
-            float: left
-            margin-right: 10px
-        .z3z
-            font-size: 17px
-            // color: #666
-        .z3z3
-            font-size: 13px
-            color: #ccc
-        .z4
-            @extend .img-circle
-            @extend .img-border
-            @extend .img-mini
-        .z4z4
-            font-size: 13px
-            line-height: 17px
-            color: #ccc
-            padding-bottom: 4px
-        .z5
-            font-size: 14px
-        .z6
-            float: right
-            color: #ccc
-            padding-left: 10px
-            font-size: 12px
-        .z7
-            color: #ddd
-            font-size: 12px
+		.z1
+			white-space: normal
+			cursor: pointer
+		.z2
+			padding-bottom: 5px
+		.z3
+			float: left
+			margin-right: 10px
+		.z3z
+			font-size: 17px
+			// color: #666
+		.z3z3
+			font-size: 13px
+			color: #ccc
+		.z4
+			@extend .img-circle
+			@extend .img-border
+			@extend .img-mini
+		.z4z4
+			font-size: 13px
+			line-height: 17px
+			color: #ccc
+			padding-bottom: 4px
+		.z5
+			font-size: 14px
+		.z6
+			float: right
+			color: #ccc
+			padding-left: 10px
+			font-size: 12px
+		.z7
+			color: #ddd
+			font-size: 12px
 
 
 .navbar-inner
-    padding-top: 10px
-    @include background(none)
-    @include box-shadow(none)
-    border: none
-    @include border-radius(0)
-    // @include background(image_url("noisy-texture-200x200-o7-d26-c-4F2958-t1.png"), linear-gradient(top, lighten($color-background, 5%), $color-background))
-    // border-bottom: 1px solid darken($color-background, 10%)
-    // @include box-shadow(rgba(0, 0, 0, 0.075) 0 2px 0)
-    @media (max-width: 767px)
-        margin: 0 -20px
+	padding-top: 10px
+	@include background(none)
+	@include box-shadow(none)
+	border: none
+	@include border-radius(0)
+	// @include background(image_url("noisy-texture-200x200-o7-d26-c-4F2958-t1.png"), linear-gradient(top, lighten($color-background, 5%), $color-background))
+	// border-bottom: 1px solid darken($color-background, 10%)
+	// @include box-shadow(rgba(0, 0, 0, 0.075) 0 2px 0)
+	@media (max-width: 767px)
+		margin: 0 -20px
 
-        >.container.primary-nav
-            position: absolute
-            height: 46px
-            width: 100%
-            left: 0
-            background: white
-            z-index: 99
-            top: 0
-            padding-top: 10px
-            border-bottom: 1px solid #f3f3f3
+		>.container.primary-nav
+			position: absolute
+			height: 46px
+			width: 100%
+			left: 0
+			background: white
+			z-index: 99
+			top: 0
+			padding-top: 10px
+			border-bottom: 1px solid #f3f3f3
 
 
 #footer
-    .container-fluid
-        padding-left: 20px
-        padding-right: 20px
-        padding-top: 30px
-        @media (min-width: 520px)
-            padding-top: 45px
-    .watermark
-        position: fixed
-        bottom: 0
-        right: 20px
-        // width: 111px
-        padding: 5px 10px 10px
-        border-left: 1px solid #eee
-        border-top: 1px solid #eee
-        border-right: 1px solid #eee
-        @include border-top-radius(3px)
-        color: #aaa
-        &:hover
-            color: #888
-        &:active
-            bottom: -1px
-            right: 19px
-            left: auto
-            top: auto
-        @media (max-width: 767px)
-            right: 0
-            &:active
-                right: -1px
-        .powered-by
-            float: right
-            font-size: 14px
-        .positive-space
-            float: right
-            font-size: 18px
-        .learn-more
-            float: right
-            font-size: 12px
-            color: #ccc
+	.container-fluid
+		padding-left: 20px
+		padding-right: 20px
+		padding-top: 30px
+		@media (min-width: 520px)
+			padding-top: 45px
+	.watermark
+		position: fixed
+		bottom: 0
+		right: 20px
+		// width: 111px
+		padding: 5px 10px 10px
+		border-left: 1px solid #eee
+		border-top: 1px solid #eee
+		border-right: 1px solid #eee
+		@include border-top-radius(3px)
+		color: #aaa
+		&:hover
+			color: #888
+		&:active
+			bottom: -1px
+			right: 19px
+			left: auto
+			top: auto
+		@media (max-width: 767px)
+			right: 0
+			&:active
+				right: -1px
+		.powered-by
+			float: right
+			font-size: 14px
+		.positive-space
+			float: right
+			font-size: 18px
+		.learn-more
+			float: right
+			font-size: 12px
+			color: #ccc
 
 
 .help-block
-    font-size: 14px
-    font-family: sans-serif
-    color: #aaa
+	font-size: 14px
+	font-family: sans-serif
+	color: #aaa
 
 .well
-    background-color: #fcfcfc
+	background-color: #fcfcfc
 
 
 //////////////////////////////////////////////////////
 /**                  loading style                 **/
 //////////////////////////////////////////////////////
 #loading
-    &>div
-        @include transition-property(visibility, opacity)
-        @include transition-duration(0.2s)
-        @include transition-delay(0s)
-        visibility: hidden
-        opacity: 0
-        position: fixed
-        z-index: 1000
-        pointer-events: none
-        width: 100px
-        padding: 5px
-        margin: 0 auto
-        text-align: center
-        left: 0
-        right: 0
-        top: 5px
-        &.visible
-            @include transition-property(visibility, opacity)
-            @include transition-duration(0.4s)
-            @include transition-delay(0.1s)
-            visibility: visible
-            opacity: 1
+	&>div
+		@include transition-property(visibility, opacity)
+		@include transition-duration(0.2s)
+		@include transition-delay(0s)
+		visibility: hidden
+		opacity: 0
+		position: fixed
+		z-index: 1000
+		pointer-events: none
+		width: 100px
+		padding: 5px
+		margin: 0 auto
+		text-align: center
+		left: 0
+		right: 0
+		top: 5px
+		&.visible
+			@include transition-property(visibility, opacity)
+			@include transition-duration(0.4s)
+			@include transition-delay(0.1s)
+			visibility: visible
+			opacity: 1
 
 
 //////////////////////////////////////////////////////
 /**                   help style                   **/
 //////////////////////////////////////////////////////
 #help
-    .help-msg
-        min-height: 54px
-        font-size: 20px
-        line-height: 54px
-        border-top: 1px solid darken($color-blue, 10%)
-        border-bottom: 1px solid darken($color-blue, 10%)
-        background: $color-blue
-        color: white
+	.help-msg
+		min-height: 54px
+		font-size: 20px
+		line-height: 54px
+		border-top: 1px solid darken($color-blue, 10%)
+		border-bottom: 1px solid darken($color-blue, 10%)
+		background: $color-blue
+		color: white
 
 
 //////////////////////////////////////////////////////
 /**                 progress style                 **/
 //////////////////////////////////////////////////////
 #progress
-    height: 3px
-    width: 1%
-    position: fixed
-    top: 0
-    left: -6px
-    z-index: 2500
-    background: $color-blue
-    @include border-radius(1px)
-    @include transition(width 400ms ease-out,opacity 400ms linear)
-    dd, dt
-        position: absolute
-        top: 0
-        height: 3px
-    //     @include box-shadow(lighten($color-blue, 20%) 1px 0 6px 1px)
-    // dt
-    //     opacity: .6
-    //     width: 180px
-    //     right: -80px
-    //     clip: rect(-6px,90px,14px,-6px)
+	height: 3px
+	width: 1%
+	position: fixed
+	top: 0
+	left: -6px
+	z-index: 2500
+	background: $color-blue
+	@include border-radius(1px)
+	@include transition(width 400ms ease-out,opacity 400ms linear)
+	dd, dt
+		position: absolute
+		top: 0
+		height: 3px
+	//     @include box-shadow(lighten($color-blue, 20%) 1px 0 6px 1px)
+	// dt
+	//     opacity: .6
+	//     width: 180px
+	//     right: -80px
+	//     clip: rect(-6px,90px,14px,-6px)
 
-    // dd
-    //     opacity: .6
-    //     width: 20px
-    //     right: 0
-    //     clip: rect(-6px,22px,14px,10px)
+	// dd
+	//     opacity: .6
+	//     width: 20px
+	//     right: 0
+	//     clip: rect(-6px,22px,14px,10px)
 
 
 //////////////////////////////////////////////////////
 /**                   flash style                  **/
 //////////////////////////////////////////////////////
 #flash
-    position: relative
-    height: 0
-    .container
-        position: fixed
-        top: 50px
-        right: 30px
-        margin-left: 30px
-        z-index: 9999
-        pointer-events: none
-        .alert
-            margin-bottom: 5px
-            border-radius: 2px
-            pointer-events: all
+	position: relative
+	height: 0
+	.container
+		position: fixed
+		top: 50px
+		right: 30px
+		margin-left: 30px
+		z-index: 9999
+		pointer-events: none
+		.alert
+			margin-bottom: 5px
+			border-radius: 2px
+			pointer-events: all
 
 
 //////////////////////////////////////////////////////
 /**               control-group style              **/
 //////////////////////////////////////////////////////
 .form-inline
-    .control-group
-        display: inline-block
+	.control-group
+		display: inline-block
 
 .control-group
-    input, textarea, select
-        &:focus:invalid:focus
-            border-color: rgba(82, 168, 236, 0.8)
-            color: #555
-    &.error
-        input, textarea, select
-            &:focus
-                border-color: rgba(82, 168, 236, 0.8)
-                color: #555
-                // @include box-shadow(0 0 6px #f8b9b7)
-    &.success
-        input, textarea, select
-            border-color: #ccc
-            color: #555
-            &:focus
-                border-color: rgba(82, 168, 236, 0.8)
-                color: #555
+	input, textarea, select
+		&:focus:invalid:focus
+			border-color: rgba(82, 168, 236, 0.8)
+			color: #555
+	&.error
+		input, textarea, select
+			&:focus
+				border-color: rgba(82, 168, 236, 0.8)
+				color: #555
+				// @include box-shadow(0 0 6px #f8b9b7)
+	&.success
+		input, textarea, select
+			border-color: #ccc
+			color: #555
+			&:focus
+				border-color: rgba(82, 168, 236, 0.8)
+				color: #555
 
-    .controls
-        position: relative
-        .input-wrap
-            position: relative
-        input
-            margin: 0
-        .remaining-char-count
-            position: absolute
-            right: 12px
-            bottom: 5px
-        .error-message
-            pointer-events: none
-            position: absolute
-            min-width: 160px
-            width: 100%
-            height: 100px
-            top: -100px
-            left: 0px
-            .inner
-                visibility: hidden
-                opacity: 0
-                @include transition-property(visibility, opacity)
-                @include transition-duration(0.4s)
-                position: absolute
-                bottom: 9px
-                left: 0px
-                z-index: 100
-                font-size: 12px
-                color: white
-                padding: 1px 8px
-                background: lighten($color-negative, 5%)
-                @include background-image(linear-gradient(lighten($color-negative, 5%), $color-negative))
-                @include border-radius(3px)
-                @include box-shadow(rgba(#fff, 0.3) 0 1px 0 0 inset)
-                border: 1px solid $color-negative
-                @include text-shadow(rgba(#000, 0.3) 1px 1px 0)
-                &:after, &:before
-                    top: 100%
-                    border: solid transparent
-                    content: " "
-                    height: 0
-                    width: 0
-                    position: absolute
-                    pointer-events: none
-                &:after
-                    border-color: rgba(240, 78, 60, 0)
-                    border-top-color: $color-negative
-                    border-width: 7px
-                    left: 13px
-                    margin-left: -7px
-                &:before
-                    border-color: rgba(237, 46, 56, 0)
-                    border-top-color: darken($color-negative, 3%)
-                    border-width: 8px
-                    left: 13px
-                    margin-left: -8px
-    &.checkbox, &.radio
-        .error-message
-            left: -8px
-    &:hover, &.focused
-        @include transition-delay(0.4s)
-        .controls
-            .error-message
-                .inner
-                    visibility: visible
-                    opacity: 1
+	.controls
+		position: relative
+		.input-wrap
+			position: relative
+		input
+			margin: 0
+		.remaining-char-count
+			position: absolute
+			right: 12px
+			bottom: 5px
+		.error-message
+			pointer-events: none
+			position: absolute
+			min-width: 160px
+			width: 100%
+			height: 100px
+			top: -100px
+			left: 0px
+			.inner
+				visibility: hidden
+				opacity: 0
+				@include transition-property(visibility, opacity)
+				@include transition-duration(0.4s)
+				position: absolute
+				bottom: 9px
+				left: 0px
+				z-index: 100
+				font-size: 12px
+				color: white
+				padding: 1px 8px
+				background: lighten($color-negative, 5%)
+				@include background-image(linear-gradient(lighten($color-negative, 5%), $color-negative))
+				@include border-radius(3px)
+				@include box-shadow(rgba(#fff, 0.3) 0 1px 0 0 inset)
+				border: 1px solid $color-negative
+				@include text-shadow(rgba(#000, 0.3) 1px 1px 0)
+				&:after, &:before
+					top: 100%
+					border: solid transparent
+					content: " "
+					height: 0
+					width: 0
+					position: absolute
+					pointer-events: none
+				&:after
+					border-color: rgba(240, 78, 60, 0)
+					border-top-color: $color-negative
+					border-width: 7px
+					left: 13px
+					margin-left: -7px
+				&:before
+					border-color: rgba(237, 46, 56, 0)
+					border-top-color: darken($color-negative, 3%)
+					border-width: 8px
+					left: 13px
+					margin-left: -8px
+	&.checkbox, &.radio
+		.error-message
+			left: -8px
+	&:hover, &.focused
+		@include transition-delay(0.4s)
+		.controls
+			.error-message
+				.inner
+					visibility: visible
+					opacity: 1
 
 
 //////////////////////////////////////////////////////
 /**               on off switch style              **/
 //////////////////////////////////////////////////////
 .onoffswitch
-    position: relative
-    width: 84px
-    -webkit-user-select:none
-    -moz-user-select:none
-    -ms-user-select: none
+	position: relative
+	width: 84px
+	-webkit-user-select:none
+	-moz-user-select:none
+	-ms-user-select: none
 
 .onoffswitch-checkbox
-    display: none
+	display: none
 
 .onoffswitch-label
-    display: block
-    overflow: hidden
-    cursor: pointer
-    border: 1px solid #CCCCCC
-    border-radius: 30px
+	display: block
+	overflow: hidden
+	cursor: pointer
+	border: 1px solid #CCCCCC
+	border-radius: 30px
 
 .onoffswitch-inner
-    width: 200%
-    margin-left: -100%
-    -moz-transition: margin 0.05s// ease-in 0s
-    -webkit-transition: margin 0.05s// ease-in 0s
-    -o-transition: margin 0.05s// ease-in 0s
-    transition: margin 0.05s// ease-in 0s
+	width: 200%
+	margin-left: -100%
+	-moz-transition: margin 0.05s// ease-in 0s
+	-webkit-transition: margin 0.05s// ease-in 0s
+	-o-transition: margin 0.05s// ease-in 0s
+	transition: margin 0.05s// ease-in 0s
 
 .onoffswitch-inner:before, .onoffswitch-inner:after
-    float: left
-    width: 50%
-    height: 26px
-    padding: 0
-    line-height: 26px
-    font-size: 14px
-    color: white
-    font-family: Trebuchet, Arial, sans-serif
-    font-weight: bold
-    -moz-box-sizing: border-box
-    -webkit-box-sizing: border-box
-    box-sizing: border-box
+	float: left
+	width: 50%
+	height: 26px
+	padding: 0
+	line-height: 26px
+	font-size: 14px
+	color: white
+	font-family: Trebuchet, Arial, sans-serif
+	font-weight: bold
+	-moz-box-sizing: border-box
+	-webkit-box-sizing: border-box
+	box-sizing: border-box
 
 .onoffswitch-inner:before
-    content: "ON"
-    padding-left: 10px
-    background-color: #00C0FF
-    color: #FFFFFF
+	content: "ON"
+	padding-left: 10px
+	background-color: #00C0FF
+	color: #FFFFFF
 
 .onoffswitch-inner:after
-    content: "OFF"
-    padding-right: 10px
-    background-color: #EEEEEE
-    color: #999999
-    text-align: right
+	content: "OFF"
+	padding-right: 10px
+	background-color: #EEEEEE
+	color: #999999
+	text-align: right
 
 .onoffswitch-switch
-    width: 30px
-    margin: -2px
-    background: #FFFFFF
-    border: 1px solid #CCCCCC
-    border-radius: 30px
-    position: absolute
-    top: 0
-    bottom: 0
-    right: 54px
-    -moz-transition: all 0.05s// ease-in 0s
-    -webkit-transition: all 0.05s// ease-in 0s
-    -o-transition: all 0.05s// ease-in 0s
-    transition: all 0.05s// ease-in 0s
+	width: 30px
+	margin: -2px
+	background: #FFFFFF
+	border: 1px solid #CCCCCC
+	border-radius: 30px
+	position: absolute
+	top: 0
+	bottom: 0
+	right: 54px
+	-moz-transition: all 0.05s// ease-in 0s
+	-webkit-transition: all 0.05s// ease-in 0s
+	-o-transition: all 0.05s// ease-in 0s
+	transition: all 0.05s// ease-in 0s
 
 .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner
-    margin-left: 0
+	margin-left: 0
 
 .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch
-    right: 0px
+	right: 0px
 
 
 //////////////////////////////////////////////////////
 /**                  misc bootstrap                **/
 //////////////////////////////////////////////////////
 .accordion-group
-    border: none
-    .accordion-toggle
-        padding-left: 0
-        padding-right: 0
-    .accordion-inner
-        border: none
-        // border-bottom: 1px solid #eee
+	border: none
+	.accordion-toggle
+		padding-left: 0
+		padding-right: 0
+	.accordion-inner
+		border: none
+		// border-bottom: 1px solid #eee
 
 
 //////////////////////////////////////////////////////
 /**                   space style                  **/
 //////////////////////////////////////////////////////
 .space
-    .expanded-share
-        @include box-sizing(border-box)
-        @include transition-property(max-height, padding, border)
-        @include transition-duration(0.1s)
-        overflow: hidden
-        max-height: 0px
-        &.expanded
-            max-height: 400px
-    .social-actions
-        .follow, .unfollow
-            .text
-                @include transition-property(max-width)
-                @include transition-duration(0.1s)
-                overflow: hidden
-                max-width: 0px
-                margin-top: 6px
-            &:hover
-                .text
-                    max-width: 100px
-    .name
-        @include transition-property(color, padding-left)
-        @include transition-duration(0.1s)
-        position: relative
-        color: #ccc
-        &:hover
-            padding-left: 24px
-            color: #999
-        .icon-expand-alt, .icon-collapse-alt
-            @include transition-property(visibility, opacity, width, left)
-            @include transition-duration(0.1s)
-            position: absolute
-            left: -24px
-            bottom: 0
-            visibility: hidden
-            opacity: 0
-        &.collapsed:hover
-            .icon-expand-alt
-                left: 0
-                visibility: visible
-                opacity: 1
-        &.expanded
-            padding-left: 24px
-            .icon-collapse-alt
-                left: 0
-                visibility: visible
-                opacity: 1
+	.expanded-share
+		@include box-sizing(border-box)
+		@include transition-property(max-height, padding, border)
+		@include transition-duration(0.1s)
+		overflow: hidden
+		max-height: 0px
+		&.expanded
+			max-height: 400px
+	.social-actions
+		.follow, .unfollow
+			.text
+				@include transition-property(max-width)
+				@include transition-duration(0.1s)
+				overflow: hidden
+				max-width: 0px
+				margin-top: 6px
+			&:hover
+				.text
+					max-width: 100px
+	.name
+		@include transition-property(color, padding-left)
+		@include transition-duration(0.1s)
+		position: relative
+		color: #ccc
+		&:hover
+			padding-left: 24px
+			color: #999
+		.icon-expand-alt, .icon-collapse-alt
+			@include transition-property(visibility, opacity, width, left)
+			@include transition-duration(0.1s)
+			position: absolute
+			left: -24px
+			bottom: 0
+			visibility: hidden
+			opacity: 0
+		&.collapsed:hover
+			.icon-expand-alt
+				left: 0
+				visibility: visible
+				opacity: 1
+		&.expanded
+			padding-left: 24px
+			.icon-collapse-alt
+				left: 0
+				visibility: visible
+				opacity: 1
 
-    .expanded-profile
-        @include box-sizing(border-box)
-        @include border-radius(3px)
-        @include transition-property(max-height, padding, border)
-        @include transition-duration(0.1s)
-        padding: 0px 20px
-        max-height: 0px
-        border: 0px solid #fff
-        overflow: hidden
-        &.expanded
-            padding: 10px 20px
-            max-height: 600px
-            border: 1px solid #ddd
-        .icons
-            font-size: 22px
-            margin-top: 10px
-            // line-height: 34px
-    .bio
-        @include transition-property(max-height)
-        @include transition-duration(0.1s)
-        max-height: 0px
-        overflow: hidden
-        &.expanded
-            max-height: 400px
+	.expanded-profile
+		@include box-sizing(border-box)
+		@include border-radius(3px)
+		@include transition-property(max-height, padding, border)
+		@include transition-duration(0.1s)
+		padding: 0px 20px
+		max-height: 0px
+		border: 0px solid #fff
+		overflow: hidden
+		&.expanded
+			padding: 10px 20px
+			max-height: 600px
+			border: 1px solid #ddd
+		.icons
+			font-size: 22px
+			margin-top: 10px
+			// line-height: 34px
+	.bio
+		@include transition-property(max-height)
+		@include transition-duration(0.1s)
+		max-height: 0px
+		overflow: hidden
+		&.expanded
+			max-height: 400px
 
-    .prompt
-        position: relative
-        font-size: 18px
-        padding: 0
-        margin: 0
-        // margin-top: 20px
-        text-align: left
-        color: rgba(88,88,88,0.8)
-        text-shadow: 1px 4px 6px #fff, 0 0 0 #000, 1px 4px 6px #fff
-        // &:before
-        //  position: absolute
-        //  top: 0
-        //  left: -50px
-        //  content: ""
-        //  width: 0px
-        //  height: 100%
-        //  border-left: 3px solid $color-ghost
+	.prompt
+		position: relative
+		font-size: 18px
+		padding: 0
+		margin: 0
+		// margin-top: 20px
+		text-align: left
+		color: rgba(88,88,88,0.8)
+		text-shadow: 1px 4px 6px #fff, 0 0 0 #000, 1px 4px 6px #fff
+		// &:before
+		//  position: absolute
+		//  top: 0
+		//  left: -50px
+		//  content: ""
+		//  width: 0px
+		//  height: 100%
+		//  border-left: 3px solid $color-ghost
 
 
-    .prompt-wrapper
-        min-height: 5em
-        position: relative
-        // &:before
-        //  position: absolute
-        //  top: 0
-        //  left: -50px
-        //  content: ""
-        //  width: 0px
-        //  height: 100%
-        //  border-left: 3px solid $color-ghost
-        &:after
-            @include transition-property(visibility, opacity, color, background)
-            @include transition-duration(0.3s)
-            position: absolute
-            top: 0
-            left: 0
-            content: ""
-            width: 100%
-            height: 100%
-            background: white
-            opacity: 0
-            visibility: hidden
-            pointer-events: none
-        .prompt
-            width: 100%
-            height: 100%
-        .hoverable
-            visibility: hidden
-            opacity: 0
-            position: absolute
-            top: 0
-            left: 0
-            width: 100%
-            height: 100%
-            // top: 50%
-            // left: 50%
-            // margin-left: -70px
-            // margin-top: -21px
-            z-index: 6
-            @include transition-property(visibility, opacity, color, background)
-            @include transition-duration(0.3s)
-        // &:hover
-        //  &:after
-        //      @include transition-duration(0.2s)
-        //      opacity: 0.5
-        //      visibility: visible
-        //  .hoverable
-        //      visibility: visible
-        //      opacity: 1
+	.prompt-wrapper
+		min-height: 5em
+		position: relative
+		// &:before
+		//  position: absolute
+		//  top: 0
+		//  left: -50px
+		//  content: ""
+		//  width: 0px
+		//  height: 100%
+		//  border-left: 3px solid $color-ghost
+		&:after
+			@include transition-property(visibility, opacity, color, background)
+			@include transition-duration(0.3s)
+			position: absolute
+			top: 0
+			left: 0
+			content: ""
+			width: 100%
+			height: 100%
+			background: white
+			opacity: 0
+			visibility: hidden
+			pointer-events: none
+		.prompt
+			width: 100%
+			height: 100%
+		.hoverable
+			visibility: hidden
+			opacity: 0
+			position: absolute
+			top: 0
+			left: 0
+			width: 100%
+			height: 100%
+			// top: 50%
+			// left: 50%
+			// margin-left: -70px
+			// margin-top: -21px
+			z-index: 6
+			@include transition-property(visibility, opacity, color, background)
+			@include transition-duration(0.3s)
+		// &:hover
+		//  &:after
+		//      @include transition-duration(0.2s)
+		//      opacity: 0.5
+		//      visibility: visible
+		//  .hoverable
+		//      visibility: visible
+		//      opacity: 1
 
-    #msg_body
-        @include transition-property(min-height)
-        @include transition-duration(0.1s)
-        @include border-radius(2px)
-        min-height: 2em
-    .send-button
-        @include transition-property(visibility, opacity, color, background)
-        @include transition-duration(0.1s)
-        // display: none
-        visibility: hidden
-        opacity: 0
+	#msg_body
+		@include transition-property(min-height)
+		@include transition-duration(0.1s)
+		@include border-radius(2px)
+		min-height: 2em
+	.send-button
+		@include transition-property(visibility, opacity, color, background)
+		@include transition-duration(0.1s)
+		// display: none
+		visibility: hidden
+		opacity: 0
 
-    &.focused
-        #msg_body
-            min-height: 6em
-        .send-button
-            visibility: visible
-            opacity: 1
+	&.focused
+		#msg_body
+			min-height: 6em
+		.send-button
+			visibility: visible
+			opacity: 1
 
 
 //////////////////////////////////////////////////////
 /**               conversation style               **/
 //////////////////////////////////////////////////////
 .conversation
-    // border: 1px solid #ddd
-    // @include border-radius(3px)
-    border-top: 3px solid #ddd
-    padding-top: 5px
-    &.ready
-        border-top-color: $green
-    &.waiting
-        border-top-color: $yellow
-    &.ended
-        border-top-color: $red
-    .row-fluid [class*="span"]
-        min-height: 0
-    .prompt, .message
-        @include transition-property(max-height)
-        @include transition-duration(0.1s)
-        min-height: 1.5em
-        max-height: 1.5em
-        overflow: hidden
-        text-overflow: ellipsis
-        white-space: nowrap
-    .message
-        .from-name
-            vertical-align: top
-            padding-left: 4px
-        .body
-            margin-top: -16px
-            padding-left: 42px
-    &.expanded
-        .prompt, .message
-            max-height: 500em
-            white-space: normal
+	// border: 1px solid #ddd
+	// @include border-radius(3px)
+	border-top: 3px solid #ddd
+	padding-top: 5px
+	&.ready
+		border-top-color: $green
+	&.waiting
+		border-top-color: $yellow
+	&.ended
+		border-top-color: $red
+	.row-fluid [class*="span"]
+		min-height: 0
+	.prompt, .message
+		@include transition-property(max-height)
+		@include transition-duration(0.1s)
+		min-height: 1.5em
+		max-height: 1.5em
+		overflow: hidden
+		text-overflow: ellipsis
+		white-space: nowrap
+	.message
+		.from-name
+			vertical-align: top
+			padding-left: 4px
+		.body
+			margin-top: -16px
+			padding-left: 42px
+	&.expanded
+		.prompt, .message
+			max-height: 500em
+			white-space: normal
 
 
 //////////////////////////////////////////////////////
 /**                   inbox style                  **/
 //////////////////////////////////////////////////////
 #user_start
-    .step
-        min-height: 300px
+	.step
+		min-height: 300px
 
 
 //////////////////////////////////////////////////////
 /**                   inbox style                  **/
 //////////////////////////////////////////////////////
 #conversations
-    .filter
-        .title
-            a
-                position: relative
-                display: inline-block
-                color: #ccc
-                background: white
-                border: 3px solid #ccc
-                padding: 10px 40px
-                font-weight: bold
-                margin-bottom: 9px
-                @include transition-property(color, background)
-                @include transition-duration(0.3s)
-                @include border-radius(3px)
-                &:before
-                    display: none
-                    position: absolute
-                    content: ""
-                    bottom: -19px
-                    left: 10px
-                    height: 0
-                    width: 0
-                    border: solid transparent
-                    border-color: rgba(204, 204, 204, 0)
-                    border-top-color: #ccc
-                    border-width: 8px
-                &:after
-                    @include transition-property(border-color, border-top-color)
-                    @include transition-duration(0.3s)
-                    display: none
-                    position: absolute
-                    content: ""
-                    bottom: -12px
-                    left: 12px
-                    height: 0
-                    width: 0
-                    border: solid transparent
-                    border-color: rgba(255, 255, 255, 0)
-                    border-top-color: #ffffff
-                    border-width: 6px
-                &:hover
-                    color: white
-                    background: #ccc
-                    &:after
-                        border-color: rgba(204, 204, 204, 0)
-                        border-top-color: #ccc
+	.filter
+		.title
+			a
+				position: relative
+				display: inline-block
+				color: #ccc
+				background: white
+				border: 3px solid #ccc
+				padding: 10px 40px
+				font-weight: bold
+				margin-bottom: 9px
+				@include transition-property(color, background)
+				@include transition-duration(0.3s)
+				@include border-radius(3px)
+				&:before
+					display: none
+					position: absolute
+					content: ""
+					bottom: -19px
+					left: 10px
+					height: 0
+					width: 0
+					border: solid transparent
+					border-color: rgba(204, 204, 204, 0)
+					border-top-color: #ccc
+					border-width: 8px
+				&:after
+					@include transition-property(border-color, border-top-color)
+					@include transition-duration(0.3s)
+					display: none
+					position: absolute
+					content: ""
+					bottom: -12px
+					left: 12px
+					height: 0
+					width: 0
+					border: solid transparent
+					border-color: rgba(255, 255, 255, 0)
+					border-top-color: #ffffff
+					border-width: 6px
+				&:hover
+					color: white
+					background: #ccc
+					&:after
+						border-color: rgba(204, 204, 204, 0)
+						border-top-color: #ccc
 
-        .selections
-            a
-                color: #999
-                display: inline-block
-                width: 40px
-                height: 40px
-                line-height: 40px
-                border: 3px solid #ddd
-                @include border-radius(500px)
-                @include transition-property(color, background)
-                @include transition-duration(0.3s)
-                &:hover
-                    color: white
-                    background: #ddd
-                &.ready
-                    margin-right: 15px
-                    color: $green
-                    border-color: $green
-                    &:hover, &.active
-                        color: white
-                        background: $green
-                &.waiting
-                    margin-right: 15px
-                    color: $yellow
-                    border-color: $yellow
-                    &:hover, &.active
-                        color: white
-                        background: $yellow
-                &.ended
-                    color: $red
-                    border-color: $red
-                    &:hover, &.active
-                        color: white
-                        background: $red
+		.selections
+			a
+				color: #999
+				display: inline-block
+				width: 40px
+				height: 40px
+				line-height: 40px
+				border: 3px solid #ddd
+				@include border-radius(500px)
+				@include transition-property(color, background)
+				@include transition-duration(0.3s)
+				&:hover
+					color: white
+					background: #ddd
+				&.ready
+					margin-right: 15px
+					color: $green
+					border-color: $green
+					&:hover, &.active
+						color: white
+						background: $green
+				&.waiting
+					margin-right: 15px
+					color: $yellow
+					border-color: $yellow
+					&:hover, &.active
+						color: white
+						background: $yellow
+				&.ended
+					color: $red
+					border-color: $red
+					&:hover, &.active
+						color: white
+						background: $red
 
-        &.waiting
-            .title a
-                &:before
-                    display: block
-                    left: 21px
-                &:after
-                    display: block
-                    left: 23px
-        &.ready
-            .title a
-                &:before
-                    display: block
-                    left: 87px
-                &:after
-                    display: block
-                    left: 89px
-        &.ended
-            .title a
-                &:before
-                    display: block
-                    left: 152px
-                &:after
-                    display: block
-                    left: 154px
+		&.waiting
+			.title a
+				&:before
+					display: block
+					left: 21px
+				&:after
+					display: block
+					left: 23px
+		&.ready
+			.title a
+				&:before
+					display: block
+					left: 87px
+				&:after
+					display: block
+					left: 89px
+		&.ended
+			.title a
+				&:before
+					display: block
+					left: 152px
+				&:after
+					display: block
+					left: 154px
 
-    .message
-        // color: lighten($color-text, 50%)
-        // &.active
-        //     color: $color-text
+	.message
+		// color: lighten($color-text, 50%)
+		// &.active
+		//     color: $color-text
 
 
 //////////////////////////////////////////////////////
 /**               conversation style               **/
 //////////////////////////////////////////////////////
 #conversation
-    .message
-        .from-name
-            vertical-align: top
-            padding-left: 4px
-        .body
-            margin-top: -8px
-            padding-left: 42px
+	.message
+		.from-name
+			vertical-align: top
+			padding-left: 4px
+		.body
+			margin-top: -8px
+			padding-left: 42px
 
 
 //////////////////////////////////////////////////////
 /**                   users style                  **/
 //////////////////////////////////////////////////////
 @include keyframes(rotateWords)
-    0%
-        opacity: 0
-    2.2%
-        opacity: 0
-        height: 0em
-        @include transform(translateY(250px))
-    4%
-        opacity: 1
-        height: 1em
-        @include transform(translateY(0px))
-        @include animation-timing-function(ease-out)
-    11%
-        opacity: 1
-        height: 1em
-        @include transform(translateY(0px))
-        @include animation-timing-function(ease-in)
-    12.4%
-        opacity: 0
-    13%
-        opacity: 0
-        height: 0em
-        @include transform(translateY(-300px))
-    80%
-        opacity: 0
-    100%
-        opacity: 0
+	0%
+		opacity: 0
+	2.2%
+		opacity: 0
+		height: 0em
+		@include transform(translateY(250px))
+	4%
+		opacity: 1
+		height: 1em
+		@include transform(translateY(0px))
+		@include animation-timing-function(ease-out)
+	11%
+		opacity: 1
+		height: 1em
+		@include transform(translateY(0px))
+		@include animation-timing-function(ease-in)
+	12.4%
+		opacity: 0
+	13%
+		opacity: 0
+		height: 0em
+		@include transform(translateY(-300px))
+	80%
+		opacity: 0
+	100%
+		opacity: 0
 #users
-    .animated-header
-        font-size: 30px
-        line-height: 40px
-        position: relative
-        text-align: center
-        .rw-words
-            $wordCount: 9
-            $delay: 4
-            display: inline-block
-            text-align: left
-            // text-indent: 10px
-            span
-                position: relative
-                opacity: 0
-                width: 4em
-                height: 0em
-                display: table-caption
-                @media (min-width: 768px)
-                    @include animation(rotateWords $wordCount*$delay*1s ease-in-out infinite 0s)
-                    @for $i from 1 through ($wordCount - 1)
-                        &:nth-child(#{$i +1})
-                            @include animation-delay($i*$delay*1s)
+	.animated-header
+		font-size: 30px
+		line-height: 40px
+		position: relative
+		text-align: center
+		.rw-words
+			$wordCount: 9
+			$delay: 4
+			display: inline-block
+			text-align: left
+			// text-indent: 10px
+			span
+				position: relative
+				opacity: 0
+				width: 4em
+				height: 0em
+				display: table-caption
+				@media (min-width: 768px)
+					@include animation(rotateWords $wordCount*$delay*1s ease-in-out infinite 0s)
+					@for $i from 1 through ($wordCount - 1)
+						&:nth-child(#{$i +1})
+							@include animation-delay($i*$delay*1s)
 
-    // .masonry
-    //     width: 1600px
-    //     .cols
-    //         -moz-column-count: 3
-    //         -moz-column-gap: 0px
-    //         -webkit-column-count: 3
-    //         -webkit-column-gap: 0px
-    //         column-count: 3
-    //         column-gap: 0px
-    //         margin: 0
-    //         padding: 0
-    //         .col
-    //             display: inline-block
-    //             width: 100%
-    //             margin-left: -40px
+	// .masonry
+	//     width: 1600px
+	//     .cols
+	//         -moz-column-count: 3
+	//         -moz-column-gap: 0px
+	//         -webkit-column-count: 3
+	//         -webkit-column-gap: 0px
+	//         column-count: 3
+	//         column-gap: 0px
+	//         margin: 0
+	//         padding: 0
+	//         .col
+	//             display: inline-block
+	//             width: 100%
+	//             margin-left: -40px
 
-    // @media only screen and (max-width : 1599px), only screen and (max-device-width : 1599px)
-    //     .masonry
-    //         width: 1033px
-    //         .cols
-    //             -moz-column-count: 2
-    //             -webkit-column-count: 2
-    //             column-count: 2
-    // @media only screen and (max-width : 1032px), only screen and (max-device-width : 1032px)
-    //     .masonry
-    //         max-width: 480px
-    //         .cols
-    //             -moz-column-count: 1
-    //             -webkit-column-count: 1
-    //             column-count: 1
+	// @media only screen and (max-width : 1599px), only screen and (max-device-width : 1599px)
+	//     .masonry
+	//         width: 1033px
+	//         .cols
+	//             -moz-column-count: 2
+	//             -webkit-column-count: 2
+	//             column-count: 2
+	// @media only screen and (max-width : 1032px), only screen and (max-device-width : 1032px)
+	//     .masonry
+	//         max-width: 480px
+	//         .cols
+	//             -moz-column-count: 1
+	//             -webkit-column-count: 1
+	//             column-count: 1
 
 
-    .space
-        .span-mobile
-            padding-top: 100px
-    .respond
-        .span-mobile
-            .row-fluid
-                padding-top: 20px
-                padding-bottom: 100px
-                // border-bottom: 3px solid $color-ghost
+	.space
+		.span-mobile
+			padding-top: 100px
+	.respond
+		.span-mobile
+			.row-fluid
+				padding-top: 20px
+				padding-bottom: 100px
+				// border-bottom: 3px solid $color-ghost
 
 
 //////////////////////////////////////////////////////
@@ -1345,20 +1356,20 @@ input, textarea
 /**                  purpose style                 **/
 //////////////////////////////////////////////////////
 #purpose
-    .img-toggle
-        $d: 100px
-        width: $d
-        height: $d
-        img
-            width: $d
-            height: $d
-        &:hover
-            .headshot
-                display: none
-            .wtf
-                display: block
-        .wtf
-            display: none
+	.img-toggle
+		$d: 100px
+		width: $d
+		height: $d
+		img
+			width: $d
+			height: $d
+		&:hover
+			.headshot
+				display: none
+			.wtf
+				display: block
+		.wtf
+			display: none
 
 
 
@@ -1367,12 +1378,12 @@ input, textarea
 /**                  select2 style                 **/
 //////////////////////////////////////////////////////
 .select2-container-multi .select2-search-choice-close
-    position: absolute
-    left: 3px
-    top: 4px
-    &:active
-        left: 4px
-        top: 5px
+	position: absolute
+	left: 3px
+	top: 4px
+	&:active
+		left: 4px
+		top: 5px
 
 
 //////////////////////////////////////////////////////

@@ -11,7 +11,7 @@
     </div>
 
     <div ng-hide='app.loggedIn()'>
-        <a class='btn btn-block btn-large btn-facebook' ng-click='fbLogin()'>Connect with facebook</a>
+        <a class='btn btn-block btn-large btn-facebook' ng-click='fbLogin()' ps-loading='loggingInFb'>Connect with facebook</a>
         <p class='center ptl pbm'>- or -</p>
     </div>
 
@@ -39,7 +39,7 @@
 
             <div class='control-group'>
                 <div class='controls'>
-                    <button type='submit' class='btn btn-success btn-block btn-large'>Start</button>
+                    <button type='submit' class='btn btn-success btn-block btn-large' ps-loading='registeringPsw'>Start</button>
                 </div>
             </div>
         </div>
@@ -55,7 +55,7 @@
 
             <div class='control-group'>
                 <div class='controls'>
-                    <button type='submit' class='btn btn-success btn-block btn-large'>Log in</button>
+                    <button type='submit' class='btn btn-success btn-block btn-large' ps-loading='loggingInPsw'>Log in</button>
                 </div>
             </div>
 

@@ -142,7 +142,7 @@ ps.controller "ConversationsPartialCtrl", ["$scope", "$location", "$timeout", "C
 
 	$scope.save = (state_event = null) ->
 		success = (data) ->
-			$scope.app.loading = false
+			$scope.sendingMsg = false
 			$scope.app.flash 'success', 'Great, your message has been sent.'
 			if data.state == 'sent'
 				$scope.messages.collection.push $scope.myMessage
@@ -178,7 +178,7 @@ ps.controller "ConversationsPartialCtrl", ["$scope", "$location", "$timeout", "C
 					hasEmbedUrl: $scope.myMessage.embed_url?
 					# timeToReply: (Date.parse(new Date) - Date.parse(new Date($scope.lastMsg.created_at)))
 		error = (error) ->
-			$scope.app.loading = false
+			$scope.sendingMsg = false
 			$scope.app.flash 'error', error.data.errors
 			analytics.track 'message conversation error',
 				href: window.location.href
@@ -188,7 +188,7 @@ ps.controller "ConversationsPartialCtrl", ["$scope", "$location", "$timeout", "C
 				# timeToReply: (Date.parse(new Date) - Date.parse(new Date($scope.lastMsg.created_at)))
 				error: JSON.stringify(error)
 
-		$scope.app.loading = true
+		$scope.sendingMsg = true
 		if state_event? then $scope.myMessage.state_event = state_event
 		delete $scope.myMessage['embed_url'] unless $scope.show.embedInput
 		$scope.myMessage.save success, error

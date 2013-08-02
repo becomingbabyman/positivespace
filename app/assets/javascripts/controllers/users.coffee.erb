@@ -490,12 +490,12 @@ ps.controller "UsersEditCtrl", ["$scope", "$routeParams", "$timeout", "$location
 	# TODO: revert to original profile if close is clicked instead of save
 	$scope.saveSpace = ->
 		if $scope.user.prompt? and $scope.user.prompt.length > 0 and $scope.user.bio? and $scope.user.bio.length > 0
-			$scope.app.show.loading = true
+			$scope.savingSpace = true
 			$scope.userCopy = angular.copy $scope.user
 			$scope.userCopy.skills = _.pluck($scope.user.skills, 'text').join(",")
 			$scope.userCopy.interests = _.pluck($scope.user.interests, 'text').join(",")
 			success = (data) ->
-				$scope.app.show.loading = false
+				$scope.savingSpace = false
 				$scope.app.flash 'success', 'Great, your space has been updated.'
 				analytics.track 'save space success',
 					href: window.location.href
@@ -507,7 +507,7 @@ ps.controller "UsersEditCtrl", ["$scope", "$routeParams", "$timeout", "$location
 				$scope.app.loadCurrentUser()
 				$location.path("/#{$scope.userCopy.slug}")
 			error = (error) ->
-				$scope.app.show.loading = false
+				$scope.savingSpace = false
 				$scope.app.flash 'error', error.data.errors
 				analytics.track 'save space error',
 					href: window.location.href
@@ -757,9 +757,9 @@ ps.controller "UsersSpaceCtrl", ["$scope", "$location", "User", "Message", ($sco
 
 	$scope.submitMessage = ->
 		if $scope.app.loggedIn()
-			$scope.app.show.loading = true
+			$scope.sendingMsg = true
 			success = (data) ->
-				$scope.app.show.loading = false
+				$scope.sendingMsg = false
 				amplify.store($scope.autosave.body, null)
 				# $scope.app.flash 'success', 'Great, your message has been sent.'
 				analytics.track 'message space success',
@@ -773,7 +773,7 @@ ps.controller "UsersSpaceCtrl", ["$scope", "$location", "User", "Message", ($sco
 				if $scope.callback?
 					$scope.callback(data)
 			error = (error) ->
-				$scope.app.show.loading = false
+				$scope.sendingMsg = false
 				$scope.app.flash 'error', error.data.errors
 				analytics.track 'message space error',
 					href: window.location.href

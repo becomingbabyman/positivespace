@@ -1,0 +1,13 @@
+####################################################
+# Generic btn loading animation
+# <a class='btn' loading='any value but null'>
+ps.directive "psLoading", ->
+	restrict:'A'
+	link: (scope, element, attrs) ->
+		scope.$watch attrs.psLoading, (value) ->
+			if value
+				element.addClass('ps-progress-bar')
+				element.css('pointer-events', 'none')
+			else
+				element.removeClass('ps-progress-bar')
+				element.css('pointer-events', 'auto')
