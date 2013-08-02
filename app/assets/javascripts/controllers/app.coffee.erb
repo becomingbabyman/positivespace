@@ -46,6 +46,7 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
 
     $scope.app.identify = (user) ->
         analytics.identify user.id,
+            bio                       : user.bio
             name                      : user.name
             slug                      : user.slug
             prompt                    : user.space?.prompt
@@ -100,9 +101,11 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
     ########
     $scope.app.meta.reset = ->
         $scope.app.meta.title = "Positive Space · Simply Converse"
+        $scope.app.meta.type = "website"
+        $scope.app.meta.url = "http://www.positivespace.io/"
         $scope.app.meta.description = "We believe that it's too hard to start a conversation with a stranger. A lot of good ideas and relationships are missed because the right people never talk. We let the people and content you care about come to you."
-        $scope.app.meta.keywords = "positive, space"
-        $scope.app.meta.imageUrl = "<%= asset_path('+_.png') %>"
+        $scope.app.meta.keywords = "positive, space, conversation, serendipity, meet, listen"
+        $scope.app.meta.imageUrl = "<%= asset_path('ps_logo@2x.png') %>"
     $scope.app.meta.reset()
 
     #############
@@ -133,6 +136,7 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
     $rootScope.$on "$routeChangeStart", (event, next, current) ->
         # Reset the meta tags
         $scope.app.meta.reset()
+        $scope.app.meta.url = window.location.href
 
         # Make sure the chrome is visible
         $scope.app.show.allChrome()

@@ -1,7 +1,7 @@
 <div id='notifications_recieved_message'>
 	<div class="intro">
 		Hi
-		<%= link_to "#{root_url}#{@reply_path}" do %>
+		<%= link_to "#{root_url}#{@message.to.slug}" do %>
 			<span class="username">
 				<span class="at">@</span><%= @message.to.username %>
 			</span>
@@ -21,7 +21,7 @@
 				<% url = message.from.avatar.image.thumb.url %>
 				<% url =~ /^\// ? url : url=root_url+url[1..-1] %>
 				<%= image_tag url, class: "avatar" %>
-				<%= link_to "#{root_url}#{@reply_path}" do %>
+				<%= link_to "#{root_url}#{message.from.slug}" do %>
 					<span class="at">@</span><%= message.from.username %>
 				<% end %>
 				<span class="said">said:</span>
@@ -42,7 +42,7 @@
 		<% url = @message.conversation.to.avatar.image.thumb.url %>
 		<% url =~ /^\// ? url : url=root_url+url[1..-1] %>
 		<%= image_tag url, class: "avatar" %>
-		<%= link_to "#{root_url}#{@reply_path}" do %>
+		<%= link_to "#{root_url}#{@message.conversation.to.slug}" do %>
 			<span class="at">@</span><%= @message.conversation.to.username %>
 		<% end %>
 		<span class="said">prompted:</span>

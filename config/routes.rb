@@ -75,8 +75,8 @@ Positivespace::Application.routes.draw do
 	# Root
 	root :to => 'pages#home'
 
-	# Route wildcard routes to angular for client side routing
-	match "*path", to: "pages#wildcard"
+	# Route wildcard routes to angular for client side routing - only route URIs not URLs like .html or .jpg
+	match "*path", to: "pages#wildcard", constraints: lambda { |request| !request.path.split('/').last.include?('.') }
 	match '/robots.:format' => 'pages#robots'
 	# match '/sitemap' => redirect('http://sitemap.positivespace.io')
 
