@@ -67,8 +67,9 @@ Positivespace::Application.routes.draw do
 	# Static pages
 	resources :pages, path: '', only: :none do
 		collection do
-			get :robots
 			get :home
+			get :robots
+			get :iframe
 		end
 	end
 

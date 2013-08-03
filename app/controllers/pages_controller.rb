@@ -22,4 +22,8 @@ class PagesController < ApplicationController
 		end
 	end
 
+	def iframe
+		render :layout => false
+	end
+
 end

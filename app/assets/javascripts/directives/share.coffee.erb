@@ -2,7 +2,7 @@
 # <a href="#" share='facebook'>
 # must be 'a' tag
 #
-ps.directive "share", ["$location", ($location) ->
+ps.directive "share", ["$location", "$dialog", ($location, $dialog) ->
 	restrict: "A"
 	scope:
 		shareName:"@"
@@ -10,6 +10,17 @@ ps.directive "share", ["$location", ($location) ->
 		shareUrl:"@"
 		shareImage:"@"
 	link: (scope, element, attrs) ->
+		window.setTimeout ->
+			if attrs.share == 'twitter'
+				twttr.events.unbind 'click', {} if twttr.events._handlers?.click?
+				twttr.events.unbind 'tweet', {} if twttr.events._handlers?.tweet?
+				twttr.events.bind 'click', (e) ->
+					_.defer ->
+						scope.modal?.open()
+				twttr.events.bind 'tweet', (e) ->
+					analytics.track 'share success',
+						service: "twitter"
+		, 1000
 
 		element.bind 'click', ->
 			scope.generateShareTarget()
@@ -24,10 +35,18 @@ ps.directive "share", ["$location", ($location) ->
 
 		scope.generateShareTarget = ->
 			scope.shareImage = scope.shareImage.addHttp() if scope.shareImage
-			scope.shareUrl ||= $location.absUrl()
+			scope.shareUrl or= $location.absUrl()
+			scope.afterShareModalOptions or=
+				backdrop: true
+				keyboard: true
+				backdropClick: true
+				templateUrl: "<%= asset_path('directives/after_share_modal.html') %>"
+				# controller: 'AfterShareCtrl'
+			scope.modal or= $dialog.dialog(scope.afterShareModalOptions)
 
 			fbShare = (method) ->
 				callback = (response) ->
+					scope.modal.open()
 					if response and response.post_id
 						analytics.track 'share success',
 							service: "facebook - #{method}"
@@ -44,9 +63,9 @@ ps.directive "share", ["$location", ($location) ->
 					fbObject.picture =     scope.shareImage if scope.shareImage?
 
 					FB.ui fbObject, callback
-
 				share()
 				false
+
 
 			switch attrs.share
 				when 'facebook'
@@ -60,9 +79,11 @@ ps.directive "share", ["$location", ($location) ->
 						if !scope.shareUrl?   then '' else "url=#{encodeURIComponent(scope.shareUrl)}" +
 						if !scope.shareName?  then '' else "&description=#{encodeURIComponent(scope.shareName)}" +
 						if !scope.shareImage? then '' else "&media=#{encodeURIComponent(scope.shareImage)}"
-					pinWindow = window.openCenter url, 'Post to Pinterest', 700, 300
+					pinterestWindow = window.openCenter url, 'Post to Pinterest', 700, 300
+					pinterestWindow.onbeforeunload = ->
+						scope.modal.open()
+						null
 					false
-
 
 				when 'twitter'
 					element.attr 'target', '_blank'
@@ -75,13 +96,19 @@ ps.directive "share", ["$location", ($location) ->
 						if !scope.shareUrl?   then '' else "url=#{encodeURIComponent(scope.shareUrl)}" +
 						if !scope.shareName?  then '' else "&name=#{encodeURIComponent(scope.shareName)}" +
 						if !scope.shareDesc?  then '' else "&description=#{encodeURIComponent(scope.shareDesc)}"
-					tumblrWindow = window.openCenter url, 'Post to Tumblr', 450, 450
+					tumblerWindow = window.openCenter url, 'Post to Tumblr', 450, 450
+					tumblerWindow.onbeforeunload = ->
+						scope.modal.open()
+						null
 					false
 
 				when 'stumbleupon'
 					url = "https://www.stumbleupon.com/submit?" +
 						if !scope.shareUrl?   then '' else "url=#{encodeURIComponent(scope.shareUrl)}"
 					stumbleuponWindow = window.openCenter url, 'Post to StumbleUpon', 800, 600
+					stumbleuponWindow.onbeforeunload = ->
+						scope.modal.open()
+						null
 					false
 
 				when 'email'
@@ -91,8 +118,9 @@ ps.directive "share", ["$location", ($location) ->
 						if !scope.shareUrl?   then '' else "%0A%0A#{encodeURIComponent(scope.shareUrl)}%0A"
 					window.location = url
 
-
 				# <a href="http://www.linkedin.com/shareArticle?mini=true&url=URL GOES HERE&title=TITLE GOES HERE&summary=TEXT SUMMARY HERE&source=SITE'S NAME HERE" target="_blank">Linkedin</a>
 				# <a href="http://digg.com/submit?url=URL GOES HERE" target="_blank">Digg</a>
 				# <a href="http://www.reddit.com/submit?url=URL GOES HERE" target="_blank">Reddit</a>
+
+
 ]
