@@ -122,11 +122,11 @@ ps.controller "UsersStartCtrl", ["$scope", "$routeParams", "$timeout", "$locatio
 	nextIncompleteStep = ->
 		s = 0
 		s = 1 if $scope.user.skills?.length > 0
-		s = 2 if $scope.user.interests?.length > 0
-		s = 3 if $scope.user.bio?.length > 0
-		s = 4 if $scope.user.prompt?.length > 0
-		s = 5 if $scope.user.location?.length > 0
-		s = 7 if _.include($scope.user.achievements_list, 'onboarded')
+		s = 2 if $scope.user.interests?.length > 0 and s == 1
+		s = 3 if $scope.user.bio?.length > 0 and s == 2
+		s = 4 if $scope.user.prompt?.length > 0 and s == 3
+		s = 5 if $scope.user.location?.length > 0 and s == 4
+		s = 7 if _.include($scope.user.achievements_list, 'onboarded') and s == 5
 		s
 	$scope.step = parseInt($routeParams.step) or nextIncompleteStep()
 	if $routeParams.step == '6' and $routeParams.suid?
