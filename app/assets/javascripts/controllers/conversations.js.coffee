@@ -74,7 +74,7 @@ root.resolves.conversationsShow =
 
 
 
-ps.controller "ConversationsPartialCtrl", ["$scope", "$location", "$timeout", "Conversation", "Message", "User", ($scope, $location, $timeout, Conversation, Message, User) ->
+ps.controller "ConversationsPartialCtrl", ["$scope", "$location", "$timeout", "Conversation", "Message", "User", "Review", ($scope, $location, $timeout, Conversation, Message, User, Review) ->
 	$scope.conversation = new Conversation $scope.conversation
 	$scope.expanded = false
 	$scope.messages = { collection: [] }
@@ -94,6 +94,7 @@ ps.controller "ConversationsPartialCtrl", ["$scope", "$location", "$timeout", "C
 		else
 			$scope.expanded = true
 			$scope.myMessage = new Message {user_id: $scope.conversation.partners_id, conversation_id: $scope.conversation.id}
+			$scope.myReview = new Review ($scope.conversation.my_review or {conversation_id: $scope.conversation.id})
 			$scope.show = {embedInput: false}
 			if $scope.messages.collection.length == 0
 				loadMessages()
@@ -192,5 +193,19 @@ ps.controller "ConversationsPartialCtrl", ["$scope", "$location", "$timeout", "C
 		if state_event? then $scope.myMessage.state_event = state_event
 		delete $scope.myMessage['embed_url'] unless $scope.show.embedInput
 		$scope.myMessage.save success, error
+
+
+	$scope.$watch 'myReview.rating', (vNew, vOld) ->
+		$scope.saveReview() if vNew and vNew != vOld
+	$scope.saveReview = (opts = {}) ->
+		angular.extend $scope.myReview, opts
+		success = (data) ->
+			$scope.reviewing = false
+			# TODO: insert in conversation.reviews or replace
+		error = (error) ->
+			$scope.reviewing = false
+			$scope.app.flash 'error', error.data.errors
+		$scope.reviewing = true
+		$scope.myReview.save success, error
 
 ]

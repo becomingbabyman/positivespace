@@ -14,8 +14,8 @@ ps.directive "share", ["$location", "$dialog", ($location, $dialog) ->
 			if attrs.share == 'twitter'
 				twttr.events.unbind 'click', {} if twttr.events._handlers?.click?
 				twttr.events.unbind 'tweet', {} if twttr.events._handlers?.tweet?
-				twttr.events.bind 'click', (e) ->
-					_.defer ->
+				twttr.events.bind 'click', (e) =>
+					_.defer =>
 						scope.modal?.open()
 				twttr.events.bind 'tweet', (e) ->
 					analytics.track 'share success',

@@ -14,13 +14,9 @@ node :relationship, :if => lambda { |c| (current_user and current_user.editor?(c
 	conversation.relationship current_user
 end
 
-# child from: :from do
-#	extends 'api/v1/users/base'
-# end
-
-# child to: :to do
-#	extends 'api/v1/users/base'
-# end
+node :my_review, :if => lambda { |c| (current_user and current_user.editor?(c)) } do |conversation|
+	partial 'api/v1/reviews/base', object: (current_user.review conversation)
+end
 
 child :from => :from do |u|
 	attributes :id, :name, :username, :slug
@@ -36,6 +32,10 @@ child :to => :to do |u|
 	node :avatar do |u|
 		{thumb_url: u.avatar.image.thumb.url}
 	end
+end
+
+child :reviews => :reviews do |u|
+	extends 'api/v1/reviews/base'
 end
 
 node :partners_id, :if => lambda { |c| (current_user and current_user.editor?(c)) } do |c|

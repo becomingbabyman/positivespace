@@ -129,6 +129,7 @@ class User < ActiveRecord::Base
 	has_many :magnetisms, :order => 'created_at asc'
 	has_many :wins, :order => 'created_at asc'
 	has_many :achievements, through: :wins, :order => 'wins.created_at asc'
+	has_many :reviews, :order => 'created_at desc'
 	has_many :invitations
 	belongs_to :invitation
 
@@ -271,6 +272,10 @@ class User < ActiveRecord::Base
 
 	def editor? model
 		model.editors.include? self
+	end
+
+	def member? model
+		model.members.include? self
 	end
 
 	# Inherited resource needs this in the messages controller to find a user's messages
@@ -417,6 +422,10 @@ class User < ActiveRecord::Base
 			rel = :speaking if cons.in_progress.size > 0
 		end
 		rel
+	end
+
+	def review reviewable
+		reviewable.reviews.where(user_id: self.id).first
 	end
 
 	def initialize_settings

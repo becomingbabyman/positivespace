@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130728145131) do
+ActiveRecord::Schema.define(:version => 20130803144049) do
 
   create_table "achievements", :force => true do |t|
     t.string   "name"
@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(:version => 20130728145131) do
     t.text     "prompt"
     t.integer  "messages_count",       :default => 0, :null => false
     t.integer  "space_id"
+    t.integer  "reviews_count",        :default => 0, :null => false
   end
 
   add_index "conversations", ["from_id"], :name => "index_conversations_on_from_id"
@@ -59,6 +60,7 @@ ActiveRecord::Schema.define(:version => 20130728145131) do
   add_index "conversations", ["last_message_id"], :name => "index_conversations_on_last_message_id"
   add_index "conversations", ["messages_count"], :name => "index_conversations_on_messages_count"
   add_index "conversations", ["prompt"], :name => "index_conversations_on_prompt"
+  add_index "conversations", ["reviews_count"], :name => "index_conversations_on_reviews_count"
   add_index "conversations", ["space_id"], :name => "index_conversations_on_space_id"
   add_index "conversations", ["state"], :name => "index_conversations_on_state"
   add_index "conversations", ["to_id"], :name => "index_conversations_on_to_id"
@@ -241,6 +243,24 @@ ActiveRecord::Schema.define(:version => 20130728145131) do
 
   add_index "rails_admin_histories", ["item", "table", "month", "year"], :name => "index_rails_admin_histories"
 
+  create_table "reviews", :force => true do |t|
+    t.integer  "reviewable_id",   :null => false
+    t.string   "reviewable_type", :null => false
+    t.integer  "rating"
+    t.boolean  "vote"
+    t.integer  "user_id",         :null => false
+    t.text     "explanation"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  add_index "reviews", ["rating"], :name => "index_reviews_on_rating"
+  add_index "reviews", ["reviewable_id", "reviewable_type"], :name => "index_reviews_on_reviewable_id_and_reviewable_type"
+  add_index "reviews", ["reviewable_id"], :name => "index_reviews_on_reviewable_id"
+  add_index "reviews", ["reviewable_type"], :name => "index_reviews_on_reviewable_type"
+  add_index "reviews", ["user_id"], :name => "index_reviews_on_user_id"
+  add_index "reviews", ["vote"], :name => "index_reviews_on_vote"
+
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false
     t.text     "data"
@@ -354,6 +374,7 @@ ActiveRecord::Schema.define(:version => 20130728145131) do
     t.integer  "sent_messages_count",          :default => 0,          :null => false
     t.integer  "recieved_messages_count",      :default => 0,          :null => false
     t.integer  "spaces_count",                 :default => 0,          :null => false
+    t.integer  "reviewed_count",               :default => 0,          :null => false
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true
@@ -373,6 +394,7 @@ ActiveRecord::Schema.define(:version => 20130728145131) do
   add_index "users", ["recieved_messages_count"], :name => "index_users_on_recieved_messages_count"
   add_index "users", ["remaining_invitations_count"], :name => "index_users_on_remaining_invitations_count"
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+  add_index "users", ["reviewed_count"], :name => "index_users_on_reviewed_count"
   add_index "users", ["sent_conversations_count"], :name => "index_users_on_sent_conversations_count"
   add_index "users", ["sent_messages_count"], :name => "index_users_on_sent_messages_count"
   add_index "users", ["slug"], :name => "index_users_on_slug", :unique => true

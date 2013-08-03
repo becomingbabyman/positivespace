@@ -59,6 +59,30 @@ psServices.factory 'Message', ['$resource', ($resource) ->
 ]
 
 
+psServices.factory 'Review', ['$resource', ($resource) ->
+	Review = $resource "/api/conversations/:conversation_id/reviews/:list_ctrl/:id/:doc_ctrl",
+		conversation_id: '@conversation_id'
+		id: '@id'
+		list_ctrl: '@list_ctrl'
+		doc_ctrl: '@doc_ctrl'
+	,
+		query:
+			method: 'GET'
+			isArray: false
+
+		update:
+			method: 'PUT'
+
+	Review::save = (success=null, error=null) ->
+		if @id?
+			@$update(success, error)
+		else
+			@$save(success, error)
+
+	Review
+]
+
+
 psServices.factory 'User', ['$resource', ($resource) ->
 	User = $resource "/api/users/:list_ctrl/:id/:doc_ctrl",
 		id: '@id'

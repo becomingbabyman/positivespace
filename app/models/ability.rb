@@ -25,6 +25,16 @@ class Ability
 				params[:user_id] == 'me' or params[:user_id].to_i == user.id
 			end
 
+			can [:create], Review do
+				c = Conversation.find(params[:conversation_id]) and user.member? c
+			end
+			can [:read], Review do |r|
+				user.member?(r)
+			end
+			can [:update], Review do |r|
+				user.editor?(r)
+			end
+
 			can [:update], User do |u|
 				user.editor?(u)
 			end

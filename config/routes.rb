@@ -40,6 +40,11 @@ Positivespace::Application.routes.draw do
 				resources :messages, only: [:index, :show, :create, :update, :destroy]
 			end
 
+			# Conversations
+			resources :conversations, only: [:none] do
+				resources :reviews, only: [:index, :create, :update]
+			end
+
 			# Images
 			resources :images, only: [:create, :destroy, :show]
 

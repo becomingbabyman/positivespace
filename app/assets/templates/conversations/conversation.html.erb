@@ -109,17 +109,63 @@
 					</div>
 				</div>
 
+
 				<div ui-if='conversation.relationship == "waiting"' class="row-fluid ptm">
 					<div class="span12 well well-small center">
 						Awaiting reply.
 					</div>
 				</div>
 
+
 				<div ui-if='conversation.relationship == "ended"' class="row-fluid ptm">
-					<div class="span12 well center" tooltip='This conversation has ended. If you have more to say you may start a new one.' tooltip-placement='bottom'>
-						The end.
+					<div class="span12">
+
+						<div class="row-fluid">
+							<div class="span12 well center" tooltip='This conversation has ended. If you have more to say you may start a new one.' tooltip-placement='bottom'>
+								The end.
+							</div>
+						</div>
+
+								{{myReview}}
+
+						<div class="reviews row-fluid" ui-if="conversation.reviews.length > 0">
+							<div class="span12">
+								<div class="review row-fluid" ng-repeat="review in conversation.reviews">
+									<div class="span12">
+										{{review.user.name}} <br/>
+										{{review.vote}} <br/>
+										{{review.rating}} <br/>
+										{{review.explanation}} <br/>
+
+										<div class="row-fluid" ui-if='review.user.id == app.currentUser.id'>
+											<div class="span12">
+												<rating value="myReview.rating" max="10"></rating>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="review-form row-fluid" ui-if="!conversation.reviewed">
+							<div class="span12">
+								<h4>Was this a positive conversation?</h4>
+								<a href="#" class="btn btn-large btn-primary" ng-click="saveReview({vote: true})" ps-loading='reviewing && myReview.vote'>Positive</a>
+								&nbsp;
+								<span class="pts">or</span>
+								&nbsp;
+								<a href="#" class="btn btn-large btn-danger" ng-click="saveReview({vote: false})" ps-loading='reviewing && !myReview.vote'>Not</a>
+								<br/>
+								<br/>
+								<small>Your response is private.</small>
+								<br/>
+								<small>It is used to improve conversation quality.</small>
+							</div>
+						</div>
+
 					</div>
 				</div>
+
 
 			</div>
 		</div>
