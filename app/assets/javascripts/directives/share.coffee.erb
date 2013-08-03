@@ -81,7 +81,7 @@ ps.directive "share", ["$location", "$dialog", ($location, $dialog) ->
 						if !scope.shareImage? then '' else "&media=#{encodeURIComponent(scope.shareImage)}"
 					pinterestWindow = window.openCenter url, 'Post to Pinterest', 700, 300
 					pinterestWindow.onbeforeunload = ->
-						scope.modal.open()
+						scope.modal?.open()
 						null
 					false
 
@@ -98,7 +98,7 @@ ps.directive "share", ["$location", "$dialog", ($location, $dialog) ->
 						if !scope.shareDesc?  then '' else "&description=#{encodeURIComponent(scope.shareDesc)}"
 					tumblerWindow = window.openCenter url, 'Post to Tumblr', 450, 450
 					tumblerWindow.onbeforeunload = ->
-						scope.modal.open()
+						scope.modal?.open()
 						null
 					false
 
@@ -107,7 +107,7 @@ ps.directive "share", ["$location", "$dialog", ($location, $dialog) ->
 						if !scope.shareUrl?   then '' else "url=#{encodeURIComponent(scope.shareUrl)}"
 					stumbleuponWindow = window.openCenter url, 'Post to StumbleUpon', 800, 600
 					stumbleuponWindow.onbeforeunload = ->
-						scope.modal.open()
+						scope.modal?.open()
 						null
 					false
 
