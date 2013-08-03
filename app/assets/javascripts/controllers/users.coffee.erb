@@ -324,8 +324,8 @@ ps.controller "UsersStartCtrl", ["$scope", "$routeParams", "$timeout", "$locatio
 		switch $scope.step
 			when 0 then unless $scope.userCopy.skills.length > 0 then errors.push "Please add at least one skill."
 			when 1 then unless $scope.userCopy.interests.length > 0 then errors.push "Please add at least one interest."
-			when 2 then unless $scope.userCopy.bio?.length > 14 then errors.push "Please fill in your bio."
-			when 3 then unless $scope.userCopy.prompt?.length > 14 then errors.push "Please write your first prompt."
+			when 2 then unless $scope.userCopy.bio?.length > 9 then errors.push "Please fill in your bio."
+			when 3 then unless $scope.userCopy.prompt?.length > 9 then errors.push "Please write your first prompt."
 		if errors.length > 0 then $scope.app.flash('error', errors) else true
 
 	$scope.saveSpace = ->
