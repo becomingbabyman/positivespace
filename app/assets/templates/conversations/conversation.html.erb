@@ -35,7 +35,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="overlay center" ui-if="conversation.relationship == 'ended' && conversation.my_review.vote == null && !conversation.my_review.rating && !conversation.my_review.explanation">
+			<div class="overlay center" ui-if="!expanded && conversation.relationship == 'ended' && (review.vote == null || !review.rating || !review.explanation)">
 				<a href="#" class="btn btn-info btn-large mtl" ng-click="goToFeedback()">Add Anonymous Feedback</a>
 			</div>
 		</div>
@@ -99,9 +99,7 @@
 
 									<span class='pull-right pts'>&nbsp;&nbsp;or&nbsp;&nbsp;</span>
 
-									<a href='#' class='pull-right' ng-click='end()' tooltip="End the conversation if it's going nowhere." tooltip-placement='left'>
-										<i class="icon-remove-circle font30 color-red opacity8"></i>
-									</a>
+									<a href='#' class='pull-right btn btn-warning' ng-click='end()' title="If you don't plan to send you ought to end.">End</a>
 
 									<a href='#' class='muted pts pull-left' ng-click='show.embedInput = true' ng-hide='show.embedInput' tooltip='Attach a link. We will magically find and embed picture, video, audio, and more in your response.' tooltip-placement='right'><i class='icon-paper-clip font20'></i> Attach 1 link</a>
 									<a href='#' class='muted pts pull-left' ng-click='show.embedInput = false' ui-if='show.embedInput'><i class='icon-unlink font20'></i></a>
@@ -129,57 +127,7 @@
 							</div>
 						</div>
 
-						<div class="row-fluid">
-							<div class="span12">
-								<small>Improve conversations. Share anonymous feedback.</small>
-								<h5 ui-if="myReview.vote != null">
-									You said this was
-									<span ui-if="myReview.vote">a <span class="color-primary font18">positive</span></span>
-									<span ui-if="!myReview.vote"><span class="color-danger font20">not</span> a positive</span>
-									conversation.
-								</h5>
-								<h5 ui-if="myReview.rating">
-									And liked it
-									<rating value="myReview.rating" max="10" readonly="true"></rating>
-									much
-								</h5>
-								<p ui-if="myReview.explanation">
-									Going on to say: {{myReview.explanation}}
-								</p>
-							</div>
-						</div>
-
-						<div class="row-fluid" ui-if="myReview.vote == null">
-							<div class="span12">
-								<h4>Was this a positive conversation for you?</h4>
-								<a href="#" class="btn btn-large btn-primary" ng-click="saveReview({vote: true})" ps-loading='reviewing && myReview.vote'>Positive</a>
-								&nbsp;
-								<span class="pts">or</span>
-								&nbsp;
-								<a href="#" class="btn btn-large btn-danger" ng-click="saveReview({vote: false})" ps-loading='reviewing && !myReview.vote'>Not</a>
-								<br/>
-								<br/>
-								<small>Your response is private.</small>
-								<br/>
-								<small>It is used to improve conversation quality.</small>
-							</div>
-						</div>
-
-						<div class="row-fluid" ui-if="myReview.vote != null && !myReview.rating">
-							<div class="span12">
-								<h4>How much would you like to have another conversation like this?</h4>
-								<rating value="myReview.rating" max="10"></rating>
-							</div>
-						</div>
-
-						<div class="row-fluid" ui-if="myReview.vote != null && myReview.rating && !myReview.explanation">
-							<div class="span12">
-								<h4>Why <span ui-if='myReview.vote'>was</span><span ui-if='!myReview.vote'>wasn't</span> it positive?</h4>
-								<textarea name="explanation" ng-model="tmpExplanation" placeholder="Write a brief explanation..." class='input-block-level' rows="3"></textarea>
-								<small>We may share this anonmously.</small>
-								<a href="#" class="btn btn-success pull-right" ng-click="saveReview({explanation: tmpExplanation})" ps-loading="reviewing" ng-disabled="!tmpExplanation || tmpExplanation.length < 10">Submit</a>
-							</div>
-						</div>
+						<div ng-include src="'<%= asset_path('reviews/review.html') %>'" ng-controller="ReviewsReviewCtrl" onload="init({callback: reviewCallback})"></div>
 
 					</div>
 				</div>

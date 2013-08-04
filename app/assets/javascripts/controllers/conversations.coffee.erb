@@ -74,8 +74,11 @@ root.resolves.conversationsShow =
 
 
 
-ps.controller "ConversationsPartialCtrl", ["$scope", "$location", "$timeout", "Conversation", "Message", "User", "Review", ($scope, $location, $timeout, Conversation, Message, User, Review) ->
+ps.controller "ConversationsPartialCtrl", ["$scope", "$location", "$timeout", "$dialog", "Conversation", "Message", "User", "Review", ($scope, $location, $timeout, $dialog, Conversation, Message, User, Review) ->
 	$scope.conversation = new Conversation $scope.conversation
+	$scope.review = new Review ($scope.conversation.my_review or {conversation_id: $scope.conversation.id})
+	$scope.reviewCallback = (review) ->
+		$scope.review = review
 	$scope.expanded = false
 	$scope.messages = { collection: [] }
 	$scope.options = {}
@@ -94,7 +97,6 @@ ps.controller "ConversationsPartialCtrl", ["$scope", "$location", "$timeout", "C
 		else
 			$scope.expanded = true
 			$scope.myMessage = new Message {user_id: $scope.conversation.partners_id, conversation_id: $scope.conversation.id}
-			$scope.myReview = new Review ($scope.conversation.my_review or {conversation_id: $scope.conversation.id})
 			$scope.show = {embedInput: false}
 			if $scope.messages.collection.length == 0
 				loadMessages()
@@ -116,36 +118,50 @@ ps.controller "ConversationsPartialCtrl", ["$scope", "$location", "$timeout", "C
 				href: window.location.href
 
 	$scope.end = ->
-		# if window.confirm 'This conversation is finished.'
-		$scope.conversation.state_event = 'end'
-		$scope.conversation.save (conversation) ->
-			$scope.app.currentUser.ready_conversations_count -= 1
-			$scope.app.currentUser.ended_conversations_count += 1
-			$scope.animateCss = 'animated bounceOutRight' if $scope.options.animateExit?
-			$timeout ->
-				$scope.hideAll = true
-			, 500
-			$location.path("/conversations") if $scope.options.redirectAfterSuccess?
-			analytics.track 'end conversation success',
-				href: window.location.href
-				conversationId: $scope.conversation.id
-				conversationPrompt: $scope.conversation.prompt
-				toId: $scope.conversation.to.id
-				toName: $scope.conversation.to.name
-				fromId: $scope.conversation.from.id
-				fromName: $scope.conversation.from.name
-				conversationDuration: (Date.parse(new Date) - Date.parse(new Date($scope.conversation.created_at)))
-		, (error) ->
-			analytics.track 'end conversation error',
-				href: window.location.href
-				conversationId: $scope.conversation.id
-				conversationPrompt: $scope.conversation.prompt
-				toId: $scope.conversation.to.id
-				toName: $scope.conversation.to.name
-				fromId: $scope.conversation.from.id
-				fromName: $scope.conversation.from.name
-				conversationDuration: (Date.parse(new Date) - Date.parse(new Date($scope.conversation.created_at)))
-				error: JSON.stringify(error)
+		modalOptions =
+			backdrop: false
+			keyboard: false
+			backdropClick: false
+			templateUrl: "<%= asset_path('conversations/review_modal.html') %>"
+			controller: 'ConversationsReviewModalCtrl'
+			resolve:
+				review: ->
+					$scope.review
+		reviewModal = $dialog.dialog(modalOptions)
+		promise = reviewModal.open()
+		promise.then (review) ->
+			log review
+			$scope.review = review if review
+			if $scope.review?.explanation and $scope.review?.rating and $scope.review?.vote != null
+				$scope.conversation.state_event = 'end'
+				$scope.conversation.save (conversation) ->
+					$scope.app.currentUser.ready_conversations_count -= 1
+					$scope.app.currentUser.ended_conversations_count += 1
+					$scope.animateCss = 'animated bounceOutRight' if $scope.options.animateExit?
+					$timeout ->
+						$scope.hideAll = true
+					, 500
+					$location.path("/conversations") if $scope.options.redirectAfterSuccess?
+					analytics.track 'end conversation success',
+						href: window.location.href
+						conversationId: $scope.conversation.id
+						conversationPrompt: $scope.conversation.prompt
+						toId: $scope.conversation.to.id
+						toName: $scope.conversation.to.name
+						fromId: $scope.conversation.from.id
+						fromName: $scope.conversation.from.name
+						conversationDuration: (Date.parse(new Date) - Date.parse(new Date($scope.conversation.created_at)))
+				, (error) ->
+					analytics.track 'end conversation error',
+						href: window.location.href
+						conversationId: $scope.conversation.id
+						conversationPrompt: $scope.conversation.prompt
+						toId: $scope.conversation.to.id
+						toName: $scope.conversation.to.name
+						fromId: $scope.conversation.from.id
+						fromName: $scope.conversation.from.name
+						conversationDuration: (Date.parse(new Date) - Date.parse(new Date($scope.conversation.created_at)))
+						error: JSON.stringify(error)
 
 
 	$scope.save = (state_event = null) ->
@@ -201,18 +217,21 @@ ps.controller "ConversationsPartialCtrl", ["$scope", "$location", "$timeout", "C
 		delete $scope.myMessage['embed_url'] unless $scope.show.embedInput
 		$scope.myMessage.save success, error
 
+]
 
-	$scope.$watch 'myReview.rating', (vNew, vOld) ->
-		$scope.saveReview() if vNew and vNew != vOld
-	$scope.saveReview = (opts = {}) ->
-		angular.extend $scope.myReview, opts
-		success = (data) ->
-			$scope.reviewing = false
-			$scope.conversation.my_review = angular.copy($scope.myReview)
-		error = (error) ->
-			$scope.reviewing = false
-			$scope.app.flash 'error', error.data.errors
-		$scope.reviewing = true
-		$scope.myReview.save success, error
 
+ps.controller "ConversationsReviewModalCtrl", ["$scope", "dialog", "review", ($scope, dialog, review) ->
+	$scope.review = review
+	$scope.close = ->
+		dialog.close($scope.review)
+
+	$scope.attemptComplete = ->
+		if $scope.review.explanation and $scope.review.rating and $scope.review.vote != null
+			$scope.close()
+	_.defer ->
+		$scope.attemptComplete()
+
+	$scope.reviewCallback = (review) ->
+		$scope.review = review
+		$scope.attemptComplete()
 ]

@@ -1,0 +1,12 @@
+<div class="modal-header">
+	<button type="button" class="close" ng-click="close()" aria-hidden="true">&times;</button>
+	<h3>Review the conversation</h3>
+</div>
+<div class="modal-body">
+	<div class="row-fluid">
+		<div class="span12 pts pbl">
+			<p>The conversaiton will end after you submit your review.</p>
+			<div ng-include src="'<%= asset_path('reviews/review.html') %>'" ng-controller="ReviewsReviewCtrl" onload="init({callback: reviewCallback})"></div>
+		</div>
+	</div>
+</div>

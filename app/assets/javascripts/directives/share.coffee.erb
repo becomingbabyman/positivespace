@@ -12,8 +12,10 @@ ps.directive "share", ["$location", "$dialog", ($location, $dialog) ->
 	link: (scope, element, attrs) ->
 		window.setTimeout ->
 			if attrs.share == 'twitter'
+				# Clear click and tweet events
 				twttr.events.unbind 'click', {} if twttr.events._handlers?.click?
 				twttr.events.unbind 'tweet', {} if twttr.events._handlers?.tweet?
+				# Build click and tweet events
 				twttr.events.bind 'click', (e) =>
 					_.defer =>
 						scope.modal?.open()

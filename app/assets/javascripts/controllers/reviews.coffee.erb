@@ -1,0 +1,23 @@
+root = global ? window
+
+ps.controller "ReviewsReviewCtrl", ["$scope", "Review", ($scope, Review) ->
+
+	$scope.init = (options = {}) ->
+		$scope.callback = options.callback
+
+	$scope.$watch 'review.rating', (vNew, vOld) ->
+		$scope.saveReview() if vNew and vNew != vOld
+	$scope.saveReview = (opts = {}) ->
+		$scope.review = new Review $scope.review
+		angular.extend $scope.review, opts
+		success = (data) ->
+			$scope.reviewing = false
+			$scope.callback $scope.review if $scope.callback?
+		error = (error) ->
+			$scope.reviewing = false
+			$scope.app.flash 'error', error.data.errors
+			$scope.callback $scope.review if $scope.callback?
+		$scope.reviewing = true
+		$scope.review.save success, error
+
+]
