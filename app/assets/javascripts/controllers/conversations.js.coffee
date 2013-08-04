@@ -201,7 +201,7 @@ ps.controller "ConversationsPartialCtrl", ["$scope", "$location", "$timeout", "C
 		angular.extend $scope.myReview, opts
 		success = (data) ->
 			$scope.reviewing = false
-			# TODO: insert in conversation.reviews or replace
+			$scope.conversation.my_review = angular.copy($scope.myReview)
 		error = (error) ->
 			$scope.reviewing = false
 			$scope.app.flash 'error', error.data.errors

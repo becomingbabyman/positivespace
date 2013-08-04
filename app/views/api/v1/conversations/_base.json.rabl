@@ -34,9 +34,9 @@ child :to => :to do |u|
 	end
 end
 
-child :reviews => :reviews do |u|
-	extends 'api/v1/reviews/base'
-end
+# child :reviews => :reviews do |u|
+#	extends 'api/v1/reviews/base'
+# end
 
 node :partners_id, :if => lambda { |c| (current_user and current_user.editor?(c)) } do |c|
 	if current_user.id == c.from_id
