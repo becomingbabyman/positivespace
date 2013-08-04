@@ -99,6 +99,13 @@ ps.controller "ConversationsPartialCtrl", ["$scope", "$location", "$timeout", "C
 			if $scope.messages.collection.length == 0
 				loadMessages()
 
+	$scope.goToFeedback = ->
+		$scope.toggleExpand() unless $scope.expanded
+		$timeout ->
+			$.scrollTo(".conversation-#{$scope.conversation.id} .endgame", 200)
+		, 1500
+
+
 	loadMessages = ->
 		query = {user_id: 'me', conversation_id: $scope.conversation.id}
 		$scope.messages = Message.query query

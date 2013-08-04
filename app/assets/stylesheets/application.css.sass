@@ -1093,6 +1093,14 @@ input, textarea
 		border-top-color: $red
 	.row-fluid [class*="span"]
 		min-height: 0
+	.intro
+		position: relative
+		.overlay
+			position: absolute
+			width: 100%
+			height: 100%
+			background: rgba(255,255,255,0.8)
+
 	.prompt, .message
 		@include transition-property(max-height)
 		@include transition-duration(0.1s)
