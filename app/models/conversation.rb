@@ -14,8 +14,8 @@ class Conversation < ActiveRecord::Base
 	belongs_to :last_message_from, :class_name => 'User'
 	belongs_to :space, counter_cache: :conversations_count
 	has_many :messages, :dependent => :destroy
-	has_many :magnetisms, :as => :attachable
-	has_many :reviews, :as => :reviewable
+	has_many :magnetisms, :as => :attachable, :dependent => :destroy
+	has_many :reviews, :as => :reviewable, :dependent => :destroy
 
 	validates :to_id, presence: true
 	validates :from_id, presence: true

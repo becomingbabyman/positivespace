@@ -3,11 +3,8 @@
 		<div class="row-fluid">
 			<div class="span12">
 				<small>Improve your conversations by sharing anonymous feedback.</small>
-				<p ui-if="review.vote != null">
-					You said this was
-					<span ui-if="review.vote">a <span class="color-primary font22">positive</span></span>
-					<span ui-if="!review.vote"><span class="color-danger font22">not</span> a positive</span>
-					conversation.
+				<p ui-if="review.vote && review.vote != 'pending'">
+					You said this was a <span class="font22" ng-class="{'color-primary': review.vote == 'positive', 'color-danger': review.vote == 'negative', 'muted': review.vote == 'neutral'}">{{review.vote}}</span></span> conversation.
 				</p>
 				<p ui-if="review.rating">
 					And liked it
@@ -20,14 +17,18 @@
 			</div>
 		</div>
 
-		<div class="row-fluid" ui-if="review.vote == null">
+		<div class="row-fluid" ui-if="!review.vote || review.vote == 'pending'">
 			<div class="span12">
 				<h4>Was this a positive conversation for you?</h4>
-				<a href="#" class="btn btn-large btn-primary" ng-click="saveReview({vote: true})" ps-loading='reviewing && review.vote'>Positive</a>
+				<a href="#" class="btn btn-large btn-primary" style='width:25%; padding-left:0; padding-right:0; text-align:center;' ng-click="saveReview({vote_event: 'vote_up'})" ps-loading="reviewing && review.vote_event == 'vote_up'">Positive</a>
 				&nbsp;
 				<span class="pts">or</span>
 				&nbsp;
-				<a href="#" class="btn btn-large btn-danger" ng-click="saveReview({vote: false})" ps-loading='reviewing && !review.vote'>Not</a>
+				<a href="#" class="btn btn-large" style='width:25%; padding-left:0; padding-right:0; text-align:center;' ng-click="saveReview({vote_event: 'vote_skip'})" ps-loading="reviewing && review.vote_event == 'vote_skip'">Neutral</a>
+				&nbsp;
+				<span class="pts">or</span>
+				&nbsp;
+				<a href="#" class="btn btn-large btn-danger" style='width:25%; padding-left:0; padding-right:0; text-align:center;' ng-click="saveReview({vote_event: 'vote_down'})" ps-loading="reviewing && review.vote_event == 'vote_down'">Negative</a>
 				<br/>
 				<br/>
 				<small>Your response is private.</small>
@@ -36,16 +37,16 @@
 			</div>
 		</div>
 
-		<div class="row-fluid" ui-if="review.vote != null && !review.rating">
+		<div class="row-fluid" ui-if="review.vote && review.vote != 'pending' && !review.rating">
 			<div class="span12">
 				<h4>How much would you like to have another conversation like this?</h4>
 				<rating value="review.rating" max="10"></rating>
 			</div>
 		</div>
 
-		<div class="row-fluid" ui-if="review.vote != null && review.rating && !review.explanation">
+		<div class="row-fluid" ui-if="review.vote && review.vote != 'pending' && review.rating && !review.explanation">
 			<div class="span12">
-				<h4>Why <span ui-if='review.vote'>was</span><span ui-if='!review.vote'>wasn't</span> it positive?</h4>
+				<h4>Why was it {{review.vote}}?</h4>
 				<textarea name="explanation" ng-model="tmpExplanation" placeholder="Write a brief explanation..." class='input-block-level' rows="3"></textarea>
 				<small>We may share this anonmously.</small>
 				<a href="#" class="btn btn-success pull-right" ng-click="saveReview({explanation: tmpExplanation})" ps-loading="reviewing" ng-disabled="!tmpExplanation || tmpExplanation.length < 10">Submit</a>

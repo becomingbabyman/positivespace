@@ -35,8 +35,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="overlay center" ui-if="!expanded && conversation.relationship == 'ended' && (review.vote == null || !review.rating || !review.explanation)">
-				<a href="#" class="btn btn-info btn-large mtl" ng-click="goToFeedback()">Add Anonymous Feedback</a>
+			<div class="overlay center" ui-if="!expanded && conversation.relationship == 'ended' && (!review.vote || !review.rating || !review.explanation)">
+				<a href="#" class="btn btn-info btn-large mtl" ng-click="goToFeedback()">Add you review</a>
 			</div>
 		</div>
 
@@ -122,7 +122,7 @@
 					<div class="span12">
 
 						<div class="row-fluid">
-							<div class="span12 well center mbm" tooltip='This conversation has ended. If you have more to say you may start a new one.' tooltip-placement='bottom'>
+							<div class="span12 well center mbm" tooltip='This conversation has ended. If you have more to say you may start a new one.' tooltip-placement='top'>
 								The end.
 							</div>
 						</div>

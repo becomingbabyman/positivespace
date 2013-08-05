@@ -1,9 +1,32 @@
 class Review < ActiveRecord::Base
-	attr_accessible :explanation, :rating, :vote
+	attr_accessible :explanation, :rating, :vote_event
 	attr_protected :none, as: :admin
 
+	state_machine :vote, :initial => :pending do
+		event :vote_up do
+			transition :pending => :positive
+		end
+		# after_transition on: :endorse, do: :after_endorse
+
+		event :vote_skip do
+		  transition :pending => :neutral
+		end
+		# after_transition on: :complete, do: :after_publish
+
+		event :vote_down do
+		  transition :pending => :negative
+		end
+		# after_transition on: :complete, do: :after_unpublish
+	end
+
+	after_save do
+		inc_conversation_magnetism if self.reviewable_type == "Conversation"
+	end
+
+	has_paper_trail
 	belongs_to :reviewable, polymorphic: true, counter_cache: :reviews_count
 	belongs_to :user, counter_cache: :reviewed_count
+	has_many :magnetisms, :as => :attachable, :dependent => :destroy
 
 	validates :reviewable_id, presence: true
 	validates :reviewable_type, presence: true
@@ -16,4 +39,33 @@ class Review < ActiveRecord::Base
 	def editors
 		[self.user]
 	end
+
+private
+
+	def inc_conversation_magnetism
+		# If the conversation was positive
+		if self.positive?
+			# Find the person the reviewer was talking to
+			partner = (self.reviewable.from == self.user ? self.reviewable.to : self.reviewable.from)
+			# Only reviewers with magnetism > 107 can increase the magnetism of other people.
+			# Only conversations with > 3 messages are elligable for magnetism.
+			if self.user.magnetism > 107 and self.reviewable.messages_count > 3
+				# Give more on the first conversation to incentivise talking to strangers
+				if Conversation.between(partner.id, self.user.id).order("created_at ASC").first == self.reviewable
+					# Magnetism validations should keep duplicates from being created
+					partner.magnetisms.where(inc: 5, reason: 'positive first conversation review', attachable_id: self.id, attachable_type: self.class.to_s).first_or_create
+				else
+					partner.magnetisms.where(inc: 2, reason: 'positive conversation review', attachable_id: self.id, attachable_type: self.class.to_s).first_or_create
+				end
+			end
+		elsif self.negative?
+			# Find the person the reviewer was talking to
+			partner = (self.reviewable.from == self.user ? self.reviewable.to : self.reviewable.from)
+			# Only reviewers with magnetism > 999 can decrease the magnetism of other people.
+			if self.user.magnetism > 999
+				partner.magnetisms.where(inc: -2, reason: 'negative conversation review', attachable_id: self.id, attachable_type: self.class.to_s).first_or_create
+			end
+		end
+	end
+
 end

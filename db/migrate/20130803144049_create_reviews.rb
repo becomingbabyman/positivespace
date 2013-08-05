@@ -4,7 +4,7 @@ class CreateReviews < ActiveRecord::Migration
       t.integer :reviewable_id, null: false
       t.string :reviewable_type, null: false
       t.integer :rating
-      t.boolean :vote
+      t.string :vote
       t.integer :user_id, null: false
       t.text :explanation
 

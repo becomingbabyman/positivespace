@@ -3,7 +3,7 @@ class Achievement < ActiveRecord::Base
 	attr_protected :none, as: :admin
 
 	has_paper_trail
-	has_many :wins
+	has_many :wins, :dependent => :destroy
 	has_many :users, through: :wins
 
 	validates :name, presence: true, :uniqueness => {:case_sensitive => false}, :length => 3..80

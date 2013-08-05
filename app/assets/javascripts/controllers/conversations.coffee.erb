@@ -118,6 +118,7 @@ ps.controller "ConversationsPartialCtrl", ["$scope", "$location", "$timeout", "$
 			analytics.track 'click reveal embed url input',
 				href: window.location.href
 
+
 	$scope.end = ->
 		modalOptions =
 			backdrop: false
@@ -132,7 +133,7 @@ ps.controller "ConversationsPartialCtrl", ["$scope", "$location", "$timeout", "$
 		promise = reviewModal.open()
 		promise.then (review) ->
 			$scope.review = review if review
-			if $scope.review?.explanation and $scope.review?.rating and $scope.review?.vote != null
+			if $scope.review?.explanation and $scope.review?.rating and $scope.review?.vote? and $scope.review?.vote != 'pending'
 				$scope.conversation.state_event = 'end'
 				$scope.conversation.save (conversation) ->
 					$scope.app.currentUser.ready_conversations_count -= 1
@@ -226,7 +227,7 @@ ps.controller "ConversationsReviewModalCtrl", ["$scope", "dialog", "review", ($s
 		dialog.close($scope.review)
 
 	$scope.attemptComplete = ->
-		if $scope.review.explanation and $scope.review.rating and $scope.review.vote != null
+		if $scope.review.explanation and $scope.review.rating and $scope.review?.vote? and $scope.review?.vote != 'pending'
 			$scope.close()
 	_.defer ->
 		$scope.attemptComplete()

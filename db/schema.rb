@@ -247,7 +247,7 @@ ActiveRecord::Schema.define(:version => 20130803144049) do
     t.integer  "reviewable_id",   :null => false
     t.string   "reviewable_type", :null => false
     t.integer  "rating"
-    t.boolean  "vote"
+    t.string   "vote"
     t.integer  "user_id",         :null => false
     t.text     "explanation"
     t.datetime "created_at",      :null => false
