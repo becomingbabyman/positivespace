@@ -3,17 +3,17 @@
 		<div class="row-fluid">
 			<div class="span12">
 				<small>Improve your conversations by sharing anonymous feedback.</small>
-				<h5 ui-if="review.vote != null">
+				<p ui-if="review.vote != null">
 					You said this was
-					<span ui-if="review.vote">a <span class="color-primary font18">positive</span></span>
-					<span ui-if="!review.vote"><span class="color-danger font20">not</span> a positive</span>
+					<span ui-if="review.vote">a <span class="color-primary font22">positive</span></span>
+					<span ui-if="!review.vote"><span class="color-danger font22">not</span> a positive</span>
 					conversation.
-				</h5>
-				<h5 ui-if="review.rating">
+				</p>
+				<p ui-if="review.rating">
 					And liked it
 					<rating value="review.rating" max="10" readonly="true"></rating>
-					much
-				</h5>
+					much.
+				</p>
 				<p ui-if="review.explanation">
 					Going on to say: {{review.explanation}}
 				</p>

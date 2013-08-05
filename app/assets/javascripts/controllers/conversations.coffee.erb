@@ -90,7 +90,7 @@ ps.controller "ConversationsPartialCtrl", ["$scope", "$location", "$timeout", "$
 		$scope.options.redirectAfterSuccess = options.redirectAfterSuccess?
 		$scope.toggleExpand() if options.toggleExpand?
 
-	$scope.toggleExpand = ->
+	$scope.toggleExpand = (callback = null) ->
 		if $scope.expanded
 			$scope.expanded = false
 			$scope.messages = { collection: [] }
@@ -99,18 +99,19 @@ ps.controller "ConversationsPartialCtrl", ["$scope", "$location", "$timeout", "$
 			$scope.myMessage = new Message {user_id: $scope.conversation.partners_id, conversation_id: $scope.conversation.id}
 			$scope.show = {embedInput: false}
 			if $scope.messages.collection.length == 0
-				loadMessages()
+				loadMessages(callback)
 
 	$scope.goToFeedback = ->
-		$scope.toggleExpand() unless $scope.expanded
-		$timeout ->
-			$.scrollTo(".conversation-#{$scope.conversation.id} .endgame", 200)
-		, 1500
+		callback = ->
+			_.defer ->
+				$.scrollTo(".conversation-#{$scope.conversation.id} .endgame", 200)
+		$scope.toggleExpand(callback) unless $scope.expanded
 
 
-	loadMessages = ->
+	loadMessages = (callback = null) ->
 		query = {user_id: 'me', conversation_id: $scope.conversation.id}
-		$scope.messages = Message.query query
+		$scope.messages = Message.query query, (messages) ->
+			callback(messages) if callback?
 
 	$scope.$watch 'show.embedInput', (value) ->
 		if value
@@ -130,7 +131,6 @@ ps.controller "ConversationsPartialCtrl", ["$scope", "$location", "$timeout", "$
 		reviewModal = $dialog.dialog(modalOptions)
 		promise = reviewModal.open()
 		promise.then (review) ->
-			log review
 			$scope.review = review if review
 			if $scope.review?.explanation and $scope.review?.rating and $scope.review?.vote != null
 				$scope.conversation.state_event = 'end'
