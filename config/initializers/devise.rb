@@ -7,6 +7,10 @@ module Facebook
 
   SCOPE = "email"
 end
+module Twitter
+  CONSUMER_KEY = (["development","test"].include?(Rails.env)) ? "Ja4KnzCkXBqK8Jdge0dcYg" : ENV['TWITTER_CONSUMER_KEY']
+  CONSUMER_SECRET = (["development","test"].include?(Rails.env)) ? "4JyCc6NSLM1NuiEzW89OIv4dfsOYAYFk7rBYEXdz4" : ENV['TWITTER_CONSUMER_SECRET']
+end
 
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
@@ -227,8 +231,10 @@ Devise.setup do |config|
   if Rails.env == "development"
     OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
     config.omniauth :facebook, Facebook::APP_ID, Facebook::SECRET, {:scope => Facebook::SCOPE, :client_options => {:ssl => {:verify => false}} }
+    config.omniauth :twitter, Twitter::CONSUMER_KEY, Twitter::CONSUMER_SECRET
   else
     config.omniauth :facebook, Facebook::APP_ID, Facebook::SECRET, {:scope => Facebook::SCOPE, :client_options => {:ssl => {:ca_file => '/usr/lib/ssl/certs/ca-certificates.crt'}}} # :client_options => {:ssl => {:verify => false}} }
+    config.omniauth :twitter, Twitter::CONSUMER_KEY, Twitter::CONSUMER_SECRET
   end
 
   # ==> Warden configuration

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130803144049) do
+ActiveRecord::Schema.define(:version => 20130806172737) do
 
   create_table "achievements", :force => true do |t|
     t.string   "name"
@@ -375,6 +375,16 @@ ActiveRecord::Schema.define(:version => 20130803144049) do
     t.integer  "recieved_messages_count",      :default => 0,          :null => false
     t.integer  "spaces_count",                 :default => 0,          :null => false
     t.integer  "reviewed_count",               :default => 0,          :null => false
+    t.integer  "twitter_id"
+    t.string   "twitter_handle"
+    t.string   "twitter_time_zone"
+    t.integer  "twitter_statuses_count"
+    t.integer  "twitter_listed_count"
+    t.integer  "twitter_friends_count"
+    t.integer  "twitter_followers_count"
+    t.boolean  "twitter_verified"
+    t.boolean  "show_facebook",                :default => true,       :null => false
+    t.boolean  "show_twitter",                 :default => true,       :null => false
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true
@@ -400,6 +410,13 @@ ActiveRecord::Schema.define(:version => 20130803144049) do
   add_index "users", ["slug"], :name => "index_users_on_slug", :unique => true
   add_index "users", ["spaces_count"], :name => "index_users_on_spaces_count"
   add_index "users", ["state"], :name => "index_users_on_state"
+  add_index "users", ["twitter_followers_count"], :name => "index_users_on_twitter_followers_count"
+  add_index "users", ["twitter_friends_count"], :name => "index_users_on_twitter_friends_count"
+  add_index "users", ["twitter_handle"], :name => "index_users_on_twitter_handle"
+  add_index "users", ["twitter_id"], :name => "index_users_on_twitter_id"
+  add_index "users", ["twitter_listed_count"], :name => "index_users_on_twitter_listed_count"
+  add_index "users", ["twitter_statuses_count"], :name => "index_users_on_twitter_statuses_count"
+  add_index "users", ["twitter_verified"], :name => "index_users_on_twitter_verified"
   add_index "users", ["unlock_token"], :name => "index_users_on_unlock_token", :unique => true
   add_index "users", ["username"], :name => "index_users_on_username", :unique => true
 

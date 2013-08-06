@@ -2,7 +2,7 @@ object @user
 
 extends 'api/v1/users/base'
 
-attributes :body, :location, :personal_url, :created_at, :impressions_count, :state, :likers_count, :followers_count, :follows_count, :mentioners_count, :sent_conversations_count, :recieved_conversations_count
+attributes :body, :location, :personal_url, :created_at, :impressions_count, :state, :likers_count, :followers_count, :follows_count, :mentioners_count, :sent_conversations_count, :recieved_conversations_count, :show_facebook, :show_twitter
 attributes :settings, :sign_in_count, :last_sign_in_at, :updated_at, :gender, :birthday, :locale, :timezone, :remaining_invitations_count, :if => lambda { |u| can?(:update, u) }
 
 # TODO: remove this when there is a better/separate space editing UI

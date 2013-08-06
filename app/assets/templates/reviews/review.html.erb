@@ -4,7 +4,7 @@
 			<div class="span12">
 				<small>Improve your conversations by sharing anonymous feedback.</small>
 				<p ui-if="review.vote && review.vote != 'pending'">
-					You said this was a <span class="font22" ng-class="{'color-primary': review.vote == 'positive', 'color-danger': review.vote == 'negative', 'muted': review.vote == 'neutral'}">{{review.vote}}</span></span> conversation.
+					You said this was a <span class="font22" ng-class="{'color-primary': review.vote == 'positive', 'color-danger': review.vote == 'negative', '': review.vote == 'neutral'}">{{review.vote}}</span></span> conversation.
 				</p>
 				<p ui-if="review.rating">
 					And liked it

@@ -4,7 +4,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 	def facebook
 		@user = User.find_for_facebook(env["omniauth.auth"].extra.raw_info, current_user, session[:invitation_id], session[:invitation_code])
 
-		flash[:notice] = I18n.t "devise.omniauth_callbacks.success", :kind => "Facebook"
+		# flash[:notice] = I18n.t "devise.omniauth_callbacks.success", :kind => "Facebook"
 
 		if @user.persisted?
 			# session.delete(:invitation_id)
@@ -23,6 +23,17 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 		end
 
 		# respond_with @user
+	end
+
+	def twitter
+		@user = User.find_for_twitter(request.env["omniauth.auth"].extra.raw_info, params, current_user, session[:invitation_id], session[:invitation_code])
+		# render json: request.env["omniauth.auth"].to_json
+		if @user and @user.persisted?
+			sign_in @user, :event => :authentication
+			redirect_to params[:redirect_uri] if params[:redirect_uri]
+		else
+			render json: {error: 'Twitter account not associated with any Positive Space account. Pleace sign up with Facebook or Email and then connect your Twitter account.'}, template: false, status: 400
+		end
 	end
 
 	def passthru

@@ -31,10 +31,19 @@
 .btn-facebook
 	@include background-image(none)
 	@include text-shadow(none)
-	background-color: #3B5998
+	background-color: $color-facebook
 	color: white
 	&:hover
-		background-color: lighten(#3B5998, 10%)
+		background-color: lighten($color-facebook, 10%)
+		color: white
+
+.btn-twitter
+	@include background-image(none)
+	@include text-shadow(none)
+	background-color: $color-twitter
+	color: white
+	&:hover
+		background-color: lighten($color-twitter, 10%)
 		color: white
 
 

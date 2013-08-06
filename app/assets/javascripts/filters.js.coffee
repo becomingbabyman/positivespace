@@ -28,6 +28,14 @@ psFilters.filter "truncate", ->
 			else
 				String(text).substring(0, length - end.length) + end
 
+psFilters.filter 'currentUrl', ->
+	(url=null) ->
+		window.location.href
+
+psFilters.filter 'originUrl', ->
+	(url=null) ->
+		window.location.origin
+
 psFilters.filter 'urlEncode', ->
 	(url) ->
 		encodeURIComponent url

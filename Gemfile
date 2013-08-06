@@ -31,6 +31,7 @@ gem 'devise'
 gem 'devise-async'
 gem 'omniauth', '~> 1.1.1'
 gem 'omniauth-facebook', '1.4.0' # TODO: remove explicit version when CSRF bug is fixed http://stackoverflow.com/questions/11597130/omniauth-facebook-keeps-reporting-invalid-credentials
+gem 'omniauth-twitter'
 gem 'omniauth-openid'
 gem 'cancan'
 

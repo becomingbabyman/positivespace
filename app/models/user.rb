@@ -1,4 +1,7 @@
 class User < ActiveRecord::Base
+	USERNAME_FORMAT = /^[a-zA-Z][a-zA-Z0-9-]*$/
+	USERNAME_LENGTH = 3..18
+
 	include Gravtastic
 
 	include Tire::Model::Search
@@ -101,7 +104,7 @@ class User < ActiveRecord::Base
 
 	attr_accessor :login, :invitation_code, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :endorse_user_id
 	attr_accessible :username, :login, :email, :password, :password_confirmation, :remember_me
-	attr_accessible :bio, :location, :name, :personal_url, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :settings, :prompt, :skills, :interests #, :positive_response, :negative_response
+	attr_accessible :bio, :location, :name, :personal_url, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :settings, :prompt, :skills, :interests, :show_twitter, :show_facebook, :disconnect_facebook, :disconnect_twitter #, :positive_response, :negative_response
 	attr_protected :none, as: :admin
 
 	serialize :settings
@@ -135,7 +138,7 @@ class User < ActiveRecord::Base
 
 	accepts_nested_attributes_for :images, :avatars
 
-	validates :username, :uniqueness => {:case_sensitive => false}, :length => 3..18, :allow_blank => true, :if => Proc.new { |user| user.username != user.id.to_s }
+	validates :username, :uniqueness => {:case_sensitive => false}, :length => USERNAME_LENGTH, :allow_blank => true, :if => Proc.new { |user| user.username != user.id.to_s }
 	validates :bio, length: 1..250, allow_blank: true
 	validates :positive_response, length: 1..250, allow_blank: true
 	validates :negative_response, length: 1..250, allow_blank: true
@@ -149,6 +152,10 @@ class User < ActiveRecord::Base
 	scope :following, lambda{ |user_id| joins("INNER JOIN follows ON follows.followable_id = users.id AND follows.followable_type = 'User'").where("follows.follower_type = 'User' AND follows.follower_id = ?", user_id) }
 	scope :followers, lambda{ |user_id| joins(:follows).where("follows.followable_id = ? AND follows.followable_type = 'User' AND follows.follower_type = 'User'",user_id) }
 	scope :accepting_conversations_with, lambda{ |user_id| where{ id.not_in(User.joins(:recieved_conversations).where{ (recieved_conversations.from_id == user_id) }.select(:id)) } }
+
+	def self.username_is_valid? username
+		username =~ USERNAME_FORMAT and USERNAME_LENGTH.cover?(username.size) and !User.where(username: username).any? and !User.friendly_id_config.reserved_words.include?(username)
+	end
 
 	# Authenticate with email or username
 	def self.find_first_by_auth_conditions(warden_conditions)
@@ -164,6 +171,15 @@ class User < ActiveRecord::Base
 	# TODO: UNHACK: This is a whackasshack method
 	def self.find_for_facebook(fb_user, current_user=nil, invitation_id=nil, invitation_code=nil)
 		if current_user
+			attrs = {}
+			attrs[:name] = "#{fb_user.first_name} #{fb_user.last_name}" if !current_user.name or current_user.name == current_user.username
+			attrs[:username] = fb_user.username if current_user.username == current_user.id.to_s and User.username_is_valid?(fb_user.username)
+			attrs[:gender] = fb_user.gender unless current_user.gender
+			attrs[:birthday] = fb_user.try(:birthday) unless current_user.birthday
+			attrs[:locale] = fb_user.locale unless current_user.locale
+			attrs[:timezone] = fb_user.timezone.to_i unless current_user.timezone
+			attrs[:avatars_attributes] = [ { process_image_upload: true, remote_image_url: "https://graph.facebook.com/#{fb_user.id}/picture?type=large" } ] unless current_user.avatar
+			current_user.update_attributes attrs
 			current_user.update_attribute(:facebook_id, fb_user.id) if current_user.facebook_id != fb_user.id
 			current_user
 		elsif user = User.find_by_facebook_id(fb_user.id)
@@ -171,6 +187,7 @@ class User < ActiveRecord::Base
 		elsif user = User.find_by_email(fb_user.try(:email).try(:downcase))
 			attrs = {}
 			attrs[:name] = "#{fb_user.first_name} #{fb_user.last_name}" if !user.name or user.name == user.username
+			attrs[:username] = fb_user.username if user.username == user.id.to_s and User.username_is_valid?(fb_user.username)
 			attrs[:gender] = fb_user.gender unless user.gender
 			attrs[:birthday] = fb_user.try(:birthday) unless user.birthday
 			attrs[:locale] = fb_user.locale unless user.locale
@@ -194,6 +211,46 @@ class User < ActiveRecord::Base
 								 ]
 								 })#, invitation_id: invitation_id, invitation_code: invitation_code })
 			user.update_attribute(:facebook_id, fb_user.id)
+			user.update_attribute(:username, fb_user.username) if user.username == user.id.to_s and User.username_is_valid?(fb_user.username)
+			user
+		end
+	end
+
+	# Given twitter authentication data, find the user record
+	# TODO: UNHACK: This is a whackasshack method
+	def self.find_for_twitter(tw_user, params, current_user=nil, invitation_id=nil, invitation_code=nil)
+		tw_description = tw_user.description
+		tw_user.entities.description.urls.each do |url|
+			tw_description = tw_description.gsub url.url, url.expanded_url
+		end
+		if current_user
+			attrs = {}
+			attrs[:name] = tw_user.name if !current_user.name or current_user.name == current_user.username
+			attrs[:username] = tw_user.screen_name if current_user.username == current_user.id.to_s and User.username_is_valid?(tw_user.screen_name)
+			attrs[:bio] = tw_description if (params[:merge_bio] == 'true' or !current_user.bio) and (1..250).cover?(tw_description.try(:size))
+			attrs[:location] = tw_user.try(:location) unless current_user.location
+			attrs[:locale] = tw_user.lang unless current_user.locale
+			attrs[:twitter_handle] = tw_user.screen_name
+			attrs[:twitter_time_zone] = tw_user.time_zone
+			attrs[:twitter_statuses_count] = tw_user.statuses_count
+			attrs[:twitter_listed_count] = tw_user.listed_count
+			attrs[:twitter_friends_count] = tw_user.friends_count
+			attrs[:twitter_followers_count] = tw_user.followers_count
+			attrs[:twitter_verified] = tw_user.verified
+			attrs[:avatars_attributes] = [ { process_image_upload: true, remote_image_url: tw_user.profile_image_url_https.gsub('_normal.', '.') } ] unless current_user.avatar
+			current_user.update_attributes attrs
+			current_user.update_attribute(:twitter_id, tw_user.id) if current_user.twitter_id != tw_user.id
+			current_user
+		elsif user = User.find_by_twitter_id(tw_user.id)
+			attrs = {}
+			attrs[:twitter_handle] = tw_user.screen_name
+			attrs[:twitter_time_zone] = tw_user.time_zone
+			attrs[:twitter_statuses_count] = tw_user.statuses_count
+			attrs[:twitter_listed_count] = tw_user.listed_count
+			attrs[:twitter_friends_count] = tw_user.friends_count
+			attrs[:twitter_followers_count] = tw_user.followers_count
+			attrs[:twitter_verified] = tw_user.verified
+			user.update_attributes attrs
 			user
 		end
 	end
@@ -331,6 +388,14 @@ class User < ActiveRecord::Base
 		end
 	end
 
+	def disconnect_twitter= bool
+		self.twitter_id = nil if bool
+	end
+
+	def disconnect_facebook= bool
+		self.facebook_id = nil if bool
+	end
+
 	def track_achievement achievement_name
 		self.wins.create(achievement: Achievement.find_or_create_by_name(achievement_name.to_s)) unless self.has_achievement?(achievement_name)
 	end
@@ -456,7 +521,7 @@ private
 	end
 
 	def validate_username_format
-		unless self.username =~ /^[a-zA-Z][a-zA-Z0-9-]*$/ or self.username == self.id.to_s
+		unless self.username =~ USERNAME_FORMAT or self.username == self.id.to_s
 			errors.add(:username, "may only contain letters, numbers, and dashes")
 		end
 	end

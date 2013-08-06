@@ -148,11 +148,17 @@
 									<i class='icon-certificate'></i>
 								</a> -->
 								<i ng-show='!showShareMini && user.location.length > 0' class='icon-map-marker faded mrm' tooltip='{{user.location}}'></i>
-								<!-- <a ng-show='!showShareMini && user.facebook_id.length > 0' href='http://facebook.com/{{user.facebook_id}}' target='_blank' class='ghost uncenter mtl mrl font20'>
-									<i class="icon-facebook"></i>
-								</a> -->
+
 								<a ng-show='!showShareMini && user.personal_url.length > 0' href='{{user.personal_url}}' target='_blank' class='faded mrm' tooltip="{{user.personal_url}}">
 									<i class="icon-external-link"></i>
+								</a>
+
+								<a ng-show='!showShareMini && user.twitter_id && user.show_twitter' href='http://twitter.com/{{user.twitter_handle}}' target='_blank' class='faded mrm'>
+									<i class="icon-twitter"></i>
+								</a>
+
+								<a ng-show='!showShareMini && user.facebook_id && user.show_facebook' href='http://facebook.com/{{user.facebook_id}}' target='_blank' class='faded mrm'>
+									<i class="icon-facebook"></i>
 								</a>
 
 								<span class="faded pull-right">{{user.magnetism}} <i class="icon-magnet" tooltip='magnetism'></i></span>
