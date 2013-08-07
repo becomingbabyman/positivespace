@@ -1,6 +1,6 @@
 root = global ? window
 
-ps.controller "ConversationsIndexCtrl", ["$scope", "$location", "$timeout", "Conversation", "conversations", ($scope, $location, $timeout, Conversation, conversations) ->
+ps.controller "ConversationsIndexCtrl", ["$scope", "$location", "$timeout", "$route", "Conversation", "conversations", ($scope, $location, $timeout, $route, Conversation, conversations) ->
 	$scope.conversations = conversations
 	$scope.app.meta.title = "My Conversations"
 	$scope.selectedFilter = $location.search().filter or 'all'
@@ -11,6 +11,7 @@ ps.controller "ConversationsIndexCtrl", ["$scope", "$location", "$timeout", "Con
 
 	$scope.filter = (filter) ->
 		$location.search({filter: filter})
+		$route.reload()
 		analytics.track "filter conversations",
 			filter: filter
 
@@ -90,16 +91,30 @@ ps.controller "ConversationsPartialCtrl", ["$scope", "$location", "$timeout", "$
 		$scope.options.redirectAfterSuccess = options.redirectAfterSuccess?
 		$scope.toggleExpand() if options.toggleExpand?
 
+	loadMessages = (callback = null) ->
+		query = {user_id: 'me', conversation_id: $scope.conversation.id}
+		$scope.messages = Message.query query, (messages) ->
+			callback(messages) if callback?
+
 	$scope.toggleExpand = (callback = null) ->
 		if $scope.expanded
 			$scope.expanded = false
 			$scope.messages = { collection: [] }
 		else
 			$scope.expanded = true
+			_.defer ->
+				$.scrollTo(".conversation-#{$scope.conversation.id}", 200)
 			$scope.myMessage = new Message {user_id: $scope.conversation.partners_id, conversation_id: $scope.conversation.id}
 			$scope.show = {embedInput: false}
+			$location.search(angular.extend($location.search(), {conversation: $scope.conversation.id}))
 			if $scope.messages.collection.length == 0
 				loadMessages(callback)
+
+	if $location.search().conversation == String($scope.conversation.id)
+		$scope.toggleExpand()
+		$timeout ->
+			$.scrollTo(".conversation-#{$scope.conversation.id}", 200)
+		,500
 
 	$scope.goToFeedback = ->
 		callback = ->
@@ -107,11 +122,6 @@ ps.controller "ConversationsPartialCtrl", ["$scope", "$location", "$timeout", "$
 				$.scrollTo(".conversation-#{$scope.conversation.id} .endgame", 200)
 		$scope.toggleExpand(callback) unless $scope.expanded
 
-
-	loadMessages = (callback = null) ->
-		query = {user_id: 'me', conversation_id: $scope.conversation.id}
-		$scope.messages = Message.query query, (messages) ->
-			callback(messages) if callback?
 
 	$scope.$watch 'show.embedInput', (value) ->
 		if value

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130806172737) do
+ActiveRecord::Schema.define(:version => 20130807004103) do
 
   create_table "achievements", :force => true do |t|
     t.string   "name"
@@ -252,6 +252,7 @@ ActiveRecord::Schema.define(:version => 20130806172737) do
     t.text     "explanation"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
+    t.text     "tweet"
   end
 
   add_index "reviews", ["rating"], :name => "index_reviews_on_rating"
@@ -378,6 +379,7 @@ ActiveRecord::Schema.define(:version => 20130806172737) do
     t.integer  "twitter_id"
     t.string   "twitter_handle"
     t.string   "twitter_time_zone"
+    t.text     "twitter_access_token"
     t.integer  "twitter_statuses_count"
     t.integer  "twitter_listed_count"
     t.integer  "twitter_friends_count"

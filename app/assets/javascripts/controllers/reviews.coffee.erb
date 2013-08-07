@@ -1,23 +1,118 @@
 root = global ? window
 
-ps.controller "ReviewsReviewCtrl", ["$scope", "Review", ($scope, Review) ->
+ps.controller "ReviewsReviewCtrl", ["$scope", "$dialog", "$location", "Review", ($scope, $dialog, $location, Review) ->
 
 	$scope.init = (options = {}) ->
 		$scope.callback = options.callback
 
+	$scope.openThanks = ->
+		$location.search(angular.extend($location.search(), {rthanks: $scope.review.id}))
+		modalOptions =
+			backdrop: true
+			keyboard: true
+			backdropClick: true
+			templateUrl: "<%= asset_path('reviews/thanks_modal.html') %>"
+			controller: 'ReviewsThanksCtrl'
+			resolve:
+				review: ->
+					$scope.review
+				app: ->
+					$scope.app
+		thanksModal = $dialog.dialog(modalOptions)
+		promise = thanksModal.open()
+		promise.then (review) ->
+			$scope.review = review if review
+			delete($location.search()['rthanks'])
+			$location.search($location.search())
+
+	if $location.search().rthanks == String($scope.review.id)
+		$scope.openThanks()
+
 	$scope.$watch 'review.rating', (vNew, vOld) ->
 		$scope.saveReview() if vNew and vNew != vOld
+
 	$scope.saveReview = (opts = {}) ->
 		$scope.review = new Review $scope.review
 		angular.extend $scope.review, opts
 		success = (data) ->
 			$scope.reviewing = false
+			analytics.track 'save review success',
+				href: window.location.href
+				reviewId: $scope.review.id
+				reviewVote: $scope.review.vote
+				reviewRating: $scope.review.rating
+				reviewExplanation: $scope.review.explanation
+				reviewTweet: $scope.review.tweet
 			$scope.callback $scope.review if $scope.callback?
 		error = (error) ->
 			$scope.reviewing = false
 			$scope.app.flash 'error', error.data.errors
+			analytics.track 'save review success',
+				href: window.location.href
+				reviewId: $scope.review.id
+				reviewVote: $scope.review.vote
+				reviewRating: $scope.review.rating
+				reviewExplanation: $scope.review.explanation
+				reviewTweet: $scope.review.tweet
+				error: JSON.stringify(error)
 			$scope.callback $scope.review if $scope.callback?
 		$scope.reviewing = true
 		$scope.review.save success, error
+
+]
+
+ps.controller "ReviewsThanksCtrl", ["$scope", "dialog", "review", "app", "Review", ($scope, dialog, review, app, Review) ->
+	$scope.review = new Review review
+	$scope.app = app
+	$scope.close = ->
+		dialog.close($scope.review)
+
+	$scope.staticText = "positivespace.io/#{$scope.review.recipient.slug} via @positivespaceny"
+	possibleTweets = [
+		"I just had a great conversation on #{if $scope.review.recipient.twitter_handle then '@'+window.possessive($scope.review.recipient.twitter_handle) else window.possessive($scope.review.recipient.name)} Space #props"
+		"Check out #{if $scope.review.recipient.twitter_handle then '@'+window.possessive($scope.review.recipient.twitter_handle) else window.possessive($scope.review.recipient.name)} Space #talkMore"
+		"Thanks #{if $scope.review.recipient.twitter_handle then '@'+$scope.review.recipient.twitter_handle else $scope.review.recipient.name}. Great conversation #payingItForward"
+		"I just had a great conversation with #{if $scope.review.recipient.twitter_handle then '@'+$scope.review.recipient.twitter_handle else $scope.review.recipient.name} #respect"
+		"That helped a lot. Thanks #{if $scope.review.recipient.twitter_handle then '@'+$scope.review.recipient.twitter_handle else $scope.review.recipient.name}! #inspired"
+	]
+	$scope.shuffle = ->
+		$scope.editableText = possibleTweets[Math.floor(Math.random() * possibleTweets.length)]
+	$scope.shuffle()
+
+	$scope.$watch 'editableText', (value) ->
+		str = value + $scope.staticText
+		$scope.count = 140 - str.length
+
+	$scope.tweet = ->
+		if $scope.review.user.twitter_id
+			$scope.review.tweet = "#{$scope.editableText} #{$scope.staticText}"
+			$scope.tweeting = true
+			success = (data) ->
+				$scope.tweeting = false
+				analytics.track 'save review success',
+					href: window.location.href
+					reviewId: $scope.review.id
+					reviewVote: $scope.review.vote
+					reviewRating: $scope.review.rating
+					reviewExplanation: $scope.review.explanation
+					reviewTweet: $scope.review.tweet
+				if data.tweet
+					$scope.close()
+				else
+					$scope.app.flash 'error', "Sorry, there was a problem. Our developers have been notified. Please try again later."
+			error = (error) ->
+				$scope.tweeting = false
+				analytics.track 'save review success',
+					href: window.location.href
+					reviewId: $scope.review.id
+					reviewVote: $scope.review.vote
+					reviewRating: $scope.review.rating
+					reviewExplanation: $scope.review.explanation
+					reviewTweet: $scope.review.tweet
+					error: JSON.stringify(error)
+				$scope.app.flash 'error', "Sorry, there was a problem. Our developers have been notified. Please try again later."
+			$scope.review.save success, error
+		else
+			$scope.app.flash 'info', "Oops, you are not connected to Twitter yet."
 
 ]

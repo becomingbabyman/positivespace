@@ -26,7 +26,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 	end
 
 	def twitter
-		@user = User.find_for_twitter(request.env["omniauth.auth"].extra.raw_info, params, current_user, session[:invitation_id], session[:invitation_code])
+		@user = User.find_for_twitter(request.env["omniauth.auth"].extra.raw_info, request.env["omniauth.auth"].extra.access_token, params, current_user, session[:invitation_id], session[:invitation_code])
 		# render json: request.env["omniauth.auth"].to_json
 		if @user and @user.persisted?
 			sign_in @user, :event => :authentication

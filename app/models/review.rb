@@ -1,5 +1,5 @@
 class Review < ActiveRecord::Base
-	attr_accessible :explanation, :rating, :vote_event
+	attr_accessible :explanation, :rating, :vote_event, :tweet
 	attr_protected :none, as: :admin
 
 	state_machine :vote, :initial => :pending do
@@ -40,13 +40,29 @@ class Review < ActiveRecord::Base
 		[self.user]
 	end
 
+	# You can only tweet once per review
+	def tweet= msg
+		if !self.tweet and self.user.tweet(msg)
+			write_attribute(:tweet, msg)
+		end
+	end
+
+	def recipient
+		case self.reviewable_type
+		when 'Conversation'
+			self.reviewable.partner(self.user)
+		else
+			User.new
+		end
+	end
+
 private
 
 	def inc_conversation_magnetism
 		# If the conversation was positive
 		if self.positive?
 			# Find the person the reviewer was talking to
-			partner = (self.reviewable.from == self.user ? self.reviewable.to : self.reviewable.from)
+			partner = self.reviewable.partner(self.user)
 			# Only reviewers with magnetism > 107 can increase the magnetism of other people.
 			# Only conversations with > 3 messages are elligable for magnetism.
 			if self.user.magnetism > 107 and self.reviewable.messages_count > 3

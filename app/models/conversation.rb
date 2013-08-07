@@ -52,4 +52,14 @@ class Conversation < ActiveRecord::Base
 		end
 		rel
 	end
+
+	def partner user
+		if user == self.from
+			self.to
+		elsif user == self.to
+			self.from
+		else
+			false
+		end
+	end
 end

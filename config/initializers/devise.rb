@@ -10,6 +10,8 @@ end
 module Twitter
   CONSUMER_KEY = (["development","test"].include?(Rails.env)) ? "Ja4KnzCkXBqK8Jdge0dcYg" : ENV['TWITTER_CONSUMER_KEY']
   CONSUMER_SECRET = (["development","test"].include?(Rails.env)) ? "4JyCc6NSLM1NuiEzW89OIv4dfsOYAYFk7rBYEXdz4" : ENV['TWITTER_CONSUMER_SECRET']
+  OAUTH_TOKEN = (["development","test"].include?(Rails.env)) ? "1113296605-EnnReAAx32UnZGMxqw6MuGAmbX5gS8538hAjDjk" : ENV['TWITTER_OAUTH_TOKEN']
+  OAUTH_TOKEN_SECRET = (["development","test"].include?(Rails.env)) ? "xwO48nEMEuLCDJCI1EmLIe73O8TJ8j0cKUhNWwE1Ug" : ENV['TWITTER_OAUTH_TOKEN_SECRET']
 end
 
 # Use this hook to configure devise mailer, warden hooks and so forth.
@@ -259,4 +261,11 @@ Devise.setup do |config|
   # When using omniauth, Devise cannot automatically set Omniauth path,
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = "/my_engine/users/auth"
+end
+
+Twitter.configure do |config|
+  config.consumer_key = Twitter::CONSUMER_KEY
+  config.consumer_secret = Twitter::CONSUMER_SECRET
+  config.oauth_token = Twitter::OAUTH_TOKEN
+  config.oauth_token_secret = Twitter::OAUTH_TOKEN_SECRET
 end

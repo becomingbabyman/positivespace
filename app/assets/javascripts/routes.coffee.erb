@@ -39,15 +39,17 @@ ps.config ['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvid
 	# Conversations
 	.when "/inbox",
 		redirectTo: "/conversations"
+
 	.when "/conversations",
 		controller: "ConversationsIndexCtrl"
 		templateUrl: "<%= asset_path('conversations/index.html') %>"
-		# reloadOnSearch: false
+		reloadOnSearch: false
 		resolve:
 			conversations: root.resolves.conversationsIndex.conversations
 	.when "/conversations/:id",
 		controller: "ConversationsShowCtrl"
 		templateUrl: "<%= asset_path('conversations/show.html') %>"
+		reloadOnSearch: false
 		resolve:
 			conversation: root.resolves.conversationsShow.conversation
 
@@ -84,6 +86,7 @@ ps.config ['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvid
 	.when "/:user_id",
 		controller: "UsersShowCtrl"
 		templateUrl: "<%= asset_path('users/show.html') %>"
+		reloadOnSearch: false
 		resolve:
 			user: root.resolves.usersShow.user
 	.otherwise redirectTo: "/404"

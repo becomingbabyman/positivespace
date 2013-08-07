@@ -108,6 +108,7 @@ class User < ActiveRecord::Base
 	attr_protected :none, as: :admin
 
 	serialize :settings
+	serialize :twitter_access_token
 
 	has_paper_trail
 	extend FriendlyId
@@ -218,7 +219,7 @@ class User < ActiveRecord::Base
 
 	# Given twitter authentication data, find the user record
 	# TODO: UNHACK: This is a whackasshack method
-	def self.find_for_twitter(tw_user, params, current_user=nil, invitation_id=nil, invitation_code=nil)
+	def self.find_for_twitter(tw_user, access_token, params, current_user=nil, invitation_id=nil, invitation_code=nil)
 		tw_description = tw_user.description
 		tw_user.entities.description.urls.each do |url|
 			tw_description = tw_description.gsub url.url, url.expanded_url
@@ -240,6 +241,7 @@ class User < ActiveRecord::Base
 			attrs[:avatars_attributes] = [ { process_image_upload: true, remote_image_url: tw_user.profile_image_url_https.gsub('_normal.', '.') } ] unless current_user.avatar
 			current_user.update_attributes attrs
 			current_user.update_attribute(:twitter_id, tw_user.id) if current_user.twitter_id != tw_user.id
+			current_user.update_attribute(:twitter_access_token, access_token)
 			current_user
 		elsif user = User.find_by_twitter_id(tw_user.id)
 			attrs = {}
@@ -251,6 +253,7 @@ class User < ActiveRecord::Base
 			attrs[:twitter_followers_count] = tw_user.followers_count
 			attrs[:twitter_verified] = tw_user.verified
 			user.update_attributes attrs
+			current_user.update_attribute(:twitter_access_token, access_token)
 			user
 		end
 	end
@@ -411,6 +414,18 @@ class User < ActiveRecord::Base
 			invite = self.invitations.create
 			invitee.invitation_id = invite.id
 			invitee.endorse
+		end
+	end
+
+	def tweet msg
+		if self.twitter_access_token
+			client = Twitter::Client.new(
+				:oauth_token => self.twitter_access_token.params['oauth_token'],
+				:oauth_token_secret => self.twitter_access_token.params['oauth_token_secret']
+			)
+			client.update msg
+		else
+			false
 		end
 	end
 

@@ -5,6 +5,7 @@ class AddTwitterToUsers < ActiveRecord::Migration
     add_column :users, :twitter_handle, :string
     add_index :users, :twitter_handle
     add_column :users, :twitter_time_zone, :string
+    add_column :users, :twitter_access_token, :text
     add_column :users, :twitter_statuses_count, :integer
     add_index :users, :twitter_statuses_count
     add_column :users, :twitter_listed_count, :integer
