@@ -81,7 +81,7 @@ class User < ActiveRecord::Base
 	end
 	after_create :add_gravatar
 	# TODO: BETA: REMOVE: don't auto endorse people on create
-	after_create :endorse
+	# after_create :endorse
 	after_save do
 		# sync_slug if username != profile.slug
 		generate_username unless username?
