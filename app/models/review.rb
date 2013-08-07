@@ -32,6 +32,7 @@ class Review < ActiveRecord::Base
 	validates :reviewable_type, presence: true
 	validates :user_id, presence: true, uniqueness: {scope: [:reviewable_id, :reviewable_type]}
 	validates :rating, numericality: {only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 10}, allow_blank: true
+	validates :tweet, length: 1..140, allow_blank: true
 
 	scope :user_id, lambda { |id| where("reviews.user_id = ?", id) }
 
@@ -42,8 +43,14 @@ class Review < ActiveRecord::Base
 
 	# You can only tweet once per review
 	def tweet= msg
-		if !self.tweet and self.user.tweet(msg)
-			write_attribute(:tweet, msg)
+		if msg and !self.tweet
+			if !(1..140).cover?(msg)
+				# The validation will add the error msg
+				write_attribute(:tweet, msg)
+			elsif self.user.tweet(msg)
+				# TODO: should this be an update_attribute? We want to make sure this gets saved because we only want to call self.user.tweet(msg) once.
+				write_attribute(:tweet, msg)
+			end
 		end
 	end
 

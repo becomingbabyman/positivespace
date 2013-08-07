@@ -80,7 +80,7 @@ ps.controller "ReviewsThanksCtrl", ["$scope", "dialog", "review", "app", "Review
 	$scope.shuffle()
 
 	$scope.$watch 'editableText', (value) ->
-		str = value + $scope.staticText
+		str = "#{value} #{$scope.staticText}"
 		$scope.count = 140 - str.length
 
 	$scope.tweet = ->
@@ -110,7 +110,7 @@ ps.controller "ReviewsThanksCtrl", ["$scope", "dialog", "review", "app", "Review
 					reviewExplanation: $scope.review.explanation
 					reviewTweet: $scope.review.tweet
 					error: JSON.stringify(error)
-				$scope.app.flash 'error', "Sorry, there was a problem. Our developers have been notified. Please try again later."
+				$scope.app.flash 'error', error.data.errors
 			$scope.review.save success, error
 		else
 			$scope.app.flash 'info', "Oops, you are not connected to Twitter yet."
