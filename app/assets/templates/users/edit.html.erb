@@ -55,7 +55,7 @@
 
 						<div class="row-fluid pbl">
 							<div class="span6" ui-if="!user.twitter_id">
-								<a target="_self" href="/users/auth/twitter?force_login=true&image_size=original&redirect_uri={{ '' | currentUrl | urlEncode }}" class="btn btn-twitter btn-block">Connect twitter&nbsp;&nbsp;<i class='icon-twitter'></i></a>
+								<a target="_self" href="/users/auth/twitter?force_login=false&image_size=original&redirect_uri={{ '' | currentUrl | urlEncode }}" class="btn btn-twitter btn-block">Connect twitter&nbsp;&nbsp;<i class='icon-twitter'></i></a>
 							</div>
 							<div class="span6" ui-if="user.twitter_id">
 								<control-group label='Show link to twitter'>

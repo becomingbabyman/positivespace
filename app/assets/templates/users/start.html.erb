@@ -86,7 +86,7 @@
 
 									<div class="row-fluid ptl pbl">
 										<div class="span12" ui-if="!user.twitter_id">
-											<a target="_self" href="/users/auth/twitter?force_login=true&image_size=original&redirect_uri={{ '' | currentUrl | urlEncode }}" class="btn btn-twitter btn-block btn-large">Connect twitter&nbsp;&nbsp;<i class='icon-twitter'></i></a>
+											<a target="_self" href="/users/auth/twitter?force_login=false&image_size=original&redirect_uri={{ '' | currentUrl | urlEncode }}" class="btn btn-twitter btn-block btn-large">Connect twitter&nbsp;&nbsp;<i class='icon-twitter'></i></a>
 										</div>
 										<div class="span12" ui-if="user.twitter_id">
 											<control-group label='Show link to my twitter on my Space'>
@@ -122,7 +122,7 @@
 											&nbsp;
 											or
 											&nbsp;
-											<a target="_self" href="/users/auth/twitter?force_login=true&image_size=original&merge_bio=true&redirect_uri={{ '' | currentUrl | urlEncode }}" class="btn btn-twitter">Copy bio from twitter <i class='icon-twitter'></i></a>
+											<a target="_self" href="/users/auth/twitter?force_login=false&image_size=original&merge_bio=true&redirect_uri={{ '' | currentUrl | urlEncode }}" class="btn btn-twitter">Copy bio from twitter <i class='icon-twitter'></i></a>
 										</small>
 									</h4>
 

@@ -15,7 +15,7 @@
 			<a ng-disabled='!review.user.twitter_id' href='#' ng-click="tweet()" class="btn btn-twitter pull-right" ps-loading='tweeting'>Tweet&nbsp;&nbsp;<i class='icon-twitter'></i></a>
 			<span class="pull-right prm pts">{{count}}</span>
 
-			<a ui-if='!review.user.twitter_id' target="_self" href="/users/auth/twitter?force_login=true&image_size=original&redirect_uri={{ '' | currentUrl | urlEncode }}" class="btn btn-twitter">Connect to twitter&nbsp;&nbsp;<i class='icon-twitter'></i></a>
+			<a ui-if='!review.user.twitter_id' target="_self" href="/users/auth/twitter?force_login=false&image_size=original&redirect_uri={{ '' | currentUrl | urlEncode }}" class="btn btn-twitter">Connect to twitter&nbsp;&nbsp;<i class='icon-twitter'></i></a>
 		</div>
 	</div>
 </div>
