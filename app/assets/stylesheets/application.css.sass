@@ -924,16 +924,18 @@ input, textarea
 		&.expanded
 			max-height: 400px
 	.social-actions
-		.follow, .unfollow
+		.follow, .unfollow, .endorse
 			.text
-				@include transition-property(max-width)
+				@include transition-property(max-width, margin-left)
 				@include transition-duration(0.1s)
 				overflow: hidden
 				max-width: 0px
 				margin-top: 6px
+				margin-left: 0px
 			&:hover
 				.text
 					max-width: 100px
+					margin-left: 10px
 	.name
 		@include transition-property(color, padding-left)
 		@include transition-duration(0.1s)

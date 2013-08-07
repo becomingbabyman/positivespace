@@ -28,7 +28,7 @@ class Message < ActiveRecord::Base
 	acts_as_mentioner
 	belongs_to :to, :class_name => 'User', counter_cache: :recieved_messages_count
 	belongs_to :from, :class_name => 'User', counter_cache: :sent_messages_count
-	belongs_to :conversation, counter_cache: :messages_count
+	belongs_to :conversation, counter_cache: :messages_count, touch: true
 	has_many :magnetisms, :as => :attachable, :dependent => :destroy
 
 	validates :body, presence: true#, length: {maximum: 250}

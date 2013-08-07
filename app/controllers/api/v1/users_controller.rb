@@ -32,6 +32,9 @@ class Api::V1::UsersController < InheritedResources::Base
 	has_scope :endorsed, :only => :index, type: :boolean do |controller, scope, value|
 		scope.endorsed
 	end
+	has_scope :unendorsed, :only => :index, type: :boolean do |controller, scope, value|
+		scope.unendorsed
+	end
 	has_scope :order, :only => :index do |controller, scope, value|
 		if value == "RANDOM()"
 			scope.order("RANDOM()")

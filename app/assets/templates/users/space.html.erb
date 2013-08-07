@@ -86,16 +86,25 @@
 				</a>
 				<a href="#" class='faded follow' title='follow' ng-hide='user.has_follow || user.id == app.currentUser.id' ng-click='social("follow")'>
 					<i class="mts pls icon-bookmark-empty pull-right"></i>
-					<span class="mts pls pull-right font16 text">follow</span>
+					<span class="mts pull-right font16 text">follow</span>
 				</a>
 				<a href="#" class='color-purple unfollow' title="unfollow" ng-show='user.has_follow' ng-click='social("unfollow")'>
 					<i class="mts pls icon-bookmark pull-right opacity7 opacity-full-hover" title='unfollow'></i>
-					<span class="mts pls pull-right font16 text">unfollow</span>
+					<span class="mts pull-right font16 text">unfollow</span>
 				</a>
 				<span ng-show='user.relationship != "self"'>
 					<i class="mts pls icon-retweet faded pull-right" ng-show='user.relationship == "spoken"' title='You and {{user.name}} have spoken in the past.'></i>
 					<i class="mts pls icon-retweet color-yellow opacity7 pull-right" ng-show='user.relationship == "speaking"' title='You and {{user.name}} are in the middle of a conversation.'></i>
 				</span>
+
+				<a href="#" class='faded endorse' ui-if='user.state == "unendorsed" && (user.relationship == "spoken" || user.relationship == "speaking")' ng-click='endorse()'>
+					<i class='icon-certificate pull-right mts pls'></i>
+					<span class="mts pull-right font16 text" tooltip='Endorse this space - you have ( {{app.currentUser.remaining_invitations_count}} ) remaining' tooltip-placement='top'>endorse</span>
+				</a>
+				<a href="/{{user.invitation.user.slug}}" class='color-success' title='Endorsed by {{user.invitation.user.name || "Positive Space"}}' ui-if='user.state != "unendorsed"'>
+					<i class='icon-certificate pull-right mts pls'></i>
+				</a>
+
 				<a ng-href='/{{user.slug}}/edit' class='color-blue' title='edit' ng-show='user.relationship == "self"'>
 					<i class="mts pls icon-pencil pull-right"></i>
 				</a>

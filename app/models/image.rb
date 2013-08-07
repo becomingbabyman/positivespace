@@ -15,7 +15,7 @@ class Image < ActiveRecord::Base
 	#########################
 	#attr_reader
 	attr_accessible :image, :remote_image_url, :image_type, :attachable, :attachable_id, :attachable_type, :name, :lat, :lon, :user_id, :process_image_upload
-
+	attr_protected :none, as: :admin
 
 	#########################
 	# Associations

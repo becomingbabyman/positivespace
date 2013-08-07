@@ -40,7 +40,7 @@ class User < ActiveRecord::Base
 				indexes :gender,   		type: 'string',  analyzer: 'keyword'
 				indexes :locale,   		type: 'string',  analyzer: 'keyword'
 				indexes :timezone, 		type: 'string',  analyzer: 'keyword'
-				indexes :magnetism,     type: 'integer', index:    :not_analyzed
+				indexes :magnetism,     type: 'integer'
 				indexes :update_at,     type: 'date'
 				indexes :created_at,    type: 'date'
 				indexes :avatar_thumb_url, type: 'string', index:  :not_analyzed
@@ -144,12 +144,14 @@ class User < ActiveRecord::Base
 	validates :positive_response, length: 1..250, allow_blank: true
 	validates :negative_response, length: 1..250, allow_blank: true
 	validate  :validate_username_format
-	validate  :validate_can_endorse_user
+	# TODO: FIX: validate_can_endorse_user is called after the user gets endoresed. try to call it before, or hold of on endorsing until after it's called
+	# validate  :validate_can_endorse_user
 	# validate  :validate_invitation, on: :create
 
 
 	scope :unendorsed, where(state: 'unendorsed')
 	scope :endorsed, where(state: 'endorsed')
+	scope :unendorsed, where(state: 'unendorsed')
 	scope :following, lambda{ |user_id| joins("INNER JOIN follows ON follows.followable_id = users.id AND follows.followable_type = 'User'").where("follows.follower_type = 'User' AND follows.follower_id = ?", user_id) }
 	scope :followers, lambda{ |user_id| joins(:follows).where("follows.followable_id = ? AND follows.followable_type = 'User' AND follows.follower_type = 'User'",user_id) }
 	scope :accepting_conversations_with, lambda{ |user_id| where{ id.not_in(User.joins(:recieved_conversations).where{ (recieved_conversations.from_id == user_id) }.select(:id)) } }
@@ -268,6 +270,7 @@ class User < ActiveRecord::Base
 			filter :exists, { field: :current_space_prompt }
 			filter :not, { term: { current_space_prompt: '' } }
 			filter :not, { term: { state: :unendorsed } }
+			sort {by :magnetism, 'desc' }
 		end
 	end
 

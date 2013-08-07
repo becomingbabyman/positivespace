@@ -123,10 +123,10 @@ ps.controller "UsersStartCtrl", ["$scope", "$routeParams", "$timeout", "$locatio
 		s = 0
 		s = 1 if $scope.user.skills?.length > 0
 		s = 2 if $scope.user.interests?.length > 0 and s == 1
-		s = 3 if $scope.user.bio?.length > 0 and s == 2
-		s = 4 if $scope.user.prompt?.length > 0 and s == 3
-		s = 5 if $scope.user.location?.length > 0 and s == 4
-		s = 7 if _.include($scope.user.achievements_list, 'onboarded') and s == 5
+		s = 4 if $scope.user.bio?.length > 0 and s == 2
+		s = 5 if $scope.user.prompt?.length > 0 and s == 4
+		s = 6 if $scope.user.location?.length > 0 and s == 5
+		s = 7 if _.include($scope.user.achievements_list, 'onboarded') and s == 6
 		s
 	$scope.step = parseInt($routeParams.step) or nextIncompleteStep()
 	if $routeParams.step == '6' and $routeParams.suid?
@@ -647,7 +647,7 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 
 	$scope.app.dcu.promise.then (currentUser) ->
 		if $scope.user.id == currentUser.id
-			unless ("onboarded" in currentUser.achievements_list)
+			unless ("onboarded" in $scope.user.achievements_list)
 				# make sure user is onboarded
 				$location.path("/#{currentUser.slug}/start")
 			else
@@ -750,7 +750,7 @@ ps.controller "UsersSpaceCtrl", ["$scope", "$location", "User", "Message", ($sco
 			$scope.hasFocus = false
 
 	$scope.endorse = ->
-		if window.confirm("\nPlease note. This action cannot be undone. \n\nEndorsing this space will make it discoverable to the Positive Space community! And this space will forever link to yours. Do you want to endorse #{$scope.user.name}?")
+		if window.confirm("\nPlease note. This action cannot be undone. \n\nEndorsing this space will make it discoverable to the Positive Space community! And this space will forever be linked to yours. Do you want to endorse #{$scope.user.name}?")
 			if $scope.app.loggedIn()
 				$scope.user.state = 'endorsed'
 				$scope.user.invitation = {user: $scope.app.currentUser}

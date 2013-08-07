@@ -8,8 +8,8 @@ class Conversation < ActiveRecord::Base
 	attr_accessible :state_event
 	attr_protected :none, as: :admin
 
-	belongs_to :to, :class_name => 'User', counter_cache: :recieved_conversations_count
-	belongs_to :from, :class_name => 'User', counter_cache: :sent_conversations_count
+	belongs_to :to, :class_name => 'User', counter_cache: :recieved_conversations_count, touch: true
+	belongs_to :from, :class_name => 'User', counter_cache: :sent_conversations_count, touch: true
 	belongs_to :last_message, :class_name => 'Message'
 	belongs_to :last_message_from, :class_name => 'User'
 	belongs_to :space, counter_cache: :conversations_count

@@ -280,7 +280,7 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
     ################
     $scope.app.randomSpace = ->
         $scope.app.show.loading = true
-        User.query {per: 1, order: 'RANDOM()', publishable: true, accepting_conversations_with: $scope.app.currentUser?.id}, (users) ->
+        User.query {per: 1, order: 'RANDOM()', publishable: true, endorsed: true, accepting_conversations_with: $scope.app.currentUser?.id}, (users) ->
             $scope.app.show.loading = false
             $location.path("/#{users.collection[0].slug}")
 
