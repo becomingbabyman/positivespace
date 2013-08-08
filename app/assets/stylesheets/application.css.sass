@@ -535,6 +535,20 @@ input, textarea
 			float: left
 			margin-right: 10px
 		.z3z
+			i
+				font-family: FontAwesome
+				font-weight: normal
+				font-style: normal
+				text-decoration: inherit
+				-webkit-font-smoothing: antialiased
+				margin-right: -10px
+				&:before
+					text-decoration: inherit
+					display: inline-block
+					speak: none
+					content: "\f0a3"
+				color: lighten($color-success, 15%)
+				float: right
 			font-size: 17px
 			// color: #666
 		.z3z3
@@ -944,6 +958,14 @@ input, textarea
 		&:hover
 			padding-left: 24px
 			color: #999
+		.hint
+			@include transition-property(visibility, opacity)
+			@include transition-duration(0.1s)
+			color: #ccc
+			float: right
+			margin-top: 16px
+			visibility: visible
+			opacity: 1
 		.icon-expand-alt, .icon-collapse-alt
 			@include transition-property(visibility, opacity, width, left)
 			@include transition-duration(0.1s)
@@ -959,6 +981,9 @@ input, textarea
 				opacity: 1
 		&.expanded
 			padding-left: 24px
+			.hint
+				visibility: hidden
+				opacity: 0
 			.icon-collapse-alt
 				left: 0
 				visibility: visible

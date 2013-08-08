@@ -14,6 +14,7 @@ child @users => :collection do
 						html << image_tag(u.avatar_thumb_url, :class => "z4") if u.avatar_thumb_url
 					html << "</div>"
 					html << "<div class='z3z'>"
+						html << "<i></i>" if u.state == 'endorsed'
 						html << u.username if u.username
 						html << "<br/>"
 						html << "<div class='z3z3'>#{u.name}</div>" if u.name and u.name != u.username
