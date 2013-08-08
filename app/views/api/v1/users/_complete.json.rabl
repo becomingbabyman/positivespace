@@ -1,5 +1,5 @@
-object @user
-cache [@object, current_user]
+# object @user
+cache [root_object, current_user]
 
 extends 'api/v1/users/base'
 

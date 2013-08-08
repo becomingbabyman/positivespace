@@ -1,5 +1,5 @@
-object @image
-cache @object
+# object @image
+cache root_object
 
 attributes :id, :name, :lat, :lng, :image_type
 node do |image|

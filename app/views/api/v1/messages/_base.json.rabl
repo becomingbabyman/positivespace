@@ -1,5 +1,5 @@
-object @message
-cache @object
+# object @message
+cache root_object
 
 attributes :id, :body, :embed_url, :embed_data, :state, :conversation_id, :created_at
 

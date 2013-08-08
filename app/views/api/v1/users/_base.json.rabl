@@ -1,5 +1,5 @@
-object @user
-cache [@object, @object.avatar, @object.space]
+# object @user
+cache [root_object, root_object.avatar, root_object.space]
 
 attributes :id, :username, :name, :slug, :bio, :location, :personal_url, :facebook_id, :twitter_id, :twitter_handle, :magnetism, :created_at
 

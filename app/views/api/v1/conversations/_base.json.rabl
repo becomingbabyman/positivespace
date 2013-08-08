@@ -1,5 +1,5 @@
-object @conversation
-cache [@object, current_user]
+# object @conversation
+cache [root_object, current_user]
 
 attributes :id, :state, :created_at, :updated_at, :last_message_id, :last_message_from_id, :last_message_body, :prompt
 
