@@ -4,7 +4,7 @@ node(:total) { |i| @users.total_count }
 node(:total_pages) { |i| @users.num_pages }
 
 child @users => :collection do
-	cache @users
+	# cache @users
 
 	attributes :id, :slug
 
