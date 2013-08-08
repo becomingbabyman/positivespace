@@ -1,4 +1,5 @@
 object @review
+cache @object
 
 attributes :id, :reviewable_id, :reviewable_type, :user_id, :vote, :rating, :explanation, :tweet, :created_at, :updated_at
 

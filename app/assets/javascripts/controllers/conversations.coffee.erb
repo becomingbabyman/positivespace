@@ -103,7 +103,7 @@ ps.controller "ConversationsPartialCtrl", ["$scope", "$location", "$timeout", "$
 		else
 			$scope.expanded = true
 			_.defer ->
-				$.scrollTo(".conversation-#{$scope.conversation.id}", 200)
+				$.scrollTo(".conversation-#{$scope.conversation.id}", 400)
 			$scope.myMessage = new Message {user_id: $scope.conversation.partners_id, conversation_id: $scope.conversation.id}
 			$scope.show = {embedInput: false}
 			$location.search(angular.extend($location.search(), {conversation: $scope.conversation.id}))
@@ -113,13 +113,13 @@ ps.controller "ConversationsPartialCtrl", ["$scope", "$location", "$timeout", "$
 	if $location.search().conversation == String($scope.conversation.id)
 		$scope.toggleExpand()
 		$timeout ->
-			$.scrollTo(".conversation-#{$scope.conversation.id}", 200)
+			$.scrollTo(".conversation-#{$scope.conversation.id}", 400)
 		,500
 
 	$scope.goToFeedback = ->
 		callback = ->
 			_.defer ->
-				$.scrollTo(".conversation-#{$scope.conversation.id} .endgame", 200)
+				$.scrollTo(".conversation-#{$scope.conversation.id} .endgame", 400)
 		$scope.toggleExpand(callback) unless $scope.expanded
 
 

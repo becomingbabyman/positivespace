@@ -16,6 +16,6 @@ node :query do |i|
 end
 
 child @conversations => :collection do
-	cache [@conversations, @conversations.map { |c| c.to }, @conversations.map { |c| c.from }, current_user]
+	# cache [@conversations, @conversations.map { |c| c.to }, @conversations.map { |c| c.from }], expires_in: 1.day
 	extends 'api/v1/conversations/base'
 end

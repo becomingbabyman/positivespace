@@ -1,7 +1,7 @@
 object @user
+cache [@object, @object.avatar, @object.space]
 
-attributes :id, :username, :name, :slug, :bio, :body, :location, :personal_url, :facebook_id, :twitter_id, :twitter_handle, :magnetism
-attributes :email, :if => lambda { |u| can?(:update, u) }
+attributes :id, :username, :name, :slug, :bio, :location, :personal_url, :facebook_id, :twitter_id, :twitter_handle, :magnetism, :created_at
 
 child :avatar => :avatar do
 	extends 'api/v1/images/base'

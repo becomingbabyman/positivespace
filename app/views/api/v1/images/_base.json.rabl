@@ -1,4 +1,6 @@
 object @image
+cache @object
+
 attributes :id, :name, :lat, :lng, :image_type
 node do |image|
 	i = image.image
