@@ -29,7 +29,7 @@ ps.controller "ConversationsIndexCtrl", ["$scope", "$location", "$timeout", "$ro
 root.resolves.conversationsIndex =
 	conversations: ["$q", "$location", "Conversation", ($q, $location, Conversation) ->
 		defered = $q.defer()
-		query = {user_id: 'me', per: 10, page: 1}
+		query = {user_id: 'me', per: 5, page: 1}
 		filter = $location.search().filter or 'all'
 		switch filter
 			when 'all' then _.extend(query, {order: "updated_at DESC"})
