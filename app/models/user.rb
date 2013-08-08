@@ -270,7 +270,7 @@ class User < ActiveRecord::Base
 			filter :exists, { field: :current_space_prompt }
 			filter :not, { term: { current_space_prompt: '' } }
 			filter :not, { term: { state: :unendorsed } }
-			sort {by :magnetism, 'desc' }
+			sort { by :magnetism, 'desc' }
 		end
 	end
 
