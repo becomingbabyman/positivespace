@@ -86,7 +86,7 @@
 
 									<div class="row-fluid ptl pbl">
 										<div class="span12" ui-if="!user.twitter_id">
-											<a target="_self" href="/users/auth/twitter?force_login=false&image_size=original&redirect_uri={{ '' | currentUrl | urlEncode }}" class="btn btn-twitter btn-block btn-large">Connect twitter&nbsp;&nbsp;<i class='icon-twitter'></i></a>
+											<a target="_self" href="/users/auth/twitter?force_login=false&image_size=original&redirect_uri={{ '' | currentUrl | urlEncode }}" class="btn btn-twitter btn-block btn-large">Pull info from twitter&nbsp;&nbsp;<i class='icon-twitter'></i></a>
 										</div>
 										<div class="span12" ui-if="user.twitter_id">
 											<control-group label='Show link to my twitter on my Space'>
@@ -100,7 +100,7 @@
 
 									<div class="row-fluid ptl pbl">
 										<div class="span12" ui-if="!user.facebook_id">
-											<a target="_self" href="#" ng-click="fbConnect()" ps-loading="connectingFb" class="btn btn-facebook btn-block btn-large">Connect facebook&nbsp;&nbsp;<i class='icon-facebook'></i></a>
+											<a target="_self" href="#" ng-click="fbConnect()" ps-loading="connectingFb" class="btn btn-facebook btn-block btn-large">Pull info from facebook&nbsp;&nbsp;<i class='icon-facebook'></i></a>
 										</div>
 										<div class="span12" ui-if="user.facebook_id">
 											<control-group label='Show link to my facebook on my Space'>
