@@ -3,8 +3,8 @@
 		<div class="row-fluid intro">
 			<div class="span2">
 				<a href="#" ng-click='toggleExpand()'>
-					<img ng-src="{{conversation.from.avatar.thumb_url}}" alt="{{conversation.from.name}}" class="img-rounded img-border" ui-if='conversation.partners_id == conversation.from.id'>
-					<img ng-src="{{conversation.to.avatar.thumb_url}}" alt="{{conversation.to.name}}" class="img-rounded img-border" ui-if='conversation.partners_id == conversation.to.id'>
+					<img ng-src="{{conversation.from.avatar.thumb_url}}" alt="{{conversation.from.name}}" class="img-circle img-border" ui-if='conversation.partners_id == conversation.from.id'>
+					<img ng-src="{{conversation.to.avatar.thumb_url}}" alt="{{conversation.to.name}}" class="img-circle img-border" ui-if='conversation.partners_id == conversation.to.id'>
 				</a>
 			</div>
 			<div class="span10">
@@ -54,7 +54,7 @@
 									</time>
 								</small>
 								<a ng-href="/{{msg.from.slug}}" title='{{msg.from.name}}' class='faded'>
-									<img ng-src="{{msg.from.avatar.thumb_url}}" alt="{{msg.from.name}}" class="img-rounded img-border img-mini">
+									<img ng-src="{{msg.from.avatar.thumb_url}}" alt="{{msg.from.name}}" class="img-circle img-border img-mini">
 									<small class='from-name'>{{msg.from.name}}</small>
 								</a>
 							</div>
