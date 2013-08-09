@@ -32,6 +32,11 @@ link to past conversations of people you're browsing for context
 * only use yellow, blue, and red from the logo, only use green when yellow and blue overlap * "This feels like a brand"
 
 
+--- Subi - user test
+the landing page should be a random space, not the main space page
+show some sample conversations on the landing page
+
+
 --- Bugs
 bug after registration, clicking get started takes you to log in
 everything takes a really long time to load, especially the first page. maybe make the landing page static and then load angular in the background.

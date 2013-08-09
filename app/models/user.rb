@@ -423,8 +423,8 @@ class User < ActiveRecord::Base
 	def tweet msg
 		if self.twitter_access_token
 			client = Twitter::Client.new(
-				:oauth_token => self.twitter_access_token['params']['oauth_token'],
-				:oauth_token_secret => self.twitter_access_token['params']['oauth_token_secret']
+				:oauth_token => self.twitter_access_token.as_json['params']['oauth_token'],
+				:oauth_token_secret => self.twitter_access_token.as_json['params']['oauth_token_secret']
 			)
 			client.update msg
 		else

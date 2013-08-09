@@ -44,7 +44,7 @@ class Review < ActiveRecord::Base
 	# You can only tweet once per review
 	def tweet= msg
 		if msg and !self.tweet
-			if !(1..140).cover?(msg)
+			if !(1..140).cover?(msg.size)
 				# The validation will add the error msg
 				write_attribute(:tweet, msg)
 			elsif self.user.tweet(msg)
