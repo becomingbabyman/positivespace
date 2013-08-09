@@ -69,11 +69,16 @@ ps.controller "ReviewsThanksCtrl", ["$scope", "dialog", "review", "app", "Review
 
 	$scope.staticText = "positivespace.io/#{$scope.review.recipient.slug} via @positivespaceny"
 	possibleTweets = [
-		"I just had a great conversation on #{if $scope.review.recipient.twitter_handle then '@'+window.possessive($scope.review.recipient.twitter_handle) else window.possessive($scope.review.recipient.name)} Space #props"
-		"Check out #{if $scope.review.recipient.twitter_handle then '@'+window.possessive($scope.review.recipient.twitter_handle) else window.possessive($scope.review.recipient.name)} Space #talkMore"
-		"Thanks #{if $scope.review.recipient.twitter_handle then '@'+$scope.review.recipient.twitter_handle else $scope.review.recipient.name}. Great conversation #payingItForward"
-		"I just had a great conversation with #{if $scope.review.recipient.twitter_handle then '@'+$scope.review.recipient.twitter_handle else $scope.review.recipient.name} #respect"
+		"I just had a great conversation on #{if $scope.review.recipient.twitter_handle then '@'+window.possessive($scope.review.recipient.twitter_handle) else window.possessive($scope.review.recipient.name)} Space"
+		"Check out #{if $scope.review.recipient.twitter_handle then '@'+window.possessive($scope.review.recipient.twitter_handle) else window.possessive($scope.review.recipient.name)} Space"
+		"Thanks #{if $scope.review.recipient.twitter_handle then '@'+$scope.review.recipient.twitter_handle else $scope.review.recipient.name}"
+		"I just had a great conversation with #{if $scope.review.recipient.twitter_handle then '@'+$scope.review.recipient.twitter_handle else $scope.review.recipient.name} on +_"
 		"That helped a lot. Thanks #{if $scope.review.recipient.twitter_handle then '@'+$scope.review.recipient.twitter_handle else $scope.review.recipient.name}! #inspired"
+		"Great talk #{if $scope.review.recipient.twitter_handle then '@'+$scope.review.recipient.twitter_handle else $scope.review.recipient.name}"
+		"Talk to #{if $scope.review.recipient.twitter_handle then '@'+$scope.review.recipient.twitter_handle else $scope.review.recipient.name} on +_"
+		"Let's talk again #{if $scope.review.recipient.twitter_handle then '@'+$scope.review.recipient.twitter_handle else $scope.review.recipient.name}"
+		"#{if $scope.review.recipient.twitter_handle then '@'+$scope.review.recipient.twitter_handle else $scope.review.recipient.name} I really enjoyed our talk on +_"
+		"I've got mad love for the knowledge being dropped by #{if $scope.review.recipient.twitter_handle then '@'+$scope.review.recipient.twitter_handle else $scope.review.recipient.name}"
 	]
 	$scope.shuffle = ->
 		$scope.editableText = possibleTweets[Math.floor(Math.random() * possibleTweets.length)]

@@ -128,6 +128,25 @@ ps.controller "ConversationsPartialCtrl", ["$scope", "$location", "$timeout", "$
 			analytics.track 'click reveal embed url input',
 				href: window.location.href
 
+	$scope.openThanks = ->
+		$location.search(angular.extend($location.search(), {rthanks: $scope.review.id}))
+		modalOptions =
+			backdrop: true
+			keyboard: true
+			backdropClick: true
+			templateUrl: "<%= asset_path('reviews/thanks_modal.html') %>"
+			controller: 'ReviewsThanksCtrl'
+			resolve:
+				review: ->
+					$scope.review
+				app: ->
+					$scope.app
+		thanksModal = $dialog.dialog(modalOptions)
+		promise = thanksModal.open()
+		promise.then (review) ->
+			$scope.review = review if review
+			delete($location.search()['rthanks'])
+			$location.search($location.search())
 
 	$scope.end = ->
 		modalOptions =
@@ -144,6 +163,8 @@ ps.controller "ConversationsPartialCtrl", ["$scope", "$location", "$timeout", "$
 		promise.then (review) ->
 			$scope.review = review if review
 			if $scope.review?.explanation and $scope.review?.rating and $scope.review?.vote? and $scope.review?.vote != 'pending'
+				if $scope.review.vote == 'positive'
+					$scope.openThanks()
 				$scope.conversation.state_event = 'end'
 				$scope.conversation.save (conversation) ->
 					$scope.app.currentUser.ready_conversations_count -= 1
