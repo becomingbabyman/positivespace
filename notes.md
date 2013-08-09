@@ -3,6 +3,8 @@
 Positive Space
 
 Assisting Serendipity
+The oldest form of value exchange
+Help a stranger in 250 characters or less
 
 A network of helpful entrepreneurs. We connect dreamers and doers in mutually beneficial relationships.
 
