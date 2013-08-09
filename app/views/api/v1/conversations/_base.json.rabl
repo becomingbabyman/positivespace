@@ -1,5 +1,5 @@
 # object @conversation
-cache [root_object, current_user]
+cache [root_object, current_user, current_user.try(:review, root_object)]
 
 attributes :id, :state, :created_at, :updated_at, :last_message_id, :last_message_from_id, :last_message_body, :prompt
 
