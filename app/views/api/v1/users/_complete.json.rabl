@@ -1,5 +1,5 @@
 # object @user
-cache [root_object, current_user]
+cache [root_object, root_object.relationship(current_user), (current_user and root_object.liked_by?(current_user)), (current_user and root_object.followed_by?(current_user))]
 
 extends 'api/v1/users/base'
 
@@ -66,9 +66,9 @@ child :invitation => :invitation do
 end
 
 node :has_like do |u|
-	u.liked_by? current_user if current_user
+	u.liked_by?(current_user) if current_user
 end
 
 node :has_follow do |u|
-	u.followed_by? current_user if current_user
+	u.followed_by?(current_user) if current_user
 end
