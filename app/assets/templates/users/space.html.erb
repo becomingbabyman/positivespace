@@ -73,12 +73,6 @@
 						<i class='icon-star color-yellow'></i>
 					</a>
 
-					<a href="#" class='faded prm pull-left opacity6 opacity-full-hover' ng-show='user.state == "unendorsed"' tooltip='Endorse this space - you have ( {{app.currentUser.remaining_invitations_count}} ) remaining' ng-show='user.state == "unendorsed"' tooltip-placement='right' ng-click='endorse()'>
-						<i class='icon-heart-empty'></i>
-					</a>
-					<a href="/{{user.invitation.user.slug}}" class='prm pull-left opacity6 opacity-full-hover' title='Endorsed by {{user.invitation.user.name || "Positive Space"}}' ui-if='user.state != "unendorsed"'>
-						<i class='icon-heart color-purple'></i>
-					</a>
 					<i class='icon-bolt faded prm pull-left' title=''></i>
 				</div> -->
 				<a href="#" class='faded share' title='share'ng-click="showShareMini = !showShareMini">
@@ -97,12 +91,12 @@
 					<i class="mts pls icon-exchange faded pull-right" ng-show='user.relationship == "spoken"' title='You and {{user.name}} have spoken in the past.'></i>
 					<span class="mts pull-right font16 text faded" ng-show='user.relationship == "spoken"'>you've&nbsp;talked</span>
 					<i class="mts pls icon-exchange color-yellow opacity7 pull-right" ng-show='user.relationship == "speaking"' title='You and {{user.name}} are in the middle of a conversation.'></i>
-					<span class="mts pull-right font16 text color-yellow opacity7" ng-show='user.relationship == "speaking"'>currently&nbsp;talking</span>
+					<span class="mts pull-right font16 text color-yellow" ng-show='user.relationship == "speaking"'>currently&nbsp;talking</span>
 				</span>
 
 				<a href="#" class='faded endorse' ui-if='user.state == "unendorsed" && (user.relationship == "spoken" || user.relationship == "speaking")' ng-click='endorse()'>
-					<i class='icon-certificate pull-right mts pls'></i>
-					<span class="mts pull-right font16 text" tooltip='Endorse this space - you have ( {{app.currentUser.remaining_invitations_count}} ) remaining' tooltip-placement='top'>endorse</span>
+					<i class='icon-certificate pull-right mts pls' ps-tooltip="{content: 'You have ( ' + app.currentUser.remaining_invitations_count + ' ) remaining', options: {}}"></i>
+					<span class="mts pull-right font16 text">endorse</span>
 				</a>
 				<a href="/{{user.invitation.user.slug}}" class='color-success endorsed' title='Endorsed by {{user.invitation.user.name || "Positive Space"}}' ui-if='user.state != "unendorsed"'>
 					<i class='icon-certificate pull-right mts pls'></i>
