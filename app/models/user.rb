@@ -130,7 +130,7 @@ class User < ActiveRecord::Base
 	has_many :recieved_messages, :foreign_key => :to_id, :class_name => 'Message', :order => 'created_at desc'
 	has_many :sent_conversations, :foreign_key => :from_id, :class_name => 'Conversation', :order => 'created_at desc'
 	has_many :recieved_conversations, :foreign_key => :to_id, :class_name => 'Conversation', :order => 'created_at desc'
-	has_many :magnetisms, :order => 'created_at asc'
+	has_many :magnetisms, :order => 'created_at desc'
 	has_many :wins, :order => 'created_at asc'
 	has_many :achievements, through: :wins, :order => 'wins.created_at asc'
 	has_many :reviews, :order => 'created_at desc'

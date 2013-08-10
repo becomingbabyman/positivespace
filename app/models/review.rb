@@ -86,7 +86,7 @@ private
 			partner = (self.reviewable.from == self.user ? self.reviewable.to : self.reviewable.from)
 			# Only reviewers with magnetism > 999 can decrease the magnetism of other people.
 			if self.user.magnetism > 999
-				partner.magnetisms.where(inc: -2, reason: 'negative conversation review', attachable_id: self.id, attachable_type: self.class.to_s).first_or_create
+				partner.magnetisms.where(inc: -1, reason: 'negative conversation review', attachable_id: self.id, attachable_type: self.class.to_s).first_or_create
 			end
 		end
 	end

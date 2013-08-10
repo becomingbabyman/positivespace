@@ -23,17 +23,33 @@
 	</div>
 </div>
 
-<a href='/purpose' class='watermark' ng-class="{'hidden-phone': (app.show.footer && app.loggedIn()), hidden: (!app.show.footer || !app.loggedIn())}">
-	<h4 tooltip='my&nbsp;magnetism'>
-		{{app.currentUser.magnetism}}
-		<i class="icon-magnet"></i>
-	</h4>
-</a>
+<div class="watermark-wrap" ng-class="{'hidden-phone': (app.show.footer && app.loggedIn()), hidden: (!app.show.footer || !app.loggedIn())}">
+	<div class="iceberg">
+		<div class="row-fluid" ng-repeat="magnetism in app.currentUser.magnetisms">
+			<div class="span12">
+				<h5>{{magnetism.inc > 0 && '+'+magnetism.inc || magnetism.inc}} <small>for</small> {{magnetism.reason}} <small>{{magnetism.created_at | date:'MMM d'}}</small></h5>
+			</div>
+		</div>
+		<div class="row-fluid">
+			<div class="span12 center">
+				<small><a href="/purpose">Learn about magnetism</a></small>
+			</div>
+		</div>
+	</div>
+	<a href='/{{app.currentUser.slug}}' class='watermark'>
+		<h4 tootip="my&nbsp;magnetism">
+			{{app.currentUser.magnetism}}
+			<i class="icon-magnet"></i>
+		</h4>
+	</a>
+</div>
 
-<a href='#' class='watermark' ng-class="{'hidden-phone': (app.show.footer && !app.loggedIn()), hidden: (!app.show.footer || app.loggedIn())}" ng-click='app.clickPoweredBy()'>
-	<div class='powered-by'>powered&nbsp;by</div>
-	<br/>
-	<div class='positive-space'>Positive&nbsp;Space</div>
-	<!-- <div class='learn-more'>learn&nbsp;more</div> -->
-</a>
+<div class="watermark-wrap" ng-class="{'hidden-phone': (app.show.footer && !app.loggedIn()), hidden: (!app.show.footer || app.loggedIn())}" ng-click='app.clickPoweredBy()'>
+	<a href='#' class='watermark'>
+		<div class='powered-by'>powered&nbsp;by</div>
+		<br/>
+		<div class='positive-space'>Positive&nbsp;Space</div>
+		<!-- <div class='learn-more'>learn&nbsp;more</div> -->
+	</a>
+</div>
 

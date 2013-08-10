@@ -55,6 +55,10 @@ node :ended_conversations_count, :if => lambda { |u| can?(:update, u) } do |user
 	user.conversations.ended.size
 end
 
+child root_object.magnetisms.limit(5) do
+	attributes :id, :inc, :reason, :created_at
+end
+
 node :relationship do |user|
 	user.relationship(current_user)
 end
