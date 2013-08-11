@@ -11,7 +11,12 @@ class PagesController < ApplicationController
 
 	def wildcard
 		session[:show_angular] = true
-		render :layout => 'angular', :template => 'pages/wildcard'
+
+		if request.headers['X-PJAX']
+			render :layout => false, :template => 'pages/wildcard'
+		else
+			render :layout => 'angular', :template => 'pages/wildcard'
+		end
 	end
 
 	def robots

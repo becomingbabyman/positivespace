@@ -5,7 +5,8 @@
 	%body{ "ng-class" => "{focus: app.show.focus}" }
 
 		-# TODO: enable pjax
-		= yield
+		#pjax_container
+			= yield
 
 		= render "javascripts"
 		= render "facebook"

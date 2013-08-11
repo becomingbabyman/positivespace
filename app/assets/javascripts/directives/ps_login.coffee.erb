@@ -115,7 +115,7 @@ ps.directive 'psLogin', ["$timeout", "$routeParams", "$location", "User", ($time
 								$location.search(unescape($routeParams.search or '').replace('?', ''))
 								$location.path($routeParams.path)
 							else
-								$location.path("/")
+								$location.path("/conversations")
 							analytics.track 'sign in success',
 								type: 'form'
 								href: window.location.href

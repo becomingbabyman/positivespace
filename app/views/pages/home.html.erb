@@ -1,121 +1,152 @@
+<%= content_for :javascripts do %>
+	<script type="text/javascript">
+		if ($.support.pjax) {
+			$(document).on('click', '#landing a', function(event) {
+				$.pjax.click(event, {container: '#pjax_container'})
+				$(document).on('pjax:complete', function() {
+					$(document).ready(function(){
+						angular.bootstrap('html', ['ps'])
+					});
+				})
+			})
+		}
+	</script>
+<% end %>
+
 <div id="landing">
+	<div id="wrapper">
 
-	<div class="header">
-		<div class="container-fluid">
-			<div class="row-fluid center">
-				<div class="span12 ptl pbl">
-					<a href="/login" class="login opacity7 opacity-full-hover">Login</a>
-					<img src="<%= asset_path('ps_logo@2x.png') %>" alt='Positive Space' class='logo' style='height:50px;'>
+		<div class="header">
+			<div class="container-fluid">
+				<div class="row-fluid center">
+					<div class="span12 ptl pbl">
+						<a href="/login" class="login opacity7 opacity-full-hover">Login</a>
+						<img src="<%= asset_path('ps_logo@2x.png') %>" alt='Positive Space' class='logo' style='height:50px;'>
+					</div>
 				</div>
 			</div>
 		</div>
+
+		<div class="hero">
+			<div class="container">
+				<div class="row-fluid">
+					<div class="span12 center ptl pbl">
+						<h3 class=''>
+							Positive Space
+						</h3>
+						<h1 class='pbl'>
+							Realize every good dream.
+						</h1>
+						<a href="/register" class="cta btnf btnf-huge btnf-yellow mbm">
+							Create your Space
+						</a>
+						<p class='lead ptl'>
+							We connect people in a distributed network of positive relationships.
+						</p>
+						<h3 class="">
+							Get personal help, then pay it forward.
+						</h3>
+
+
+						<!-- <h2>
+							The focused network of helpful entrepreneurs.
+						</h2>
+						<h3>
+							Cut through the noise to your most pressing question, thought, or idea.
+						</h3>
+						<p>
+							Pose it in the form of a 250 character question.
+						</p>
+						<h3>
+							Then go find someone who you can help. The more people you help, the more people we will send to your question.
+						</h3> -->
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="social">
+			<div class="container social ptl pbl">
+				<div class="row-fluid">
+					<div class="span4">
+						<blockquote>
+							<p>
+								I found a professional chef to talk to. He helped get my food truck off the ground.
+							</p>
+							<small>Joe</small>
+						</blockquote>
+					</div>
+					<div class="span4">
+						<blockquote>
+							<p>
+								My initial idea for an app was invalidated after three days and 2 dozen conversations. Now I understand the problem better.
+							</p>
+							<small>Sarah</small>
+						</blockquote>
+					</div>
+					<div class="span4">
+						<blockquote>
+							<p>
+								There was so much I didn't know about freelancing, but after talking to Jean and Rene I'm finally ready to give it a shot.
+							</p>
+							<small>Kyle</small>
+						</blockquote>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="steps">
+			<div class="container ptl pbl">
+				<div class="row-fluid">
+					<div class="span4">
+						<h3>
+							Step 1.
+						</h3>
+						<p>
+							Create your Space. Share your good dream with the world in the form of one 250 character question.
+						</p>
+					</div>
+					<div class="span4">
+						<h3>
+							Step 2.
+						</h3>
+						<p>
+							Forget your dream for a moment and help other people with their dreams. Your Magnetism grows with every person you help.
+						</p>
+					</div>
+					<div class="span4">
+						<h3>
+							Step 3.
+						</h3>
+						<p>
+							Recieve exactly the help you need. We learn your strengths and weakness over time. Then we promote your Space to people who will help you realize your dream.
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="closing">
+			<div class="container ptl pbl">
+				<div class="row-fluid">
+					<div class="span12">
+						<a href="/register" class="btnf btnf-red pull-right mrl">
+							Create your Space
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="layout_footer"></div>
 	</div>
 
-	<div class="hero">
+	<div id='footer' class="footer">
 		<div class="container">
-			<div class="row-fluid">
-				<div class="span12 center ptl pbl">
-					<h3 class=''>
-						Positive Space
-					</h3>
-					<h1 class='ptm pbl'>
-						Realize every good dream.
-					</h1>
-					<a href="/login" class="cta btnf btnf-huge btnf-yellow mbm">
-						Create your Space
-					</a>
-					<p class='lead ptl'>
-						We connect humanity in a distributed network of positive relationships.
-					</p>
-					<h3 class="">
-						Get personal help then pay it forward.
-					</h3>
-
-
-					<!-- <h2>
-						The focused network of helpful entrepreneurs.
-					</h2>
-					<h3>
-						Cut through the noise to your most pressing question, thought, or idea.
-					</h3>
-					<p>
-						Pose it in the form of a 250 character question.
-					</p>
-					<h3>
-						Then go find someone who you can help. The more people you help, the more people we will send to your question.
-					</h3> -->
-
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="social">
-		<div class="container social ptl pbl">
-			<div class="row-fluid">
-				<div class="span4">
-					<blockquote>
-						<p>
-							I found a professional chef to talk to. He helped get my food truck off the ground.
-						</p>
-						<small>Joe</small>
-					</blockquote>
-				</div>
-				<div class="span4">
-					<blockquote>
-						<p>
-							My initial idea for an app was invalidated after three days and 2 dozen conversations. Now I understand the problem better.
-						</p>
-						<small>Sarah</small>
-					</blockquote>
-				</div>
-				<div class="span4">
-					<blockquote>
-						<p>
-							There was so much I didn't know about freelancing, but after talking to Jean and Rene I'm finally ready to give it a shot.
-						</p>
-						<small>Kyle</small>
-					</blockquote>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="steps">
-		<div class="container ptl pbl">
-			<div class="row-fluid">
-				<div class="span4">
-					<h3>
-						Step 1.
-					</h3>
-					<p>
-						Create your focused Space. Share your good dream with the world in the form of one 250 character question.
-					</p>
-				</div>
-				<div class="span4">
-					<h3>
-						Step 2.
-					</h3>
-					<p>
-						Forget your dream for a moment and help other people with their dreams. Your Space grows with every person you help.
-					</p>
-				</div>
-				<div class="span4">
-					<h3>
-						Step 3.
-					</h3>
-					<p>
-						Recieve exactly the help you need. We learn your strengths and weakness over time so we can promote your Space to people who will help you realize your dream.
-					</p>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="footer">
-		<div class="container">
-			<div class="row-fluid">
-				<div class="span12 ptl pbl">
+			<div class="row-fluid ptm">
+				<div class="span12 ptl">
 					<a href="/purpose" class='opacity7 opacity-full-hover'>purpose</a>
 					&middot;
 					<!-- <a href="#" class='opacity7 opacity-full-hover hidden-phone' onclick="_bugHerd.win.bugherd.applicationView.anonymousbar.toggleOptions()">feedback &middot;</a> -->

@@ -80,6 +80,16 @@ ps.controller "UsersLoginCtrl", ["$scope", "User", ($scope, User) ->
 	$scope.app.show.noChrome()
 	$scope.app.meta.title = "Log in · Positive Space"
 ]
+root.resolves.usersLogin =
+	user: ["$q", "$route", "$location", "User", ($q, $route, $location, User) ->
+		defered = $q.defer()
+		User.current (user) ->
+			# defered.resolve(user)
+			$location.path("/#{user.slug}")
+		, (error) ->
+			defered.resolve(false)
+		defered.promise
+	]
 
 
 # Register
