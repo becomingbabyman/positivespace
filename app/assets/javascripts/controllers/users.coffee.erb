@@ -721,16 +721,16 @@ ps.controller "UsersSettingsCtrl", ["$scope", "$location", "User", ($scope, $loc
 		$location.path('/login')
 
 	$scope.saveSettings = ->
-		$scope.app.show.loading = true
+		$scope.saving = true
 		success = (data) ->
-			$scope.app.show.loading = false
+			$scope.saving = false
 			$scope.app.flash 'success', 'Your settings have been saved'
 			analytics.track 'save settings success',
 				href: window.location.href
 				userId: $scope.app.currentUser.id
 				userName: $scope.app.currentUser.name
 		error = (error) ->
-			$scope.app.show.loading = false
+			$scope.saving = false
 			$scope.app.flash 'error', error.data.errors
 			analytics.track 'save settings error',
 				href: window.location.href

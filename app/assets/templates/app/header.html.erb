@@ -64,7 +64,11 @@
 		</ul>
 
 		<div class="brand-dropdown" ng-class='{open: app.show.headerDropdown}'>
-			<a href="#" ng-click='app.randomSpace()'  class="brand" ng-class='{"logged-in": app.loggedIn()}' title='Wander'>
+			<a href="#" ng-click='app.randomSpace()'  class="brand" ng-class='{"logged-in": app.loggedIn()}' title='Wander' ng-show='app.loggedIn()'>
+				<img src="<%= asset_path('ps_logo_inset@2x.png') %>" alt='Positive Space' class='inset'>
+				<img src="<%= asset_path('ps_logo@2x.png') %>" alt='Positive Space' class='colored'>
+			</a>
+			<a href="/" target="_self" class="brand" ng-class='{"logged-in": app.loggedIn()}' title='Wander' ng-hide='app.loggedIn()'>
 				<img src="<%= asset_path('ps_logo_inset@2x.png') %>" alt='Positive Space' class='inset'>
 				<img src="<%= asset_path('ps_logo@2x.png') %>" alt='Positive Space' class='colored'>
 			</a>
