@@ -5,17 +5,17 @@
     </a>
     <br/>
 
-    <div ng-show='app.loggedIn()'>
-        <h1>Oh wait. You're already in!</h1>
-        <a href='/' class='btn'>Go home</a>
-    </div>
+   <!--  <div ng-show='app.loggedIn()'>
+        <h1>You are already logged in!</h1>
+        <a href='/' class='btnf btnf-huge btnf-blue'>Go home</a>
+    </div> -->
 
-    <div ng-hide='app.loggedIn()'>
+    <div>
         <a class='btn btn-block btn-large btn-facebook' ng-click='fbLogin()' ps-loading='loggingInFb'>Connect with facebook</a>
         <p class='center ptl pbm'>- or -</p>
     </div>
 
-    <form name='login' class='form-vertical uncenter' ng-submit='login()' ng-hide='app.loggedIn()' novalidate style='width: 100%;'>
+    <form name='login' class='form-vertical uncenter' ng-submit='login()' novalidate style='width: 100%;'>
 
         <control-group>
             <div class="btn-group" ng-model="credentials.loginType" ps-buttons-radio style='width: 100%'>
