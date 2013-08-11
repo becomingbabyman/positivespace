@@ -626,10 +626,10 @@ input, textarea
 			&:hover
 				color: #888
 			&:active
-				bottom: -1px
-				right: 19px
+				top: -55px
+				right: -1px
 				left: auto
-				top: auto
+				bottom: auto
 			@media (max-width: 767px)
 				right: 0
 				&:active
@@ -947,6 +947,55 @@ input, textarea
 	.accordion-inner
 		border: none
 		// border-bottom: 1px solid #eee
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////
+//////////////////////////////////////////////////////
+/////////////////////// PAGES ////////////////////////
+//////////////////////////////////////////////////////
+//////////////////////////////////////////////////////
+
+
+//////////////////////////////////////////////////////
+/**                 landing style                  **/
+//////////////////////////////////////////////////////
+#landing
+	.header
+		.login
+			position: absolute
+			right: 40px
+			top: 34px
+			font-size: 18px
+			&:active
+				right: 39px
+				top: 33px
+				left: auto
+				bottom: auto
+
+	.hero
+		background: $color-blue
+		border-top: 1px solid #ccc
+		border-bottom: 1px solid #ccc
+		h3, h1, p
+			color: white
+			// @include text-shadow(1px 1px #999)
+			@include text-shadow(0 -1px 0 rgba(0, 0, 0, 0.25))
+
+		.cta
+			@include text-shadow(1px 1px darken($color-yellow, 10%))
+			@include box-shadow(0px 0px 10px rgba(255, 255, 255, 0.25))
+
+	.social
+
+	.steps
+
+	.footer
+
 
 
 //////////////////////////////////////////////////////

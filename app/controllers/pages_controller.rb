@@ -11,7 +11,7 @@ class PagesController < ApplicationController
 
 	def wildcard
 		session[:show_angular] = true
-		render :layout => 'angular', :template => 'pages/home'
+		render :layout => 'angular', :template => 'pages/wildcard'
 	end
 
 	def robots

@@ -11,9 +11,8 @@ ps.config ['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvid
 	$routeProvider
 
 	.when "/",
-		# redirectTo: '/space'
-		controller: "PagesRandomCtrl"
-		template: "<div></div>"
+		controller: "PagesCtrl"
+		templateUrl: "<%= asset_path('pages/home.html') %>"
 
 	# Pages
 	# .when "/",

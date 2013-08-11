@@ -49,6 +49,7 @@
 
 // Button Flip
 .btnf
+	display: inline-block
 	position: relative
 	color: black
 	background: white
@@ -113,36 +114,29 @@
 			border-color: rgba(0, 192, 255, 0)
 			border-top-color: $color-blue
 
-.btnf-follow
-	color: $color-purple
-	border-color: $color-purple
-	&:hover, &.active
-		color: white
-		background: $color-purple
-	&:hover.active
-		color: $color-purple
-		background: white
-
-.btnf-success
-	color: $green
-	border-color: $green
-	&:hover, &.active
-		color: white
-		background: $green
-	&:hover.active
-		color: $green
-		background: white
-
-.btnf-start
-	color: white
-	border-color: $yellow
-	background: lighten($yellow, 10%)
+@mixin btnf($color)
+	color: $color
+	border-color: $color
 	&:hover, &.active, &:visited:hover
 		color: white
-		background: $yellow
+		// @include text-shadow(0 -1px 0 rgba(0, 0, 0, 0.25))
+		background: $color
 	&:hover.active, &:visited
-		color: white
-		background: lighten($yellow, 10%)
+		color: $color
+		background: white
+
+.btnf-blue
+	@include btnf($color-blue)
+
+.btnf-red
+	@include btnf($color-red)
+
+.btnf-yellow
+	@include btnf($color-yellow)
+
+.btnf-green
+	@include btnf($color-green)
+
 
 .btnf-huge
 	font-size: 30px
@@ -168,6 +162,16 @@
 .color-text
 	color: $color-text
 
+.color-blue
+	color: $color-blue
+
+.color-red
+	color: $color-red
+
+.color-yellow
+	color: $color-yellow
+
+// TODO: remove some of these in favor of the brand colors
 .color-success
 	color: $color-success
 
@@ -177,11 +181,8 @@
 .color-danger
 	color: $color-danger
 
-.color-blue
-	color: $color-blue
-
 .color-green
-	color: $green
+	color: $color-green
 
 .color-orange
 	color: $color-orange
@@ -189,11 +190,6 @@
 .color-purple
 	color: $color-purple
 
-.color-red
-	color: $red //#E74C3C
-
-.color-yellow
-	color: $yellow //#FFE545
 
 // Social Colors
 .color-blogger
