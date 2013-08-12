@@ -170,6 +170,10 @@
 									<i class="icon-facebook"></i>
 								</a>
 
+								<a ng-show='!showShareMini && user.linkedin_id && user.linkedin_profile_url && user.show_linkedin' href='{{user.linkedin_profile_url}}' target='_blank' class='faded mrm'>
+									<i class="icon-linkedin"></i>
+								</a>
+
 								<span class="faded pull-right">{{user.magnetism}} <i class="icon-magnet" tooltip='magnetism'></i></span>
 
 								<!-- <div class='ptl'>

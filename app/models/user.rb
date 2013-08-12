@@ -104,11 +104,12 @@ class User < ActiveRecord::Base
 
 	attr_accessor :login, :invitation_code, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :endorse_user_id
 	attr_accessible :username, :login, :email, :password, :password_confirmation, :remember_me
-	attr_accessible :bio, :location, :name, :personal_url, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :settings, :prompt, :skills, :interests, :show_twitter, :show_facebook, :disconnect_facebook, :disconnect_twitter #, :positive_response, :negative_response
+	attr_accessible :bio, :location, :name, :personal_url, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :settings, :prompt, :skills, :interests, :show_twitter, :show_facebook, :disconnect_facebook, :disconnect_twitter, :disconnect_linkedin #, :positive_response, :negative_response
 	attr_protected :none, as: :admin
 
 	serialize :settings
 	serialize :twitter_access_token
+	serialize :linkedin_credentials
 
 	has_paper_trail
 	extend FriendlyId
@@ -260,6 +261,38 @@ class User < ActiveRecord::Base
 		end
 	end
 
+	# Given linkedin authentication data, find the user record
+	# TODO: UNHACK: This is a whackasshack method
+	def self.find_for_linkedin(li_data, params, current_user=nil, invitation_id=nil, invitation_code=nil)
+		bday = li_data.extra.raw_info.dateOfBirth
+		birthday = DateTime.new bday.year, bday.month, bday.day
+		if current_user
+			attrs = {}
+			attrs[:name] = li_data.info.name if !current_user.name or current_user.name == current_user.username
+			attrs[:email] = li_data.info.email unless current_user.email
+			attrs[:bio] = li_data.info.description if !current_user.bio and (1..250).cover?(li_data.info.description.try(:size)) and params[:merge_bio] == 'true'
+			attrs[:location] = li_data.info.location unless current_user.location
+			attrs[:birthday] = birthday unless current_user.birthday
+			attrs[:locale] = (li_data.extra.raw_info.location.country.code rescue nil) unless current_user.locale
+			attrs[:skills] = (li_data.extra.raw_info.skills.values[1][0..4].map{|v| v.skill.name}.join(',') rescue nil) if !current_user.skills.any? or params[:merge_skills] == 'true'
+			attrs[:interests] = (li_data.extra.raw_info.interests.split(',')[0..4].join(',') rescue nil) if !current_user.interests.any? or params[:merge_interests] == 'true'
+			attrs[:avatars_attributes] = [ { process_image_upload: true, remote_image_url: li_data.info.image } ] unless current_user.avatar
+			attrs[:linkedin_profile_url] = li_data.info.urls.public_profile
+			attrs[:linkedin_connections_count] = li_data.extra.raw_info.connections._total
+			current_user.update_attributes attrs
+			current_user.update_attribute(:linkedin_id, li_data.extra.raw_info.id) if current_user.linkedin_id != li_data.extra.raw_info.id
+			current_user.update_attribute(:linkedin_credentials, li_data.credentials)
+			current_user
+		elsif user = User.find_by_linkedin_id(li_data.extra.raw_info.id)
+			attrs = {}
+			attrs[:linkedin_profile_url] = li_data.info.urls.public_profile
+			attrs[:linkedin_connections_count] = li_data.extra.raw_info.connections._total
+			user.update_attributes attrs
+			current_user.update_attribute(:linkedin_credentials, li_data.credentials)
+			user
+		end
+	end
+
 	def self.search(params)
 		tire.search(load: false, page: params[:page], per_page: params[:per]) do
 			query do
@@ -400,6 +433,10 @@ class User < ActiveRecord::Base
 
 	def disconnect_facebook= bool
 		self.facebook_id = nil if bool
+	end
+
+	def disconnect_linkedin= bool
+		self.linkedin_id = nil if bool
 	end
 
 	def track_achievement achievement_name

@@ -213,6 +213,10 @@ GEM
       librato-metrics (~> 1.0.2)
       rails (>= 3.0)
     libv8 (3.11.8.17)
+    linkedin (0.4.2)
+      hashie (>= 1.2, < 2.1)
+      multi_json (~> 1.0)
+      oauth (~> 0.4)
     listen (1.1.1)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
@@ -251,6 +255,11 @@ GEM
       rack
     omniauth-facebook (1.4.0)
       omniauth-oauth2 (~> 1.0.2)
+    omniauth-github (1.0.1)
+      omniauth (~> 1.0)
+      omniauth-oauth2 (~> 1.0)
+    omniauth-linkedin (0.1.0)
+      omniauth-oauth (~> 1.0)
     omniauth-oauth (1.0.1)
       oauth
       omniauth (~> 1.0)
@@ -522,12 +531,15 @@ DEPENDENCIES
   kaminari
   letter_opener
   librato-rails
+  linkedin
   memcachier
   meta_request
   newrelic_rpm
   oj
   omniauth (~> 1.1.1)
   omniauth-facebook (= 1.4.0)
+  omniauth-github
+  omniauth-linkedin
   omniauth-openid
   omniauth-twitter
   paper_trail

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130807004103) do
+ActiveRecord::Schema.define(:version => 20130812021839) do
 
   create_table "achievements", :force => true do |t|
     t.string   "name"
@@ -387,6 +387,11 @@ ActiveRecord::Schema.define(:version => 20130807004103) do
     t.boolean  "twitter_verified"
     t.boolean  "show_facebook",                :default => true,       :null => false
     t.boolean  "show_twitter",                 :default => true,       :null => false
+    t.string   "linkedin_id"
+    t.text     "linkedin_credentials"
+    t.text     "linkedin_profile_url"
+    t.integer  "linkedin_connections_count"
+    t.boolean  "show_linkedin",                :default => true,       :null => false
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true
@@ -397,6 +402,7 @@ ActiveRecord::Schema.define(:version => 20130807004103) do
   add_index "users", ["follows_count"], :name => "index_users_on_follows_count"
   add_index "users", ["impressions_count"], :name => "index_users_on_impressions_count"
   add_index "users", ["likers_count"], :name => "index_users_on_likers_count"
+  add_index "users", ["linkedin_id"], :name => "index_users_on_linkedin_id"
   add_index "users", ["location"], :name => "index_users_on_location"
   add_index "users", ["magnetism"], :name => "index_users_on_magnetism"
   add_index "users", ["mentioners_count"], :name => "index_users_on_mentioners_count"

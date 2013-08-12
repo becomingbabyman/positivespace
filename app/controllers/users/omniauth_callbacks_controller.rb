@@ -36,6 +36,17 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 		end
 	end
 
+	def linkedin
+		@user = User.find_for_linkedin(request.env["omniauth.auth"], params, current_user, session[:invitation_id], session[:invitation_code])
+		# render json: request.env["omniauth.auth"].to_json
+		if @user and @user.persisted?
+			sign_in @user, :event => :authentication
+			redirect_to params[:redirect_uri] if params[:redirect_uri]
+		else
+			render json: {error: 'LinkedIn account not associated with any Positive Space account. Pleace sign up with Facebook or Email and then connect your LinkedIn account.'}, template: false, status: 400
+		end
+	end
+
 	def passthru
 		render :file => "#{Rails.root}/public/404.html", :status => 404, :layout => false
 	end

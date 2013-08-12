@@ -80,6 +80,20 @@
 							</div>
 						</div>
 
+						<div class="row-fluid pbl">
+							<div class="span6" ui-if="!user.linkedin_id">
+								<a target="_self" ng-click="cLinkedin = true" ps-loading="cLinkedin" href="/users/auth/linkedin?redirect_uri={{ '' | currentUrl | urlEncode }}" class="btn btn-linkedin btn-block btn-large">Pull info from linkedin&nbsp;&nbsp;<i class='icon-linkedin'></i></a>
+							</div>
+							<div class="span6" ui-if="user.linkedin_id">
+								<control-group label='Show link to linkedin '>
+									<a href="#" ng-click="disconnect('linkedin')" class='faded pull-right mrl mts' tooltip='Disconnect linkedin' tooltip-placement='left'>
+										<i class="icon-trash"></i>
+									</a>
+									<input type="checkbox" ng-model='user.show_linkedin' name="show_linkedin" onoffswitch>
+								</control-group>
+							</div>
+						</div>
+
 						<control-group label='Expertise' class='pbl mtm' no-color='true'>
 							<div class='pbm'>
 								<span class="muted">examples:</span>

@@ -346,6 +346,10 @@ ps.controller "UsersStartCtrl", ["$scope", "$routeParams", "$timeout", "$locatio
 				if window.confirm 'Are you sure you want to disconnect your facebook account?'
 					$scope.user.disconnect_facebook = true
 					$scope.saveSpace(false)
+			when 'linkedin'
+				if window.confirm 'Are you sure you want to disconnect your linkedin account?'
+					$scope.user.disconnect_linkedin = true
+					$scope.saveSpace(false)
 
 	$scope.fbConnect = () ->
 		$scope.connectingFb = true
@@ -546,6 +550,10 @@ ps.controller "UsersEditCtrl", ["$scope", "$routeParams", "$timeout", "$location
 			when 'facebook'
 				if window.confirm 'Are you sure you want to disconnect your facebook account?'
 					$scope.user.disconnect_facebook = true
+					$scope.saveSpace(false)
+			when 'linkedin'
+				if window.confirm 'Are you sure you want to disconnect your linkedin account?'
+					$scope.user.disconnect_linkedin = true
 					$scope.saveSpace(false)
 
 	$scope.fbConnect = () ->
