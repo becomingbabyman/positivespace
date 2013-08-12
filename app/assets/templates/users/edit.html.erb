@@ -82,7 +82,7 @@
 
 						<div class="row-fluid pbl">
 							<div class="span6" ui-if="!user.linkedin_id">
-								<a target="_self" ng-click="cLinkedin = true" ps-loading="cLinkedin" href="/users/auth/linkedin?redirect_uri={{ '' | currentUrl | urlEncode }}" class="btn btn-linkedin btn-block btn-large">Pull info from linkedin&nbsp;&nbsp;<i class='icon-linkedin'></i></a>
+								<a target="_self" ng-click="cLinkedin = true" ps-loading="cLinkedin" href="/users/auth/linkedin?redirect_uri={{ '' | currentUrl | urlEncode }}" class="btn btn-linkedin btn-block">Connect linkedin&nbsp;&nbsp;<i class='icon-linkedin'></i></a>
 							</div>
 							<div class="span6" ui-if="user.linkedin_id">
 								<control-group label='Show link to linkedin '>
