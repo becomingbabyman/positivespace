@@ -17,6 +17,10 @@ ps.config ['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvid
 			user: root.resolves.pagesHome.user
 		# templateUrl: "<%= asset_path('pages/home.html') %>"
 
+	.when "/previous/url",
+		controller: "PagesPreviousUrlCtrl"
+		template: "&nbsp;"
+
 	# Pages
 	# .when "/",
 	#   controller: "PagesCtrl"

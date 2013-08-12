@@ -1,7 +1,7 @@
 # object @user
 cache [root_object, root_object.avatar, root_object.space]
 
-attributes :id, :username, :name, :slug, :bio, :location, :personal_url, :facebook_id, :twitter_id, :twitter_handle, :linkedin_id, :linkedin_profile_url, :show_facebook, :show_twitter, :show_linkedin, :magnetism, :created_at
+attributes :id, :username, :name, :slug, :bio, :location, :personal_url, :facebook_id, :twitter_id, :twitter_handle, :linkedin_id, :linkedin_profile_url, :github_id, :github_login, :show_facebook, :show_twitter, :show_linkedin, :show_github, :magnetism, :created_at
 
 child :avatar => :avatar do
 	extends 'api/v1/images/base'

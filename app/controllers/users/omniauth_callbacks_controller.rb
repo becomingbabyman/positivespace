@@ -47,6 +47,17 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 		end
 	end
 
+	def github
+		@user = User.find_for_github(request.env["omniauth.auth"], params, current_user, session[:invitation_id], session[:invitation_code])
+		# render json: request.env["omniauth.auth"].to_json
+		if @user and @user.persisted?
+			sign_in @user, :event => :authentication
+			redirect_to "/previous/url"
+		else
+			render json: {error: 'GitHub account not associated with any Positive Space account. Pleace sign up with Facebook or Email and then connect your GitHub account.'}, template: false, status: 400
+		end
+	end
+
 	def passthru
 		render :file => "#{Rails.root}/public/404.html", :status => 404, :layout => false
 	end

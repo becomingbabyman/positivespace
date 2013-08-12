@@ -20,6 +20,10 @@ root.resolves.pagesHome =
 		defered.promise
 	]
 
+ps.controller "PagesPreviousUrlCtrl", ["$scope", "$location", ($scope, $location) ->
+	window.location.href = amplify.store('previousUrl') or "/"
+]
+
 ps.controller "PagesRandomCtrl", ["$scope", ($scope) ->
 	_.defer ->
 		$scope.app.randomSpace()

@@ -98,7 +98,7 @@
 					<i class='icon-certificate pull-right mts pls' ps-tooltip="{content: 'You have ( ' + app.currentUser.remaining_invitations_count + ' ) remaining', options: {}}"></i>
 					<span class="mts pull-right font16 text">endorse</span>
 				</a>
-				<a href="/{{user.invitation.user.slug}}" class='color-success endorsed' title='Endorsed by {{user.invitation.user.name || "Positive Space"}}' ui-if='user.state != "unendorsed"'>
+				<a href="/{{user.invitation.user.slug || 'space'}}" class='color-success endorsed' title='Endorsed by {{user.invitation.user.name || "Positive Space"}}' ui-if='user.state != "unendorsed"'>
 					<i class='icon-certificate pull-right mts pls'></i>
 					<span class="mts pull-right font16 text">endorsed</span>
 				</a>
@@ -172,6 +172,10 @@
 
 								<a ng-show='!showShareMini && user.linkedin_id && user.linkedin_profile_url && user.show_linkedin' href='{{user.linkedin_profile_url}}' target='_blank' class='faded mrm'>
 									<i class="icon-linkedin"></i>
+								</a>
+
+								<a ng-show='!showShareMini && user.github_id && user.github_login && user.show_github' href='http://github.com/{{user.github_login}}' target='_blank' class='faded mrm'>
+									<i class="icon-github"></i>
 								</a>
 
 								<span class="faded pull-right">{{user.magnetism}} <i class="icon-magnet" tooltip='magnetism'></i></span>

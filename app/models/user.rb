@@ -104,12 +104,13 @@ class User < ActiveRecord::Base
 
 	attr_accessor :login, :invitation_code, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :endorse_user_id
 	attr_accessible :username, :login, :email, :password, :password_confirmation, :remember_me
-	attr_accessible :bio, :location, :name, :personal_url, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :settings, :prompt, :skills, :interests, :show_twitter, :show_facebook, :disconnect_facebook, :disconnect_twitter, :disconnect_linkedin #, :positive_response, :negative_response
+	attr_accessible :bio, :location, :name, :personal_url, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :settings, :prompt, :skills, :interests, :show_twitter, :show_facebook, :show_linkedin, :show_github, :disconnect_facebook, :disconnect_twitter, :disconnect_linkedin, :disconnect_github #, :positive_response, :negative_response
 	attr_protected :none, as: :admin
 
 	serialize :settings
 	serialize :twitter_access_token
 	serialize :linkedin_credentials
+	serialize :github_credentials
 
 	has_paper_trail
 	extend FriendlyId
@@ -183,6 +184,7 @@ class User < ActiveRecord::Base
 			attrs[:locale] = fb_user.locale unless current_user.locale
 			attrs[:timezone] = fb_user.timezone.to_i unless current_user.timezone
 			attrs[:avatars_attributes] = [ { process_image_upload: true, remote_image_url: "https://graph.facebook.com/#{fb_user.id}/picture?type=large" } ] unless current_user.avatar
+			attrs[:facebook_email] = fb_user.email.downcase
 			current_user.update_attributes attrs
 			current_user.update_attribute(:facebook_id, fb_user.id) if current_user.facebook_id != fb_user.id
 			current_user
@@ -197,12 +199,14 @@ class User < ActiveRecord::Base
 			attrs[:locale] = fb_user.locale unless user.locale
 			attrs[:timezone] = fb_user.timezone.to_i unless user.timezone
 			attrs[:avatars_attributes] = [ { process_image_upload: true, remote_image_url: "https://graph.facebook.com/#{fb_user.id}/picture?type=large" } ] unless user.avatar
+			attrs[:facebook_email] = fb_user.email.downcase
 			user.update_attributes attrs
 			user.update_attribute(:facebook_id, fb_user.id)
 			user
 		else # Create a user.
 			password = SecureRandom.hex(20)
 			user = User.create({ email: fb_user.email.downcase,
+								 facebook_email: fb_user.email.downcase,
 								 name: "#{fb_user.first_name} #{fb_user.last_name}",
 								 gender: fb_user.gender,
 								 birthday: fb_user.try(:birthday),
@@ -270,6 +274,7 @@ class User < ActiveRecord::Base
 			attrs = {}
 			attrs[:name] = li_data.info.name if !current_user.name or current_user.name == current_user.username
 			attrs[:email] = li_data.info.email unless current_user.email
+			# By default do not merge this bio, try to get a connection to twitter first
 			attrs[:bio] = li_data.info.description if !current_user.bio and (1..250).cover?(li_data.info.description.try(:size)) and params[:merge_bio] == 'true'
 			attrs[:location] = li_data.info.location unless current_user.location
 			attrs[:birthday] = birthday unless current_user.birthday
@@ -277,6 +282,7 @@ class User < ActiveRecord::Base
 			attrs[:skills] = (li_data.extra.raw_info.skills.values[1][0..4].map{|v| v.skill.name}.join(',') rescue nil) if !current_user.skills.any? or params[:merge_skills] == 'true'
 			attrs[:interests] = (li_data.extra.raw_info.interests.split(',')[0..4].join(',') rescue nil) if !current_user.interests.any? or params[:merge_interests] == 'true'
 			attrs[:avatars_attributes] = [ { process_image_upload: true, remote_image_url: li_data.info.image } ] unless current_user.avatar
+			attrs[:linkedin_email] = li_data.info.email
 			attrs[:linkedin_profile_url] = li_data.info.urls.public_profile
 			attrs[:linkedin_connections_count] = li_data.extra.raw_info.connections._total
 			current_user.update_attributes attrs
@@ -285,10 +291,56 @@ class User < ActiveRecord::Base
 			current_user
 		elsif user = User.find_by_linkedin_id(li_data.extra.raw_info.id)
 			attrs = {}
+			attrs[:linkedin_email] = li_data.info.email
 			attrs[:linkedin_profile_url] = li_data.info.urls.public_profile
 			attrs[:linkedin_connections_count] = li_data.extra.raw_info.connections._total
 			user.update_attributes attrs
 			current_user.update_attribute(:linkedin_credentials, li_data.credentials)
+			user
+		end
+	end
+
+	# Given github authentication data, find the user record
+	# TODO: UNHACK: This is a whackasshack method
+	def self.find_for_github(gh_data, params, current_user=nil, invitation_id=nil, invitation_code=nil)
+		gh_user = gh_data.extra.raw_info
+		if current_user
+			attrs = {}
+			attrs[:name] = gh_user.name if !current_user.name or current_user.name == current_user.username
+			attrs[:email] = gh_user.email unless current_user.email
+			# By default do not merge this bio, try to get a connection to twitter first
+			attrs[:bio] = gh_user.bio if !current_user.bio and (1..250).cover?(gh_user.bio.try(:size)) and params[:merge_bio] == 'true'
+			attrs[:username] = gh_user.login if current_user.username == current_user.id.to_s and User.username_is_valid?(gh_user.login)
+			attrs[:location] = gh_user.location unless current_user.location
+			attrs[:avatars_attributes] = [ { process_image_upload: true, remote_image_url: gh_user.avatar_url } ] unless current_user.avatar
+			attrs[:github_login] = gh_user.login
+			attrs[:github_email] = gh_user.email
+			attrs[:github_hireable] = gh_user.hireable
+			attrs[:github_type] = gh_user.type
+			attrs[:github_company] = gh_user.company
+			attrs[:github_public_gists] = gh_user.public_gists
+			attrs[:github_public_repos] = gh_user.public_repos
+			attrs[:github_followers] = gh_user.followers
+			attrs[:github_following] = gh_user.following
+			attrs[:github_created_at] = gh_user.created_at
+			current_user.update_attributes attrs
+			current_user.update_attribute(:github_id, gh_user.id) if current_user.github_id != gh_user.id
+			current_user.update_attribute(:github_credentials, gh_data.credentials)
+			current_user
+		elsif user = User.find_by_github_id(gh_user.id)
+			attrs = {}
+			attrs[:github_login] = gh_user.login
+			attrs[:github_email] = gh_user.email
+			attrs[:github_hireable] = gh_user.hireable
+			attrs[:github_type] = gh_user.type
+			attrs[:github_company] = gh_user.company
+			attrs[:github_public_gists] = gh_user.public_gists
+			attrs[:github_public_repos] = gh_user.public_repos
+			attrs[:github_followers] = gh_user.followers
+			attrs[:github_following] = gh_user.following
+			attrs[:github_created_at] = gh_user.created_at
+			user.update_attributes attrs
+			current_user.update_attribute(:github_credentials, gh_data.credentials)
 			user
 		end
 	end
@@ -437,6 +489,10 @@ class User < ActiveRecord::Base
 
 	def disconnect_linkedin= bool
 		self.linkedin_id = nil if bool
+	end
+
+	def disconnect_github= bool
+		self.github_id = nil if bool
 	end
 
 	def track_achievement achievement_name

@@ -59,7 +59,7 @@
 								<a target="_self" href="/users/auth/twitter?force_login=false&image_size=original&redirect_uri={{ '' | currentUrl | urlEncode }}" class="btn btn-twitter btn-block">Connect twitter&nbsp;&nbsp;<i class='icon-twitter'></i></a>
 							</div>
 							<div class="span6" ui-if="user.twitter_id">
-								<control-group label='Show link to twitter'>
+								<control-group label='Show link to Twitter'>
 									<a href="#" ng-click="disconnect('twitter')" class='faded pull-right mrl mts' tooltip='Disconnect twitter' tooltip-placement='left'>
 										<i class="icon-trash"></i>
 									</a>
@@ -71,7 +71,7 @@
 								<a target="_self" href="#" ng-click="fbConnect()" ps-loading="connectingFb" class="btn btn-facebook btn-block">Connect facebook&nbsp;&nbsp;<i class='icon-facebook'></i></a>
 							</div>
 							<div class="span6" ui-if="user.facebook_id">
-								<control-group label='Show link to facebook'>
+								<control-group label='Show link to Facebook'>
 									<a href="#" ng-click="disconnect('facebook')" class='faded pull-right mrl mts' tooltip='Disconnect facebook' tooltip-placement='left'>
 										<i class="icon-trash"></i>
 									</a>
@@ -85,11 +85,23 @@
 								<a target="_self" ng-click="cLinkedin = true" ps-loading="cLinkedin" href="/users/auth/linkedin?redirect_uri={{ '' | currentUrl | urlEncode }}" class="btn btn-linkedin btn-block">Connect linkedin&nbsp;&nbsp;<i class='icon-linkedin'></i></a>
 							</div>
 							<div class="span6" ui-if="user.linkedin_id">
-								<control-group label='Show link to linkedin '>
+								<control-group label='Show link to LinkedIn '>
 									<a href="#" ng-click="disconnect('linkedin')" class='faded pull-right mrl mts' tooltip='Disconnect linkedin' tooltip-placement='left'>
 										<i class="icon-trash"></i>
 									</a>
 									<input type="checkbox" ng-model='user.show_linkedin' name="show_linkedin" onoffswitch>
+								</control-group>
+							</div>
+
+							<div class="span6" ui-if="!user.github_id">
+								<a target="_self" ng-click="cGithub = true" ps-loading="cGithub" href="/users/auth/github" class="btn btn-github btn-block">Pull info from GitHub&nbsp;&nbsp;<i class='icon-github'></i></a>
+							</div>
+							<div class="span6" ui-if="user.github_id">
+								<control-group label='Show link to GitHub'>
+									<a href="#" ng-click="disconnect('github')" class='faded pull-right mrl mts' tooltip='Disconnect github' tooltip-placement='left'>
+										<i class="icon-trash"></i>
+									</a>
+									<input type="checkbox" ng-model='user.show_github' name="show_github" onoffswitch>
 								</control-group>
 							</div>
 						</div>

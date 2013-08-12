@@ -133,10 +133,19 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
         for prefix in ['-moz-', '-webkit-', '-ms-', '-o-', '']
             $("#progress").css("#{prefix}transition-duration", duration)
 
+    $rootScope.$on "$routeUpdate", (event, next, current) ->
+        # Store the previous and current url in a cookie
+        amplify.store 'previousUrl', amplify.store('currentUrl')
+        amplify.store 'currentUrl', window.location.toString()
+
     $rootScope.$on "$routeChangeStart", (event, next, current) ->
         # Reset the meta tags
         $scope.app.meta.reset()
         $scope.app.meta.url = window.location.href
+
+        # Store the previous and current url in a cookie
+        amplify.store 'previousUrl', amplify.store('currentUrl')
+        amplify.store 'currentUrl', window.location.toString()
 
         # Make sure the chrome is visible
         $scope.app.show.allChrome()

@@ -19,6 +19,12 @@ module LinkedIn
   OAUTH_TOKEN = (["development","test"].include?(Rails.env)) ? "ef48a798-3567-45ba-a2d4-309c380b700e" : ENV['LINKEDIN_OAUTH_TOKEN']
   OAUTH_TOKEN_SECRET = (["development","test"].include?(Rails.env)) ? "588d5d14-c5f7-4a50-97da-18178d267d04" : ENV['LINKEDIN_OAUTH_TOKEN_SECRET']
 end
+module GitHub
+  CONSUMER_KEY = (["development","test"].include?(Rails.env)) ? "59a41c6231e58e106bdb" : ENV['GITHUB_CONSUMER_KEY']
+  CONSUMER_SECRET = (["development","test"].include?(Rails.env)) ? "2d95c759bdb78709cf7d887e4b07eddbd67211ca" : ENV['GITHUB_CONSUMER_SECRET']
+  # OAUTH_TOKEN = (["development","test"].include?(Rails.env)) ? "TODO" : ENV['GITHUB_OAUTH_TOKEN']
+  # OAUTH_TOKEN_SECRET = (["development","test"].include?(Rails.env)) ? "TODO" : ENV['GITHUB_OAUTH_TOKEN_SECRET']
+end
 
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
@@ -241,10 +247,12 @@ Devise.setup do |config|
     config.omniauth :facebook, Facebook::APP_ID, Facebook::SECRET, {:scope => Facebook::SCOPE, :client_options => {:ssl => {:verify => false}} }
     config.omniauth :twitter, Twitter::CONSUMER_KEY, Twitter::CONSUMER_SECRET
     config.omniauth :linkedin, LinkedIn::CONSUMER_KEY, LinkedIn::CONSUMER_SECRET, :scope => 'r_fullprofile r_emailaddress r_network w_messages', :fields => ["id", "first-name", "last-name", "headline", "location", "industry", "num-connections-capped", "summary", "specialties", "positions", "picture-url", "public-profile-url", "email-address", "associations", "interests", "publications", "patents", "languages", "skills", "certifications", "educations", "courses", "volunteer", "three-current-positions", "three-past-positions", "num-recommenders", "recommendations-received", "date-of-birth", "member-url-resources", "connections"]
+    config.omniauth :github, GitHub::CONSUMER_KEY, GitHub::CONSUMER_SECRET, scope: "user:email"
   else
     config.omniauth :facebook, Facebook::APP_ID, Facebook::SECRET, {:scope => Facebook::SCOPE, :client_options => {:ssl => {:ca_file => '/usr/lib/ssl/certs/ca-certificates.crt'}}} # :client_options => {:ssl => {:verify => false}} }
     config.omniauth :twitter, Twitter::CONSUMER_KEY, Twitter::CONSUMER_SECRET
     config.omniauth :linkedin, LinkedIn::CONSUMER_KEY, LinkedIn::CONSUMER_SECRET, :scope => 'r_fullprofile r_emailaddress r_network w_messages', :fields => ["id", "first-name", "last-name", "headline", "location", "industry", "num-connections-capped", "summary", "specialties", "positions", "picture-url", "public-profile-url", "email-address", "associations", "interests", "publications", "patents", "languages", "skills", "certifications", "educations", "courses", "volunteer", "three-current-positions", "three-past-positions", "num-recommenders", "recommendations-received", "date-of-birth", "member-url-resources", "connections"]
+    config.omniauth :github, GitHub::CONSUMER_KEY, GitHub::CONSUMER_SECRET, scope: "user:email"
   end
 
   # ==> Warden configuration

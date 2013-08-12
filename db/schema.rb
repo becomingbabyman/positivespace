@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130812021839) do
+ActiveRecord::Schema.define(:version => 20130812034355) do
 
   create_table "achievements", :force => true do |t|
     t.string   "name"
@@ -392,16 +392,35 @@ ActiveRecord::Schema.define(:version => 20130812021839) do
     t.text     "linkedin_profile_url"
     t.integer  "linkedin_connections_count"
     t.boolean  "show_linkedin",                :default => true,       :null => false
+    t.integer  "github_id"
+    t.boolean  "show_github",                  :default => true,       :null => false
+    t.text     "github_credentials"
+    t.boolean  "github_hireable"
+    t.string   "github_login"
+    t.string   "github_type"
+    t.string   "github_company"
+    t.integer  "github_public_repos"
+    t.integer  "github_public_gists"
+    t.integer  "github_followers"
+    t.integer  "github_following"
+    t.datetime "github_created_at"
+    t.string   "github_email"
+    t.string   "linkedin_email"
+    t.string   "facebook_email"
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["facebook_email"], :name => "index_users_on_facebook_email"
   add_index "users", ["facebook_id"], :name => "index_users_on_facebook_id"
   add_index "users", ["followers_count"], :name => "index_users_on_followers_count"
   add_index "users", ["follows_count"], :name => "index_users_on_follows_count"
+  add_index "users", ["github_email"], :name => "index_users_on_github_email"
+  add_index "users", ["github_id"], :name => "index_users_on_github_id"
   add_index "users", ["impressions_count"], :name => "index_users_on_impressions_count"
   add_index "users", ["likers_count"], :name => "index_users_on_likers_count"
+  add_index "users", ["linkedin_email"], :name => "index_users_on_linkedin_email"
   add_index "users", ["linkedin_id"], :name => "index_users_on_linkedin_id"
   add_index "users", ["location"], :name => "index_users_on_location"
   add_index "users", ["magnetism"], :name => "index_users_on_magnetism"
