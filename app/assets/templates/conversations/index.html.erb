@@ -32,7 +32,7 @@
 
 			<div infinite-scroll='loadMoreConversations()' infinite-scroll-disabled='busy' infinite-scroll-distance='1'>
 				<div ng-repeat="conversation in conversations.collection">
-					<div ng-include src="'<%= asset_path('conversations/conversation.html') %>'" ng-controller="ConversationsPartialCtrl" onload='init({animateExit:true})'></div>
+					<div ng-include="'<%= asset_path('conversations/conversation.html') %>'" ng-controller="ConversationsPartialCtrl" onload='init({animateExit:true})'></div>
 				</div>
 			</div>
 		</div>

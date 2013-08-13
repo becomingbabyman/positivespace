@@ -28,7 +28,7 @@
 						<div infinite-scroll='loadMoreUsers()' infinite-scroll-disabled='busy' infinite-scroll-distance='1'>
 							<div class="row-fluid pbl ptl" ng-repeat='user in users.collection'>
 								<div class="span12">
-									<div ng-include src="'<%= asset_path('users/space.html') %>'" ng-controller="UsersSpaceCtrl" onload=''></div>
+									<div ng-include="'<%= asset_path('users/space.html') %>'" ng-controller="UsersSpaceCtrl" onload=''></div>
 									<hr/>
 								</div>
 							</div>
@@ -46,7 +46,7 @@
 		<ul class='cols'>
 			<li class='col' ng-repeat='user in users.collection'>
 
-				<div ng-include src="'<%= asset_path('users/space.html') %>'" ng-controller="UsersSpaceCtrl" onload=''></div>
+				<div ng-include="'<%= asset_path('users/space.html') %>'" ng-controller="UsersSpaceCtrl" onload=''></div>
 
 				<div class='row-fluid ptl respond'>
 					<div class="span-mobile center">
