@@ -991,13 +991,26 @@ input, textarea
 		background: $color-blue
 		border-top: 1px solid #ccc
 		border-bottom: 1px solid #ccc
+		background: linear-gradient(45deg, #020031 0%,$color-blue 100%)
 		h3, h1, p
 			color: white
 			// @include text-shadow(1px 1px #999)
 			@include text-shadow(0 -1px 0 rgba(0, 0, 0, 0.25))
 		.cta
-			@include text-shadow(1px 1px darken($color-yellow, 12%))
-			@include box-shadow(0px 0px 10px rgba(0, 0, 0, 0.15))
+			@include text-shadow(0 0px 2px rgba(0, 0, 0, 0.25))
+			@include box-shadow(0px 0px 10px rgba(0, 0, 0, 0.35))
+			color: white
+			background: darken($color-yellow, 10%)
+			border-color: darken($color-yellow, 10%)
+			&:hover, &.active, &:visited:hover
+				color: white
+				// @include text-shadow(0 -1px 0 rgba(0, 0, 0, 0.25))
+				border-color: $color-yellow
+				background: $color-yellow
+			&:hover.active, &:visited
+				color: white
+				background: darken($color-yellow, 10%)
+				border-color: darken($color-yellow, 10%)
 
 	.social
 
