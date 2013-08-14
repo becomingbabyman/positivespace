@@ -138,9 +138,6 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
         amplify.store 'previousUrl', amplify.store('currentUrl')
         amplify.store 'currentUrl', window.location.toString()
 
-        # Angular SEO
-        $scope.htmlReady()
-
     $rootScope.$on "$routeChangeStart", (event, next, current) ->
         # Reset the meta tags
         $scope.app.meta.reset()
@@ -195,7 +192,9 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
             $(@).remove()
 
         # Angular SEO
-        $scope.htmlReady()
+        $timeout ->
+            $scope.htmlReady()
+        , 2000
 
     $rootScope.$on '$routeChangeError', (event, current, previous, rejection) ->
         # $location.path("/404")
