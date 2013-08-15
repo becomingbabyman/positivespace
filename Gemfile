@@ -80,6 +80,9 @@ gem 'rmagick'
 gem 'fog'
 gem 'gravtastic'
 
+# Site Map
+gem 'sitemap_generator'
+
 # Embedly API
 gem 'embedly'
 

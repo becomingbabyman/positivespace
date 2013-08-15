@@ -5,7 +5,7 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
     #
 
     $scope.app = {}
-    $scope.app.meta = {}
+    $scope.app.meta = {twitter: {}}
     $scope.app.alerts = {}
     $scope.app.helpMsgs = []
     $scope.app.currentUser = {}
@@ -104,8 +104,9 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
         $scope.app.meta.type = "website"
         $scope.app.meta.url = "http://www.positivespace.io/"
         $scope.app.meta.description = "We believe that it's too hard to start a conversation with a stranger. A lot of good ideas and relationships are missed because the right people never talk. We let the people and content you care about come to you."
-        $scope.app.meta.keywords = "positive, space, conversation, serendipity, meet, listen"
+        $scope.app.meta.keywords = "focused conversation, entrpenurial discussion, pay it forward, knowledge marketplace, private conversation, platonic dating, intimate conversation with strangers"
         $scope.app.meta.imageUrl = "<%= asset_path('ps_logo@2x.png') %>"
+        $scope.app.meta.twitter.creator = null
     $scope.app.meta.reset()
 
     #############

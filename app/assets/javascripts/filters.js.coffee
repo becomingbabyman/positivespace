@@ -71,3 +71,6 @@ psFilters.filter 'pluck', ->
 	(list, value) ->
 		_.pluck(list, value)
 
+psFilters.filter 'toHttps', ->
+	(url) -> url?.replace(/^.*\/\//, 'https://')
+

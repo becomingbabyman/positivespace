@@ -23,17 +23,26 @@
     -# Mobile viewport optimized: h5bp.com/viewport
     %meta{ :name => "viewport", :content => "width=device-width, initial-scale=1.0, maximum-scale=1.0" }
     %meta{ :name => "apple-mobile-web-app-capable", :content => "yes" }
-
-    %meta{property: "og:title", content: "{{app.meta.title}}"}
-    %meta{property: "og:type", content: "{{app.meta.type}}"}
-    %meta{property: "og:image", content: "{{app.meta.imageUrl}}"}
-    %meta{property: "og:url", content: "{{app.meta.url}}"}
-    %meta{property: "og:site_name", content: "Positive Space"}
-    %meta{property: "og:description", content: "{{app.meta.description}}"}
-
+    
+    -# TODO: make a directive to swap the content when angular loads so there is always a good default
     %meta{ :name => "description", :content => "{{app.meta.description}}" }
     %meta{ :name => "keywords", :content => "{{app.meta.keywords}}" }
     %title{ "ng-bind" => "app.currentUser.ready_conversations_count > 0 && '('+app.currentUser.ready_conversations_count+') ' + app.meta.title || app.meta.title" } Positive Space - Simply Converse
+
+    %meta{name: "twitter:card", content: "summary"}
+    %meta{name: "twitter:site", content: "@positivespaceny"}
+    %meta{name: "twitter:creator", content: "{{app.meta.twitter.creator}}"}
+    %meta{name: "twitter:title", content: "{{app.meta.title | truncate:70}}"}
+    %meta{name: "twitter:description", content: "{{app.meta.description}}"}
+    %meta{name: "twitter:image", content: "{{app.meta.imageUrl | toHttps}}"}
+
+    %meta{property: "og:url", content: "{{app.meta.url}}"}
+    %meta{property: "og:title", content: "{{app.meta.title}}"}
+    %meta{property: "og:image", content: "{{app.meta.imageUrl | toHttps}}"}
+    %meta{property: "og:type", content: "{{app.meta.type}}"}
+    %meta{property: "og:site_name", content: "Positive Space"}
+    %meta{property: "og:description", content: "{{app.meta.description}}"}
+
 
     = render "stylesheets"
 
