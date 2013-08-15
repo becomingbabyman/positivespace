@@ -88,6 +88,7 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
             $scope.app.dcu.resolve(userData)
         else
             $scope.app.currentUser = User.current $scope.app.dcu.resolve, $scope.app.dcu.reject
+        $scope.app.dcu.promise
     $scope.app.loadCurrentUser()
 
     $scope.app.loggedIn = ->
@@ -178,7 +179,7 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
             $scope.app.identify user
             # Apply help messages
             unless ('onboarded' in user.achievements_list) or current.$$route.templateUrl == "<%= asset_path('users/start.html') %>"
-                $scope.app.helpMsgs = ["Your Space is incomplete. <a href='/#{user.slug}/start' class='btnf btnf-start btn-large btn-warning'>Get started</a>"]
+                $scope.app.helpMsgs = ["Your Space is incomplete. <a href='/#{user.slug}/start' class='btnf btnf-gold'>Complete Space <i class='icon-arrow-right'></i></a>"]
             else
                 $scope.app.helpMsgs = []
 

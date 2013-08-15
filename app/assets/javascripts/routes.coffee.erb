@@ -13,9 +13,9 @@ ps.config ['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvid
 	.when "/",
 		controller: "PagesHomeCtrl"
 		template: "&nbsp;"
-		resolve:
-			user: root.resolves.pagesHome.user
-		# templateUrl: "<%= asset_path('pages/home.html') %>"
+	.when "/random",
+		controller: "PagesRandomCtrl"
+		template: "&nbsp;"
 
 	.when "/previous/url",
 		controller: "PagesPreviousUrlCtrl"

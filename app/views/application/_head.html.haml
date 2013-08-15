@@ -24,24 +24,23 @@
     %meta{ :name => "viewport", :content => "width=device-width, initial-scale=1.0, maximum-scale=1.0" }
     %meta{ :name => "apple-mobile-web-app-capable", :content => "yes" }
     
-    -# TODO: make a directive to swap the content when angular loads so there is always a good default
-    %meta{ :name => "description", :content => "{{app.meta.description}}" }
-    %meta{ :name => "keywords", :content => "{{app.meta.keywords}}" }
+    %meta{ :name => "description", :content => "We believe that it's too hard to start a conversation with a stranger. A lot of good ideas and relationships are missed because the right people never talk. We let the people and content you care about come to you.", replaceattr: "app.meta.description" }
+    %meta{ :name => "keywords", :content => "focused conversation, entrpenurial discussion, pay it forward, knowledge marketplace, private conversation, platonic dating, intimate conversation with strangers", replaceattr: "app.meta.keywords" }
     %title{ "ng-bind" => "app.currentUser.ready_conversations_count > 0 && '('+app.currentUser.ready_conversations_count+') ' + app.meta.title || app.meta.title" } Positive Space - Simply Converse
 
     %meta{name: "twitter:card", content: "summary"}
     %meta{name: "twitter:site", content: "@positivespaceny"}
-    %meta{name: "twitter:creator", content: "{{app.meta.twitter.creator}}"}
-    %meta{name: "twitter:title", content: "{{app.meta.title | truncate:70}}"}
-    %meta{name: "twitter:description", content: "{{app.meta.description}}"}
-    %meta{name: "twitter:image", content: "{{app.meta.imageUrl | toHttps}}"}
+    %meta{name: "twitter:creator", content: "", replaceattr: "app.meta.twitter.creator" }
+    %meta{name: "twitter:title", content: "Positive Space · Simply Converse", replaceattr: "app.meta.title | truncate:70" }
+    %meta{name: "twitter:description", content: "We believe that it's too hard to start a conversation with a stranger. A lot of good ideas and relationships are missed because the right people never talk. We let the people and content you care about come to you.", replaceattr: "app.meta.description" }
+    %meta{name: "twitter:image", content: "#{asset_path('ps_logo@2x.png')}", replaceattr: "app.meta.imageUrl | toHttps" }
 
-    %meta{property: "og:url", content: "{{app.meta.url}}"}
-    %meta{property: "og:title", content: "{{app.meta.title}}"}
-    %meta{property: "og:image", content: "{{app.meta.imageUrl | toHttps}}"}
-    %meta{property: "og:type", content: "{{app.meta.type}}"}
+    %meta{property: "og:url", content: "http://www.positivespace.io/", replaceattr: "app.meta.url" }
+    %meta{property: "og:title", content: "Positive Space · Simply Converse", replaceattr: "app.meta.title" }
+    %meta{property: "og:image", content: "#{asset_path('ps_logo@2x.png')}", replaceattr: "app.meta.imageUrl | toHttps" }
+    %meta{property: "og:type", content: "website", replaceattr: "app.meta.type" }
     %meta{property: "og:site_name", content: "Positive Space"}
-    %meta{property: "og:description", content: "{{app.meta.description}}"}
+    %meta{property: "og:description", content: "We believe that it's too hard to start a conversation with a stranger. A lot of good ideas and relationships are missed because the right people never talk. We let the people and content you care about come to you.", replaceattr: "app.meta.description" }
 
 
     = render "stylesheets"

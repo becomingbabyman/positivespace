@@ -1,0 +1,15 @@
+####################################################
+# Replace Attribute
+# Allows you to set a default attr for before compilation and then replaces it after with a dynamic attr
+# Most for use with meta tags
+# <meta replaceattr>
+ps.directive "replaceattr", ["$timeout", ($timeout) ->
+	restrict: "A"
+	scope:
+		replaceattr: '='
+	link: (scope, element, attrs) ->
+		scope.$watch 'replaceattr', (value) ->
+			switch element.prop("tagName")
+				when 'META'
+					if value?.length > 0 then attrs.$set 'content', value
+]

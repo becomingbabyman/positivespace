@@ -5,7 +5,11 @@ class PagesController < ApplicationController
 	def home
 		if current_user
 			# render :layout => 'angular', :template => 'pages/wildcard'
-			redirect_to "/#{current_user.slug}"
+			if current_user.slug and current_user.slug.size > 0
+				redirect_to "/#{current_user.slug}"
+			else
+				redirect_to "/login"
+			end
 		else
 			render :layout => 'angular', :template => 'pages/home'
 		end

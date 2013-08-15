@@ -206,6 +206,7 @@ class User < ActiveRecord::Base
 		else # Create a user.
 			password = SecureRandom.hex(20)
 			user = User.create({ email: fb_user.email.downcase,
+								 username: ( User.username_is_valid?(fb_user.username) ? fb_user.username : nil ),
 								 facebook_email: fb_user.email.downcase,
 								 name: "#{fb_user.first_name} #{fb_user.last_name}",
 								 gender: fb_user.gender,
@@ -219,7 +220,6 @@ class User < ActiveRecord::Base
 								 ]
 								 })#, invitation_id: invitation_id, invitation_code: invitation_code })
 			user.update_attribute(:facebook_id, fb_user.id)
-			user.update_attribute(:username, fb_user.username) if user.username == user.id.to_s and User.username_is_valid?(fb_user.username)
 			user
 		end
 	end

@@ -6,19 +6,13 @@ ps.controller "PagesCtrl", ["$scope", ($scope) ->
 ]
 
 ps.controller "PagesHomeCtrl", ["$scope", "$location", ($scope, $location) ->
-
+	$scope.app.show.loading = true
+	$scope.app.loadCurrentUser().then (user) ->
+		$scope.app.show.loading = false
+		if user.slug?.length > 0 then $location.path("/#{user.slug}") else $location.path("/random")
+	, (error) ->
+		window.location.href = "/"
 ]
-root.resolves.pagesHome =
-	user: ["$q", "$route", "$location", "User", ($q, $route, $location, User) ->
-		defered = $q.defer()
-		User.current (user) ->
-			# defered.resolve(user)
-			$location.path("/#{user.slug}")
-		, (error) ->
-			# defered.resolve(false)
-			window.location.href = "/"
-		defered.promise
-	]
 
 ps.controller "PagesPreviousUrlCtrl", ["$scope", "$location", ($scope, $location) ->
 	window.location.href = amplify.store('previousUrl') or "/"

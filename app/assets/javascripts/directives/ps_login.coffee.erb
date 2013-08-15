@@ -81,7 +81,8 @@ ps.directive 'psLogin', ["$timeout", "$routeParams", "$location", "User", ($time
 							username: element.find("#reg_username").val()
 						(data) ->
 							scope.registeringPsw = false
-							scope.app.loadCurrentUser data
+							# scope.app.loadCurrentUser data
+							scope.app.loadCurrentUser()
 							scope.credentials = {loginType: 'login'}
 							scope.app.flash 'success', "Welcome. Let's create your Space."
 							if $routeParams.path?
@@ -108,7 +109,8 @@ ps.directive 'psLogin', ["$timeout", "$routeParams", "$location", "User", ($time
 							# remember_me: rememberMe
 						(data) ->
 							scope.loggingInPsw = false
-							scope.app.loadCurrentUser data
+							# scope.app.loadCurrentUser data
+							scope.app.loadCurrentUser()
 							scope.credentials = {loginType: 'login'}
 							scope.app.flash 'success', "Welcome back!"
 							if $routeParams.path?
@@ -140,7 +142,8 @@ ps.directive 'psLogin', ["$timeout", "$routeParams", "$location", "User", ($time
 					if response.authResponse
 						$.get '/users/auth/facebook/callback', { signed_request: response.authResponse.signedRequest }, (data) ->
 							scope.loggingInFb = false
-							scope.app.loadCurrentUser data
+							# scope.app.loadCurrentUser data
+							scope.app.loadCurrentUser()
 							scope.app.flash 'success', "Welcome!"
 							if $routeParams.path?
 								$location.search(unescape($routeParams.search or '').replace('?', ''))
