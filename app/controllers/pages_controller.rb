@@ -20,7 +20,7 @@ class PagesController < ApplicationController
 
 		if request.headers['X-PJAX']
 			render :layout => false, :template => 'pages/wildcard'
-		elsif request.env["HTTP_USER_AGENT"] and request.env["HTTP_USER_AGENT"].match(/\(.*https?:\/\/.*\)/)
+		elsif request.env["HTTP_USER_AGENT"] and request.env["HTTP_USER_AGENT"].match(/\(.*https?:\/\/.*\)|Twitterbot/)
 			uri = URI("http://seo.positivespace.io#{request.path}")
 			uri.query = URI.encode_www_form(params)
 			req = Net::HTTP::Get.new(uri)

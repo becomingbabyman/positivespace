@@ -1,4 +1,4 @@
-<div class="row-fluid space" ng-class="{focused: hasFocus, unfocused: !hasFocus}">
+<div class="row-fluid space" ng-class="{focused: hasFocus, unfocused: !hasFocus}" itemscope itemtype="http://data-vocabulary.org/Person">
 	<div class="span12 center pos-rel">
 
 		<div class="row-fluid center expanded-share" ng-class="{expanded: showShareMini}">
@@ -107,8 +107,9 @@
 					<i class="mts pls icon-pencil pull-right"></i>
 					<span class="mts pull-right font16 text">edit</span>
 				</a>
+
 				<a href="#" ng-click="expanded = !expanded">
-					<img ng-src="{{user.avatar.thumb_url}}" alt="{{user.name}}" class="img-circle img-border img-thumb uncenter"></img>
+					<img ng-src="{{user.avatar.thumb_url}}" alt="{{user.name}}" class="img-circle img-border img-thumb uncenter" itemprop="photo"></img>
 				</a>
 			</div>
 		</div>
@@ -123,7 +124,9 @@
 								<small class="hint" ng-hide='app.currentUser.sign_in_count > 5'>expand</small>
 								<i class="icon-expand-alt"></i>
 								<i class="icon-collapse-alt"></i>
-								{{user.name}}
+								<span itemprop="name">
+									{{user.name}}
+								</span>
 							</a>
 						</h3>
 					</div>

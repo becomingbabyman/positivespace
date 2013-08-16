@@ -43,6 +43,6 @@ SitemapGenerator::Sitemap.create do
   # add '/', :priority => 0.8, :changefreq => 'daily', :host => 'http://tech.positivespace.io'
 
   User.endorsed.order('magnetism desc').find_each do |user|
-    add "/#{user.slug}", :lastmod => user.updated_at, :priority => 0.7, :changefreq => 'daily'
+    add "/#{user.slug}", :lastmod => user.updated_at, :priority => (0.7 + (0.0000000001 * user.magnetism)), :changefreq => 'daily'
   end
 end
