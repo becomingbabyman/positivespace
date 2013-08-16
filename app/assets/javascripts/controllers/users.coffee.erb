@@ -810,7 +810,7 @@ ps.controller "UsersSpaceCtrl", ["$scope", "$location", "User", "Message", ($sco
 					$location.search('path', "/#{$scope.user.slug}")
 					$location.path('/login')
 		else
-			alert("You must have a conversation with #{user.first_name} before you can endorse #{user.first_name}.")
+			alert("You must have a conversation with #{$scope.user.first_name} before you can endorse #{$scope.user.first_name}.")
 
 	$scope.social = (action) ->
 		has = "has_#{action.replace(/^un/, '')}"
