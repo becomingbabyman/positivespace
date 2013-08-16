@@ -94,7 +94,7 @@
 					<span class="mts pull-right font16 text color-yellow" ng-show='user.relationship == "speaking"'>currently&nbsp;talking</span>
 				</span>
 
-				<a href="#" class='faded endorse' ui-if='user.state == "unendorsed" && (user.relationship == "spoken" || user.relationship == "speaking")' ng-click='endorse()'>
+				<a href="#" class='faded endorse' ui-if='user.state == "unendorsed"' ng-click='endorse()'>
 					<i class='icon-certificate pull-right mts pls' ps-tooltip="{content: 'You have ( ' + app.currentUser.remaining_invitations_count + ' ) remaining', options: {}}"></i>
 					<span class="mts pull-right font16 text">endorse</span>
 				</a>

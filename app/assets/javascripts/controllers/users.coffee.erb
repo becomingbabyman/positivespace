@@ -776,38 +776,41 @@ ps.controller "UsersSpaceCtrl", ["$scope", "$location", "User", "Message", ($sco
 			$scope.hasFocus = false
 
 	$scope.endorse = ->
-		if window.confirm("\nPlease note. This action cannot be undone. \n\nEndorsing this space will make it discoverable to the Positive Space community! And this space will forever be linked to yours. Do you want to endorse #{$scope.user.name}?")
-			if $scope.app.loggedIn()
-				$scope.user.state = 'endorsed'
-				$scope.user.invitation = {user: $scope.app.currentUser}
-				User.update
-					id: $scope.app.currentUser.id
-					endorse_user: $scope.user.id
-				, (user) ->
-					$scope.app.flash 'success', "Awesome, #{$scope.user.name} is now officially part of the Positive Space community. #{$scope.user.first_name} will be notified and #{window.possessive($scope.user.first_name)} space is now linked to your space."
-					analytics.track "endorse space success",
-						href: window.location.href
-						userId: $scope.user.id
-						userName: $scope.user.name
-						userPrompt: $scope.user.space?.prompt
-						currentId: $scope.app.currentUser.id
-						currentName: $scope.app.currentUser.name
-				, (error) ->
-					$scope.user.state = 'unendorsed'
-					$scope.user.invitation = null
-					$scope.app.flash 'error', error.data.errors
-					analytics.track "endorse space error",
-						href: window.location.href
-						userId: $scope.user.id
-						userName: $scope.user.name
-						userPrompt: $scope.user.space?.prompt
-						currentId: $scope.app.currentUser.id
-						currentName: $scope.app.currentUser.name
-						error: JSON.stringify(error)
-			else
-				$scope.app.flash 'info', "Log in to endorse #{window.possessive($scope.user.first_name)} space"
-				$location.search('path', "/#{$scope.user.slug}")
-				$location.path('/login')
+		if (user.relationship == "spoken" || user.relationship == "speaking")
+			if window.confirm("\nPlease note. This action cannot be undone. \n\nEndorsing this space will make it discoverable to the Positive Space community! And this space will forever be linked to yours. Do you want to endorse #{$scope.user.name}?")
+				if $scope.app.loggedIn()
+					$scope.user.state = 'endorsed'
+					$scope.user.invitation = {user: $scope.app.currentUser}
+					User.update
+						id: $scope.app.currentUser.id
+						endorse_user: $scope.user.id
+					, (user) ->
+						$scope.app.flash 'success', "Awesome, #{$scope.user.name} is now officially part of the Positive Space community. #{$scope.user.first_name} will be notified and #{window.possessive($scope.user.first_name)} space is now linked to your space."
+						analytics.track "endorse space success",
+							href: window.location.href
+							userId: $scope.user.id
+							userName: $scope.user.name
+							userPrompt: $scope.user.space?.prompt
+							currentId: $scope.app.currentUser.id
+							currentName: $scope.app.currentUser.name
+					, (error) ->
+						$scope.user.state = 'unendorsed'
+						$scope.user.invitation = null
+						$scope.app.flash 'error', error.data.errors
+						analytics.track "endorse space error",
+							href: window.location.href
+							userId: $scope.user.id
+							userName: $scope.user.name
+							userPrompt: $scope.user.space?.prompt
+							currentId: $scope.app.currentUser.id
+							currentName: $scope.app.currentUser.name
+							error: JSON.stringify(error)
+				else
+					$scope.app.flash 'info', "Log in to endorse #{window.possessive($scope.user.first_name)} space"
+					$location.search('path', "/#{$scope.user.slug}")
+					$location.path('/login')
+		else
+			alert("You must have a conversation with #{user.first_name} before you can endorse #{user.first_name}.")
 
 	$scope.social = (action) ->
 		has = "has_#{action.replace(/^un/, '')}"
