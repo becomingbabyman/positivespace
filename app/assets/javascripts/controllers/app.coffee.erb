@@ -65,6 +65,9 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
             updated                   : user.updated_at
             updatedAt                 : user.updated_at
             facebookId                : user.facebook_id
+            twitterId                 : user.twitter_id
+            linkedinId                : user.linkedin_id
+            githubId                  : user.github_id
             signInCount               : user.sign_in_count
             personalUrl               : user.personal_url
             lastSignInAt              : user.last_sign_in_at
@@ -196,7 +199,7 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
         # Angular SEO
         $timeout ->
             $scope.htmlReady()
-        , 2000
+        , 1000
 
     $rootScope.$on '$routeChangeError', (event, current, previous, rejection) ->
         # $location.path("/404")

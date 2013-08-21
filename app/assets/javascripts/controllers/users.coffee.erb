@@ -167,6 +167,9 @@ ps.controller "UsersStartCtrl", ["$scope", "$routeParams", "$timeout", "$locatio
 	]
 	$scope.inputs.namePlaceholder = inspirationalPeople[Math.floor(Math.random() * inspirationalPeople.length)]
 	$scope.inputs.maxTagSize = 5
+	analytics.track "onboarding step #{$scope.step}",
+		userId: $scope.user.id
+		userName: $scope.user.name
 
 	# Can the user view the form
 	$scope.app.dcu.promise.then (currentUser) ->
