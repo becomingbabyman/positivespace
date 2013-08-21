@@ -323,5 +323,15 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
         else
             $scope.searchMobileQuery = query
 
+    $scope.app.openUserVoice = ->
+        UserVoice = window.UserVoice || []
+        UserVoice.push ['showLightbox', 'classic_widget',{
+            mode: 'full',
+            primary_color: '#00C0FF',
+            link_color: '#00C0FF',
+            default_mode: 'feedback',
+            forum_id: 218814
+        }]
+
 ]
 
