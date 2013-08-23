@@ -1,31 +1,9 @@
 # object @user
-cache [root_object, (root_object.relationship(current_user) rescue 'none'), (current_user and root_object.liked_by?(current_user)), (current_user and root_object.followed_by?(current_user))]
+cache [root_object, root_object.relationship(current_user), (current_user and root_object.liked_by?(current_user)), (current_user and root_object.followed_by?(current_user))]
 
 extends 'api/v1/users/base'
 
-attributes :impressions_count, :state, :likers_count, :followers_count, :follows_count, :mentioners_count, :sent_conversations_count, :recieved_conversations_count
 attributes :email, :settings, :sign_in_count, :last_sign_in_at, :updated_at, :gender, :birthday, :locale, :timezone, :remaining_invitations_count, :if => lambda { |u| can?(:update, u) }
-
-# TODO: remove this when there is a better/separate space editing UI
-node :prompt do |u|
-	u.try(:space).try(:prompt)
-end
-
-node :first_name do |user|
-	user.first_name
-end
-
-node :last_name do |user|
-	user.last_name
-end
-
-node :skills do |u|
-	u.skills.pluck(:name)
-end
-
-node :interests do |u|
-	u.interests.pluck(:name)
-end
 
 node :can_edit do |user|
 	can?(:update, user)
@@ -60,7 +38,7 @@ child root_object.magnetisms.limit(5) do
 end
 
 node :relationship do |user|
-	user.relationship(current_user) rescue 'none'
+	user.relationship(current_user)
 end
 
 child :invitation => :invitation do
