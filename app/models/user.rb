@@ -269,7 +269,7 @@ class User < ActiveRecord::Base
 	# TODO: UNHACK: This is a whackasshack method
 	def self.find_for_linkedin(li_data, params, current_user=nil, invitation_id=nil, invitation_code=nil)
 		bday = li_data.extra.raw_info.dateOfBirth
-		birthday = DateTime.new bday.year, bday.month, bday.day
+		birthday = (DateTime.new(bday.try(:year), bday.try(:month), bday.try(:day)) rescue nil)
 		if current_user
 			attrs = {}
 			attrs[:name] = li_data.info.name if !current_user.name or current_user.name == current_user.username
