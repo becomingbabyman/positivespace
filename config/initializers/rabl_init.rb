@@ -18,5 +18,5 @@ Rabl.configure do |config|
   config.include_child_root = false
   # config.enable_json_callbacks = false
   # config.xml_options = { :dasherize  => true, :skip_types => false }
-  # config.view_paths = []
+  config.view_paths = [Rails.root.join('app', 'views')]
 end
