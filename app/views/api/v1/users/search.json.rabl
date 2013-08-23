@@ -1,7 +1,7 @@
 object false
 
-node(:total) { |i| @users.total_count }
-node(:total_pages) { |i| @users.num_pages }
+node(:total) { |i| @users.total_count or 1 }
+node(:total_pages) { |i| @users.num_pages or 1 }
 
 child @users => :collection do
 	# cache @users

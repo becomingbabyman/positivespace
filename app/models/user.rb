@@ -1,3 +1,5 @@
+require 'ostruct'
+
 class User < ActiveRecord::Base
 	USERNAME_FORMAT = /^[a-zA-Z][a-zA-Z0-9-]*$/
 	USERNAME_LENGTH = 3..18
@@ -346,17 +348,28 @@ class User < ActiveRecord::Base
 	end
 
 	def self.search(params)
-		tire.search(load: false, page: params[:page], per_page: params[:per]) do
-			query do
-				match [:name, :username, :bio, :location, :personal_url, :skills, :interests, :current_space_prompt, :current_space_embed_url], params[:q]
-				## TODO: try to set default_operator, maybe it can't be set on a match
-				# default_operator: "AND"
+		begin
+			results = tire.search(load: false, page: params[:page], per_page: params[:per]) do
+				query do
+					match [:name, :username, :bio, :location, :personal_url, :skills, :interests, :current_space_prompt, :current_space_embed_url], params[:q]
+					## TODO: try to set default_operator, maybe it can't be set on a match
+					# default_operator: "AND"
+				end
+				filter :exists, { field: :current_space_prompt }
+				filter :not, { term: { current_space_prompt: '' } }
+				# filter :not, { term: { state: :unendorsed } }
+				sort { by :magnetism, 'desc' }
 			end
-			filter :exists, { field: :current_space_prompt }
-			filter :not, { term: { current_space_prompt: '' } }
-			# filter :not, { term: { state: :unendorsed } }
-			sort { by :magnetism, 'desc' }
+		rescue
+			# TODO: search skills, and interests
+			ar_results = User.joins(:spaces).where("users.name ILIKE ? OR users.username ILIKE ? OR users.bio ILIKE ? OR spaces.prompt ILIKE ?", "%#{params[:q]}%", "%#{params[:q]}%", "%#{params[:q]}%", "%#{params[:q]}%").page(params[:page]).per(params[:per])
+			results = ar_results.map{|u| OpenStruct.new(JSON.parse(u.to_indexed_json))}	
+			results.total_count = ar_results.total_count
+			results.num_pages = ar_results.num_pages
+		ensure
+			# nothing to ensure
 		end
+		results
 	end
 
 	self.include_root_in_json = false

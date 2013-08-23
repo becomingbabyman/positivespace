@@ -97,14 +97,15 @@ ps.directive 'controlGroup', ["$timeout", ($timeout) ->
 
 					buildErrorMsg = ->
 						errors = []
-						if scope.field.$error.required  then errors.push "Oops, #{scope.input.title} can't be blank"
-						if scope.field.$error.email     then errors.push "Please enter a valid email address"
-						if scope.field.$error.url       then errors.push "Please enter a valid url, kind of like \"http://example.com\""
-						if scope.field.$error.minlength then errors.push "Keep typing, #{scope.input.title} is too short"
-						if scope.field.$error.maxlength then errors.push "Whoa, #{scope.input.title} is too long"
-						if scope.field.$error.pattern   then errors.push "Whoops, #{scope.input.title} is in the wrong format"
-						if scope.field.$error.usernameTaken   then errors.push "Sorry, this #{scope.input.title} is taken"
-						scope.field.errorMessage = errors.join('. ')
+						if scope.field?.$error?
+							if scope.field.$error.required  then errors.push "Oops, #{scope.input.title} can't be blank"
+							if scope.field.$error.email     then errors.push "Please enter a valid email address"
+							if scope.field.$error.url       then errors.push "Please enter a valid url, kind of like \"http://example.com\""
+							if scope.field.$error.minlength then errors.push "Keep typing, #{scope.input.title} is too short"
+							if scope.field.$error.maxlength then errors.push "Whoa, #{scope.input.title} is too long"
+							if scope.field.$error.pattern   then errors.push "Whoops, #{scope.input.title} is in the wrong format"
+							if scope.field.$error.usernameTaken   then errors.push "Sorry, this #{scope.input.title} is taken"
+							scope.field.errorMessage = errors.join('. ')
 
 					if scope.field?
 						buildErrorMsg()
