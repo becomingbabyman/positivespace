@@ -656,7 +656,7 @@ ps.controller "UsersShowCtrl", ["$scope", "$routeParams", "$timeout", "$location
 	$scope.user = user
 
 	$scope.space = {fadeCount: 0}
-	$scope.show = {embedInput: false, form: false}
+	$scope.show = {embedInput: false, form: false, admin: false}
 	$scope.chart = { values: $q.defer() }
 
 	$scope.app.meta.title = "#{$scope.user.name}"

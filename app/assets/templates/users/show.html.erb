@@ -2,20 +2,20 @@
 	<div class="row">
 		<div class="span12">
 
-			<div class="row pbl" ng-show='user.can_edit && !showAdmin'>
+			<div class="row pbl" ng-show='user.can_edit && !show.admin'>
 				<div class="span-mobile center">
 					<div class='row-fluid'>
-						<a href='#' class='faded pull-right font14 opacity8 opacity-full-hover' ng-click='showAdmin = !showAdmin'><i class="icon-angle-right"></i> show dashboard <i class='icon-dashboard'></i></a>
+						<a href='#' class='faded pull-right font14 opacity8 opacity-full-hover' ng-click='show.admin = true'><i class="icon-angle-right"></i> show dashboard <i class='icon-dashboard'></i></a>
 					</div>
 				</div>
 			</div>
 
-			<div class='overflow-hidden' ui-if='user.can_edit' ng-class="{'height0': !showAdmin}">
+			<div class='overflow-hidden' ui-if='user.can_edit' ng-class="{'height0': !show.admin}">
 
 				<div class="row pbm">
 					<div class="span-mobile center">
 						<div class='row-fluid'>
-							<a href='#' class='faded pull-right font14 opacity6 opacity-full-hover' ng-click='showAdmin = !showAdmin'><i class="icon-angle-down"></i> hide dashboard</a>
+							<a href='#' class='faded pull-right font14 opacity6 opacity-full-hover' ng-click='show.admin = false'><i class="icon-angle-down"></i> hide dashboard</a>
 							<h4 class="uncenter">Dashboard</h4>
 						</div>
 					</div>
