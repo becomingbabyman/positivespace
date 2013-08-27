@@ -1,5 +1,6 @@
 # object @user
-cache [root_object, root_object.relationship(current_user), (current_user and root_object.liked_by?(current_user)), (current_user and root_object.followed_by?(current_user))]
+# TODO: figure out how to cache this intelligently
+# cache [root_object, root_object.achievements_count, root_object.relationship(current_user), (current_user and root_object.liked_by?(current_user)), (current_user and root_object.followed_by?(current_user))]
 
 extends 'api/v1/users/base'
 
