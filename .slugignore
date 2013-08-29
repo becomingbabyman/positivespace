@@ -1,0 +1,6 @@
+*.psd
+*.pdf
+/doc
+/log
+/spec
+/tmp
