@@ -2,7 +2,7 @@ require 'embedly'
 class ParseSpaceEmbedUrl
 	include Sidekiq::Worker
 	# sidekiq_options queue: "high"
-	# sidekiq_options retry: false
+	sidekiq_options :retry => 5
 
 	def perform(space_id)
 		space = Space.find(space_id)

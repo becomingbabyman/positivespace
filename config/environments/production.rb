@@ -99,8 +99,11 @@ Positivespace::Application.configure do
   config.gzip_compression = true
 
 
-  config.middleware.use ExceptionNotifier,
-    sender_address: 'production@positivespace.io',
-    exception_recipients: 'dev@positivespace.io'
+  config.middleware.use ExceptionNotification::Rack,
+    :email => {
+      email_prefix: "[production] ",
+      sender_address: 'production@positivespace.io',
+      exception_recipients: 'dev@positivespace.io'
+    }
 
 end

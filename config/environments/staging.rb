@@ -46,6 +46,9 @@ Positivespace::Application.configure do
   # config.cache_store = :mem_cache_store
   config.cache_store = :dalli_store
 
+  # Don't cache assets. Let Cloudflare do it
+  # config.assets.cache_store = :null_store
+
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
   # config.action_controller.asset_host = "http://assets.example.com"
 
@@ -96,8 +99,11 @@ Positivespace::Application.configure do
 
   config.gzip_compression = true
 
-  config.middleware.use ExceptionNotifier,
-    sender_address: 'staging@positivespace.io',
-    exception_recipients: 'dev@positivespace.io'
+  config.middleware.use ExceptionNotification::Rack,
+    :email => {
+      email_prefix: "[staging] ",
+      sender_address: 'staging@positivespace.io',
+      exception_recipients: 'dev@positivespace.io'
+    }
 
 end

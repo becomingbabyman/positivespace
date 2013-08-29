@@ -2,7 +2,7 @@ require 'embedly'
 class ParseMessageEmbedUrl
 	include Sidekiq::Worker
 	# sidekiq_options queue: "high"
-	# sidekiq_options retry: false
+	sidekiq_options :retry => 5
 
 	def perform(message_id)
 		message = Message.find(message_id)

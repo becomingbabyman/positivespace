@@ -243,7 +243,7 @@ Devise.setup do |config|
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
   if Rails.env == "development"
-    OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
+    # OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
     config.omniauth :facebook, Facebook::APP_ID, Facebook::SECRET, {:scope => Facebook::SCOPE, :client_options => {:ssl => {:verify => false}} }
     config.omniauth :twitter, Twitter::CONSUMER_KEY, Twitter::CONSUMER_SECRET
     config.omniauth :linkedin, LinkedIn::CONSUMER_KEY, LinkedIn::CONSUMER_SECRET, :scope => 'r_fullprofile r_emailaddress r_network w_messages', :fields => ["id", "first-name", "last-name", "headline", "location", "industry", "num-connections-capped", "summary", "specialties", "positions", "picture-url", "public-profile-url", "email-address", "associations", "interests", "publications", "patents", "languages", "skills", "certifications", "educations", "courses", "volunteer", "three-current-positions", "three-past-positions", "num-recommenders", "recommendations-received", "date-of-birth", "member-url-resources", "connections"]
