@@ -23,12 +23,12 @@ end
 
 
 module CarrierWave
-  module RMagick
+  module MiniMagick
 
     # Rotates the image based on the EXIF Orientation
     def fix_exif_rotation
       manipulate! do |img|
-        img.auto_orient!
+        img.auto_orient
         img = yield(img) if block_given?
         img
       end
@@ -36,7 +36,8 @@ module CarrierWave
 
     def quality(percentage)
       manipulate! do |img|
-        img.write(current_path){ self.quality = percentage } unless img.quality == percentage
+        img.quality(percentage)
+        # img.write(current_path)
         img = yield(img) if block_given?
         img
       end

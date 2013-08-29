@@ -1,20 +1,20 @@
 source 'https://rubygems.org'
-ruby '2.0.0'
+ruby '1.9.3', :engine => 'jruby', :engine_version => '1.7.4'
+# ruby '2.0.0'
 
 # The Framework
 gem 'rails', '3.2.13'
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 # The Database
-gem 'pg'
+gem 'activerecord-jdbcpostgresql-adapter'
+# gem 'pg'
 
 # The Server
 gem 'puma'
 
 # The Worker & Friends
 gem 'sidekiq'
-gem 'sinatra', require: false
+gem 'sinatra', :require => false
 gem 'slim'
 gem 'sidekiq-failures'
 
@@ -65,10 +65,11 @@ gem 'state_machine'
 
 # API - JSON Serialization
 gem 'rabl'
-gem 'oj'
+gem 'json'
+# gem 'oj'
 
 # Sync Assets to CDN
-gem 'asset_sync'
+# gem 'asset_sync'
 
 # Email
 gem 'roadie'
@@ -76,7 +77,8 @@ gem 'roadie'
 # Uploads and Images
 gem 'carrierwave'
 gem 'carrierwave_backgrounder'
-gem 'rmagick'
+# gem 'rmagick'
+gem 'mini_magick'
 gem 'fog'
 gem 'gravtastic'
 
@@ -88,9 +90,6 @@ gem 'embedly'
 
 # Pagination
 gem 'kaminari'
-
-# UJS - JQuery
-gem 'jquery-rails'
 
 # Better Select Boxes
 gem 'select2-rails'
@@ -108,7 +107,7 @@ gem 'ga_cookie_parser'
 gem 'impressionist'
 
 # Follow, Like, Mention
-gem 'socialization'
+gem 'socialization', '0.4.0'
 
 # Tagging
 gem 'acts-as-taggable-on'
@@ -121,14 +120,24 @@ gem 'possessive'
 # Gems used only for assets and not required
 ## in production environments by default.
 group :assets do
-  gem 'bootstrap-sass', '~> 2.2.2.0'
-  gem 'coffee-rails', '~> 3.2.1'
+  gem 'sass', '3.3.0.alpha.149'
+  gem 'compass', '0.12.2'
+  gem 'sass-rails',   '~> 3.2.5'
+  gem 'coffee-rails', '~> 3.2.2'
+
+  # UJS - JQuery
+  gem 'jquery-rails'
+
+  # The JS engine
+  gem 'therubyrhino' # jRuby compatible
+  # gem 'therubyracer'
+
+  gem 'uglifier', '>= 1.2.4'
   gem 'compass-rails'
   gem 'compass-h5bp'
   gem 'animation'
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'therubyracer'
-  gem 'uglifier', '>= 1.0.3'
+  gem 'bootstrap-sass', '~> 2.2.2.0'
+  # gem 'turbo-sprockets-rails3'
 end
 
 
@@ -160,7 +169,7 @@ group :development do
   gem 'guard-spork'
   gem 'guard-rspec'
   # gem 'brakeman', :require => false
-  gem 'foreman', '0.60.2'
+  gem 'foreman', '0.63.0'
 
   # Profiling
   # TODO: ALWAYS:
@@ -169,14 +178,16 @@ group :development do
 
   # gem 'better_errors'
 
-  gem 'binding_of_caller'
-  gem 'meta_request'
+  # gem 'binding_of_caller'
+  # gem 'meta_request'
 
   # Notifiers
   gem 'ruby-growl'
   gem 'ruby_gntp'
   gem 'xmpp4r'
-  gem "uniform_notifier"
+  gem 'uniform_notifier'
+
+  gem 'smusher'
 
   # gem 'ruby-debug19', :require => 'ruby-debug'  # NOTE: only use when needed
 end
