@@ -21,44 +21,8 @@
 
 								<div class='step animated fadeInDown' ng-show='step == 0'>
 									<h4>
-										<span class="pull-right" ps-tooltip="tooltips.step0">&nbsp;</span>
-										Select 5 things you excel at.
-									</h4>
-
-									<control-group class='pbl' no-color='true'>
-										<div class="muted pbm">
-											<a target="_self" ng-click="cLinkedin = true" ps-loading="cLinkedin" href="/users/auth/linkedin?merge_skills=true&redirect_uri={{ '' | currentUrl | urlEncode }}" class="btn btn-linkedin btn-mini pull-right" ui-if="!user.linkedin_id">Pull skills from linkedin&nbsp;&nbsp;<i class='icon-linkedin'></i></a>
-											type your skills:
-										</div>
-										<input type='text' name='skills' placeholder='add a skill' id='user_skills' class='input-block-level' multiple ui-select2='skillsOptions' ng-model='user.skills'></input>
-										<div class="muted ptl pbm">or pick from some favorites:</div>
-										<div class='pbm'>
-											<a href="#" class="btn btn-info mbs mrs" ng-click="addTag('skills', 'Design')" ng-hide="user.skills | pluck:'text' | contains:'Design'"><i class='icon-lightbulb'></i> Design</a>
-											<a href="#" class="btn btn-info mbs mrs" ng-click="addTag('skills', 'Development')" ng-hide="user.skills | pluck:'text' | contains:'Development'"><i class='icon-code-fork'></i> Development</a>
-											<a href="#" class="btn btn-info mbs mrs" ng-click="addTag('skills', 'Business')" ng-hide="user.skills | pluck:'text' | contains:'Business'"><i class='icon-money'></i> Business</a>
-											<a href="#" class="btn btn-info mbs mrs" ng-click="addTag('skills', 'Writing')" ng-hide="user.skills | pluck:'text' | contains:'Writing'"><i class='icon-pencil'></i> Writing</a>
-											<a href="#" class="btn btn-info mbs mrs" ng-click="addTag('skills', 'Marketing')" ng-hide="user.skills | pluck:'text' | contains:'Marketing'"><i class='icon-bullhorn'></i> Marketing</a>
-											<a href="#" class="btn btn-info mbs mrs" ng-click="addTag('skills', 'Teaching')" ng-hide="user.skills | pluck:'text' | contains:'Teaching'"><i class='icon-group'></i> Teaching</a>
-											<!-- <a href="#" class="btn btn-info mbs mrs" ng-click="addTag('skills', 'Sports')" ng-hide="user.skills | pluck:'text' | contains:'Sports'"><i class='icon-dribbble'></i> Sports</a> -->
-											<!-- <a href="#" class="btn btn-info mbs mrs" ng-click="addTag('skills', 'Cooking')" ng-hide="user.skills | pluck:'text' | contains:'Cooking'"><i class='icon-food'></i> Cooking</a> -->
-											<a href="#" class="btn btn-info mbs mrs" ng-click="addTag('skills', 'Construction')" ng-hide="user.skills | pluck:'text' | contains:'Construction'"><i class='icon-wrench'></i> Construction</a>
-											<a href="#" class="btn btn-info mbs mrs" ng-click="addTag('skills', 'Research')" ng-hide="user.skills | pluck:'text' | contains:'Research'"><i class='icon-beaker'></i> Research</a>
-											<a href="#" class="btn btn-info mbs mrs" ng-click="addTag('skills', 'Engineering')" ng-hide="user.skills | pluck:'text' | contains:'Engineering'"><i class='icon-rocket'></i> Engineering</a>
-											<a href="#" class="btn btn-info mbs mrs" ng-click="addTag('skills', 'Parenting')" ng-hide="user.skills | pluck:'text' | contains:'Parenting'"><i class='icon-heart'></i> Parenting</a>
-											<a href="#" class="btn btn-info mbs mrs" ng-click="addTag('skills', 'Photography')" ng-hide="user.skills | pluck:'text' | contains:'Photography'"><i class='icon-camera-retro'></i> Photography</a>
-											<a href="#" class="btn btn-info mbs mrs" ng-click="addTag('skills', 'Video')" ng-hide="user.skills | pluck:'text' | contains:'Video'"><i class='icon-film'></i> Video</a>
-											<a href="#" class="btn btn-info mbs mrs" ng-click="addTag('skills', 'Listening')" ng-hide="user.skills | pluck:'text' | contains:'Listening'"><i class='icon-volume-down'></i> Listening</a>
-											<a href="#" class="btn btn-info mbs mrs" ng-click="addTag('skills', 'Learning')" ng-hide="user.skills | pluck:'text' | contains:'Learning'"><i class='icon-puzzle-piece'></i> Learning</a>
-											<a href="#" class="btn btn-info mbs mrs" ng-click="addTag('skills', 'HTML')" ng-hide="user.skills | pluck:'text' | contains:'HTML'"><i class='icon-code'></i> HTML</a>
-										</div>
-									</control-group>
-								</div>
-
-
-								<div class='step animated fadeInDown' ng-show='step == 1'>
-									<h4>
 										<span class="pull-right" ps-tooltip="tooltips.step1">&nbsp;</span>
-										Select 5 things you want to discuss.
+										Select 5 things you want to talk about.
 									</h4>
 
 									<control-group class='pbl' no-color='true'>
@@ -69,20 +33,57 @@
 										<input type='text' name='interests' placeholder='add an interest' id='user_interests' class='input-block-level' multiple ui-select2='interestsOptions' ng-model='user.interests'></input>
 										<div class="muted ptl pbm">or pick from some favorites:</div>
 										<div class='pbm'>
-											<a href="#" class="btn btn-warning mbs mrs" ng-click="addTag('interests', 'Collaboration')" ng-hide="user.interests | pluck:'text' | contains:'Collaboration'"><i class='icon-exchange'></i> Collaboration</a>
-											<a href="#" class="btn btn-warning mbs mrs" ng-click="addTag('interests', 'Adventure')" ng-hide="user.interests | pluck:'text' | contains:'Adventure'"><i class='icon-bolt'></i> Adventure</a>
-											<a href="#" class="btn btn-warning mbs mrs" ng-click="addTag('interests', 'Startups')" ng-hide="user.interests | pluck:'text' | contains:'Startups'"><i class='icon-cloud-upload'></i> Startups</a>
-											<a href="#" class="btn btn-warning mbs mrs" ng-click="addTag('interests', 'Art')" ng-hide="user.interests | pluck:'text' | contains:'Art'"><i class='icon-picture'></i> Art</a>
-											<a href="#" class="btn btn-warning mbs mrs" ng-click="addTag('interests', 'Traveling')" ng-hide="user.interests | pluck:'text' | contains:'Traveling'"><i class='icon-plane'></i> Traveling</a>
-											<a href="#" class="btn btn-warning mbs mrs" ng-click="addTag('interests', 'Governance')" ng-hide="user.interests | pluck:'text' | contains:'Governance'"><i class='icon-legal'></i> Governance</a>
-											<a href="#" class="btn btn-warning mbs mrs" ng-click="addTag('interests', 'Playing')" ng-hide="user.interests | pluck:'text' | contains:'Playing'"><i class='icon-gamepad'></i> Playing</a>
-											<!-- <a href="#" class="btn btn-warning mbs mrs" ng-click="addTag('interests', 'Acting')" ng-hide="user.interests | pluck:'text' | contains:'Acting'"><i class='icon-ticket'></i> Acting</a> -->
-											<a href="#" class="btn btn-warning mbs mrs" ng-click="addTag('interests', 'Sports')" ng-hide="user.interests | pluck:'text' | contains:'Sports'"><i class='icon-dribbble'></i> Sports</a>
-											<a href="#" class="btn btn-warning mbs mrs" ng-click="addTag('interests', 'Music')" ng-hide="user.interests | pluck:'text' | contains:'Music'"><i class='icon-music'></i> Music</a>
-											<a href="#" class="btn btn-warning mbs mrs" ng-click="addTag('interests', 'Coffee')" ng-hide="user.interests | pluck:'text' | contains:'Coffee'"><i class='icon-coffee'></i> Coffee</a>
+											<a href="#" class="btn btn-red mbs mrs" ng-click="addTag('interests', 'Collaboration')" ng-hide="user.interests | pluck:'text' | contains:'Collaboration'"><i class='icon-exchange'></i> Collaboration</a>
+											<a href="#" class="btn btn-red mbs mrs" ng-click="addTag('interests', 'Adventure')" ng-hide="user.interests | pluck:'text' | contains:'Adventure'"><i class='icon-bolt'></i> Adventure</a>
+											<a href="#" class="btn btn-red mbs mrs" ng-click="addTag('interests', 'Startups')" ng-hide="user.interests | pluck:'text' | contains:'Startups'"><i class='icon-cloud-upload'></i> Startups</a>
+											<a href="#" class="btn btn-red mbs mrs" ng-click="addTag('interests', 'Art')" ng-hide="user.interests | pluck:'text' | contains:'Art'"><i class='icon-picture'></i> Art</a>
+											<a href="#" class="btn btn-red mbs mrs" ng-click="addTag('interests', 'Traveling')" ng-hide="user.interests | pluck:'text' | contains:'Traveling'"><i class='icon-plane'></i> Traveling</a>
+											<a href="#" class="btn btn-red mbs mrs" ng-click="addTag('interests', 'Governance')" ng-hide="user.interests | pluck:'text' | contains:'Governance'"><i class='icon-legal'></i> Governance</a>
+											<a href="#" class="btn btn-red mbs mrs" ng-click="addTag('interests', 'Playing')" ng-hide="user.interests | pluck:'text' | contains:'Playing'"><i class='icon-gamepad'></i> Playing</a>
+											<!-- <a href="#" class="btn btn-red mbs mrs" ng-click="addTag('interests', 'Acting')" ng-hide="user.interests | pluck:'text' | contains:'Acting'"><i class='icon-ticket'></i> Acting</a> -->
+											<a href="#" class="btn btn-red mbs mrs" ng-click="addTag('interests', 'Sports')" ng-hide="user.interests | pluck:'text' | contains:'Sports'"><i class='icon-dribbble'></i> Sports</a>
+											<a href="#" class="btn btn-red mbs mrs" ng-click="addTag('interests', 'Music')" ng-hide="user.interests | pluck:'text' | contains:'Music'"><i class='icon-music'></i> Music</a>
+											<a href="#" class="btn btn-red mbs mrs" ng-click="addTag('interests', 'Coffee')" ng-hide="user.interests | pluck:'text' | contains:'Coffee'"><i class='icon-coffee'></i> Coffee</a>
 										</div>
 									</control-group>
 								</div>
+
+
+								<div class='step animated fadeInDown' ng-show='step == 1'>
+									<h4>
+										<span class="pull-right" ps-tooltip="tooltips.step0">&nbsp;</span>
+										Select 5 things you are good at.
+									</h4>
+
+									<control-group class='pbl' no-color='true'>
+										<div class="muted pbm">
+											<a target="_self" ng-click="cLinkedin = true" ps-loading="cLinkedin" href="/users/auth/linkedin?merge_skills=true&redirect_uri={{ '' | currentUrl | urlEncode }}" class="btn btn-linkedin btn-mini pull-right" ui-if="!user.linkedin_id">Pull skills from linkedin&nbsp;&nbsp;<i class='icon-linkedin'></i></a>
+											type your skills:
+										</div>
+										<input type='text' name='skills' placeholder='add a skill' id='user_skills' class='input-block-level' multiple ui-select2='skillsOptions' ng-model='user.skills'></input>
+										<div class="muted ptl pbm">or pick from some favorites:</div>
+										<div class='pbm'>
+											<a href="#" class="btn btn-blue mbs mrs" ng-click="addTag('skills', 'Design')" ng-hide="user.skills | pluck:'text' | contains:'Design'"><i class='icon-lightbulb'></i> Design</a>
+											<a href="#" class="btn btn-blue mbs mrs" ng-click="addTag('skills', 'Development')" ng-hide="user.skills | pluck:'text' | contains:'Development'"><i class='icon-code-fork'></i> Development</a>
+											<a href="#" class="btn btn-blue mbs mrs" ng-click="addTag('skills', 'Business')" ng-hide="user.skills | pluck:'text' | contains:'Business'"><i class='icon-money'></i> Business</a>
+											<a href="#" class="btn btn-blue mbs mrs" ng-click="addTag('skills', 'Writing')" ng-hide="user.skills | pluck:'text' | contains:'Writing'"><i class='icon-pencil'></i> Writing</a>
+											<a href="#" class="btn btn-blue mbs mrs" ng-click="addTag('skills', 'Marketing')" ng-hide="user.skills | pluck:'text' | contains:'Marketing'"><i class='icon-bullhorn'></i> Marketing</a>
+											<a href="#" class="btn btn-blue mbs mrs" ng-click="addTag('skills', 'Teaching')" ng-hide="user.skills | pluck:'text' | contains:'Teaching'"><i class='icon-group'></i> Teaching</a>
+											<!-- <a href="#" class="btn btn-blue mbs mrs" ng-click="addTag('skills', 'Sports')" ng-hide="user.skills | pluck:'text' | contains:'Sports'"><i class='icon-dribbble'></i> Sports</a> -->
+											<!-- <a href="#" class="btn btn-blue mbs mrs" ng-click="addTag('skills', 'Cooking')" ng-hide="user.skills | pluck:'text' | contains:'Cooking'"><i class='icon-food'></i> Cooking</a> -->
+											<a href="#" class="btn btn-blue mbs mrs" ng-click="addTag('skills', 'Construction')" ng-hide="user.skills | pluck:'text' | contains:'Construction'"><i class='icon-wrench'></i> Construction</a>
+											<a href="#" class="btn btn-blue mbs mrs" ng-click="addTag('skills', 'Research')" ng-hide="user.skills | pluck:'text' | contains:'Research'"><i class='icon-beaker'></i> Research</a>
+											<a href="#" class="btn btn-blue mbs mrs" ng-click="addTag('skills', 'Engineering')" ng-hide="user.skills | pluck:'text' | contains:'Engineering'"><i class='icon-rocket'></i> Engineering</a>
+											<a href="#" class="btn btn-blue mbs mrs" ng-click="addTag('skills', 'Parenting')" ng-hide="user.skills | pluck:'text' | contains:'Parenting'"><i class='icon-heart'></i> Parenting</a>
+											<a href="#" class="btn btn-blue mbs mrs" ng-click="addTag('skills', 'Photography')" ng-hide="user.skills | pluck:'text' | contains:'Photography'"><i class='icon-camera-retro'></i> Photography</a>
+											<a href="#" class="btn btn-blue mbs mrs" ng-click="addTag('skills', 'Video')" ng-hide="user.skills | pluck:'text' | contains:'Video'"><i class='icon-film'></i> Video</a>
+											<a href="#" class="btn btn-blue mbs mrs" ng-click="addTag('skills', 'Listening')" ng-hide="user.skills | pluck:'text' | contains:'Listening'"><i class='icon-volume-down'></i> Listening</a>
+											<a href="#" class="btn btn-blue mbs mrs" ng-click="addTag('skills', 'Learning')" ng-hide="user.skills | pluck:'text' | contains:'Learning'"><i class='icon-puzzle-piece'></i> Learning</a>
+											<a href="#" class="btn btn-blue mbs mrs" ng-click="addTag('skills', 'HTML')" ng-hide="user.skills | pluck:'text' | contains:'HTML'"><i class='icon-code'></i> HTML</a>
+										</div>
+									</control-group>
+								</div>
+
 
 								<div class='step animated fadeInDown' ng-show='step == 2'>
 									<h4>
@@ -235,8 +236,8 @@
 											<span class="pull-right" ps-tooltip="tooltips.step6">&nbsp;</span>
 											Find someone to talk with.
 										</h4>
-										<a href="#" ng-repeat='skill in app.currentUser.skills' ng-click="setQuery(skill)" class="btn btn-mini btn-info mbs mrs">{{skill}}</a>
-										<a href="#" ng-repeat='interest in app.currentUser.interests' ng-click="setQuery(interest)" class="btn btn-mini btn-warning mbs mrs">{{interest}}</a>
+										<a href="#" ng-repeat='interest in app.currentUser.interests' ng-click="setQuery(interest)" class="btn btn-mini btn-red mbs mrs">{{interest}}</a>
+										<a href="#" ng-repeat='skill in app.currentUser.skills' ng-click="setQuery(skill)" class="btn btn-mini btn-blue mbs mrs">{{skill}}</a>
 
 										<div class="muted ptm">choose someone to talk with:</div>
 
@@ -289,7 +290,7 @@
 										<p>We just need one positive person who is happy to help friends and strangers alike.</p>
 										<p>If you know such a person:</p>
 
-										<a class="btn btn-info btn-large mtl mbl" href="#"
+										<a class="btn btn-blue btn-large mtl mbl" href="#"
 											title='share via email'
 											share="email"
 											share-name="Have a conversaiton with me on Positve Space"

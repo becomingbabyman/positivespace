@@ -128,9 +128,10 @@ body
 	display: inline-block
 
 a
+	color: $color-blue
 	&:hover
 		text-decoration: none
-
+		color: darken($color-blue, 10%)
 	&:active
 		position: relative
 		top: 1px
@@ -1204,11 +1205,11 @@ input, textarea
 	border-top: 3px solid #ddd
 	padding-top: 5px
 	&.ready
-		border-top-color: $green
+		border-top-color: $color-blue
 	&.waiting
-		border-top-color: $yellow
+		border-top-color: $color-yellow
 	&.ended
-		border-top-color: $red
+		border-top-color: $color-red
 	.row-fluid [class*="span"]
 		min-height: 0
 	.intro
@@ -1324,24 +1325,24 @@ input, textarea
 					background: #ddd
 				&.ready
 					margin-right: 15px
-					color: $green
-					border-color: $green
+					color: $color-blue
+					border-color: $color-blue
 					&:hover, &.active
 						color: white
-						background: $green
+						background: $color-blue
 				&.waiting
 					margin-right: 15px
-					color: $yellow
-					border-color: $yellow
+					color: $color-yellow
+					border-color: $color-yellow
 					&:hover, &.active
 						color: white
-						background: $yellow
+						background: $color-yellow
 				&.ended
-					color: $red
-					border-color: $red
+					color: $color-red
+					border-color: $color-red
 					&:hover, &.active
 						color: white
-						background: $red
+						background: $color-red
 
 		&.waiting
 			.title a

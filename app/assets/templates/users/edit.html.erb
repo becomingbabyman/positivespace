@@ -106,18 +106,6 @@
 							</div>
 						</div>
 
-						<control-group label='Expertise' class='pbl mtm' no-color='true'>
-							<div class='pbm'>
-								<span class="muted">examples:</span>
-								<a href="#" class="label" ng-click="addTag('skills', 'Design')" ng-hide="user.skills | pluck:'text' | contains:'Design'">Design</a>
-								<a href="#" class="label" ng-click="addTag('skills', 'Development')" ng-hide="user.skills | pluck:'text' | contains:'Development'">Development</a>
-								<a href="#" class="label" ng-click="addTag('skills', 'Writing')" ng-hide="user.skills | pluck:'text' | contains:'Writing'">Writing</a>
-								<a href="#" class="label" ng-click="addTag('skills', 'Teaching')" ng-hide="user.skills | pluck:'text' | contains:'Teaching'">Teaching</a>
-								<a href="#" class="label" ng-click="addTag('skills', 'Cooking')" ng-hide="user.skills | pluck:'text' | contains:'Cooking'">Cooking</a>
-							</div>
-							<input type='text' name='skills' placeholder='add a skill' id='user_skills' class='input-block-level' multiple ui-select2='skillsOptions' ng-model='user.skills'></input>
-						</control-group>
-
 						<control-group label='Interests' class='pbl' no-color='true'>
 							<div class='pbm'>
 								<span class="muted">examples:</span>
@@ -128,6 +116,18 @@
 								<a href="#" class="label" ng-click="addTag('interests', 'Traveling')" ng-hide="user.interests | pluck:'text' | contains:'Traveling'">Traveling</a>
 							</div>
 							<input type='text' name='interests' placeholder='add an interest' id='user_interests' class='input-block-level' multiple ui-select2='interestsOptions' ng-model='user.interests'></input>
+						</control-group>
+						
+						<control-group label='Expertise' class='pbl mtm' no-color='true'>
+							<div class='pbm'>
+								<span class="muted">examples:</span>
+								<a href="#" class="label" ng-click="addTag('skills', 'Design')" ng-hide="user.skills | pluck:'text' | contains:'Design'">Design</a>
+								<a href="#" class="label" ng-click="addTag('skills', 'Development')" ng-hide="user.skills | pluck:'text' | contains:'Development'">Development</a>
+								<a href="#" class="label" ng-click="addTag('skills', 'Writing')" ng-hide="user.skills | pluck:'text' | contains:'Writing'">Writing</a>
+								<a href="#" class="label" ng-click="addTag('skills', 'Teaching')" ng-hide="user.skills | pluck:'text' | contains:'Teaching'">Teaching</a>
+								<a href="#" class="label" ng-click="addTag('skills', 'Cooking')" ng-hide="user.skills | pluck:'text' | contains:'Cooking'">Cooking</a>
+							</div>
+							<input type='text' name='skills' placeholder='add a skill' id='user_skills' class='input-block-level' multiple ui-select2='skillsOptions' ng-model='user.skills'></input>
 						</control-group>
 
 						<div class='control-group pbl'>

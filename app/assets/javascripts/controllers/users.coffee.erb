@@ -131,8 +131,8 @@ ps.controller "UsersStartCtrl", ["$scope", "$routeParams", "$timeout", "$locatio
 	$scope.inputs = {}
 	nextIncompleteStep = ->
 		s = 0
-		s = 1 if $scope.user.skills?.length > 0
-		s = 2 if $scope.user.interests?.length > 0 and s == 1
+		s = 1 if $scope.user.interests?.length > 0
+		s = 2 if $scope.user.skills?.length > 0 and s == 1
 		s = 4 if $scope.user.bio?.length > 0 and s == 2
 		s = 5 if $scope.user.prompt?.length > 0 and s == 4
 		s = 6 if $scope.user.location?.length > 0 and s == 5
@@ -242,25 +242,29 @@ ps.controller "UsersStartCtrl", ["$scope", "$routeParams", "$timeout", "$locatio
 
 	addTooltip 'step0',
 		"""
-			<h5>Expertise</h5>
-			<p>Positive Space is designed to connect mutually beneficial strangers.</p>
-			<p>Filling out your expertise helps us determine who we should recommend you to.</p>
-			<p>For example, we will be more likely to recommend you to someone interested in Photography if you list Photography as your expertise.</p>
-		"""
-	addTooltip 'step1',
-		"""
 			<h5>Interests</h5>
 			<p>Our goal is to help you have the most useful conversations.</p>
 			<p>Filling out your interests gives us a quick overview of the topics you want to talk about.</p>
 			<p>For example, if you are interested in Startups then we can connect you with more people who have Startup experience.</p>
 		"""
+	addTooltip 'step1',
+		"""
+			<h5>Expertise</h5>
+			<p>Positive Space is designed to connect mutually beneficial strangers.</p>
+			<p>Filling out your expertise helps us determine who we should recommend you to.</p>
+			<p>For example, we will be more likely to recommend you to someone interested in Photography if you list Photography as your expertise.</p>
+		"""
 	addTooltip 'step2',
 		"""
 			<h5>Twitter</h5>
-			<p>Once connected people will be able to tweet you props (proper respect) after you help them out.</p>
-			<p>Positive Space will never tweet without your permissions.</p>
+			<p>Once connected people will be able to tweet you thanks directly to your twitter handle after a good conversation.
+			<br/><small>Positive Space will never tweet without your permissions.</small></p>
 			<h5>Facebook</h5>
 			<p>Quickly flesh out your profile and make your Space more trustworthy.</p>
+			<h5>LinkedIn</h5>
+			<p>Connect your LinkedIn account directly to your Space.</p>
+			<h5>GitHub</h5>
+			<p>Signal your programming interest and experience with a link to your GitHub profile.</p>
 		"""
 	addTooltip 'step3',
 		"""
@@ -380,8 +384,8 @@ ps.controller "UsersStartCtrl", ["$scope", "$routeParams", "$timeout", "$locatio
 	validateStep = ->
 		errors = []
 		switch $scope.step
-			when 0 then unless $scope.userCopy.skills.length > 0 then errors.push "Please add at least one skill."
-			when 1 then unless $scope.userCopy.interests.length > 0 then errors.push "Please add at least one interest."
+			when 0 then unless $scope.userCopy.interests.length > 0 then errors.push "Please add at least one interest."
+			when 1 then unless $scope.userCopy.skills.length > 0 then errors.push "Please add at least one skill."
 			when 3 then unless $scope.userCopy.bio?.length > 9 then errors.push "Please fill in your bio."
 			when 4 then unless $scope.userCopy.prompt?.length > 9 then errors.push "Please write your first prompt."
 		if errors.length > 0 then $scope.app.flash('error', errors) else true

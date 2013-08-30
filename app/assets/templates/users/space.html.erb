@@ -165,19 +165,19 @@
 									<i class="icon-external-link"></i>
 								</a>
 
-								<a ng-show='!showShareMini && user.twitter_id && user.show_twitter' href='http://twitter.com/{{user.twitter_handle}}' target='_blank' class='faded mrm'>
+								<a ng-show='!showShareMini && user.twitter_id && user.show_twitter' href='http://twitter.com/{{user.twitter_handle}}' target='_blank' class='faded mrm' tooltip='Twitter profile'>
 									<i class="icon-twitter"></i>
 								</a>
 
-								<a ng-show='!showShareMini && user.facebook_id && user.show_facebook' href='http://facebook.com/{{user.facebook_id}}' target='_blank' class='faded mrm'>
+								<a ng-show='!showShareMini && user.facebook_id && user.show_facebook' href='http://facebook.com/{{user.facebook_id}}' target='_blank' class='faded mrm' tooltip='Facebook profile'>
 									<i class="icon-facebook"></i>
 								</a>
 
-								<a ng-show='!showShareMini && user.linkedin_id && user.linkedin_profile_url && user.show_linkedin' href='{{user.linkedin_profile_url}}' target='_blank' class='faded mrm'>
+								<a ng-show='!showShareMini && user.linkedin_id && user.linkedin_profile_url && user.show_linkedin' href='{{user.linkedin_profile_url}}' target='_blank' class='faded mrm' tooltip='LinkedIn profile'>
 									<i class="icon-linkedin"></i>
 								</a>
 
-								<a ng-show='!showShareMini && user.github_id && user.github_login && user.show_github' href='http://github.com/{{user.github_login}}' target='_blank' class='faded mrm'>
+								<a ng-show='!showShareMini && user.github_id && user.github_login && user.show_github' href='http://github.com/{{user.github_login}}' target='_blank' class='faded mrm' tooltip='GitHub profile'>
 									<i class="icon-github"></i>
 								</a>
 
@@ -201,19 +201,20 @@
 
 						<div class='row-fluid' ng-show='user.skills.length > 0'>
 							<div class='span12 mtm mbm faded font14'>
-								Expertise:
+								Interests:
 								<br/>
-								<a href='#' class="btn btn-info btn-mini mrs mts" ng-repeat="skill in user.skills" ng-click="setSearchQuery(skill)">{{skill}}</a>
+								<a href='#' class="btn btn-red btn-mini mrs mts" ng-repeat="interest in user.interests" ng-click="setSearchQuery(interest)">{{interest}}</a>
 							</div>
 						</div>
 
 						<div class='row-fluid' ng-show='user.skills.length > 0'>
 							<div class='span12 mtm mbm faded font14'>
-								Interests:
+								Expertise:
 								<br/>
-								<a href='#' class="btn btn-warning btn-mini mrs mts" ng-repeat="interest in user.interests" ng-click="setSearchQuery(interest)">{{interest}}</a>
+								<a href='#' class="btn btn-blue btn-mini mrs mts" ng-repeat="skill in user.skills" ng-click="setSearchQuery(skill)">{{skill}}</a>
 							</div>
 						</div>
+
 					</div>
 				</div>
 
