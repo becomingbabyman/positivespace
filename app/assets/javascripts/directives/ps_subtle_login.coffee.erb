@@ -25,6 +25,7 @@ ps.directive 'psSubtleLogin', ["$timeout", "$location", "User", ($timeout, $loca
 					login: login
 					publishable: false
 					endorsed: false
+					visible: false
 					(data) ->
 						if data.collection.length > 0
 							scope.credentials.loginType = 'login'

@@ -2,6 +2,18 @@
 	<div class="row">
 		<div class="span12">
 
+			<div class="row pbl" ui-if='user.can_edit && !user.account_visible'>
+				<div class="span-mobile center">
+					<div class='row-fluid uncenter'>
+						<div class="span12 alert alert-warning">
+							Your Space is currently hidden from the public.
+							<br/>
+							<a href="/settings">Reveal</a> it in settings.
+						</div>
+					</div>
+				</div>
+			</div>
+
 			<div class="row pbl" ng-show='user.can_edit && !show.admin'>
 				<div class="span-mobile center">
 					<div class='row-fluid'>

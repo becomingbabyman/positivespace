@@ -63,6 +63,23 @@
 							</accordion-group>
 						</accordion>
 
+						<h5>Privacy</h5>
+						<accordion close-others="true">
+							<accordion-group heading="Show my Space">
+								<control-group class='pbs'>
+									<p>You will be the only person who can see your space if you turn this off.</p>
+									<input type="checkbox" ng-model='app.currentUser.account_visible' name="account_visible" onoffswitch>
+								</control-group>
+							</accordion-group>
+							<accordion-group heading="Activate my Account">
+								<control-group class='pbs'>
+									<p>Deactivating your account will remove it from the site.</p>
+									<p class="color-red">Danger - this cannot be undone.</p>
+									<input type="checkbox" ng-model='app.currentUser.account_active' name="account_active" onoffswitch>
+								</control-group>
+							</accordion-group>
+						</accordion>
+
 						<div class='control-group'>
 							<div class='controls'>
 								<button type='submit' class='btn btn-success pull-right' ps-loading='saving'>Save settings</button>

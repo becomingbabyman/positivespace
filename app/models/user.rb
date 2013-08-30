@@ -36,6 +36,8 @@ class User < ActiveRecord::Base
 				indexes :bio,           type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball', :boost => 10.0
 				indexes :username,      type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball', :boost => 20.0
 				indexes :location,      type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball', :boost => 10.0
+				indexes :account_visible, type: 'boolean'
+				indexes :account_active,  type: 'boolean'
 				indexes :personal_url,  type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball', :boost => 5.0
 				indexes :skills,   		type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball', :boost => 15.0
 				indexes :interests,		type: 'string',  index_analyzer: 'autocomplete',  search_analyzer: 'snowball', :boost => 10.0
@@ -106,7 +108,7 @@ class User < ActiveRecord::Base
 
 	attr_accessor :login, :invitation_code, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :endorse_user_id
 	attr_accessible :username, :login, :email, :password, :password_confirmation, :remember_me
-	attr_accessible :bio, :location, :name, :personal_url, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :settings, :prompt, :skills, :interests, :show_twitter, :show_facebook, :show_linkedin, :show_github, :disconnect_facebook, :disconnect_twitter, :disconnect_linkedin, :disconnect_github #, :positive_response, :negative_response
+	attr_accessible :bio, :location, :name, :personal_url, :socialable_type, :socialable_id, :socialable_action, :endorse_user, :settings, :prompt, :skills, :interests, :show_twitter, :show_facebook, :show_linkedin, :show_github, :disconnect_facebook, :disconnect_twitter, :disconnect_linkedin, :disconnect_github, :account_visible, :account_active #, :positive_response, :negative_response
 	attr_protected :none, as: :admin
 
 	serialize :settings
@@ -156,6 +158,8 @@ class User < ActiveRecord::Base
 	scope :unendorsed, where(state: 'unendorsed')
 	scope :endorsed, where(state: 'endorsed')
 	scope :unendorsed, where(state: 'unendorsed')
+	scope :visible, where(account_visible: true)
+	scope :active, where(account_active: true)
 	scope :following, lambda{ |user_id| joins("INNER JOIN follows ON follows.followable_id = users.id AND follows.followable_type = 'User'").where("follows.follower_type = 'User' AND follows.follower_id = ?", user_id) }
 	scope :followers, lambda{ |user_id| joins(:follows).where("follows.followable_id = ? AND follows.followable_type = 'User' AND follows.follower_type = 'User'",user_id) }
 	scope :accepting_conversations_with, lambda{ |user_id| where{ id.not_in(User.joins(:recieved_conversations).where{ (recieved_conversations.from_id == user_id) }.select(:id)) } }
@@ -355,9 +359,16 @@ class User < ActiveRecord::Base
 					## TODO: try to set default_operator, maybe it can't be set on a match
 					# default_operator: "AND"
 				end
-				filter :exists, { field: :current_space_prompt }
-				filter :not, { term: { current_space_prompt: '' } }
-				# filter :not, { term: { state: :unendorsed } }
+				filter :bool, { 
+					must: { 
+						:and => [ 
+							{ term: { account_visible: true } }, 
+							{ term: { account_active: true } }, 
+							{ exists: { field: :current_space_prompt } }, 
+							{ :not => { term: { current_space_prompt: '' } } } 
+						] 
+					} 
+				}
 				sort { by :magnetism, 'desc' }
 			end
 		rescue
@@ -382,6 +393,8 @@ class User < ActiveRecord::Base
 			bio: bio,
 			username: username,
 			location: location,
+			account_visible: account_visible,
+			account_active: account_active,
 			personal_url: personal_url,
 			skills: skills.pluck(:name).to_s,
 			interests: interests.pluck(:name).to_s,

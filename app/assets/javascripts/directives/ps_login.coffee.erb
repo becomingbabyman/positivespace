@@ -35,6 +35,7 @@ ps.directive 'psLogin', ["$timeout", "$routeParams", "$location", "User", ($time
 					login: login
 					publishable: false
 					endorsed: false
+					visible: false
 					(data) ->
 						if data.collection.length > 0 and registering
 							scope.credentials.loginType = 'login'

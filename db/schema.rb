@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130812034355) do
+ActiveRecord::Schema.define(:version => 20130829225816) do
 
   create_table "achievements", :force => true do |t|
     t.string   "name"
@@ -407,8 +407,12 @@ ActiveRecord::Schema.define(:version => 20130812034355) do
     t.string   "github_email"
     t.string   "linkedin_email"
     t.string   "facebook_email"
+    t.boolean  "account_visible",              :default => true
+    t.boolean  "account_active",               :default => true
   end
 
+  add_index "users", ["account_active"], :name => "index_users_on_account_active"
+  add_index "users", ["account_visible"], :name => "index_users_on_account_visible"
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

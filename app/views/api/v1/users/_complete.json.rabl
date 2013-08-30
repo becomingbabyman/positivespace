@@ -4,7 +4,7 @@
 
 extends 'api/v1/users/base'
 
-attributes :email, :settings, :sign_in_count, :last_sign_in_at, :updated_at, :gender, :birthday, :locale, :timezone, :remaining_invitations_count, :if => lambda { |u| can?(:update, u) }
+attributes :email, :settings, :sign_in_count, :last_sign_in_at, :updated_at, :gender, :birthday, :locale, :timezone, :remaining_invitations_count, :account_visible, :account_active , :if => lambda { |u| can?(:update, u) }
 
 node :can_edit do |user|
 	can?(:update, user)

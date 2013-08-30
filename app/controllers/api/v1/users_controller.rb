@@ -35,6 +35,9 @@ class Api::V1::UsersController < InheritedResources::Base
 	has_scope :unendorsed, :only => :index, type: :boolean do |controller, scope, value|
 		scope.unendorsed
 	end
+	has_scope :visible, :only => :index, type: :boolean, default: true do |controller, scope, value|
+		scope.visible
+	end
 	has_scope :order, :only => :index do |controller, scope, value|
 		if value == "RANDOM()"
 			scope.order("RANDOM()")
@@ -71,6 +74,7 @@ class Api::V1::UsersController < InheritedResources::Base
 
 	def show
 		@user = (params[:id] == 'me' ? current_user : User.find(params[:id]))
+		@user = User.new if !@user.nil? and ( !@user.account_visible or !@user.account_active ) and @user != current_user
 		show!
 	end
 
@@ -82,7 +86,7 @@ class Api::V1::UsersController < InheritedResources::Base
 protected
 
 	def collection
-		@users ||= apply_scopes(end_of_association_chain).includes(:invitation) unless params[:q]
+		@users ||= apply_scopes(end_of_association_chain.active).includes(:invitation) unless params[:q]
 	end
 
 	def pick_params
