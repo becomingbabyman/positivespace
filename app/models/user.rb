@@ -373,7 +373,7 @@ class User < ActiveRecord::Base
 			end
 		rescue
 			# TODO: search skills, and interests
-			ar_results = User.joins(:spaces).where("users.name ILIKE ? OR users.username ILIKE ? OR users.bio ILIKE ? OR spaces.prompt ILIKE ?", "%#{params[:q]}%", "%#{params[:q]}%", "%#{params[:q]}%", "%#{params[:q]}%").select('DISTINCT(users.id), users.*').page(params[:page]).per(params[:per])
+			ar_results = User.active.visible.joins(:spaces).where("users.name ILIKE ? OR users.username ILIKE ? OR users.bio ILIKE ? OR spaces.prompt ILIKE ?", "%#{params[:q]}%", "%#{params[:q]}%", "%#{params[:q]}%", "%#{params[:q]}%").select('DISTINCT(users.id), users.*').page(params[:page]).per(params[:per])
 			results = ar_results.map{|u| OpenStruct.new(JSON.parse(u.to_indexed_json))}	
 			results.total_count = ar_results.total_count
 			results.num_pages = ar_results.num_pages
