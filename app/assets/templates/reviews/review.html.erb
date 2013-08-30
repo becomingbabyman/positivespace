@@ -4,7 +4,14 @@
 			<div class="span12">
 				<small>Improve your conversations by sharing anonymous feedback.</small>
 				<p ui-if="review.vote && review.vote != 'pending'">
-					You said this was a <span class="font22" ng-class="{'color-primary': review.vote == 'positive', 'color-danger': review.vote == 'negative', '': review.vote == 'neutral'}">{{review.vote}}</span></span> conversation.
+					You said this was <span class="font22" ng-class="{'color-blue': review.vote == 'positive', 'color-red': review.vote == 'negative', '': review.vote == 'neutral'}">
+						<span ng-switch="review.vote">
+							<span ng-switch-when="positive">a useful</span>
+							<span ng-switch-when="negative">not a useful</span>
+							<span ng-switch-when="neutral">a meh</span>
+							<span ng-switch-default>a ...</span>
+						</span>
+					</span></span> conversation.
 				</p>
 				<p ui-if="review.rating">
 					And liked it
@@ -22,16 +29,14 @@
 
 		<div class="row-fluid" ui-if="!review.vote || review.vote == 'pending'">
 			<div class="span12">
-				<h4>Was this a positive conversation for you?</h4>
-				<a href="#" class="btn btn-large btn-primary" style='width:25%; padding-left:0; padding-right:0; text-align:center;' ng-click="saveReview({vote_event: 'vote_up'})" ps-loading="reviewing && review.vote_event == 'vote_up'">Positive</a>
+				<h4>Was this a useful conversation?</h4>
+				<a href="#" class="btn btn-large btn-blue" style='width:25%; padding-left:0; padding-right:0; text-align:center;' ng-click="saveReview({vote_event: 'vote_up'})" ps-loading="reviewing && review.vote_event == 'vote_up'">Useful</a>
 				&nbsp;
-				<span class="pts">or</span>
 				&nbsp;
-				<a href="#" class="btn btn-large" style='width:25%; padding-left:0; padding-right:0; text-align:center;' ng-click="saveReview({vote_event: 'vote_skip'})" ps-loading="reviewing && review.vote_event == 'vote_skip'">Neutral</a>
+				<a href="#" class="btn btn-large btn-red" style='width:25%; padding-left:0; padding-right:0; text-align:center;' ng-click="saveReview({vote_event: 'vote_down'})" ps-loading="reviewing && review.vote_event == 'vote_down'">Not useful</a>
 				&nbsp;
-				<span class="pts">or</span>
 				&nbsp;
-				<a href="#" class="btn btn-large btn-danger" style='width:25%; padding-left:0; padding-right:0; text-align:center;' ng-click="saveReview({vote_event: 'vote_down'})" ps-loading="reviewing && review.vote_event == 'vote_down'">Negative</a>
+				<a href="#" class="btn" style='width:25%; padding-left:0; padding-right:0; text-align:center;' ng-click="saveReview({vote_event: 'vote_skip'})" ps-loading="reviewing && review.vote_event == 'vote_skip'">Skip</a>
 				<br/>
 				<br/>
 				<small>Your response is private.</small>
@@ -49,7 +54,14 @@
 
 		<div class="row-fluid" ui-if="review.vote && review.vote != 'pending' && review.rating && !review.explanation">
 			<div class="span12">
-				<h4>Why was it {{review.vote}}?</h4>
+				<h4>Why was it
+					<span ng-switch="review.vote">
+						<span ng-switch-when="positive">useful?</span>
+						<span ng-switch-when="negative">not useful?</span>
+						<span ng-switch-when="neutral">meh?</span>
+						<span ng-switch-default>...?</span>
+					</span>
+				</h4>
 				<textarea name="explanation" ng-model="tmpExplanation" placeholder="Write a brief explanation..." class='input-block-level' rows="3"></textarea>
 				<small>We may share this anonmously.</small>
 				<a href="#" class="btn btn-success pull-right" ng-click="saveReview({explanation: tmpExplanation})" ps-loading="reviewing" ng-disabled="!tmpExplanation || tmpExplanation.length < 10">Submit</a>
