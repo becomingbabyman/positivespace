@@ -84,6 +84,11 @@ Positivespace::Application.routes.draw do
 	constraints subdomain: 's' do
 		match '/:id' => "shortener/shortened_urls#show"
 	end
+
+	match '/embeds/:id' => "embeds#space" #TODO: REMOVE: after testing
+	constraints subdomain: 'e' do
+		match '/:id' => "embeds#space"
+	end
 	
 	match '/sitemap' => redirect('http://static.positivespace.io/sitemaps/sitemap.xml.gz')
 	match '/robots.:format' => 'pages#robots'
