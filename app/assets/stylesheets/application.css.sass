@@ -965,16 +965,15 @@ input, textarea
 /**                 landing style                  **/
 //////////////////////////////////////////////////////
 #landing
+	position: relative
 	height: 100%
 	width: 100%
-	background: url(mountain-hi-res-gradi.jpg)
-	background-size: cover
-	background-position: top center
-	
 	@include transition-property(font-size)
 	@include transition-duration(0.3s)
 	font-size: 62.5% // 10px
 
+	@media (max-width: 500px)
+		min-height: 600px
 	@media (min-width: 0px)
 		font-size: 50%
 	@for $i from 1 through 30
@@ -982,8 +981,19 @@ input, textarea
 		@media (min-width: $w + px)
 			font-size: min(max($i * $golden * 2 + 20%, 50%), 91.0%)
 	
+	.bg
+		position: fixed
+		height: 100%
+		width: 100%
+		background: url(mountain-hi-res-gradi.jpg)
+		background-size: cover
+		background-position: top center
+		.overlay
+			height: 100%
+			width: 100%
+			background: rgba(#000, 0.4)
+	
 	#wrapper
-		background: rgba(#000, 0.4)
 		font-size: $font-base/10 + em
 		line-height: $line-height-base/$font-base
 		h1
