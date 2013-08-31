@@ -966,54 +966,128 @@ input, textarea
 //////////////////////////////////////////////////////
 #landing
 	height: 100%
-	.header
-		height: 90px
-		background: url(ps_logo@2x.png)
-		background-size: 78px 50px
-		background-repeat: no-repeat
-		background-position: center center
-		.login
-			padding: 10px
-			position: absolute
-			right: 30px
-			top: 24px
-			font-size: 18px
-			&:active
-				right: 29px
-				top: 23px
-				left: auto
-				bottom: auto
+	width: 100%
+	background: url(mountain-hi-res-gradi.jpg)
+	background-size: cover
+	background-position: top center
+	
+	@include transition-property(font-size)
+	@include transition-duration(0.3s)
+	font-size: 62.5% // 10px
+
+	@for $i from 1 through 30
+		$w : $i * $golden * 30 + 300
+		@media (min-width: $w + px)
+			font-size: min(max($i * $golden * 2 + 20%, 50%), 91.0%)
+	
+	#wrapper
+		background: rgba(#000, 0.4)
+		font-size: $font-base/10 + em
+		line-height: $line-height-base/$font-base
+		h1
+			font-size: $font-base*$golden*$golden*$golden/23 + em
+			line-height: $golden
+			margin: $font-base*$golden*$golden*$golden/191 + em 0
+
+		h2 
+			font-size: $font-base*$golden*$golden/23 + em
+			line-height: $golden
+			margin: $font-base*$golden*$golden/191 + em 0
+
+		h3 
+			font-size: $font-base*$golden/23 + em
+			line-height: $golden
+			margin: $font-base*$golden/191 + em 0
+
+	.logo
+		position: absolute
+		left: 20px
+		top: 20px
+		width: 100px
+		height: 64px
 
 	.hero
-		background: $color-blue
-		border-top: 1px solid #ccc
-		border-bottom: 1px solid #ccc
-		background: linear-gradient(45deg, #020031 0%,$color-blue 100%)
-		h3, h1, p
+		position: absolute
+		top: 20%
+		left: 0
+		right: 0
+		// border-top: 1px solid #ccc
+		// border-bottom: 1px solid #ccc
+		// background: $color-blue
+		// background: linear-gradient(45deg, #020031 0%,$color-blue 100%)
+		h1, h2, h3
 			color: white
+			font-weight: 300
 			// @include text-shadow(1px 1px #999)
-			@include text-shadow(0 -1px 0 rgba(0, 0, 0, 0.25))
-		.cta
+			@include text-shadow(0 -1px 0 rgba(0, 0, 0, 0.85))
+		.login-btns
+			margin: $font-base*$golden*$golden*$golden*$golden*$golden/111 + em 0
+		.login
+			font-size: $font-base*$golden/20 + em
+			font-weight: 200
+			border: none
 			@include text-shadow(0 0px 2px rgba(0, 0, 0, 0.25))
 			@include box-shadow(0px 0px 10px rgba(0, 0, 0, 0.35))
 			color: white
-			background: darken($color-yellow, 10%)
-			border-color: darken($color-yellow, 10%)
+			background: darken(#ccc, 10%)
+			border-color: darken(#ccc, 10%)
 			&:hover, &.active, &:visited:hover
 				color: white
 				// @include text-shadow(0 -1px 0 rgba(0, 0, 0, 0.25))
-				border-color: $color-yellow
-				background: $color-yellow
+				border-color: #ccc
+				background: #ccc
 			&:hover.active, &:visited
 				color: white
-				background: darken($color-yellow, 10%)
-				border-color: darken($color-yellow, 10%)
+				background: darken(#ccc, 10%)
+				border-color: darken(#ccc, 10%)
+		.register
+			font-size: $font-base*$golden/20 + em
+			font-weight: 200
+			border: none
+			@include text-shadow(0 0px 2px rgba(0, 0, 0, 0.25))
+			@include box-shadow(0px 0px 10px rgba(0, 0, 0, 0.35))
+			color: white
+			background: darken($color-red, 8%)
+			border-color: darken($color-red, 8%)
+			&:hover, &.active, &:visited:hover
+				color: white
+				// @include text-shadow(0 -1px 0 rgba(0, 0, 0, 0.25))
+				border-color: $color-red
+				background: $color-red
+			&:hover.active, &:visited
+				color: white
+				background: darken($color-red, 8%)
+				border-color: darken($color-red, 8%)
 
-	.social
+	.purpose
+		@include border-radius(3px)
+		font-size: 14px
+		position: absolute
+		bottom: 60px
+		right: 20px
+		color: white
+		background: #333
+		padding: 5px 15px
+		&:active
+			left: auto
+			top: auto
+			bottom: 59px
+			right: 19px
 
-	.steps
-
-	.footer
+	.terms
+		@include border-radius(3px)
+		font-size: 14px
+		position: absolute
+		bottom: 20px
+		right: 20px
+		color: white
+		background: #333
+		padding: 5px 15px
+		&:active
+			left: auto
+			top: auto
+			bottom: 19px
+			right: 19px
 
 
 

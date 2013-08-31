@@ -1,7 +1,12 @@
-// Font Sizes ---------------------------------------------------------
+// Golden Ratio
+$golden             : 1.61803398875
 
-$base-font-size     : 16px
-$base-line-height   : 21px
+// Font Sizes ---------------------------------------------------------
+$font-base          : 16
+$line-height-base   : 21
+
+$base-font-size     : $font-base + px
+$base-line-height   : $line-height-base + px
 
 // Colors -------------------------------------------------------------
 
@@ -101,12 +106,14 @@ $color-youtube:             #bb0000
     text-shadow: rgba(255,255,255,0.5) 0 5px 6px
 
 @mixin gradient-sky
-    background: -moz-radial-gradient(center, ellipse cover,  #ffffff 50%, #eaeaea 100%)
-    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(50%,#ffffff), color-stop(100%,#eaeaea))
-    background: -webkit-radial-gradient(center, ellipse cover,  #ffffff 50%,#eaeaea 100%)
-    background: -o-radial-gradient(center, ellipse cover,  #ffffff 50%,#eaeaea 100%)
-    background: -ms-radial-gradient(center, ellipse cover,  #ffffff 50%,#eaeaea 100%)
-    background: radial-gradient(ellipse at center,  #ffffff 50%,#eaeaea 100%)
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eaeaea',GradientType=1 )
+    $c1 : #ffffff
+    $c2 : #eaeaea
+    background: -moz-radial-gradient(center, ellipse cover,  $c1 50%, $c2 100%)
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(50%,$c1), color-stop(100%,$c2))
+    background: -webkit-radial-gradient(center, ellipse cover,  $c1 50%,$c2 100%)
+    background: -o-radial-gradient(center, ellipse cover,  $c1 50%,$c2 100%)
+    background: -ms-radial-gradient(center, ellipse cover,  $c1 50%,$c2 100%)
+    background: radial-gradient(ellipse at center,  $c1 50%,$c2 100%)
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$c1', endColorstr='$c2',GradientType=1 )
 
 
