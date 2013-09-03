@@ -48,6 +48,9 @@ Positivespace::Application.routes.draw do
 			# Images
 			resources :images, only: [:create, :destroy, :show]
 
+			# Spaces
+			resources :spaces, only: [:show]
+
 			# Tags
 			resources :tags, only: [:index]
 
@@ -69,6 +72,14 @@ Positivespace::Application.routes.draw do
 	end
 
 
+	# Embeds
+	match '/embed/:id' => "embeds#space"
+	match '/embed/u/:id' => "embeds#user"
+	# constraints subdomain: 'e' do
+	# 	match '/:id' => "embeds#space"
+	# end
+
+
 	# Static pages
 	resources :pages, path: '', only: :none do
 		collection do
@@ -83,11 +94,6 @@ Positivespace::Application.routes.draw do
 
 	constraints subdomain: 's' do
 		match '/:id' => "shortener/shortened_urls#show"
-	end
-
-	match '/embeds/:id' => "embeds#space" #TODO: REMOVE: after testing
-	constraints subdomain: 'e' do
-		match '/:id' => "embeds#space"
 	end
 	
 	match '/sitemap' => redirect('http://static.positivespace.io/sitemaps/sitemap.xml.gz')

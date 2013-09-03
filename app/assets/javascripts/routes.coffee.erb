@@ -61,6 +61,18 @@ ps.config ['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvid
 		resolve:
 			conversation: root.resolves.conversationsShow.conversation
 
+	# Spaces
+	.when "/embed/:id",
+		controller: "SpacesEmbedCtrl"
+		templateUrl: "<%= asset_path('spaces/embed.html') %>"
+		resolve:
+			space: root.resolves.spacesEmbed.space
+	.when "/embed/u/:id",
+		controller: "SpacesEmbedCtrl"
+		templateUrl: "<%= asset_path('spaces/embed.html') %>"
+		resolve:
+			space: root.resolves.spacesEmbed.userSpace
+
 	# Users
 	.when "/login",
 		controller: "UsersLoginCtrl"
@@ -101,6 +113,7 @@ ps.config ['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvid
 		reloadOnSearch: false
 		resolve:
 			user: root.resolves.usersShow.user
+
 	.otherwise redirectTo: "/404"
 ]
 

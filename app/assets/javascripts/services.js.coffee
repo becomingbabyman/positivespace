@@ -83,6 +83,30 @@ psServices.factory 'Review', ['$resource', ($resource) ->
 ]
 
 
+psServices.factory 'Space', ['$resource', ($resource) ->
+	Space = $resource "/api/spaces/:list_ctrl/:id/:doc_ctrl",
+		id: '@id'
+		list_ctrl: '@list_ctrl'
+		doc_ctrl: '@doc_ctrl'
+	,
+		query:
+			method: 'GET'
+			isArray: false
+
+		update:
+			method: 'PUT'
+
+	Space::save = (success=null, error=null) ->
+		if @id?
+			@$update(success, error)
+		else
+			@$save(success, error)
+
+	Space
+]
+
+
+
 psServices.factory 'User', ['$resource', ($resource) ->
 	User = $resource "/api/users/:list_ctrl/:id/:doc_ctrl",
 		id: '@id'

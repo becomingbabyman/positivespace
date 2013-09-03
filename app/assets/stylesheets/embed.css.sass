@@ -1,0 +1,42 @@
+//= require_self
+
+// Resets and mixins
+@import "base"
+
+// Twitter bootstrap
+@import "bootstrap"
+@import "bootstrap-responsive"
+
+// Dropzone
+// @import "dropzone.basic";
+// @import "dropzone"
+
+// Iconic for bootstrap
+@import "font-awesome"
+
+// Animate.css http://daneden.me/animate/
+@import "animate"
+
+// Angular UI
+@import "angular-ui"
+
+
+////////////////////////////
+//        +_ SASS         //
+////////////////////////////
+
+html
+	// background-color: $color-background
+
+body
+	width: 100%
+	height: 100%
+	padding: 0
+	box-sizing: border-box
+	-moz-box-sizing: border-box
+	-webkit-box-sizing: border-box
+	color: $color-text
+	background-color: $color-background //#36124E //#2A044A
+	@include sans
+	font-size: $base-font-size
+	line-height: $base-line-height

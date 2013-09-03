@@ -1,3 +1,5 @@
+- embed ||= false
+
 %head
     :plain
         <!--
@@ -43,7 +45,10 @@
     %meta{property: "og:description", content: "We believe that it's too hard to start a conversation with a stranger. A lot of good ideas and relationships are missed because the right people never talk. We let the people and content you care about come to you.", replaceattr: "app.meta.description" }
 
 
-    = render "stylesheets"
+    - if embed
+        = stylesheet_link_tag "embed"        
+    - else
+        = render "stylesheets"
 
     = csrf_meta_tag
     %meta#csrf{"data-csrf" => form_authenticity_token, "ng-controller" => "CsrfCtrl"}

@@ -1,10 +1,11 @@
 class EmbedsController < ApplicationController
 	def space
 		@space = Space.find(params[:id])
-		render :layout => 'embed', :template => 'embeds/space'
+		render :layout => 'embed'
 	end
 
-	# def user
-	# 	render :layout => 'embed', :template => 'embeds/user'
-	# end
+	def user
+		@user = User.find(params[:id])
+		render :layout => 'embed'
+	end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130829225816) do
+ActiveRecord::Schema.define(:version => 20130901220411) do
 
   create_table "achievements", :force => true do |t|
     t.string   "name"
@@ -295,10 +295,12 @@ ActiveRecord::Schema.define(:version => 20130829225816) do
     t.datetime "created_at",                         :null => false
     t.datetime "updated_at",                         :null => false
     t.integer  "conversations_count", :default => 0, :null => false
+    t.integer  "impressions_count",   :default => 0, :null => false
   end
 
   add_index "spaces", ["conversations_count"], :name => "index_spaces_on_conversations_count"
   add_index "spaces", ["embed_url"], :name => "index_spaces_on_embed_url"
+  add_index "spaces", ["impressions_count"], :name => "index_spaces_on_impressions_count"
   add_index "spaces", ["prompt"], :name => "index_spaces_on_prompt"
   add_index "spaces", ["state"], :name => "index_spaces_on_state"
   add_index "spaces", ["user_id"], :name => "index_spaces_on_user_id"

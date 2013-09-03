@@ -1,0 +1,32 @@
+root = global ? window
+
+
+ps.controller "SpacesEmbedCtrl", ["$scope", "space", ($scope, space) ->
+	$scope.space = space
+	# $scope.app.meta.title = "" # TODO: Write a title
+]
+root.resolves.spacesEmbed =
+	space: ["$q", "$route", "Space", ($q, $route, Space) ->
+		defered = $q.defer()
+		query = {id: $route.current.params.id}
+		Space.get query, (space) ->
+			defered.resolve(space)
+			analytics.track 'view embedded space success'
+		, (error) ->
+			defered.resolve({})
+			analytics.track 'view embedded space error'
+		defered.promise
+	]
+	userSpace: ["$q", "$route", "User", ($q, $route, User) ->
+		defered = $q.defer()
+		query = {id: $route.current.params.id}
+		User.get query, (user) ->
+			space = user.space
+			space.user = user
+			defered.resolve(space)
+			analytics.track 'view embedded space success'
+		, (error) ->
+			defered.resolve({})
+			analytics.track 'view embedded space error'
+		defered.promise
+	]

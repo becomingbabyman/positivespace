@@ -1,20 +1,12 @@
 !!! 5
 - html_tag "ng-app" => "ps", "ng-controller" => "AppCtrl", :class => "no-js", :lang => "en", :"xmlns:fb" => "http://ogp.me/ns/fb#" do
-	= render "head"
+	= render "head"#, embed: false
 
 	%body{ "ng-class" => "{focus: app.show.focus}" }
 
-		#wrapper
-			#loading{"ng-include" => "app.templates.loading.url"}
-				= image_tag "ps_logo_padded.png"
-				= image_tag 'loading.gif', style: "margin-left: -132px;"
-			%header#header{"ng-class" => "app.templates.header.classes", "ng-include" => "app.templates.header.url"}
-			#main{ :role => "main" }
-				#flash{"ng-include" => "app.templates.flash.url"}
-				#yielded{"ng-view"=>true}
+		#main{ :role => "main", "ng-view"=>true, style:"font-family:#{params[:ff]}; font-size:#{params[:fs]}; font-weight:#{params[:fw]}; line-height:#{params[:lh]}; letter-spacing:#{params[:ls]}; word-spacing:#{params[:ws]}; color:#{params[:co]};"}
+			= yield
 
 
-			#layout_footer
-		%footer#footer{"ng-include" => "app.templates.footer.url"}
 		= render "javascripts"
 		= render "facebook"

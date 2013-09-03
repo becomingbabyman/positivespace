@@ -15,6 +15,7 @@ class Space < ActiveRecord::Base
 	serialize :embed_data
 
 	acts_as_likeable
+	is_impressionable :counter_cache => { :unique => true }
 	belongs_to :user, counter_cache: :spaces_count
 	has_many :conversations
 
