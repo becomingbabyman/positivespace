@@ -37,9 +37,25 @@ root.positivespaceWidgetGlobalNamespace = (() ->
 		result = []
 		for link in ps.embedableLinks()
 			result.push link.el.outerHTML = """
-				<iframe class="ps-embed ps-embed-link" src="#{link.embedUri}" frameborder="0" border="0" cellspacing="0" style="border-style: none;width: #{link.el.offsetWidth}px; height: #{link.el.offsetHeight}px; vertical-align: bottom;" scrolling="no"></iframe>
+				<span class="ps-embed-wrap" style="width: #{link.el.offsetWidth}px; height: #{link.el.offsetHeight}px;">
+					<iframe class="ps-embed ps-embed-link" src="#{link.embedUri}" frameborder="0" border="0" cellspacing="0" style="border-style: none;width: #{link.el.offsetWidth}px; height: #{link.el.offsetHeight}px; vertical-align: bottom;" scrolling="no"></iframe>
+				</span>
 			"""
 		result
+
+	# Expand
+	ps.distanceFrom = (el, side) ->
+		# TODO: calculate the distance of an element from a side in px
+
+	# PostMessage
+	ps.receiveMessage = (event) ->
+		# For security only execute if called from the correct origin
+		if event.origin.indexOf(ps.DOMAIN) > -1
+			if event.data == 'psClickLink'
+				# TODO: expand
+				console.log event
+
+	window.addEventListener("message", ps.receiveMessage, false)
 
 
 	# Initialize the widgets

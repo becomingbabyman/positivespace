@@ -1602,7 +1602,40 @@ input, textarea
 			display: none
 
 
-
+//////////////////////////////////////////////////////
+/**                   embed style                  **/
+//////////////////////////////////////////////////////
+.embed-link
+	cursor: pointer
+	color: inherit
+	position: relative
+	// border-top: 1px dashed #333
+	.overlay
+		@include sans
+		position: absolute
+		left: 0px
+		top: 0px
+		font-size: 0.7em
+		line-height: 1
+		padding: 2px 3px 4px
+		@include border-radius(2px)
+		@include transition-property(visibility, opacity)
+		@include transition-duration(0.2s)
+		visibility: hidden
+		opacity: 0
+		background: white
+		// background: rgba(#333, 0.7)
+		color: black
+		// border: 1px solid #333
+		.logo
+			width: 16px
+			height: 10px
+	&:hover
+		color: inherit
+		.overlay
+			visibility: visible
+			opacity: 1		
+	
 
 //////////////////////////////////////////////////////
 /**                  select2 style                 **/
