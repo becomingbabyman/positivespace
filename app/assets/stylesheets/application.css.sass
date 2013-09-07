@@ -1611,13 +1611,15 @@ input, textarea
 	position: relative
 	// border-top: 1px dashed #333
 	.overlay
+		height: 100%
+		// width: 100%
 		@include sans
 		position: absolute
 		left: 0px
 		top: 0px
-		font-size: 0.7em
+		font-size: 0.8em
 		line-height: 1
-		padding: 2px 3px 4px
+		padding: 2px 3px 8px
 		@include border-radius(2px)
 		@include transition-property(visibility, opacity)
 		@include transition-duration(0.2s)
@@ -1628,8 +1630,11 @@ input, textarea
 		color: black
 		// border: 1px solid #333
 		.logo
-			width: 16px
-			height: 10px
+			// width: 16px
+			// height: 10px
+			height: 80%
+		.count
+			padding-left: 5px
 	&:hover
 		color: inherit
 		.overlay
