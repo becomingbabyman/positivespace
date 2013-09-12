@@ -4,10 +4,11 @@ root = global ? window
 ps.controller "SpacesEmbedCtrl", ["$scope", "$routeParams", "space", ($scope, $routeParams, space) ->
 	$scope.space = space
 	$scope.text = $routeParams.text
+	$scope.eid = $routeParams.eid
 	# $scope.app.meta.title = "" # TODO: Write a title
 
 	$scope.clickEmbed = ->
-		window.parent.postMessage('psClickLink', "*")
+		window.parent.postMessage("psClickLink_#{$scope.eid}", "*")
 ]
 root.resolves.spacesEmbed =
 	space: ["$q", "$route", "Space", ($q, $route, Space) ->

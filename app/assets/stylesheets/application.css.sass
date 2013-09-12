@@ -94,14 +94,13 @@
 
 html
 	// background-color: $color-background
+	@include box-sizing(border-box)
 
 body
 	width: 100%
 	height: 100%
 	padding: 0
-	box-sizing: border-box
-	-moz-box-sizing: border-box
-	-webkit-box-sizing: border-box
+	@include box-sizing(border-box)
 	color: $color-text
 	background-color: $color-background //#36124E //#2A044A
 	// background-image: image_url("noisy-texture-200x200-o12-d48-c-4F2958-t1.png")
@@ -1605,38 +1604,103 @@ input, textarea
 //////////////////////////////////////////////////////
 /**                   embed style                  **/
 //////////////////////////////////////////////////////
+#main.embed
+	@include box-sizing(border-box)
+
 .embed-link
+	@include box-sizing(border-box)
 	cursor: pointer
 	color: inherit
 	position: relative
+	text-decoration: none
 	// border-top: 1px dashed #333
-	.overlay
-		height: 100%
-		// width: 100%
-		@include sans
+	.underlay
 		position: absolute
 		left: 0px
 		top: 0px
+		width: 100%
+		height: 100%
+		border-top: 1px solid
+		border-bottom: 1px solid
+		border-color: inherit
+		@include border-radius(2px)
+		@include transition-property(border-color)
+		@include transition-duration(0.2s)
+		@include box-sizing(border-box)
+	.overlay
+		// white-space: nowrap
+		text-align: center
+		// margin: 0 auto
+		height: 100%
+		width: 100%
+		overflow: hidden
+		position: absolute
+		right: 0px
+		top: 0px
 		font-size: 0.8em
+		vertical-align: middle
 		line-height: 1
-		padding: 2px 3px 8px
+		padding: 0.08em
+		border: 1px solid
+		border-color: inherit
+		@include box-sizing(border-box)
+		@include sans
 		@include border-radius(2px)
 		@include transition-property(visibility, opacity)
 		@include transition-duration(0.2s)
 		visibility: hidden
 		opacity: 0
 		background: white
-		// background: rgba(#333, 0.7)
+		// background: rgba(#fff, 0.99)
 		color: black
 		// border: 1px solid #333
 		.logo
 			// width: 16px
 			// height: 10px
 			height: 80%
+			padding: 0.1em 0.1em 0.2em 0.2em
+		.verb
+			padding-right: 0.45em
+			vertical-align: top
+			top: 0.1em
+			position: relative
 		.count
-			padding-left: 5px
+			// vertical-align: bottom
+			position: relative
+			background: #e9e9e9
+			// border: 1px solid #e9e9e9
+			display: inline-block
+			padding: 0 0.2em
+			font-size: 0.7em
+			line-height: 1.4
+			vertical-align: top
+			top: 0.2em
+			margin-right: 0.2em
+			color: #666
+			&:after, &:before
+				right: 100%
+				border: solid transparent
+				content: " "
+				height: 0
+				width: 0
+				position: absolute
+				pointer-events: none
+			// &:after
+			// 	border-color: rgba(255, 255, 255, 0)
+			// 	border-right-color: #ffffff
+			// 	border-width: 7px
+			// 	top: 50%
+			// 	margin-top: -7px
+			&:before
+				border-color: rgba(#e9e9e9, 0)
+				border-right-color: #e9e9e9
+				border-width: 0.7em
+				top: 0.7em
+				margin-top: -0.7em
 	&:hover
 		color: inherit
+		.underlay
+			border-color: inherit
 		.overlay
 			visibility: visible
 			opacity: 1		

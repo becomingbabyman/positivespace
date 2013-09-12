@@ -1,9 +1,13 @@
-<a class='embed-link' ng-click='clickEmbed()' style='cursor: pointer; color: inherit;'>
+<a class='embed-link' ng-click='clickEmbed()'>
 	{{text || space.prompt}}
 	<span class="overlay">
-		<img src="<%= asset_path 'ps_logo.png' %>" alt="logo" class='logo'>
+		<img src="<%= asset_path 'ps_logo@2x.png' %>" alt="logo" class='logo'>		
+		<span class="verb">
+			Reply
+		</span>
 		<span class="count">
 			{{space.conversations_count}}
 		</span>
 	</span>
+	<span class="underlay"></span>
 </a>

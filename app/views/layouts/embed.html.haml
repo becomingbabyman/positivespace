@@ -2,9 +2,9 @@
 - html_tag "ng-app" => "ps", "ng-controller" => "AppCtrl", :class => "no-js", :lang => "en", :"xmlns:fb" => "http://ogp.me/ns/fb#" do
 	= render "head"#, embed: true
 
-	%body{ "ng-class" => "{focus: app.show.focus}" }
+	%body{ "ng-class" => "{focus: app.show.focus}", style: "background-color:transparent;" }
 
-		#main{ :role => "main", "ng-view"=>true, style:"font-family:#{params[:ff]}; font-size:#{params[:fs]}; font-weight:#{params[:fw]}; line-height:#{params[:lh]}; letter-spacing:#{params[:ls]}; word-spacing:#{params[:ws]}; color:#{params[:co]};"}
+		#main.embed{ :role => "main", "ng-view"=>true, style:"font-family:#{params[:ff]}; font-size:#{params[:fs]}; font-weight:#{params[:fw]}; line-height:#{params[:lh]}; letter-spacing:#{params[:ls]}; word-spacing:#{params[:ws]}; color:#{params[:co]};"}
 			= yield
 
 

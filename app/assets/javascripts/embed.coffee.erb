@@ -1,0 +1,110 @@
+# TODO:
+	# Make the link text in the iframe selectable
+
+## Get jQuery
+((root, window, document, version, callback) ->
+	j = undefined
+	d = undefined
+	loaded = false
+	if not (j = window.jQuery) or version > j.fn.jquery or callback(root, j, loaded)
+		script = document.createElement("script")
+		script.type = "text/javascript"
+		script.src = "https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"
+		script.onload = script.onreadystatechange = ->
+			if not loaded and (not (d = @readyState) or d is "loaded" or d is "complete")
+				callback root, (j = window.jQuery).noConflict(1), loaded = true
+				j(script).remove()
+
+		(document.getElementsByTagName("head")[0] or document.documentElement).appendChild script
+) (global ? window), window, document, "1.8", (root, $, jquery_loaded) ->
+
+	## Widget code
+	root.positivespaceWidgetGlobalNamespace = (() ->
+		ps = {}
+
+		## Constants
+		# TODO: find a better way to get the domain
+		ps.DOMAIN = "<%= Rails.env == 'development' ? 'localhost:3000' : 'positivespace.io' %>"
+		ps.embededLinks = {}
+
+
+		## Helpers
+		# Generate unique ids
+		ps.uid = (->
+		  id = 0
+		  ->
+		    id = 0  if arguments[0] is 0
+		    id++
+		)()
+
+		# Find the value of a specific css property on a specific element
+		ps.styleOf = (el, property) ->
+			if (window.getComputedStyle) then document.defaultView.getComputedStyle(el, null).getPropertyValue(property)
+
+
+		## Embed
+		ps.links = ->
+			$("a[href*='#{ps.DOMAIN}']")
+
+		ps.embedableLinks = ->
+			# TODO: check that the link can be embedded
+			# Do this with an Ajax API call that returns the embeddable uri
+			result = []
+			for link in ps.links()
+				$el = $(link)
+				id = (a = link.href.split("/"); a[a.length - 1])
+				embedId = ps.uid()
+				uri = "http://#{ps.DOMAIN}/embed/u/#{id}?eid=#{embedId}&text=#{$el.text()}&ff=#{$el.css('font-family')}&fs=#{$el.css('font-size')}&fw=#{$el.css('font-weight')}&lh=#{$el.css('line-height')}&ls=#{$el.css('letter-spacing')}&ws=#{$el.css('word-spacing')}&co=#{$el.css('color')}"
+				result.push
+					el: $el
+					uri: uri
+					id: embedId
+			result
+
+		ps.embedLinks = ->
+			for linkObj in ps.embedableLinks()
+				$newEl = $ """
+					<span class="ps-embed-wrap" style="width: #{linkObj.el.outerWidth()}px; height: #{linkObj.el.outerHeight()}px; display: inline-block; vertical-align: top;">
+						<iframe class="ps-embed ps-embed-link" src="#{linkObj.uri}" frameborder="0" border="0" cellspacing="0" style="border-style: none;width: #{linkObj.el.outerWidth()}px; height: #{linkObj.el.outerHeight()}px;" scrolling="no"></iframe>
+					</span>
+				"""
+				linkObj.el.replaceWith $newEl
+				ps.embededLinks[linkObj.id] = $newEl
+			ps.embededLinks
+
+
+		## Expand
+		ps.distanceFrom = (el, side) ->
+			# TODO: calculate the distance of an element from a side in px
+
+
+		## PostMessage
+		ps.receiveMessage = (event) ->
+			# For security only execute if called from the correct origin
+			if event.origin.indexOf(ps.DOMAIN) > -1
+				data = event.data.split("_")
+				if data[0]? and data[0] == 'psClickLink'
+					# TODO: expand
+					# console.log event
+					if data[1]?
+						console.log data[1]
+						console.log ps.embededLinks[data[1]]
+						window.e = ps.embededLinks[data[1]]
+
+		window.addEventListener("message", ps.receiveMessage, false)
+
+
+		## Initialize the widgets
+		$(document).ready () ->
+			ps.embedLinks()
+
+
+		## Return the ps object
+		ps
+	)()
+
+
+	## Change namespace to ps if available
+	unless root.ps?
+		root.ps = root.positivespaceWidgetGlobalNamespace
+		delete root.positivespaceWidgetGlobalNamespace

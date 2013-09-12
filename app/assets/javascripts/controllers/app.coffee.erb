@@ -196,9 +196,11 @@ ps.controller "AppCtrl", ["$scope", "$timeout", "$rootScope", "$q", "$location",
         $("#progress").width("101%").delay(200).fadeOut 400, ->
             $(@).remove()
 
-        # Angular SEO
         $timeout ->
+            # Angular SEO
             $scope.htmlReady()
+            # Embed loaded
+            window.parent?.postMessage('psPageReady', "*")
         , 1000
 
     $rootScope.$on '$routeChangeError', (event, current, previous, rejection) ->
