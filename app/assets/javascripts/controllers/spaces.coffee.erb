@@ -1,7 +1,7 @@
 root = global ? window
 
 
-ps.controller "SpacesEmbedCtrl", ["$scope", "$routeParams", "space", ($scope, $routeParams, space) ->
+ps.controller "SpacesEmbedLinkCtrl", ["$scope", "$routeParams", "space", ($scope, $routeParams, space) ->
 	$scope.space = space
 	$scope.text = $routeParams.text
 	$scope.eid = $routeParams.eid
@@ -10,6 +10,17 @@ ps.controller "SpacesEmbedCtrl", ["$scope", "$routeParams", "space", ($scope, $r
 	$scope.clickEmbed = ->
 		window.parent.postMessage("psClickLink_#{$scope.eid}", "*")
 ]
+
+ps.controller "SpacesEmbedExpandedCtrl", ["$scope", "$routeParams", "space", ($scope, $routeParams, space) ->
+	$scope.space = space
+	$scope.user = space.user
+	$scope.eid = $routeParams.eid
+	# $scope.app.meta.title = "" # TODO: Write a title
+
+	$scope.clickEmbed = ->
+		window.parent.postMessage("psCloseExpandedLink_#{$scope.eid}", "*")
+]
+
 root.resolves.spacesEmbed =
 	space: ["$q", "$route", "Space", ($q, $route, Space) ->
 		defered = $q.defer()
@@ -26,6 +37,7 @@ root.resolves.spacesEmbed =
 		defered = $q.defer()
 		query = {id: $route.current.params.id}
 		User.get query, (user) ->
+			# TODO: UNHACK: this is a bit silly
 			space = user.space
 			space.user = user
 			defered.resolve(space)

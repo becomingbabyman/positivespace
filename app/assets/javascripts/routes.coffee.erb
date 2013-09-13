@@ -62,14 +62,24 @@ ps.config ['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvid
 			conversation: root.resolves.conversationsShow.conversation
 
 	# Spaces
-	.when "/embed/:id",
-		controller: "SpacesEmbedCtrl"
-		templateUrl: "<%= asset_path('spaces/embed.html') %>"
+	.when "/embed/space/link/:id",
+		controller: "SpacesEmbedLinkCtrl"
+		templateUrl: "<%= asset_path('spaces/embed_link.html') %>"
 		resolve:
 			space: root.resolves.spacesEmbed.space
-	.when "/embed/u/:id",
-		controller: "SpacesEmbedCtrl"
-		templateUrl: "<%= asset_path('spaces/embed.html') %>"
+	.when "/embed/user/link/:id",
+		controller: "SpacesEmbedLinkCtrl"
+		templateUrl: "<%= asset_path('spaces/embed_link.html') %>"
+		resolve:
+			space: root.resolves.spacesEmbed.userSpace
+	.when "/embed/space/expanded/:id",
+		controller: "SpacesEmbedExpandedCtrl"
+		templateUrl: "<%= asset_path('spaces/embed_expaned.html') %>"
+		resolve:
+			space: root.resolves.spacesEmbed.space
+	.when "/embed/user/expanded/:id",
+		controller: "SpacesEmbedExpandedCtrl"
+		templateUrl: "<%= asset_path('spaces/embed_expanded.html') %>"
 		resolve:
 			space: root.resolves.spacesEmbed.userSpace
 

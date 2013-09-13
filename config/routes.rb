@@ -73,8 +73,10 @@ Positivespace::Application.routes.draw do
 
 
 	# Embeds
-	match '/embed/:id' => "embeds#space"
-	match '/embed/u/:id' => "embeds#user"
+	match '/embed/space/link/:id' => "embeds#space"
+	match '/embed/user/link/:id' => "embeds#user"
+	match '/embed/space/expanded/:id' => "embeds#space"
+	match '/embed/user/expanded/:id' => "embeds#user"
 	# constraints subdomain: 'e' do
 	# 	match '/:id' => "embeds#space"
 	# end
