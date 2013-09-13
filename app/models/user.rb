@@ -190,7 +190,7 @@ class User < ActiveRecord::Base
 			attrs[:locale] = fb_user.locale unless current_user.locale
 			attrs[:timezone] = fb_user.timezone.to_i unless current_user.timezone
 			attrs[:avatars_attributes] = [ { process_image_upload: true, remote_image_url: "https://graph.facebook.com/#{fb_user.id}/picture?type=large" } ] unless current_user.avatar
-			attrs[:facebook_email] = fb_user.email.downcase
+			attrs[:facebook_email] = fb_user.try(:email).try(:downcase)
 			current_user.update_attributes attrs
 			current_user.update_attribute(:facebook_id, fb_user.id) if current_user.facebook_id != fb_user.id
 			current_user
@@ -211,14 +211,14 @@ class User < ActiveRecord::Base
 			user
 		else # Create a user.
 			password = SecureRandom.hex(20)
-			user = User.create({ email: fb_user.email.downcase,
+			user = User.create({ email: fb_user.try(:email).try(:downcase),
 								 username: ( User.username_is_valid?(fb_user.username) ? fb_user.username : nil ),
-								 facebook_email: fb_user.email.downcase,
+								 facebook_email: fb_user.try(:email).try(:downcase),
 								 name: "#{fb_user.first_name} #{fb_user.last_name}",
 								 gender: fb_user.gender,
 								 birthday: fb_user.try(:birthday),
 								 locale: fb_user.locale,
-								 timezone: fb_user.timezone.to_i,
+								 timezone: fb_user.timezone.try(:to_i),
 								 password: password,
 								 password_confirmation: password,
 								 avatars_attributes: [
@@ -234,8 +234,10 @@ class User < ActiveRecord::Base
 	# TODO: UNHACK: This is a whackasshack method
 	def self.find_for_twitter(tw_user, access_token, params, current_user=nil, invitation_id=nil, invitation_code=nil)
 		tw_description = tw_user.description
-		tw_user.entities.description.urls.each do |url|
-			tw_description = tw_description.gsub url.url, url.expanded_url
+		if tw_description
+			tw_user.entities.description.urls.each do |url|
+				tw_description = tw_description.gsub url.url, url.expanded_url
+			end
 		end
 		if current_user
 			attrs = {}
