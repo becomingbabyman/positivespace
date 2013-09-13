@@ -27,6 +27,7 @@
 		ps.DOMAIN = "<%= Rails.env == 'development' ? 'localhost:3000' : 'positivespace.io' %>"
 		ps.embededLinks = {}
 		ps.expandedLinks = {}
+		ps.currentLinkId = null
 
 		## Helpers
 		jQuery = $
@@ -96,8 +97,15 @@
 
 
 		## Expand
+		ps.clickLink = (id) ->
+			ps.contractLink(ps.currentLinkId)
+			if ps.currentLinkId == id
+				ps.currentLinkId = null
+			else
+				ps.expandLink(id)
+			
 		ps.expandLink = (id) ->
-			ps.contractAllLinks()
+			ps.currentLinkId = id
 			$expandEl = ps.findOrCreateExpandedLink(id)				
 			$expandEl.show 'clip', {}, 200
 			$expandEl
@@ -105,13 +113,16 @@
 		ps.contractAllLinks = ->
 			for id of ps.expandedLinks
 				ps.contractLink(id)
+			ps.currentLinkId = null
 
 		ps.contractLink = (id) ->
-			ps.expandedLinks[id]?.hide 'clip', {}, 200
+			if id then ps.expandedLinks[id]?.hide 'clip', {}, 200
 
 		# TODO: is this performant?
 		$('body').on 'click', ->
-			ps.contractAllLinks()
+			if ps.currentLinkId
+				ps.contractLink(ps.currentLinkId)
+				ps.currentLinkId = null
 
 		ps.findOrCreateExpandedLink = (id) ->
 			$expandEl = ps.expandedLinks[id]
@@ -122,7 +133,7 @@
 				uri = "http://#{ps.DOMAIN}/embed/#{linkObj.type}/expanded/#{linkObj.id}"
 
 				$expandEl = $ """
-					<div class="ps-embed-wrap" style="width:#{width}px; height:#{height}px; display:none; position:absolute; background:white; border-radius:3px; border:1px solid #ccc; box-shadow:rgba(0, 0, 0, 0.08) 1px 1px 4px 2px;">
+					<div class="ps-embed-wrap" style="width:#{width}px; height:#{height}px; display:none; position:absolute; background:white; border-radius:3px; border:1px solid #ccc; box-shadow:rgba(0, 0, 0, 0.08) 1px 1px 4px 2px; margin:10px;">
 						 <iframe class="ps-embed ps-embed-space" src="#{uri}" frameborder="0" border="0" cellspacing="0" style="border-style: none;width: #{width}px; height: #{height}px;" scrolling="yes"></iframe>
 					</div>
 				"""
@@ -130,10 +141,10 @@
 				ps.expandedLinks[id] = $expandEl
 				$("body").append $expandEl
 				$expandEl.position
-					my: 'center'
+					my: "left+#{linkObj.el.width()/2 + 3} center"
 					at: 'center'
 					of: linkObj.el
-					collision: 'fit'
+					collision: 'flipfit'
 			$expandEl
 
 
@@ -143,7 +154,7 @@
 			if event.origin.indexOf(ps.DOMAIN) > -1
 				data = event.data.split("_")
 				switch data[0]
-					when 'psClickLink' then ps.expandLink(data[1])
+					when 'psClickLink' then ps.clickLink(data[1])
 
 		window.addEventListener("message", ps.receiveMessage, false)
 
