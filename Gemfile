@@ -67,6 +67,9 @@ gem 'state_machine'
 gem 'rabl'
 gem 'oj'
 
+# CORS
+gem 'rack-cors', :require => 'rack/cors'
+
 # Sync Assets to CDN
 gem 'asset_sync'
 
