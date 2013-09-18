@@ -1,10 +1,11 @@
 HOST: http://www.positivespace.io/api/
 
 
---- +_ ---
-
+--- Positive Space API v1 ---
 ---
-### Welcome to the Positive Space API V1 documentation.
+### Welcome to the Positive Space API v1 documentation.
+
+This is a working document. Please leave comments.
 ---
 
 
@@ -14,7 +15,7 @@ The following is a section of resources related to users
 --
 
 List users
-GET /users
+GET /users{?login,email,username,id,following,followers,accepting_conversations_with,publishable,complete,endorsed,unendorsed,visible,order,page,per}
 < 200
 < Content-Type: application/json
 { "collection": [
