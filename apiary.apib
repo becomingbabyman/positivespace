@@ -11,7 +11,7 @@ This is a working document. Please leave comments.
 
 --
 Users
-The following is a section of resources related to users
+The following is a section of resources related to users.
 --
 
 List users
@@ -25,7 +25,7 @@ GET /users{?login,email,username,id,following,followers,accepting_conversations_
 
 --
 Spaces
-The following is a section of resources related to spaces
+The following is a section of resources related to spaces.
 --
 
 List spaces
@@ -39,11 +39,11 @@ GET /spaces
 
 --
 Conversations
-The following is a section of resources related to spaces
+The following is a section of resources related to conversations.
 --
 
 List conversations
-GET /conversations
+GET /users/{user_id}/conversations
 < 200
 < Content-Type: application/json
 { "collection": [
@@ -53,11 +53,53 @@ GET /conversations
 
 --
 Messages
-The following is a section of resources related to spaces
+The following is a section of resources related to messages.
 --
 
 List messages
-GET /messages
+GET /users/{user_id}/messages
+< 200
+< Content-Type: application/json
+{ "collection": [
+{ "id": 1 }
+] }
+
+
+--
+Reviews
+The following is a section of resources related to reviews.
+--
+
+List reviews
+GET /conversations/{conversation_id}/reviews
+< 200
+< Content-Type: application/json
+{ "collection": [
+{ "id": 1 }
+] }
+
+
+--
+Tags
+The following is a section of resources related to tags.
+--
+
+List tags
+GET /tags
+< 200
+< Content-Type: application/json
+{ "collection": [
+{ "id": 1 }
+] }
+
+
+--
+Images
+The following is a section of resources related to images.
+--
+
+List images
+GET /images
 < 200
 < Content-Type: application/json
 { "collection": [
