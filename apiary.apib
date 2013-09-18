@@ -14,13 +14,126 @@ Users
 The following is a section of resources related to users.
 --
 
-List users
+# List users
+### Query Parameters
+- login - *String* - search users by their email or username
+- email - *String* - search users by their email
+- username - *String* - search users by their username
+- id - *Integer* - search users by their id
+- following - *Integer* - users this **user_id** is following
+- followers - *Integer* - users following this **user_id**
+- accepting_conversations_with - *Integer* - users not currently talking with this **user_id**
+- publishable - *Boolean* - users meeting the requirements of a public profile
+- complete - *Boolean* - users with complete profiles
+- endorsed - *Boolean* - users who are endorese by another user
+- unendorsed - *Boolean* - users not endorsed by another user
+- visible - *Boolean* - users who allow their profile to be seen publicly
+- order - *String* - sort by **RANDOM(), created_at ASC, created_at DESC, etc...**
+- page - *Integer* - **( 1 - N )**
+- per - *Integer* - **( 1 - 20 )**
 GET /users{?login,email,username,id,following,followers,accepting_conversations_with,publishable,complete,endorsed,unendorsed,visible,order,page,per}
 < 200
 < Content-Type: application/json
-{ "collection": [
-{ "id": 1 }
-] }
+{
+    "total": 1,
+    "total_pages": 1,
+    "query": {
+        "page": 1,
+        "per": 1
+    },
+    "collection": [
+        {
+            "id": 4,
+            "username": "christopher",
+            "name": "Christopher Smothers",
+            "slug": "christopher",
+            "bio": "Engineer at Positive Space. Storyteller. Yogi.",
+            "location": "NYC",
+            "personal_url": "http://smothe.rs",
+            "facebook_id": "1013601",
+            "twitter_id": 17715155,
+            "twitter_handle": "soupcellar",
+            "linkedin_id": "kl-3tPx-8K",
+            "linkedin_profile_url": "http://www.linkedin.com/pub/christopher-smothers/17/115/201",
+            "github_id": 124385,
+            "github_login": "smothers",
+            "show_facebook": true,
+            "show_twitter": true,
+            "show_linkedin": true,
+            "show_github": true,
+            "magnetism": 108,
+            "created_at": "2013-04-17T16:14:35Z",
+            "updated_at": "2013-09-17T23:51:03Z",
+            "impressions_count": 426,
+            "state": "endorsed",
+            "likers_count": 1,
+            "followers_count": 20,
+            "follows_count": 30,
+            "mentioners_count": 0,
+            "sent_conversations_count": 63,
+            "recieved_conversations_count": 33,
+            "uri": "https://www.positivespace.io/api/users/christopher",
+            "prompt": "I'd like to build a distributed network of people. Kind of like the internet, but made out of mutually beneficial relationships instead of wires and routers. Does that sound worthwhile? Any ideas on how to do it?",
+            "first_name": "Christopher",
+            "last_name": "Smothers",
+            "skills": [
+                "Web Development",
+                "Storytelling",
+                "Installation Art",
+                "Ruby on Rails",
+                "Angular JS"
+            ],
+            "interests": [
+                "Startups",
+                "Collaboration",
+                "Distributed Networks",
+                "Raja Yoga",
+                "Stillness"
+            ],
+            "avatar": {
+                "id": 106,
+                "name": "",
+                "lat": null,
+                "lng": null,
+                "image_type": "avatar",
+                "url": "//static.positivespace.io/uploads/images/avatars/106/9741f1370ae7db96.jpg",
+                "large_url": "//static.positivespace.io/uploads/images/avatars/106/large_9741f1370ae7db96.jpg",
+                "medium_url": "//static.positivespace.io/uploads/images/avatars/106/medium_9741f1370ae7db96.jpg",
+                "small_url": "//static.positivespace.io/uploads/images/avatars/106/small_9741f1370ae7db96.jpg",
+                "big_thumb_url": "//static.positivespace.io/uploads/images/avatars/106/big_thumb_9741f1370ae7db96.jpg",
+                "thumb_url": "//static.positivespace.io/uploads/images/avatars/106/thumb_9741f1370ae7db96.jpg"
+            },
+            "space": {
+                "id": 181,
+                "prompt": "I'd like to build a distributed network of people. Kind of like the internet, but made out of mutually beneficial relationships instead of wires and routers. Does that sound worthwhile? Any ideas on how to do it?",
+                "embed_url": null,
+                "embed_data": null,
+                "state": "draft",
+                "user_id": 4
+            },
+            "can_edit": false,
+            "can_delete": false,
+            "relationship": "none",
+            "has_like": null,
+            "has_follow": null,
+            "magnetisms": [
+                {
+                    "id": 36,
+                    "inc": 8,
+                    "reason": "grace",
+                    "created_at": "2013-08-08T00:07:13Z"
+                },
+                {
+                    "id": 1,
+                    "inc": 100,
+                    "reason": "onboarding complete",
+                    "created_at": "2013-07-20T07:04:19Z"
+                }
+            ],
+            "invitation": null
+        }
+    ]
+}
 
 
 --
