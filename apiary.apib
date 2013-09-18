@@ -16,6 +16,9 @@ The following is a section of resources related to users.
 
 # List users
 ### Query Parameters
+
+{?login,email,username,id,following,followers,accepting_conversations_with,publishable,complete,endorsed,unendorsed,visible,order,page,per}
+
 - login - *String* - search users by their email or username
 - email - *String* - search users by their email
 - username - *String* - search users by their username
@@ -31,7 +34,7 @@ The following is a section of resources related to users.
 - order - *String* - sort by **RANDOM(), created_at ASC, created_at DESC, etc...**
 - page - *Integer* - **( 1 - N )**
 - per - *Integer* - **( 1 - 20 )**
-GET /users{?login,email,username,id,following,followers,accepting_conversations_with,publishable,complete,endorsed,unendorsed,visible,order,page,per}
+GET /users
 < 200
 < Content-Type: application/json
 {
